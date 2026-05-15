@@ -948,6 +948,7 @@
               <li>改時間 / 景點 / Notes：直接喺卡片入面改。</li>
               <li>上下拉 <strong>↕ Drag</strong>：改排序。</li>
               <li>撳 <strong>Save</strong>：儲存。</li>
+              <li><strong>Naver / Kakao</strong>：會先試開地圖 app，唔得先開網頁。</li>
             </ul>
           </div>
 
@@ -1309,8 +1310,8 @@
 
             <div class="card-actions">
               <button class="btn ghost small" data-action="copy-ko" data-id="${escapeHtml(item.id)}">複製韓文</button>
-              <button class="btn ghost small" data-action="naver" data-id="${escapeHtml(item.id)}">Naver Map</button>
-              <button class="btn ghost small" data-action="kakao" data-id="${escapeHtml(item.id)}">Kakao Map</button>
+              <button class="btn ghost small" data-action="naver" data-id="${escapeHtml(item.id)}">Naver App</button>
+              <button class="btn ghost small" data-action="kakao" data-id="${escapeHtml(item.id)}">Kakao App</button>
             </div>
 
             <div class="edit-grid">
@@ -1452,11 +1453,38 @@
     }
 
     function openMap(type, text) {
-      const q = encodeURIComponent(text || "부산");
-      const url = type === "naver"
-        ? `https://map.naver.com/p/search/${q}`
-        : `https://map.kakao.com/link/search/${q}`;
-      window.open(url, "_blank", "noopener,noreferrer");
+      const raw = text || "부산";
+      const q = encodeURIComponent(raw);
+
+      // iPhone behavior:
+      // 1) Try to open the local Korean map app by app scheme.
+      // 2) If app is not installed / blocked, fall back to web map.
+      if (type === "naver") {
+        const appUrl = `nmap://search?query=${q}&appname=busan.trip.planner`;
+        const webUrl = `https://map.naver.com/p/search/${q}`;
+        openAppThenFallback(appUrl, webUrl);
+        return;
+      }
+
+      if (type === "kakao") {
+        // Kakao/Daum schemes differ by install/version; try Kakao-style first, then web fallback.
+        const appUrl = `kakaomap://search?q=${q}`;
+        const webUrl = `https://map.kakao.com/link/search/${q}`;
+        openAppThenFallback(appUrl, webUrl);
+      }
+    }
+
+    function openAppThenFallback(appUrl, webUrl) {
+      const startedAt = Date.now();
+      window.location.href = appUrl;
+
+      setTimeout(() => {
+        // If the app opened, Safari is usually backgrounded and this will not matter.
+        // If still on page, open web fallback.
+        if (Date.now() - startedAt < 1800) {
+          window.location.href = webUrl;
+        }
+      }, 850);
     }
 
     function addItem() {
