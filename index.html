@@ -593,6 +593,297 @@
       .content { grid-template-columns: 1fr; }
       .item { break-inside: avoid; }
     }
+  
+    /* ===== Clean iPhone compact override ===== */
+    @media (max-width: 820px) {
+      body {
+        background:
+          linear-gradient(180deg, #edf8f5 0%, #f6f3eb 38%, #f6f3eb 100%);
+      }
+
+      .app {
+        padding: 10px;
+        padding-bottom: calc(94px + env(safe-area-inset-bottom));
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 18px;
+        border-radius: 26px;
+        background:
+          linear-gradient(135deg, rgba(8, 66, 61, .88), rgba(15, 118, 110, .68)),
+          url("https://commons.wikimedia.org/wiki/Special:FilePath/Haeundae_Beach_and_Haeundae_LCT_The_Sharp.jpg");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+        line-height: .98;
+        letter-spacing: -0.055em;
+        margin-bottom: 6px;
+      }
+
+      .hero p {
+        font-size: 14px;
+        line-height: 1.35;
+        max-width: 100%;
+      }
+
+      .hero-bottom {
+        margin-top: 16px;
+        align-items: flex-start;
+      }
+
+      .pill-set {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .pill {
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+        padding: 8px 9px;
+        font-size: 13px;
+        border-radius: 18px;
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      .top-actions {
+        display: none !important;
+      }
+
+      .panel {
+        margin-top: 10px;
+        border-radius: 22px;
+      }
+
+      .toolbar {
+        position: sticky;
+        top: 0;
+        padding: 10px;
+        display: block;
+      }
+
+      .tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tab {
+        flex: 0 0 auto;
+        padding: 8px 13px;
+        font-size: 14px;
+        border-radius: 999px;
+      }
+
+      .search {
+        min-width: 0;
+        width: 100%;
+        border-radius: 16px;
+        padding: 11px 12px;
+        font-size: 16px;
+      }
+
+      .content {
+        padding: 10px;
+        gap: 10px;
+      }
+
+      .section-title {
+        align-items: flex-start;
+        margin: 0 0 10px;
+      }
+
+      .section-title h2 {
+        font-size: 22px;
+        line-height: 1.12;
+        letter-spacing: -0.045em;
+        white-space: normal;
+      }
+
+      #statusLine {
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .section-title > .actions {
+        display: none;
+      }
+
+      .phone-hint {
+        display: block;
+        padding: 9px 10px;
+        margin: 0 0 10px;
+        border-radius: 14px;
+        font-size: 13px;
+      }
+
+      .timeline {
+        gap: 10px;
+      }
+
+      .item {
+        grid-template-columns: 1fr;
+        gap: 9px;
+        padding: 11px;
+        border-radius: 18px;
+      }
+
+      .timebox {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .time {
+        display: inline-flex;
+        width: auto;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: var(--brand3);
+        font-size: 13px;
+        color: var(--brand2);
+      }
+
+      .drag {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+
+      .card-head {
+        gap: 8px;
+      }
+
+      .item h3 {
+        font-size: 18px;
+        line-height: 1.2;
+      }
+
+      .ko {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .check {
+        width: 28px;
+        height: 28px;
+      }
+
+      .meta {
+        gap: 5px;
+        margin-top: 8px;
+      }
+
+      .tag {
+        font-size: 11px;
+        padding: 4px 7px;
+      }
+
+      .notes {
+        margin-top: 8px;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .thumb {
+        max-height: 165px;
+        border-radius: 14px;
+        margin-top: 10px;
+      }
+
+      .image-credit {
+        font-size: 11px;
+      }
+
+      .card-actions {
+        gap: 6px;
+        margin-top: 10px;
+      }
+
+      .card-actions .btn {
+        flex: 1 1 30%;
+        min-height: 40px;
+        padding: 8px 8px;
+        font-size: 12px;
+        border-radius: 14px;
+      }
+
+      .edit-grid {
+        grid-template-columns: 1fr;
+        gap: 7px;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 15px;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        font-size: 16px;
+        border-radius: 11px;
+        padding: 9px;
+      }
+
+      .edit-actions {
+        gap: 6px;
+      }
+
+      .edit-actions .btn {
+        flex: 1 1 42%;
+        min-height: 42px;
+        border-radius: 14px;
+      }
+
+      .side {
+        gap: 10px;
+      }
+
+      .side-card {
+        padding: 13px;
+        border-radius: 18px;
+      }
+
+      .side-card h3 {
+        font-size: 16px;
+      }
+
+      .side-card,
+      .side-card li,
+      .side-card p {
+        font-size: 13px;
+      }
+
+      .mobile-bottom-bar {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1.2fr;
+        left: 10px;
+        right: 10px;
+        bottom: max(9px, env(safe-area-inset-bottom));
+        padding: 7px;
+        border-radius: 22px;
+      }
+
+      .mobile-bottom-bar .btn {
+        min-height: 46px;
+        border-radius: 16px;
+        padding: 8px 6px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+    }
+
   </style>
 </head>
 
@@ -929,8 +1220,9 @@
       const total = items.length;
       const done = items.filter(item => doneMap[item.id]).length;
 
-      currentTitle.textContent = activeDay === "全部" ? "全部行程" : `${activeDay}｜${items.find(i => i.Day === activeDay)?.Date || ""}`;
-      statusLine.textContent = `${filtered.length}/${total} 個項目｜Checklist ${done}/${total} 已完成${editMode ? "｜Edit mode 開啟中" : ""}`;
+      const activeDate = items.find(i => i.Day === activeDay)?.Date || "";
+      currentTitle.textContent = activeDay === "全部" ? "全部行程" : `${activeDay} · ${activeDate}`;
+      statusLine.textContent = `${filtered.length}/${total} items · ${done}/${total} done${editMode ? " · editing" : ""}`;
 
       if (!filtered.length) {
         timeline.innerHTML = `<div class="empty">搵唔到相關行程。試下搜尋韓文名，例如 해운대、광안리、스카이캡슐。</div>`;
