@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>釜山餐廳地圖</title>
+<style>
+:root{--bg:#f6f4ee;--card:#fffefa;--ink:#101815;--muted:#66736d;--line:#e7e0d4;--brand:#0f766e;--soft:#e5f5f1;--shadow:0 8px 22px rgba(20,30,25,.08)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans HK","Noto Sans TC","Noto Sans KR",Arial,sans-serif;line-height:1.45}.app{max-width:780px;margin:0 auto;padding:12px 10px 40px}.top{position:sticky;top:0;z-index:10;margin:-12px -10px 10px;padding:12px 10px;background:var(--bg);border-bottom:1px solid var(--line)}h1{font-size:24px;letter-spacing:-.05em;margin:0}.sub{font-size:12px;color:var(--muted);margin-top:4px}.search{width:100%;margin-top:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:11px 12px;font-size:16px}.chips{display:flex;gap:7px;overflow:auto;padding:10px 0 0}.chip{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:7px 10px;font-size:12px;white-space:nowrap}.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}.list{display:grid;gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:12px}.row{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.tag{font-size:11px;background:var(--soft);color:var(--brand);font-weight:800;border-radius:999px;padding:4px 7px;white-space:nowrap}.title{font-size:18px;line-height:1.18;letter-spacing:-.035em;margin:6px 0 2px}.ko{font-size:13px;color:var(--brand);font-weight:800}.meta,.note{font-size:13px;color:var(--muted);margin:7px 0 0}.flags{font-size:12px;color:var(--ink);margin-top:8px}.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}.btn{display:block;text-align:center;text-decoration:none;border:1px solid var(--line);background:var(--card);color:var(--brand);border-radius:13px;min-height:39px;padding:9px 8px;font-size:12px;font-weight:850}.back{display:inline-block;margin-top:8px;color:var(--brand);font-size:13px;font-weight:800;text-decoration:none}@media(min-width:760px){.list{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="top"><h1>餐廳地圖</h1><div class="sub" id="count">Loading...</div><a class="back" href="./?v=804">← 返回行程</a><input id="search" class="search" placeholder="搜尋餐廳 / 韓文 / 區域 / 料理"><div class="chips" id="chips"></div></header>
+<section class="list" id="list"></section>
+</main>
+<script>
+const R=`Fiotto|피오또|米芝蓮一星+綠星|意式創意料理（主廚發辦）|海雲台（中洞站）|130,000–200,000|✓|✓||2026亞洲最佳100大入選，Green Star
+Le DORER (르도헤)|르도헤|米芝蓮一星|現代韓食創意料理|冬柏站|100,000–160,000||✓||2026新入星
+Mori (모리)|모리|米芝蓮一星|日本料理（主廚發辦）|釜山市區|130,000–200,000||||日式精緻料理
+Palate (팔레트)|팔레트|米芝蓮一星|現代創意料理（主廚發辦）|釜山市區|120,000–180,000||✓||
+ULTRA BITE|울트라 바이트|Bib Gourmand|法式手法亞洲食材創意西餐|廣安里（水營區）|40,000–70,000||✓||2026新入選，釜山市長數度光臨
+平壤家|평양집|Bib Gourmand|北韓式餃子湯（우리밀만두국）|德川站（北區）|10,000–15,000||✓||2026新入選，30年老店，週一至六 10:30–15:30
+徹（토오루）|토오루|Bib Gourmand|日式無菜單料理（Omakase）|田浦站（釜山鎮區）|120,000||✓||2026新入選，Catchtable全預約制
+Buda Myeonoak（富多麵屋）|부다면옥|Bib Gourmand|韓式冷麵、韓牛湯|海雲台站|10,000–15,000|✓|✓||夏天必吃，性價比超高
+Nagahama Mangetsu（長浜滿月）|나가하마 만게츠|Bib Gourmand|日式拉麵|海雲台站|10,000–15,000|✓|✓||IG、YouTube釜山米芝蓮攻略常提及
+釜山灶房（釜山站分店）|부산정잣간|Bib Gourmand|豬肉湯飯（銅碗盛裝）|釜山站|12,000–18,000|✓|✓||Threads常點名，銅碗特色服務
+Cor Pasta Bar（코르 파스타바）|코르 파스타바|Bib Gourmand|義大利麵（開放式廚房）|田浦站|20,000–35,000||✓||Threads上有人推薦的義大利餐廳
+Bao Haus（바오하우스）|바오하우스|Bib Gourmand|刈包（韓食食材×台式刈包）|田浦站|15,000–25,000||✓||IG打卡熱點
+Yakitori Onjeong（溫情）|야키토리 온정|Bib Gourmand|日式炭火串燒|西面站|20,000–40,000||✓||釜山少見日式串燒，IG打卡
+Dammiog（담미옥）|담미옥|Bib Gourmand|平壤冷麵|開琴站|10,000–15,000||✓||YouTube釜山米芝蓮影片常提及
+안목（安木）豬肉湯飯|안목|Bib Gourmand|豬肉湯飯|南川站|9,000–13,000||✓||IG常見，排隊名店
+Haemok（해목）|해목|Bib Gourmand|日式料理|海雲台站|30,000–50,000||||持續上榜
+Shunsai Kubo（히츠마부시 슌사이쿠보）|히츠마부시 슌사이쿠보|Bib Gourmand|日式鰻魚飯（鰻魚三吃）|華明站|40,000–60,000||||
+Piri Piri（피리피리）|피리피리|Bib Gourmand|泰式料理|水營站|15,000–25,000||||
+Eonyang Bulgogi（彥陽烤肉 釜山家）|언양불고기 부산집|Bib Gourmand|彥陽式薄切韓牛烤肉|金蓮山站|25,000–40,000||✓||YouTube釜山攻略必提
+Deunggyeong Bapsang（등경밥상）|등경밥상|Bib Gourmand|日式鰻魚飯|金蓮山站|25,000–40,000||||
+Arp（아르프）|아르프|Bib Gourmand|輕洋食、義大利麵、漢堡|影島|15,000–25,000||||
+陝川豬肉湯飯（합천국밥집）|합천국밥집|Bib Gourmand|豬肉湯飯|二妓台公園附近|9,000–13,000||||
+Love Earth（러브얼스）|러브얼스|Bib Gourmand|西式輕食、沙拉、素食|廣安站|15,000–25,000||||
+Nyulriumenguan（뉴러우멘관즈）|뉴러우멘관즈|Bib Gourmand|牛肉麵、炸排骨|南川站|12,000–20,000||||
+Moemiljip（메밀집）|메밀집|Bib Gourmand|蕎麥冷麵（100%韓國蕎麥）|釜山市區|10,000–15,000||✓||2026新入選，店內自磨新鮮蕎麥麵
+Songheonjip（송헌집）|송헌집|Bib Gourmand|韓式家常菜、煙燻短肋排餅|釜山市區|15,000–25,000||✓||2026新入選，改建老屋
+소공간（小空間）|소공간|米芝蓮精選|現代韓食創意料理|海雲台（中洞站）|50,000–80,000||✓|✓|《黑白大廚2》釜山代表餐廳
+錦繡河豚（금수복국）|금수복국|米芝蓮精選|韓式河豚湯|海雲台站|20,000–30,000||✓||
+早安香港（굿모닝홍콩）|굿모닝홍콩|米芝蓮精選|港式點心、港式料理|釜田站|15,000–25,000||✓||港人打卡
+Chef GON（쉐프곤）|쉐프곤|米芝蓮精選|現代韓食創意料理|扎嘎其站|50,000–80,000||||
+Le SANS（레썽스）|레썽스|米芝蓮精選|法式料理|南川站|60,000–100,000||||
+Ramsay（램지）|램지|米芝蓮精選|法式料理|廣安站|60,000–100,000||||
+雪夜覓|설야멱|藍絲帶認證|韓式烤肉（專人代烤，豬頸肉、五花肉）|西面|25,000–40,000|✓|✓||藍絲帶認證，有人代烤，IG常見推薦
+Old Mansion（老花園）|올드맨션|藍絲帶認證|韓式燒烤（彥陽烤肉風格）|西面|30,000–50,000|✓ 金頸獎|✓||藍絲帶金頸獎（最高級別）
+海雲台連續4年藍絲帶韓牛店|待確認|藍絲帶認證|1++ 高級韓牛（烤肉）|海雲台|80,000–150,000|✓ 連續4年|✓||名稱待確認，暫不建議直接導航
+風川灣烤鰻魚（풍천장어）|풍천장어|藍絲帶認證|炭火烤活鰻魚|釜山郊外|30,000–50,000|✓|✓||旅行團常安排，季節性鰻魚美食
+嚴湧帛豬肉湯飯（엄용백돼지국밥）|엄용백돼지국밥|藍絲帶認證|釜山式豬肉湯飯（清燉）|水營區|9,000–13,000|✓|✓|✓|《黑白大廚2》拍攝推薦
+시내집（城裡家）|시내집|黑白大廚旗下|韓式火鍋、豬肉湯飯（7,000韓圜）|海雲台（中洞站）|7,000–20,000||✓|✓|吳世德主廚旗下，超 CP
+水邊最高豬肉湯飯|수변최고돼지국밥|IG/Threads熱門|豬肉湯飯|廣安里（民樂本店）|9,000–13,000||✓||2026年IG熱門，廣安里海邊排隊名店
+Nasari食堂|나사리식당|IG/Threads熱門|韓式家常菜、小菜齊全定食|廣安里|15,000–25,000||✓||2026 IG熱門，在地推薦`;
+const data=R.trim().split('\n').map((l,i)=>{const p=l.split('|');return{zh:p[0],ko:p[1],cat:p[2],food:p[3],area:p[4],price:p[5],blue:p[6],hot:p[7],chef:p[8],note:p[9]||'',id:i}});
+let q='',filter='全部';
+const $=id=>document.getElementById(id);
+function naver(q){return 'https://map.naver.com/p/search/'+encodeURIComponent(q)}
+function kakao(q){return 'https://map.kakao.com/link/search/'+encodeURIComponent(q)}
+function renderChips(){const cats=['全部',...Array.from(new Set(data.map(x=>x.cat)))];$('chips').innerHTML=cats.map(c=>`<button class="chip ${c===filter?'on':''}" data-cat="${c}">${c}</button>`).join('')}
+function rows(){return data.filter(x=>(filter==='全部'||x.cat===filter)&&(!q||Object.values(x).join(' ').toLowerCase().includes(q.toLowerCase())))}
+function render(){renderChips();const a=rows();$('count').textContent=`${a.length} 間餐廳 · 按 Naver/Kakao 用韓文名搜尋`; $('list').innerHTML=a.map(x=>card(x)).join('')}
+function card(x){const flags=[x.blue?'藍絲帶 '+x.blue:'',x.hot?'IG/Threads熱門':'',x.chef?'黑白大廚':''].filter(Boolean).join(' · ');return `<article class="card"><div class="row"><span class="tag">${x.cat}</span><span class="tag">₩${x.price}</span></div><h2 class="title">${x.zh}</h2><div class="ko">${x.ko}</div><p class="meta"><b>${x.area}</b> · ${x.food}</p>${flags?`<div class="flags">${flags}</div>`:''}${x.note?`<p class="note">${x.note}</p>`:''}<div class="actions"><a class="btn" href="${naver(x.ko)}">Naver</a><a class="btn" href="${kakao(x.ko)}">Kakao</a><a class="btn" href="${naver(x.ko+' '+x.area)}">區域搜尋</a></div></article>`}
+$('search').oninput=e=>{q=e.target.value;render()};$('chips').onclick=e=>{const b=e.target.closest('[data-cat]');if(!b)return;filter=b.dataset.cat;render()};render();
+</script>
+</body>
+</html>
