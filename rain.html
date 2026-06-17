@@ -1,60 +1,81 @@
 <!doctype html>
-<html lang='zh-HK'>
+<html lang="zh-HK">
 <head>
-<meta charset='utf-8'>
-<meta name='viewport' content='width=device-width,initial-scale=1,viewport-fit=cover'>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Busan Rain Plan</title>
-<style>
-:root{--bg:#0b1110;--card:#121b18;--ink:#f2f6f3;--muted:#9aa9a3;--line:#273630;--brand:#2dd4bf;--soft:#153b36;--rain:#1d3557;--rest:#3b2f1c;--warn:#f59e0b;--shadow:0 14px 34px rgba(0,0,0,.28)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{scroll-behavior:smooth;background:var(--bg)}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans HK,Noto Sans TC,Noto Sans KR,Arial,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%}.app{max-width:820px;margin:auto;padding:12px 12px calc(30px + env(safe-area-inset-bottom));min-height:100svh}.top{position:sticky;top:0;z-index:20;margin:-12px -12px 12px;padding:calc(12px + env(safe-area-inset-top)) 12px 10px;background:linear-gradient(180deg,var(--bg),rgba(11,17,16,.94));border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}h1{font-size:28px;line-height:1;margin:0;letter-spacing:-.05em}.sub{color:var(--muted);font-size:13px;margin-top:5px}.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.tabs::-webkit-scrollbar{display:none}.tabs a{flex:0 0 auto;min-height:44px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--brand);padding:10px 14px;font-weight:850;font-size:15px;text-decoration:none}.day{scroll-margin-top:118px;margin-top:16px}.dayHead{display:flex;justify-content:space-between;gap:10px;align-items:end;margin:14px 2px 10px}.dayHead h2{font-size:24px;line-height:1.05;margin:0;letter-spacing:-.04em}.route{color:var(--muted);font-size:13px;margin:6px 2px 12px}.card{background:var(--card);border:1px solid var(--line);border-radius:24px;margin:0 0 12px;padding:14px;box-shadow:var(--shadow)}.row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.time{flex:0 0 auto;background:var(--soft);color:var(--brand);border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:12px;font-weight:900;white-space:nowrap}.title{font-size:19px;font-weight:950;line-height:1.16;letter-spacing:-.03em}.ko{color:var(--brand);font-weight:850;margin-top:3px;font-size:14px}.note{font-size:14px;margin-top:9px;color:#d8e7e1}.rain{margin-top:12px;border:1px solid rgba(93,173,226,.28);background:linear-gradient(135deg,rgba(29,53,87,.86),rgba(21,59,54,.65));border-radius:16px;padding:11px 12px}.rain b{display:block;color:#a7d8ff;font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}.rain p{font-size:14px;color:#edf7ff;margin:0}.restInfo{margin-top:10px;border:1px solid rgba(245,158,11,.22);background:rgba(59,47,28,.78);border-radius:14px;padding:10px}.restInfo b{color:#ffd082;font-size:12px}.restInfo p{margin:4px 0 0;color:#fff3d6;font-size:13px}.transport{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}.foot{color:var(--muted);font-size:12px;padding:18px 4px 0}@media(max-width:420px){.app{padding-left:10px;padding-right:10px}.top{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}h1{font-size:26px}.card{border-radius:22px;padding:13px}.title{font-size:18px}.row{gap:8px}.time{font-size:11px;padding:5px 8px}.rain p{font-size:13.5px}}
-</style>
+<style>html,body{margin:0;height:100%;background:#0b1110;color:#f2f6f3;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans HK,Noto Sans TC,Noto Sans KR,Arial,sans-serif}.boot{display:grid;place-items:center;min-height:100svh;padding:24px;text-align:center}.boot b{font-size:22px}.boot p{color:#9aa9a3}</style>
 </head>
 <body>
-<main class='app'>
-<header class='top'>
-<h1>釜山 Rain Plan</h1>
-<div class='sub'>Original plan 保留，雨天方案寫喺每個 stop 下面。非餐廳唔放 opening hours。</div>
-<nav class='tabs'><a href='#d1'>Day 1</a><a href='#d2'>Day 2</a><a href='#d3'>Day 3</a><a href='#d4'>Day 4</a><a href='#d5'>Day 5</a></nav>
-</header>
-
-<section class='day' id='d1'><div class='dayHead'><h2>Day 1</h2><span class='sub'>6/19 Fri</span></div><p class='route'>金海機場 → 海雲台 → 南浦 / 札嘎其 → 海雲台</p>
-<article class='card'><div class='row'><div><div class='title'>抵達金海國際機場</div><div class='ko'>Gimhae International Airport<br>김해국제공항</div></div><div class='time'>06:00</div></div><p class='note'>入境、取行李、買 T-money / eSIM。</p><div class='rain'><b>Rain Plan</b><p>雨天無大問題；如果落大雨，直接用的士去酒店，唔好拖行李轉太多站。</p></div><div class='transport'>順路交通：機場 → 海雲台，的士約45–70分鐘；公共交通約75–90分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>海雲台酒店放低行李</div><div class='ko'>Haeundae hotel luggage drop<br>해운대 호텔</div></div><div class='time'>07:30</div></div><p class='note'>先放行李，首日早機唔建議即刻重行程。</p><div class='rain'><b>Rain Plan</b><p>大雨就留酒店附近食早餐，等雨細先出去，避免拖喼濕身。</p></div><div class='transport'>順路交通：海雲台區內短程的士 / 步行。</div></article>
-<article class='card'><div class='row'><div><div class='title'>海雲台傳統市場早餐</div><div class='ko'>Haeundae Traditional Market<br>해운대전통시장</div></div><div class='time'>09:00</div></div><p class='note'>早餐、小食、簡單逛市場。</p><div class='restInfo'><b>餐廳資料</b><p>攤檔 / 餐廳營業時間視乎店舖；當日用 Naver 確認。</p></div><div class='rain'><b>Rain Plan</b><p>市場有部分遮蓋但唔係全室內；大雨可改附近 café / hotel breakfast。</p></div><div class='transport'>順路交通：酒店附近步行為主。</div></article>
-<article class='card'><div class='row'><div><div class='title'>南浦洞 / 札嘎其市場</div><div class='ko'>Nampo-dong / Jagalchi Market<br>남포동 / 자갈치시장</div></div><div class='time'>13:00</div></div><p class='note'>午餐、札嘎其市場、海鮮街。</p><div class='restInfo'><b>餐廳資料</b><p>餐廳 / 市場營業時間按店舖不同；海鮮餐廳建議早少少去。</p></div><div class='rain'><b>Rain Plan</b><p>雨天可照行：札嘎其市場大樓、南浦地下街、樂天百貨光復店都順路。</p></div><div class='transport'>順路交通：海雲台 → 札嘎其，地鐵約60–70分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>BIFF廣場 + 光復路 + 國際市場</div><div class='ko'>BIFF Square + Gwangbok-ro + Gukje Market<br>BIFF광장 / 광복로 / 국제시장</div></div><div class='time'>15:30</div></div><p class='note'>步行街、購物、小食。</p><div class='rain'><b>Rain Plan</b><p>大雨就縮短 BIFF / 國際市場，轉南浦地下街 + 樂天光復店，唔使折返。</p></div><div class='transport'>順路交通：札嘎其 / 南浦一帶步行串連。</div></article>
-</section>
-
-<section class='day' id='d2'><div class='dayHead'><h2>Day 2</h2><span class='sub'>6/20 Sat</span></div><p class='route'>海雲台 → 甘川 → 南浦 / 影島 → ARTE → 廣安里</p>
-<article class='card'><div class='row'><div><div class='title'>甘川文化村</div><div class='ko'>Gamcheon Culture Village<br>감천문화마을</div></div><div class='time'>08:00</div></div><p class='note'>山坡路多，適合早上去。</p><div class='rain'><b>Rain Plan</b><p>中雨以上唔建議慢行山坡；改 ARTE 早入場，甘川縮短做30–45分鐘影相位。</p></div><div class='transport'>順路交通：海雲台 → 甘川約70–90分鐘；最後一段的士最順。</div></article>
-<article class='card'><div class='row'><div><div class='title'>南浦 / BIFF 午餐</div><div class='ko'>Nampo / BIFF lunch<br>남포동 / BIFF광장</div></div><div class='time'>11:30</div></div><p class='note'>南浦食午餐，為14:00影島大橋做 buffer。</p><div class='restInfo'><b>餐廳資料</b><p>餐廳營業時間逐間不同；熱門店建議用 Naver check。</p></div><div class='rain'><b>Rain Plan</b><p>雨天照去，選室內餐廳；唔好揀要排露天隊嘅店。</p></div><div class='transport'>順路交通：甘川 → 南浦約20–30分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>影島大橋開橋位</div><div class='ko'>Yeongdo Bridge lifting show<br>영도대교 도개</div></div><div class='time'>13:20</div></div><p class='note'>14:00–14:15 表演；錯過就唔等。</p><div class='rain'><b>Rain Plan</b><p>小雨可睇；大雨就改樂天光復店內休息 / 觀景，唔好企戶外等太耐。</p></div><div class='transport'>順路交通：南浦 / 樂天光復店附近步行。</div></article>
-<article class='card'><div class='row'><div><div class='title'>ARTE Museum Busan</div><div class='ko'>ARTE Museum Busan<br>아르떼뮤지엄 부산</div></div><div class='time'>15:20</div></div><p class='note'>室內光影展，雨天最穩陣。</p><div class='rain'><b>Rain Plan</b><p>雨天主力景點；如果甘川取消，就直接加長 ARTE 時間。</p></div><div class='transport'>順路交通：影島大橋 → ARTE，的士約10–15分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>廣安里晚餐 + 無人機燈光秀</div><div class='ko'>Gwangalli dinner + Drone show<br>광안리 / 드론라이트쇼</div></div><div class='time'>18:30</div></div><p class='note'>Saturday 固定重點，但受天氣影響。</p><div class='restInfo'><b>餐廳資料</b><p>海景餐廳建議預約；當日再確認營業時間。</p></div><div class='rain'><b>Rain Plan</b><p>無人機 show 遇雨 / 強風可能取消；直接改廣安里室內餐廳 / café，或去 Centum City / Spa Land。</p></div><div class='transport'>順路交通：ARTE → 廣安里約40–55分鐘。</div></article>
-</section>
-
-<section class='day' id='d3'><div class='dayHead'><h2>Day 3</h2><span class='sub'>6/21 Sun</span></div><p class='route'>海雲台 → X the Sky → 尾浦 → 青沙浦 → 海雲台</p>
-<article class='card'><div class='row'><div><div class='title'>海雲台海灘 / 冬柏島</div><div class='ko'>Haeundae Beach / Dongbaek Island<br>해운대해수욕장 / 동백섬</div></div><div class='time'>10:00</div></div><p class='note'>輕鬆散步，唔好太趕。</p><div class='rain'><b>Rain Plan</b><p>落雨就改 SEA LIFE Busan Aquarium / café；冬柏島濕滑就取消。</p></div><div class='transport'>順路交通：海雲台區內步行。</div></article>
-<article class='card'><div class='row'><div><div class='title'>海理團路午餐 / 咖啡</div><div class='ko'>Haeridan-gil lunch / coffee<br>해리단길</div></div><div class='time'>11:45</div></div><p class='note'>補體力，為下午藍線公園留 buffer。</p><div class='restInfo'><b>餐廳資料</b><p>餐廳 / café 營業時間逐間不同；午餐位建議先 mark backup。</p></div><div class='rain'><b>Rain Plan</b><p>雨天照去，揀近地鐵 / 的士落車位嘅室內店。</p></div><div class='transport'>順路交通：海雲台區內步行 / 短程的士。</div></article>
-<article class='card'><div class='row'><div><div class='title'>Busan X the Sky</div><div class='ko'>Busan X the Sky<br>부산엑스더스카이</div></div><div class='time'>13:30</div></div><p class='note'>觀景台，天氣清先值得留耐。</p><div class='rain'><b>Rain Plan</b><p>如果能見度差，縮短參觀；改去 café / SEA LIFE / 新世界 Centum City。</p></div><div class='transport'>順路交通：海雲台海灘 → LCT約10–15分鐘步行。</div></article>
-<article class='card'><div class='row'><div><div class='title'>Beach Train：尾浦 → 青沙浦</div><div class='ko'>Beach Train: Mipo to Cheongsapo<br>해변열차 미포→청사포</div></div><div class='time'>15:30</div></div><p class='note'>順路去青沙浦，之後等天空膠囊。</p><div class='rain'><b>Rain Plan</b><p>小雨可照搭；雷雨 / 強風留意停駛，改 Mipo / 青沙浦 café 等候或取消。</p></div><div class='transport'>順路交通：X the Sky → Mipo約10分鐘步行。</div></article>
-<article class='card'><div class='row'><div><div class='title'>Sky Capsule：青沙浦 → 尾浦</div><div class='ko'>Sky Capsule: Cheongsapo to Mipo<br>스카이캡슐 청사포→미포</div></div><div class='time'>18:30</div></div><p class='note'>黃昏班次，最重要預約。</p><div class='rain'><b>Rain Plan</b><p>小雨景色仍可；強風 / 雷雨可能停運，保留 Beach Train / 的士回海雲台方案。</p></div><div class='transport'>順路交通：青沙浦 → 尾浦約30分鐘。</div></article>
-</section>
-
-<section class='day' id='d4'><div class='dayHead'><h2>Day 4</h2><span class='sub'>6/22 Mon</span></div><p class='route'>海雲台 → 海東龍宮寺 → 機張 / Osiria → 西面 / 田浦</p>
-<article class='card'><div class='row'><div><div class='title'>海東龍宮寺</div><div class='ko'>Haedong Yonggungsa Temple<br>해동용궁사</div></div><div class='time'>08:00</div></div><p class='note'>海邊寺廟，早去避人潮。</p><div class='rain'><b>Rain Plan</b><p>中雨以上縮短 / 取消；改 Busan National Science Museum 或 Lotte Mall Dongbusan，兩個都同區順路。</p></div><div class='transport'>順路交通：海雲台 → 龍宮寺約35–55分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>機張市場午餐</div><div class='ko'>Gijang Market lunch<br>기장시장</div></div><div class='time'>10:30</div></div><p class='note'>食海鮮 / 蟹，留意唔好食太耐影響 Luge。</p><div class='restInfo'><b>餐廳資料</b><p>海鮮店營業時間逐間不同；午餐比晚餐穩陣。</p></div><div class='rain'><b>Rain Plan</b><p>雨天照去，市場 / 餐廳相對可行；建議的士上落車。</p></div><div class='transport'>順路交通：龍宮寺 → 機張市場約15–25分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>Skyline Luge Busan</div><div class='ko'>Skyline Luge Busan<br>스카이라인루지 부산</div></div><div class='time'>12:50</div></div><p class='note'>戶外活動，天氣好先值得。</p><div class='rain'><b>Rain Plan</b><p>雨天 / 大風可能停；改 Lotte Mall Dongbusan / Busan National Science Museum，完全順路。</p></div><div class='transport'>順路交通：機張市場 → Luge約15–25分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>Waveon Coffee optional</div><div class='ko'>Waveon Coffee<br>웨이브온 커피</div></div><div class='time'>14:45</div></div><p class='note'>海景休息位，視乎體力。</p><div class='restInfo'><b>餐廳資料</b><p>Café 營業時間以 Naver 當日為準。</p></div><div class='rain'><b>Rain Plan</b><p>雨天可去但海景差；如果已經累，直接返海雲台休息。</p></div><div class='transport'>順路交通：Luge / Osiria → Waveon約20–30分鐘。</div></article>
-<article class='card'><div class='row'><div><div class='title'>田浦咖啡街 + 西面晚餐</div><div class='ko'>Jeonpo Cafe Street + Seomyeon dinner<br>전포카페거리 / 서면</div></div><div class='time'>19:00</div></div><p class='note'>晚上轉市區，較多室內選擇。</p><div class='restInfo'><b>餐廳資料</b><p>晚餐 / café 營業時間逐間不同；西面選擇多。</p></div><div class='rain'><b>Rain Plan</b><p>雨天仍可行；用地鐵站 / 地下街連接，減少露天步行。</p></div><div class='transport'>順路交通：海雲台 / 機張 → 西面約45–70分鐘。</div></article>
-</section>
-
-<section class='day' id='d5'><div class='dayHead'><h2>Day 5</h2><span class='sub'>6/23 Tue</span></div><p class='route'>海雲台 → 金海機場</p>
-<article class='card'><div class='row'><div><div class='title'>海雲台早餐 / 最後散步</div><div class='ko'>Haeundae breakfast / last walk<br>해운대 아침 산책</div></div><div class='time'>08:30</div></div><p class='note'>最後輕量行程。</p><div class='restInfo'><b>餐廳資料</b><p>早餐店營業時間逐間不同；建議揀酒店附近。</p></div><div class='rain'><b>Rain Plan</b><p>雨天取消散步，直接 café / 酒店早餐，早少少出機場。</p></div><div class='transport'>順路交通：海雲台區內。</div></article>
-<article class='card'><div class='row'><div><div class='title'>回酒店取行李</div><div class='ko'>Pick up luggage<br>호텔 짐 찾기</div></div><div class='time'>09:30</div></div><p class='note'>唔好再加景點。</p><div class='rain'><b>Rain Plan</b><p>大雨預多15–20分鐘 call taxi。</p></div><div class='transport'>順路交通：酒店內 / 附近。</div></article>
-<article class='card'><div class='row'><div><div class='title'>出發去金海國際機場</div><div class='ko'>Leave for Gimhae International Airport<br>김해국제공항으로 이동</div></div><div class='time'>10:15</div></div><p class='note'>14:00 flight，11:30左右到機場較穩陣。</p><div class='rain'><b>Rain Plan</b><p>雨天 / 塞車就10:00前出發。</p></div><div class='transport'>順路交通：海雲台 → 機場，的士約45–70分鐘；公共交通約75–90分鐘。</div></article>
-</section>
-<div class='foot'>Standalone preview page. index.html 未改。</div>
-</main>
+<div class="boot"><div><b>Loading Busan Planner Rain View…</b><p>Using index.html design, then applying Rain Plan overlay.</p></div></div>
+<script>
+const DATES={
+  'Day 1':'Day 1 · 6/19 Fri',
+  'Day 2':'Day 2 · 6/20 Sat',
+  'Day 3':'Day 3 · 6/21 Sun',
+  'Day 4':'Day 4 · 6/22 Mon',
+  'Day 5':'Day 5 · 6/23 Tue'
+};
+const RAIN=[
+  [['金海國際機場','김해국제공항','Gimhae'],'雨天無大問題；如果落大雨，直接用的士去酒店，唔好拖行李轉太多站。'],
+  [['酒店','放低行李','luggage'],'大雨就留酒店附近食早餐，等雨細先出去，避免拖喼濕身。'],
+  [['海雲台早餐','海雲台傳統市場','해운대전통시장'],'市場有部分遮蓋但唔係全室內；大雨可改附近 café / hotel breakfast。'],
+  [['南浦','札嘎其','자갈치','Jagalchi'],'雨天可照行：札嘎其市場大樓、南浦地下街、樂天百貨光復店都順路。'],
+  [['BIFF','光復路','國際市場'],'大雨就縮短 BIFF / 國際市場，轉南浦地下街 + 樂天光復店，唔使折返。'],
+  [['返回海雲台','返海雲台'],'落雨就直接地鐵 / 的士回酒店，西面 optional 取消。'],
+  [['甘川文化村','감천문화마을'],'中雨以上唔建議慢行山坡；改 ARTE 早入場，甘川縮短做30–45分鐘影相位。'],
+  [['影島大橋','영도대교'],'小雨可睇；大雨就改樂天光復店內休息 / 觀景，唔好企戶外等太耐。'],
+  [['ARTE','아르떼뮤지엄'],'雨天主力景點；如果甘川取消，就直接加長 ARTE 時間。'],
+  [['廣安里','광안리','drone','드론'],'無人機 show 遇雨 / 強風可能取消；直接改廣安里室內餐廳 / café，或去 Centum City / Spa Land。'],
+  [['遊艇','요트','yacht'],'雨天 / 大風取消，唔好硬上；改室內 café 或直接回酒店。'],
+  [['海雲台海灘','冬柏','동백섬'],'落雨就改 SEA LIFE Busan Aquarium / café；冬柏島濕滑就取消。'],
+  [['海理團路','해리단길'],'雨天照去，揀近地鐵 / 的士落車位嘅室內店。'],
+  [['Busan X','X the Sky','부산엑스더스카이'],'如果能見度差，縮短參觀；改去 café / SEA LIFE / 新世界 Centum City。'],
+  [['Beach Train','해변열차','尾浦','Mipo'],'小雨可照搭；雷雨 / 強風留意停駛，改 Mipo / 青沙浦 café 等候或取消。'],
+  [['青沙浦','다릿돌','Cheongsapo'],'濕滑 / 大風就唔行 skywalk，直接去青沙浦室內 café。'],
+  [['Sky Capsule','天空膠囊','스카이캡슐'],'小雨景色仍可；強風 / 雷雨可能停運，保留 Beach Train / 的士回海雲台方案。'],
+  [['海東龍宮寺','해동용궁사'],'中雨以上縮短 / 取消；改 Busan National Science Museum 或 Lotte Mall Dongbusan，兩個都同區順路。'],
+  [['機張市場','기장시장'],'雨天照去，市場 / 餐廳相對可行；建議的士上落車。'],
+  [['Skyline Luge','스카이라인루지'],'雨天 / 大風可能停；改 Lotte Mall Dongbusan / Busan National Science Museum，完全順路。'],
+  [['Waveon','웨이브온'],'雨天可去但海景差；如果已經累，直接返海雲台休息。'],
+  [['田浦','西面','전포','서면'],'雨天仍可行；用地鐵站 / 地下街連接，減少露天步行。'],
+  [['最後散步','早餐 / 最後','last walk'],'雨天取消散步，直接 café / 酒店早餐，早少少出機場。'],
+  [['取行李','짐 찾기'],'大雨預多15–20分鐘 call taxi。'],
+  [['出發去金海','공항으로 이동','Leave for Gimhae'],'雨天 / 塞車就10:00前出發。']
+];
+const PATCH=`<style>
+  .rainPlanBox{margin-top:10px;border:1px solid rgba(93,173,226,.28);background:linear-gradient(135deg,rgba(29,53,87,.86),rgba(21,59,54,.65));border-radius:16px;padding:11px 12px;color:#edf7ff}.rainPlanBox b{display:block;color:#a7d8ff;font-size:12px;letter-spacing:.05em;margin-bottom:4px}.rainPlanBox div{font-size:14px;line-height:1.45}.dateHint{font-size:12px;color:var(--muted);font-weight:800;margin-top:2px}
+</style>`;
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>m==='&'?'&amp;':m==='<'?'&lt;':m==='>'?'&gt;':m==='"'?'&quot;':'&#39;')}
+function applyRainPatch(){
+  document.head.insertAdjacentHTML('beforeend',PATCH);
+  const tick=()=>{
+    document.querySelectorAll('#tabs button,.scroller button,.pill').forEach(btn=>{
+      const raw=(btn.dataset.t||btn.textContent||'').trim();
+      if(DATES[raw]&&!btn.dataset.rainDated){btn.textContent=DATES[raw];btn.dataset.rainDated='1'}
+    });
+    const head=document.querySelector('#head');
+    if(head){const raw=head.textContent.trim(); if(DATES[raw]&&!head.dataset.rainDated){head.textContent=DATES[raw];head.dataset.rainDated='1'}}
+    document.querySelectorAll('.card').forEach(card=>{
+      if(card.querySelector('.rainPlanBox'))return;
+      const text=card.textContent||'';
+      const found=RAIN.find(([keys])=>keys.some(k=>text.includes(k)));
+      if(!found)return;
+      const box=document.createElement('div');
+      box.className='rainPlanBox';
+      box.innerHTML='<b>☔ Rain Plan</b><div>'+escapeHtml(found[1])+'</div>';
+      const body=card.querySelector('.body')||card;
+      const anchor=body.querySelector('.actions')||body.querySelector('.chips')||body.querySelector('.editPanel')||null;
+      if(anchor)body.insertBefore(box,anchor); else body.appendChild(box);
+    });
+  };
+  tick();
+  new MutationObserver(tick).observe(document.body,{childList:true,subtree:true,characterData:true});
+}
+fetch('index.html',{cache:'no-store'}).then(r=>r.text()).then(html=>{
+  html=html.replace('</body>','<script>('+applyRainPatch.toString()+')();<\\/script></body>');
+  document.open();document.write(html);document.close();
+}).catch(e=>{document.body.innerHTML='<div class="boot"><div><b>Load failed</b><p>'+escapeHtml(e.message)+'</p></div></div>'});
+</script>
 </body>
 </html>
