@@ -1,0 +1,3 @@
+Force GitHub Pages redeploy after restoring index.html with restaurant MTR map.
+Restored base commit: 34c94b2a8fb99d1892fd2a85313ac1b90f35c289
+Created: 2026-06-17
