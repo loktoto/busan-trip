@@ -7,6 +7,7 @@ on:
     paths:
       - research/leveraged_backtest_20260720.py
       - research/leveraged_backtest_v2_20260720.py
+      - research/leveraged_backtest_v3_shortlist.py
 
 permissions:
   contents: write
@@ -29,30 +30,33 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --upgrade pip pandas numpy yfinance tabulate
-      - name: Run risk-sized close-to-close backtest
+      - name: Run two-stage risk-overlay backtest
         id: backtest
         shell: bash
+        env:
+          PYTHONPATH: research
         run: |
-          mkdir -p research_outputs/leveraged_backtest_v2_20260720
+          mkdir -p research_outputs/leveraged_backtest_v3_20260720
           set +e
-          python research/leveraged_backtest_v2_20260720.py > research_outputs/leveraged_backtest_v2_20260720/console.log 2>&1
+          python research/leveraged_backtest_v3_shortlist.py > research_outputs/leveraged_backtest_v3_20260720/console.log 2>&1
           code=$?
-          echo "$code" > research_outputs/leveraged_backtest_v2_20260720/exit_code.txt
-          tail -n 120 research_outputs/leveraged_backtest_v2_20260720/console.log
+          echo "$code" > research_outputs/leveraged_backtest_v3_20260720/exit_code.txt
+          tail -n 160 research_outputs/leveraged_backtest_v3_20260720/console.log
           exit $code
-      - name: Persist V2 outputs and diagnostics to research branch
+      - name: Persist V3 outputs and diagnostics to research branch
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research/leveraged_backtest_v2_20260720.py research_outputs/leveraged_backtest_v2_20260720
-          git commit -m "add risk-sized leveraged backtest diagnostics" || true
+          git add research_outputs/leveraged_backtest_v3_20260720
+          git commit -m "add two-stage leveraged risk validation" || true
+          git pull --rebase origin ${{ github.event.pull_request.head.ref }} || true
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
-      - name: Upload V2 research outputs
+      - name: Upload V3 research outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: leveraged-backtest-v2-20260720
-          path: research_outputs/leveraged_backtest_v2_20260720
+          name: leveraged-backtest-v3-20260720
+          path: research_outputs/leveraged_backtest_v3_20260720
           if-no-files-found: warn
           retention-days: 7
