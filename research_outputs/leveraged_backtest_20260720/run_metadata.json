@@ -1,0 +1,22 @@
+{
+  "end_date_requested": "2026-07-20",
+  "base_cost_bps": 10.0,
+  "stress_cost_bps": 30.0,
+  "assets": [
+    "SPY",
+    "QQQ",
+    "SOXX",
+    "AAPL",
+    "MSFT",
+    "AMZN",
+    "GOOGL",
+    "META",
+    "NVDA",
+    "TSLA",
+    "AMD",
+    "MU"
+  ],
+  "strategy_count_per_asset": 188,
+  "synthetic_rows": 2820,
+  "actual_rows": 3384
+}

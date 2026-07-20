@@ -14,7 +14,7 @@ import yfinance as yf
 
 warnings.filterwarnings("ignore")
 
-END_DATE = "2026-07-21"
+END_DATE = "2026-07-20"
 START_DATE = "1980-01-01"
 OUT = Path("research_outputs/leveraged_backtest_20260720")
 OUT.mkdir(parents=True, exist_ok=True)
@@ -51,7 +51,7 @@ ASSETS: tuple[AssetSpec, ...] = (
     AssetSpec("META", "stock", "QQQ", (ActualProduct("FBL", 2, "2024-04-02"), ActualProduct("METU", 2))),
     AssetSpec("NVDA", "stock", "QQQ", (ActualProduct("NVDL", 2, "2024-01-22"), ActualProduct("NVDU", 2))),
     AssetSpec("TSLA", "stock", "QQQ", (ActualProduct("TSLL", 2, "2024-04-02"),)),
-    AssetSpec("AMD", "stock", "QQQ", (ActualProduct("AMDL", 2),)),
+    AssetSpec("AMD", "stock", "QQQ", (ActualProduct("AMUU", 2),)),
     AssetSpec("MU", "stock", "QQQ", (ActualProduct("MUU", 2), ActualProduct("MULL", 2))),
 )
 

@@ -1,0 +1,16 @@
+asset,universe,leverage,strategy,family,signal_date,target_position,last_entry_signal,last_exit_signal
+QQQ,index,2,MA_50_200,ma_crossover,2026-07-17,1,2025-06-23,2025-04-14
+SOXX,index,2,MHT_E6_X1,multi_horizon_trend,2026-07-17,1,2025-06-03,2025-02-25
+SPY,index,2,PRICE_SMA200_H2,price_hysteresis,2026-07-17,1,2026-04-08,2026-03-27
+QQQ,index,3,RSI2_15_REC3_XR70_T20,pullback_reclaim,2026-07-17,0,2026-06-25,2026-06-29
+SOXX,index,3,MHT_E6_X1,multi_horizon_trend,2026-07-17,1,2025-06-03,2025-02-25
+SPY,index,3,RSI2_15_REC3_XR70_T20,pullback_reclaim,2026-07-17,0,2026-06-25,2026-06-29
+AAPL,stock,2,MHT_VOL_E5_VR80,volatility_managed_trend,2026-07-17,1,2026-05-27,2026-01-20
+AMD,stock,2,MA_10_30,ma_crossover,2026-07-17,1,2026-03-26,2026-02-10
+AMZN,stock,2,TSMOM_E4_X0,time_series_momentum,2026-07-17,1,2026-04-14,2026-02-06
+GOOGL,stock,2,TSMOM_E3_X1,time_series_momentum,2026-07-17,1,2026-04-08,2026-03-23
+META,stock,2,MHT_VOL_E4_VR80,volatility_managed_trend,2026-07-17,0,2026-04-29,2026-04-30
+MSFT,stock,2,MA_10_30,ma_crossover,2026-07-17,1,2026-07-16,2026-06-12
+MU,stock,2,MHT_VOL_E4_VR100,volatility_managed_trend,2026-07-17,1,2025-05-27,2025-05-23
+NVDA,stock,2,MHT_VOL_E5_VR100,volatility_managed_trend,2026-07-17,1,2026-04-13,2026-02-03
+TSLA,stock,2,MA_10_30,ma_crossover,2026-07-17,0,2026-07-10,2026-07-16
