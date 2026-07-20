@@ -21,6 +21,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
+      - name: Fix direct-script module path
+        run: sed -i 's/from research\.leveraged_backtest_20260720 import (/from leveraged_backtest_20260720 import (/' research/leveraged_backtest_v2_20260720.py
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -43,7 +45,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add research_outputs/leveraged_backtest_v2_20260720
+          git add research/leveraged_backtest_v2_20260720.py research_outputs/leveraged_backtest_v2_20260720
           git commit -m "add risk-sized leveraged backtest diagnostics" || true
           git push origin HEAD:${{ github.event.pull_request.head.ref }}
       - name: Upload V2 research outputs
