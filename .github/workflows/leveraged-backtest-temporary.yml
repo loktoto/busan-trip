@@ -3,19 +3,27 @@ name: Temporary Leveraged ETF Backtest
 on:
   pull_request:
     branches: [main]
+    types: [opened, reopened, synchronize]
     paths:
       - research/leveraged_backtest_20260720.py
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   backtest:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Check out pull request
+      - name: Check out research branch
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Correct audit inputs
+        run: |
+          sed -i 's/END_DATE = "2026-07-21"/END_DATE = "2026-07-20"/' research/leveraged_backtest_20260720.py
+          sed -i 's/ActualProduct("AMDL", 2)/ActualProduct("AMUU", 2)/' research/leveraged_backtest_20260720.py
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -24,11 +32,18 @@ jobs:
         run: python -m pip install --upgrade pip pandas numpy yfinance tabulate
       - name: Run full backtest
         run: python research/leveraged_backtest_20260720.py
+      - name: Persist audited outputs to research branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/leveraged_backtest_20260720.py research_outputs/leveraged_backtest_20260720
+          git commit -m "add audited leveraged backtest results" || true
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
       - name: Upload research outputs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: leveraged-backtest-20260720
+          name: leveraged-backtest-20260720-audited
           path: research_outputs/leveraged_backtest_20260720
           if-no-files-found: warn
           retention-days: 7
