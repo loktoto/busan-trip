@@ -1,0 +1,35 @@
+name: Temporary Leveraged ETF Backtest
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/leveraged_backtest_20260720.py
+
+permissions:
+  contents: read
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out pull request
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy yfinance tabulate
+      - name: Run full backtest
+        run: python research/leveraged_backtest_20260720.py
+      - name: Upload research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: leveraged-backtest-20260720
+          path: research_outputs/leveraged_backtest_20260720
+          if-no-files-found: warn
+          retention-days: 7
