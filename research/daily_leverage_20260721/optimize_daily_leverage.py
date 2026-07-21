@@ -151,7 +151,7 @@ def run_returns(
     idx = native.index.intersection(levered.index)
     native = native.loc[idx]
     levered = levered.loc[idx]
-    held = close_state.reindex(idx).shift(1).fillna(False)
+    held = close_state.reindex(idx).shift(1).fillna(False).astype(bool)
     native_ret = open_return(native)
     levered_ret = open_return(levered)
     blend = (target_leverage - 1.0) / (2.0 - 1.0)
