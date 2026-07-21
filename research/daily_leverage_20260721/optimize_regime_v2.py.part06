@@ -1,0 +1,109 @@
+    key = (int(winner["baseline_id"]), winner["implementation"], winner["overlay"], winner_target_vol)
+    winner_returns, winner_leverage = return_cache[key]
+    full = interval_metrics(winner_returns, benchmark, str(common.min().date()), str(common.max().date()))
+    bootstrap = block_bootstrap_excess(winner_returns.loc[holdout_start:], benchmark.loc[holdout_start:])
+    base_params = asdict(params[int(winner["baseline_id"])])
+    strict_promotion = bool(
+        winner["development_pass"]
+        and winner["holdout_pass"]
+        and winner["stress_excess"] > 0
+        and bootstrap["prob_positive_mean"] >= (0.60 if spec.experimental else 0.70)
+        and not spec.experimental
+    )
+    meta = {
+        "asset": spec.name,
+        "start": str(common.min().date()),
+        "end": str(common.max().date()),
+        "development_end": str(development_end.date()),
+        "holdout_start": holdout_start,
+        "sessions": int(len(common)),
+        "baseline_candidates": int(len(baseline_grid)),
+        "stage2_candidates": int(len(grid)),
+        "development_passes": int(grid.development_pass.sum()),
+        "winner": {**winner, **base_params, **full, **bootstrap},
+        "strict_promotion": strict_promotion,
+        "experimental": spec.experimental,
+        "folds": folds,
+    }
+    return baseline_grid, grid, development_shortlist, meta
+
+
+def main() -> None:
+    tickers = {"HYG", "LQD", "^VIX", "^VIX3M", "RSP", "XSD", "QQEW", "QQQ"}
+    for spec in SPECS:
+        tickers.update(t for t, _ in spec.native)
+        tickers.update((spec.breadth_num, spec.breadth_den))
+        for _, legs, _, _, _ in spec.implementations:
+            tickers.update(t for t, _ in legs)
+    data = download_with_retry(tickers)
+
+    summaries = []
+    report = [
+        "# Regime-aware daily leverage optimisation v2",
+        "",
+        "Signals use completed daily closes and execute at the next regular-session open.",
+        "Selection uses development folds first; 2025-2026 (or the available 2026 slice for MAGS) is held out from ranking.",
+        "",
+    ]
+    for spec in SPECS:
+        baseline, grid, shortlist, meta = evaluate_asset(spec, data)
+        slug = spec.name.lower()
+        baseline.to_csv(OUT / f"{slug}_baseline_grid.csv", index=False)
+        grid.to_csv(OUT / f"{slug}_stage2_grid.csv", index=False)
+        shortlist.to_csv(OUT / f"{slug}_shortlist.csv", index=False)
+        (OUT / f"{slug}_meta.json").write_text(json.dumps(meta, indent=2, default=str))
+        winner = meta["winner"]
+        summaries.append({
+            "asset": spec.name,
+            "strict_promotion": meta["strict_promotion"],
+            "experimental": meta["experimental"],
+            "implementation": winner["implementation"],
+            "overlay": winner["overlay"],
+            "target_vol": winner["target_vol"],
+            "trend_ma": winner["trend_ma"],
+            "trend_slope": winner["trend_slope"],
+            "rsi_entry": winner["rsi_entry"],
+            "lookback": winner["lookback"],
+            "reclaim": winner["reclaim"],
+            "rsi_exit": winner["rsi_exit"],
+            "exit_ma": winner["exit_ma"],
+            "full_excess": winner["excess"],
+            "full_sharpe_excess": winner["sharpe_excess"],
+            "full_dd_delta": winner["dd_delta"],
+            "holdout_excess": winner["holdout_excess"],
+            "holdout_sharpe_excess": winner["holdout_sharpe_excess"],
+            "stress_excess": winner["stress_excess"],
+            "bootstrap_prob_positive": winner["prob_positive_mean"],
+            "current_leverage": winner["current_leverage"],
+        })
+        decision = "PROMOTE" if meta["strict_promotion"] else ("EXPERIMENTAL" if meta["experimental"] else "REJECT")
+        exit_text = f"RSI(2)>{int(winner['rsi_exit'])}"
+        if not pd.isna(winner["exit_ma"]):
+            exit_text += f" or close<SMA{int(winner['exit_ma'])}"
+        report.extend([
+            f"## {spec.name}",
+            "",
+            f"- Decision: **{decision}**",
+            f"- Actual-product sample: {meta['start']} to {meta['end']} ({meta['sessions']} sessions)",
+            f"- Search: {meta['baseline_candidates']:,} baseline and {meta['stage2_candidates']:,} stage-2 candidates; {meta['development_passes']:,} passed development gates",
+            f"- Implementation: {winner['implementation']}; overlay: {winner['overlay']}; target vol: {winner['target_vol']}",
+            f"- Entry: close>SMA{int(winner['trend_ma'])}, SMA rising over {int(winner['trend_slope'])} sessions, RSI(2)<{int(winner['rsi_entry'])} within {int(winner['lookback'])} sessions, reclaim SMA{int(winner['reclaim'])}",
+            f"- Exit: {exit_text}",
+            f"- Full CAGR excess: {winner['excess']:.2%}; Sharpe delta: {winner['sharpe_excess']:.3f}; MaxDD delta: {winner['dd_delta']:.2%}",
+            f"- Holdout CAGR excess: {winner['holdout_excess']:.2%}; holdout Sharpe delta: {winner['holdout_sharpe_excess']:.3f}",
+            f"- Stress-cost CAGR excess: {winner['stress_excess']:.2%}",
+            f"- Holdout block-bootstrap probability of positive annualised mean excess: {winner['prob_positive_mean']:.1%}",
+            f"- Current effective leverage: {winner['current_leverage']:.2f}x",
+            "",
+        ])
+
+    pd.DataFrame(summaries).to_csv(OUT / "summary.csv", index=False)
+    (OUT / "summary.md").write_text("\n".join(report))
+    manifest = {
+        "version": "v2",
+        "method": "two-stage development selection, final holdout, cost stress, block bootstrap",
+        "data_provider": "Yahoo Finance adjusted OHLCV for reproducible CI; IBKR used as independent contract/current-market audit",
+        "outputs": sorted(path.name for path in OUT.iterdir()),
+    }
+    (OUT / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    print("\n".join(report))
