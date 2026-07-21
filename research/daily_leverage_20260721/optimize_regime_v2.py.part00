@@ -46,11 +46,10 @@ SPECS = (
         native=(("SPY", 1.0),),
         implementations=(
             ("SSO", (("SSO", 1.0),), 2.0, 2.0, 8.0),
-            ("SPUU", (("SPUU", 1.0),), 2.0, 2.0, 8.0),
         ),
         breadth_num="RSP",
         breadth_den="SPY",
-        start="2014-06-01",
+        start="2010-01-01",
         development_end="2024-12-31",
         min_changes=10,
         trend_mas=(150, 200, 250),
