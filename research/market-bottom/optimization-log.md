@@ -38,10 +38,54 @@
 
 No new asset parameter is promoted merely because the revised engine exists. SPY, QQQ, SMH and SOXX parameters remain research candidates until the same point-in-time dataset is run through the new validation pipeline.
 
+## 2026-07-21 — IBKR product audit and robust-selection pass
+
+### IBKR findings
+
+- Five-year daily RTH histories are available for SPY, QQQ, SMH and SOXX.
+- SMH contains a 2-for-1 split dated 2023-05-05.
+- SOXX contains a 3-for-1 split dated 2024-03-07.
+- Actual tactical products resolve as SPY→SSO, QQQ→QLD and semiconductor sleeve→USD.
+- Current semiconductor realised volatility remains above implied volatility despite extreme IV percentiles. Panic intensity therefore cannot be treated as exhaustion.
+
+### Added controls
+
+1. **Corporate-action continuity audit**
+   - Reject split-like discontinuities before calculating drawdown, ATR, new lows or volatility.
+   - Separate adjusted-price integrity from signal logic.
+
+2. **One-standard-error selection**
+   - Preserve an outer purged test fold.
+   - Calculate utility at episode level.
+   - Penalise regime concentration.
+   - Select the simpler, lower-capital candidate when several candidates are statistically indistinguishable from the apparent winner.
+
+3. **Complete candidate-by-fold matrix**
+   - Persist every candidate result, not only the selected model.
+   - This is required before formal CSCV/PBO can be calculated honestly.
+
+4. **Feature promotion gate**
+   - Run price/volume, breadth, downside-VRP, credit and full-ensemble variants on identical folds.
+   - Require a positive median fold improvement.
+   - Limit worst-fold damage.
+   - Require at least 60% of comparable folds to be non-negative before retaining a feature family.
+
+5. **Actual-product tactical leverage**
+   - Generate entries from the unleveraged underlying.
+   - Calculate P&L and path risk from actual SSO, QLD or USD adjusted prices.
+   - Exit on underlying-bottom failure, volatility reacceleration, recovery-structure break, target or time stop.
+   - Do not approximate leveraged returns by multiplying the underlying return.
+
+### Optimisation decision
+
+No new live parameter or tranche size is promoted in this pass. The changes improve falsifiability and reduce selection bias; they do not manufacture a better historical result. Asset-specific promotion requires immutable IBKR/point-in-time datasets to pass the new robust validator and ablation gates.
+
 ### Next research gate
 
-1. archive continuous adjusted OHLCV for all four underlyings;
-2. create immutable point-in-time breadth and credit manifests;
-3. run base-price, volume, breadth, VRP and credit feature ablations;
-4. keep a complete candidate-by-fold matrix for formal CSCV/PBO;
-5. validate actual SSO, QLD and USD tactical entry/exit rules separately.
+1. export or archive continuous adjusted IBKR OHLCV for all four underlyings and all three leveraged products;
+2. create immutable point-in-time breadth, VRP and credit manifests;
+3. populate the candidate-by-fold matrix for SPY, QQQ, SMH and SOXX;
+4. compare price-only versus each incremental feature family on identical folds;
+5. test actual SSO, QLD and USD tactical entries independently;
+6. run longer dot-com/GFC stress histories separately from the modern five-year IBKR validation window;
+7. promote only parameters that survive the one-SE, worst-regime and feature-ablation gates.
