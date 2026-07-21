@@ -82,9 +82,9 @@ def test_robust_walk_forward_persists_all_oos_candidates():
         step_days=63,
     )
     assert not folds.empty
-    test_all = matrix.loc[matrix.sample == "TEST_ALL"]
+    test_all = matrix.loc[matrix["sample"].eq("TEST_ALL")]
     assert not test_all.empty
-    counts = test_all.groupby("fold").candidate_index.nunique()
+    counts = test_all.groupby("fold")["candidate_index"].nunique()
     assert (counts == len(candidates)).all()
 
 
@@ -139,12 +139,12 @@ def test_cscv_produces_bounded_pbo_and_all_half_splits():
     assert audit["candidate_failure_penalties"] == 0
     assert len(detail) == 70  # C(8, 4)
     assert 0.0 <= summary["pbo"] <= 1.0
-    assert detail.oos_rank_fraction.between(0, 1).all()
+    assert detail["oos_rank_fraction"].between(0, 1).all()
 
 
 def test_candidate_specific_nonfinite_result_is_penalised_not_dropped():
     raw = candidate_rows(8)
-    raw.loc[(raw.fold == 3) & (raw.candidate_index == 2), "robust_mean"] = -np.inf
+    raw.loc[(raw["fold"] == 3) & (raw["candidate_index"] == 2), "robust_mean"] = -np.inf
     matrix, audit = build_utility_matrix(raw, floor_margin=0.5)
     assert matrix.shape == (8, 4)
     assert np.isfinite(matrix.to_numpy()).all()
