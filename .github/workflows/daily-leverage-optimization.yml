@@ -21,18 +21,27 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: python -m pip install --upgrade pip pandas numpy yfinance
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Compile optimiser
+        run: python -m py_compile research/daily_leverage_20260721/optimize_daily_leverage.py
       - name: Run robust daily optimiser
-        run: python research/daily_leverage_20260721/optimize_daily_leverage.py
+        shell: bash
+        run: |
+          mkdir -p research_outputs/daily_leverage_20260721
+          set +e
+          python research/daily_leverage_20260721/optimize_daily_leverage.py > research_outputs/daily_leverage_20260721/optimizer.log 2>&1
+          code=$?
+          tail -n 120 research_outputs/daily_leverage_20260721/optimizer.log
+          exit $code
       - name: Show optimisation summary
         if: always()
         run: |
           test -f research_outputs/daily_leverage_20260721/optimised_summary.md && cat research_outputs/daily_leverage_20260721/optimised_summary.md || true
-      - name: Upload outputs
+      - name: Upload outputs and diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: daily-leverage-optimisation-20260721
           path: research_outputs/daily_leverage_20260721
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
