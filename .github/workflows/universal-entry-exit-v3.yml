@@ -49,3 +49,5 @@ jobs:
           path: research_outputs/universal_entry_exit_v3_20260721
           if-no-files-found: warn
           retention-days: 14
+
+# Repeatability audit: strategy source and universe unchanged from v3.1 run 8.
