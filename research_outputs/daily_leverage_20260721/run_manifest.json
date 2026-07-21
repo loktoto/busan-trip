@@ -1,16 +1,16 @@
 {
   "workflow": "Daily leverage optimisation",
-  "workflow_run_id": 29824104321,
-  "workflow_run_number": 4,
+  "workflow_run_id": 29824616112,
+  "workflow_run_number": 9,
   "conclusion": "success",
   "head_branch": "agent/daily-leverage-optimization-20260721",
-  "tested_head_sha": "a3623e5562207c22002098225b25280c9d3ba1c5",
+  "tested_head_sha": "d0a074365ce1a56d959cd1bfaf05be1b40ce4680",
   "artifact": {
-    "id": 8492616781,
+    "id": 8492816883,
     "name": "daily-leverage-optimisation-20260721",
-    "size_bytes": 1937376,
-    "digest": "sha256:3365746e9d2d1f53caaca77c406b538472101328acfd5db19536b9a13e0c2bb5",
-    "expires_at": "2026-08-04T10:57:57Z"
+    "size_bytes": 1937317,
+    "digest": "sha256:e6c2641f23a2a7785fbd110e8f47fe14616c3cdf99b3be4f9a38b64e86368312",
+    "expires_at": "2026-08-04T11:05:48Z"
   },
   "persistent_outputs": [
     "research_outputs/daily_leverage_20260721/optimised_summary.md",
