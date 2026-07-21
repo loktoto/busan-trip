@@ -1,3 +1,4 @@
+# Final validation includes the persisted audited outputs on the PR branch.
 name: Daily leverage optimisation
 
 on:
