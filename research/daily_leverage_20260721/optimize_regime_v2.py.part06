@@ -34,7 +34,10 @@
 def _canonical_number(value, decimals: int = METRIC_DECIMALS):
     if value is None or pd.isna(value):
         return None
-    return round(float(value), decimals)
+    result = round(float(value), decimals)
+    if abs(result) < 0.5 * 10 ** (-decimals):
+        return 0.0
+    return result
 
 
 def main() -> None:
