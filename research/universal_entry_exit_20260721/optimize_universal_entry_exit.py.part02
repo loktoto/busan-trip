@@ -21,10 +21,24 @@ def indicator_cache(signal: pd.DataFrame) -> dict[str, Any]:
     return cache
 
 
-def generate_entry_rules(signal: pd.DataFrame, cache: dict[str, Any]) -> list[tuple[EntryRule,pd.Series]]:
+def generate_entry_rules(asset: dict[str, Any], signal: pd.DataFrame, cache: dict[str, Any], data: dict[str, pd.DataFrame]) -> list[tuple[EntryRule,pd.Series]]:
     c = signal.Close
     r2 = cache["rsi2"]
     out: list[tuple[EntryRule,pd.Series]] = []
+    if asset["kind"] == "INVERSE_VOL":
+        vix = data["^VIX"].Close.reindex(c.index)
+        vix3m = data["^VIX3M"].Close.reindex(c.index)
+        for cap, contango, trend_ma in itertools.product([25,30,35],[0.0,0.02,0.05],[50,100]):
+            condition = (vix < cap) & (vix < vix3m * (1 - contango)) & (c > cache[f"sma{trend_ma}"] * (1 + HYST))
+            entry = condition & ~condition.shift(1).fillna(False)
+            out.append((EntryRule("inverse_vol_regime", (cap,contango,trend_ma)), entry))
+        for cap, contango, threshold, reclaim in itertools.product([25,30],[0.0,0.02],[5,15,25],[5,10,20]):
+            regime = (vix < cap) & (vix < vix3m * (1 - contango)) & (c > cache["sma100"] * (1 + HYST))
+            oversold = r2.rolling(5).min() < threshold
+            short = cache[f"sma{reclaim}"]
+            cross = (c > short * (1 + HYST)) & (c.shift(1) <= short.shift(1) * (1 + HYST))
+            out.append((EntryRule("inverse_vol_pullback", (cap,contango,threshold,reclaim)), regime & oversold & cross))
+        return out
     for trend_ma, slope, threshold, look, reclaim in itertools.product(
         [100,200], [10,20], [5,10,20], [3,5,10], [5,10,20]
     ):
@@ -93,3 +107,4 @@ def rank_entries(rules, trade, dev_end, blocks, experimental: bool) -> pd.DataFr
         + 0.15*frame.median40_rank + 0.10*frame.win20_rank + 0.15*frame.block_positive_share_rank
     )
     return frame.sort_values(["pass","entry_score","entry_id"], ascending=[False,False,True])
+
