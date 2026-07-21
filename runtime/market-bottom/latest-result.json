@@ -3,9 +3,9 @@
   "request_id": "bottom-20260721T155800Z-bootstrap1",
   "source": "IBKR_SNAPSHOT_PUBLIC_ADJUSTED_BOOTSTRAP",
   "input_created_at": "2026-07-21T15:58:00Z",
-  "calculated_at": "2026-07-21T16:04:15.169511+00:00",
+  "calculated_at": "2026-07-21T16:06:13.235366+00:00",
   "bar_status": "INTRADAY_CONTEXT",
-  "model_commit": "7e0ea5c5cf8626b587dd27a1d690b15f157142bd",
+  "model_commit": "8739e61d4c22595b9d988dfe6fe7b0987f9ceda4",
   "input_sha256": "f6555d1cb50c8019bdab2f9754a79aff6d314a1197aeaebfce23434b188eec99",
   "classification": "AUDITED_PROVISIONAL_MIXED_SOURCE_BOOTSTRAP",
   "assets": {
@@ -399,8 +399,15 @@
     "smh_state": 1,
     "drawdown_gap": 0.029309375071424726
   },
-  "material_changes": [],
-  "material_change": false,
+  "material_changes": [
+    {
+      "type": "STATE",
+      "symbol": "QQQ",
+      "old": 5,
+      "new": 0
+    }
+  ],
+  "material_change": true,
   "data_provenance": {
     "live_snapshot": "IBKR",
     "historical_daily_bars": "PUBLIC_ADJUSTED_BOOTSTRAP",
