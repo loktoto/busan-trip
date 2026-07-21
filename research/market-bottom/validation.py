@@ -6,7 +6,9 @@ capital deployed near the later trough. It deliberately does not optimise CAGR.
 
 Signals are restricted to the requested train/test interval. Evaluation is allowed
 to use a forward tail because bottom proximity is a forward-labelled outcome. No
-trades generated inside that tail are retained.
+trades generated inside that tail are retained. The full price path before each
+interval is preserved because unresolved cycle highs and underwater duration are
+path-dependent state variables that cannot be reconstructed from a short warm-up.
 """
 from __future__ import annotations
 
@@ -48,17 +50,19 @@ def subset_with_warmup_and_tail(
     warmup: int = 260,
     evaluation_tail: int = 252,
 ) -> tuple[pd.DataFrame, int, int]:
-    """Return a causal signal interval plus a forward evaluation-only tail.
+    """Return full causal history, a signal interval and an evaluation-only tail.
 
-    `offset` is the first permitted signal row inside the subset and `signal_end`
-    is the exclusive last permitted signal row. Future rows are present only so
-    the evaluator can measure later troughs/recovery.
+    `warmup` remains in the signature for backward compatibility but is not used
+    to truncate history. `offset` is the first permitted signal row and
+    `signal_end` is the exclusive last permitted signal row. Future rows are
+    present only so the evaluator can measure later troughs/recovery.
     """
+    del warmup
     if not (0 <= start < end <= len(df)):
         raise ValueError("Require 0 <= start < end <= len(df)")
-    left = max(0, start - warmup)
+    left = 0
     right = min(len(df), end + evaluation_tail)
-    return df.iloc[left:right].reset_index(drop=True), start - left, end - left
+    return df.iloc[left:right].reset_index(drop=True), start, end
 
 
 def score_period(
@@ -263,6 +267,7 @@ def main() -> None:
         "fold_count": len(folds),
         "purge_days": a.purge_days,
         "evaluation_tail_days": base.episode_eval_max_days,
+        "path_history": "FULL_AVAILABLE_HISTORY_BEFORE_SIGNAL_WINDOW",
         "bootstrap": episode_bootstrap(episodes),
         "selection_instability": selection_instability(folds),
     }
