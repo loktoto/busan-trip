@@ -11,7 +11,8 @@ import pandas as pd
 
 from backtest import load_config, load_features, load_prices
 from data_audit import assert_price_continuity
-from robust_validation import robust_walk_forward
+from feature_manifest import load_and_validate_feature_manifest
+from robust_validation import PROTOCOLS, resolve_protocol, robust_walk_forward
 from selection import feature_promotion_decision
 from validation import parameter_grid
 
@@ -43,15 +44,25 @@ def run_ablation(
     train_days: int,
     test_days: int,
     purge_days: int,
+    step_days: int | None = None,
+    nonpromotable_features: dict[str, list[str]] | None = None,
 ) -> tuple[pd.DataFrame, dict]:
     rows: list[pd.DataFrame] = []
     fold_series: dict[str, pd.Series] = {}
     availability: dict[str, list[str]] = {}
+    nonpromotable_features = nonpromotable_features or {}
     for name, requested in VARIANTS.items():
         subset = feature_subset(features, requested)
         availability[name] = [] if subset is None else [c for c in subset.columns if c != "Date"]
         folds, _, _ = robust_walk_forward(
-            prices, subset, base, candidates, train_days, test_days, purge_days
+            prices,
+            subset,
+            base,
+            candidates,
+            train_days,
+            test_days,
+            purge_days,
+            step_days,
         )
         if folds.empty:
             continue
@@ -67,8 +78,18 @@ def run_ablation(
     for name, series in fold_series.items():
         if name == "PRICE_VOLUME":
             continue
-        decisions[name] = feature_promotion_decision(baseline, series)
-        decisions[name]["available_features"] = availability[name]
+        decision = feature_promotion_decision(baseline, series)
+        decision["available_features"] = availability[name]
+        blockers = {
+            feature: nonpromotable_features[feature]
+            for feature in availability[name]
+            if feature in nonpromotable_features
+        }
+        if blockers:
+            decision["promote"] = False
+            decision["reason"] = "MANIFEST_NONPROMOTABLE_FEATURES"
+            decision["manifest_blockers"] = blockers
+        decisions[name] = decision
     summary = {
         "classification": "FEATURE ABLATION — IDENTICAL OUTER FOLDS — NOT GUARANTEED",
         "baseline": "PRICE_VOLUME",
@@ -88,22 +109,43 @@ def main() -> None:
     ap.add_argument("--config", type=Path, required=True)
     ap.add_argument("--grid", type=Path, required=True)
     ap.add_argument("--features-csv", type=Path, required=True)
-    ap.add_argument("--train-days", type=int, default=1008)
-    ap.add_argument("--test-days", type=int, default=252)
-    ap.add_argument("--purge-days", type=int, default=84)
+    ap.add_argument("--feature-manifest", type=Path, required=True)
+    ap.add_argument("--protocol", choices=sorted(PROTOCOLS), default="MODERN_5Y_PRIMARY")
+    ap.add_argument("--train-days", type=int)
+    ap.add_argument("--test-days", type=int)
+    ap.add_argument("--purge-days", type=int)
+    ap.add_argument("--step-days", type=int)
     ap.add_argument("--max-unexplained-jump", type=float, default=0.45)
     ap.add_argument("--out", type=Path, default=Path("ablation-output"))
     a = ap.parse_args()
 
+    protocol = resolve_protocol(a.protocol, a.train_days, a.test_days, a.purge_days, a.step_days)
     prices = load_prices(a.csv)
     assert_price_continuity(prices, a.max_unexplained_jump)
     features = load_features(a.features_csv)
+    manifest_audit = load_and_validate_feature_manifest(
+        features,
+        a.feature_manifest,
+        a.features_csv,
+    )
     base = load_config(a.config, a.symbol)
     candidates = parameter_grid(base, json.loads(a.grid.read_text()))
     folds, summary = run_ablation(
-        prices, features, base, candidates, a.train_days, a.test_days, a.purge_days
+        prices,
+        features,
+        base,
+        candidates,
+        protocol["train_days"],
+        protocol["test_days"],
+        protocol["purge_days"],
+        protocol["step_days"],
+        manifest_audit["nonpromotable_features"],
     )
-    out = a.out / a.symbol
+    summary["symbol"] = a.symbol
+    summary["protocol"] = a.protocol
+    summary["protocol_role"] = protocol["role"]
+    summary["feature_manifest_audit"] = manifest_audit
+    out = a.out / a.symbol / a.protocol
     out.mkdir(parents=True, exist_ok=True)
     folds.to_csv(out / "feature_ablation_folds.csv", index=False)
     (out / "feature_ablation_summary.json").write_text(json.dumps(summary, indent=2, default=str))
