@@ -21,6 +21,8 @@ from data_audit import assert_price_continuity
 
 VARIANTS = (
     "SOXX_ONLY",
+    "SMH_CONFIRMATION_VETO",
+    "SMH_CONFIRMATION_GATE",
     "SMH_SOFT_CONFIRM",
     "SMH_VETO_ONLY",
     "SMH_HARD_CONFIRM",
@@ -121,7 +123,7 @@ def build_pair_indicators(
 
 
 def apply_variant(x: pd.DataFrame, cfg: Config, variant: str) -> pd.DataFrame:
-    """Alter only SOXX exhaustion/confirmation gates; never add SMH trades."""
+    """Alter only SOXX state gates; never add SMH trades or a second allocation."""
     if variant not in VARIANTS:
         raise ValueError(f"Unknown paired variant {variant!r}")
     z = x.copy()
@@ -129,6 +131,18 @@ def apply_variant(x: pd.DataFrame, cfg: Config, variant: str) -> pd.DataFrame:
         return z
 
     veto = z["pair_veto"].fillna(False)
+
+    # Narrow variants preserve the independent SOXX probe and exhaustion logic.
+    # SMH is used only for the larger State-4 confirmation transition.
+    if variant == "SMH_CONFIRMATION_VETO":
+        z["confirmation"] = z["confirmation"] & ~veto
+        return z
+    if variant == "SMH_CONFIRMATION_GATE":
+        z["confirmation"] = (
+            z["confirmation"] & z["smh_confirmation_recent"] & ~veto
+        )
+        return z
+
     if variant == "SMH_VETO_ONLY":
         z["exhaustion"] = z["exhaustion"] & ~veto
         z["confirmation"] = z["confirmation"] & ~veto
@@ -191,7 +205,6 @@ def run_variant(
         trades = trades.copy()
         trades["pair_status"] = [x.loc[int(i), "pair_status"] for i in trades["signal_index"]]
         trades["paired_variant"] = variant
-        # Governance assertion: every row is a SOXX trade from the primary config.
         if set(trades["symbol"]) != {cfg.symbol}:
             raise AssertionError("SMH reference generated a non-SOXX trade")
     detail, episodes, summary = evaluate(x, trades, catalog, cfg)
