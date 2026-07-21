@@ -3,13 +3,16 @@
     )
     for baseline_id, values in enumerate(iterator):
         trend_ma, trend_slope, rsi_entry, lookback, reclaim, rsi_exit, exit_ma = values
-        trend = (close > sma[trend_ma]) & (sma[trend_ma] > sma[trend_ma].shift(trend_slope))
+        trend = robust_above(close, sma[trend_ma]) & robust_above(
+            sma[trend_ma], sma[trend_ma].shift(trend_slope)
+        )
         oversold = r2.rolling(lookback).min() < rsi_entry
-        reclaim_signal = (close > sma[reclaim]) & (close.shift(1) <= sma[reclaim].shift(1))
+        reclaim_level = sma[reclaim] * (1.0 + SIGNAL_EPS)
+        reclaim_signal = (close > reclaim_level) & (close.shift(1) <= reclaim_level.shift(1))
         entry = trend & oversold & reclaim_signal & comp_ok
         exit_signal = r2 > rsi_exit
         if exit_ma is not None:
-            exit_signal |= close < sma[exit_ma]
+            exit_signal |= robust_below(close, sma[exit_ma])
         params.append(BaselineParams(*values))
         states[baseline_id] = stateful(entry, exit_signal)
     return params, states
