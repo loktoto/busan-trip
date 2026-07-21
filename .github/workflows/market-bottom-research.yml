@@ -30,5 +30,11 @@ jobs:
           cache-dependency-path: research/market-bottom/requirements.txt
       - run: python -m pip install --upgrade pip
       - run: python -m pip install -r requirements.txt
-      - run: python -m py_compile backtest.py validation.py tests/test_backtest.py
-      - run: pytest -q
+      - name: Compile research modules
+        run: >-
+          python -m py_compile
+          backtest.py validation.py robust_validation.py selection.py
+          ablation.py data_audit.py leverage.py
+          tests/test_backtest.py tests/test_selection_and_audit.py tests/test_leverage.py
+      - name: Run regression tests
+        run: pytest -q
