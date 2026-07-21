@@ -3,26 +3,30 @@
 ## Production flow
 
 1. The hourly monitor retrieves market-only data from Interactive Brokers for `SPY`, `QQQ`, `SOXX` and the informational `SMH` reference.
-2. The monitor normalises the payload to `live-input.schema.json` and replaces `runtime/market-bottom/latest-input.json` on branch `agent/market-bottom-strategy`.
-3. That single input-path update triggers `.github/workflows/market-bottom-live.yml`.
-4. GitHub Actions runs `live_monitor.py` with the repository-pinned Python code and `config.example.json`.
-5. The workflow archives the exact input and output, then publishes:
+2. When a new completed RTH bar exists, the monitor updates the corresponding daily files under `runtime/market-bottom/data/`.
+3. Every hourly run replaces the compact `runtime/market-bottom/latest-request.json` with timestamps, quote status and current snapshot context.
+4. Either a request change or a daily-data change triggers `.github/workflows/market-bottom-live.yml`.
+5. GitHub Actions runs `prepare_live_input.py`, which combines the repository daily files with the compact request and produces an immutable full input payload.
+6. GitHub Actions then runs `live_monitor.py` with repository-pinned Python code and `config.example.json`.
+7. The workflow archives the exact request, daily data, assembled input and output, then publishes:
    - `runtime/market-bottom/latest-result.json`;
    - `runtime/market-bottom/latest-report.md`.
-6. The monitor reads the GitHub-produced result. It does not independently recalculate the official state.
-7. The monitor sends at 10:00 and 21:00 HKT, or immediately when the GitHub result reports a material change.
+8. The monitor reads the GitHub-produced result. It does not independently recalculate the official state.
+9. The monitor sends at 10:00 and 21:00 HKT, or immediately when the GitHub result reports a material change.
 
 ## Input rule
 
-The repository is public. The runtime payload may contain public-market OHLCV, volatility fields, timestamps, source/status labels and approved point-in-time market features only.
+The repository is public. Runtime files may contain public-market OHLCV, volatility fields, timestamps, source/status labels and approved point-in-time market features only.
 
-It must never contain:
+They must never contain:
 
 - account identifiers;
 - NAV, cash, positions, orders or executions;
 - cookies, tokens, credentials or session material;
 - user identity or personal information;
 - private analyst notes or licensed datasets that prohibit redistribution.
+
+Daily OHLCV files change only after a new completed RTH bar. Hourly snapshot changes are kept in the compact request so the repository does not receive a full five-year data blob every hour.
 
 ## Determinism and audit
 
