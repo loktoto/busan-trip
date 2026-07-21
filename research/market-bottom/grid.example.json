@@ -1,0 +1,8 @@
+{
+  "power": [1.6, 1.8, 2.0, 2.2],
+  "cooldown": [7, 10, 15],
+  "spacing": [0.025, 0.04, 0.06],
+  "long_bear_cap": [0.10, 0.20, 0.30],
+  "exhaustion_votes": [2, 3],
+  "confirmation_votes": [3, 4]
+}
