@@ -1,3 +1,73 @@
 
+def _extract_download_fallback(raw: pd.DataFrame, ticker: str) -> pd.DataFrame | None:
+    if raw.empty:
+        return None
+    if isinstance(raw.columns, pd.MultiIndex):
+        level0 = raw.columns.get_level_values(0)
+        level1 = raw.columns.get_level_values(1)
+        if ticker in level0:
+            df = raw[ticker].copy()
+        elif ticker in level1:
+            df = raw.xs(ticker, axis=1, level=1).copy()
+        else:
+            return None
+    else:
+        df = raw.copy()
+    df.columns = [str(c).title() for c in df.columns]
+    needed = ["Open", "High", "Low", "Close", "Volume"]
+    if any(column not in df.columns for column in needed):
+        return None
+    df = df[needed].dropna(subset=["Open", "Close"])
+    df.index = pd.to_datetime(df.index).tz_localize(None)
+    return None if df.empty else df
+
+
+def download_with_retry(tickers: Iterable[str], start: str = "2008-01-01") -> dict[str, pd.DataFrame]:
+    """Batch first; retry missing required tickers individually."""
+    tickers = sorted(set(tickers))
+    result: dict[str, pd.DataFrame] = {}
+    diagnostics: list[str] = []
+    for attempt in range(3):
+        try:
+            raw = yf.download(
+                tickers, start=start, end=END_DATE, auto_adjust=True,
+                actions=False, progress=False, group_by="ticker", threads=True,
+            )
+            for ticker in tickers:
+                frame = _extract_download_fallback(raw, ticker)
+                if frame is not None:
+                    result[ticker] = frame
+            if len(result) == len(tickers):
+                return result
+        except Exception as exc:
+            diagnostics.append(f"batch {attempt + 1}: {exc}")
+        time.sleep(2 * (attempt + 1))
+    for ticker in tickers:
+        if ticker in result:
+            continue
+        last_error: Exception | None = None
+        for attempt in range(4):
+            try:
+                raw = yf.download(
+                    ticker, start=start, end=END_DATE, auto_adjust=True,
+                    actions=False, progress=False, threads=False,
+                )
+                frame = _extract_download_fallback(raw, ticker)
+                if frame is not None:
+                    result[ticker] = frame
+                    break
+            except Exception as exc:
+                last_error = exc
+            time.sleep(3 * (attempt + 1))
+        if ticker not in result:
+            diagnostics.append(f"{ticker}: {last_error or 'empty response'}")
+    missing = sorted(set(tickers) - set(result))
+    if missing:
+        raise RuntimeError(
+            f"Missing required tickers {missing}; diagnostics: {' | '.join(diagnostics)}"
+        )
+    return result
+
+
 if __name__ == "__main__":
     main()
