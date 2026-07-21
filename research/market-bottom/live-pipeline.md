@@ -4,8 +4,8 @@
 
 1. The hourly monitor retrieves market-only data from Interactive Brokers for `SPY`, `QQQ`, `SOXX` and the informational `SMH` reference.
 2. When a new completed RTH bar exists, the monitor updates the corresponding daily files under `runtime/market-bottom/data/`.
-3. Every hourly run replaces the compact `runtime/market-bottom/latest-request.json` with timestamps, quote status and current snapshot context.
-4. Either a request change or a daily-data change triggers `.github/workflows/market-bottom-live.yml`.
+3. After all required daily files are current, every hourly run replaces the compact `runtime/market-bottom/latest-request.json` with timestamps, quote status and current snapshot context.
+4. The request update triggers `.github/workflows/market-bottom-live.yml`. Daily-data files are deliberately updated first and do not independently trigger a partially assembled calculation.
 5. GitHub Actions runs `prepare_live_input.py`, which combines the repository daily files with the compact request and produces an immutable full input payload.
 6. GitHub Actions then runs `live_monitor.py` with repository-pinned Python code and `config.example.json`.
 7. The workflow archives the exact request, daily data, assembled input and output, then publishes:
