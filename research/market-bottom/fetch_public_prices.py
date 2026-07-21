@@ -80,6 +80,12 @@ def yahoo_chart(symbol: str, start: int, end: int) -> tuple[pd.DataFrame, dict]:
         }
     )
     frame = frame.replace([np.inf, -np.inf], np.nan).dropna().sort_values("Date")
+    # The adjusted close and adjusted high/low can differ by ~1e-15 because the
+    # provider serialises them through separate floating-point paths. Clamp only
+    # to the mathematically required OHLC envelope; this does not conceal jumps or
+    # change any economically meaningful price.
+    frame["High"] = frame[["Open", "High", "Low", "Close"]].max(axis=1)
+    frame["Low"] = frame[["Open", "High", "Low", "Close"]].min(axis=1)
     frame = frame.drop_duplicates("Date", keep="last").reset_index(drop=True)
     if len(frame) < 260:
         raise RuntimeError(f"Only {len(frame)} complete daily rows returned")
@@ -94,6 +100,7 @@ def yahoo_chart(symbol: str, start: int, end: int) -> tuple[pd.DataFrame, dict]:
         "first_trade_date": metadata.get("firstTradeDate"),
         "events": events,
         "price_adjustment": "OHLC multiplied by AdjClose/Close",
+        "ohlc_rounding_clamp": "High=max(OHLC), Low=min(OHLC) after adjustment; floating-point envelope only",
         "volume_adjustment": "raw volume divided by AdjClose/Close; approximate split continuity",
         "role": "PUBLIC REPRODUCIBILITY / LONG-HISTORY DIAGNOSTIC — NOT IBKR HOLDOUT",
     }
