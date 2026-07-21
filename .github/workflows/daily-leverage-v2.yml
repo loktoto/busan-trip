@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - research/daily_leverage_20260721/optimize_regime_v2.py
+      - research/daily_leverage_20260721/optimize_regime_v2.py*
       - research/daily_leverage_20260721/research_v2.md
       - research/daily_leverage_20260721/ibkr_market_audit_20260721.json
       - .github/workflows/daily-leverage-v2.yml
@@ -24,8 +24,12 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
-      - name: Compile optimiser
-        run: python -m py_compile research/daily_leverage_20260721/optimize_regime_v2.py
+      - name: Assemble and compile optimiser
+        shell: bash
+        run: |
+          cat research/daily_leverage_20260721/optimize_regime_v2.py.part?? > /tmp/optimize_regime_v2_assembled.py
+          python -m py_compile /tmp/optimize_regime_v2_assembled.py
+          python -m py_compile research/daily_leverage_20260721/optimize_regime_v2.py
       - name: Run regime-aware optimiser
         shell: bash
         run: |
