@@ -1,0 +1,32 @@
+{
+  "workflow": "Daily leverage optimisation",
+  "workflow_run_id": 29824104321,
+  "workflow_run_number": 4,
+  "conclusion": "success",
+  "head_branch": "agent/daily-leverage-optimization-20260721",
+  "tested_head_sha": "a3623e5562207c22002098225b25280c9d3ba1c5",
+  "artifact": {
+    "id": 8492616781,
+    "name": "daily-leverage-optimisation-20260721",
+    "size_bytes": 1937376,
+    "digest": "sha256:3365746e9d2d1f53caaca77c406b538472101328acfd5db19536b9a13e0c2bb5",
+    "expires_at": "2026-08-04T10:57:57Z"
+  },
+  "persistent_outputs": [
+    "research_outputs/daily_leverage_20260721/optimised_summary.md",
+    "research_outputs/daily_leverage_20260721/optimised_summary.csv",
+    "research/daily_leverage_20260721/optimisation_findings.md"
+  ],
+  "artifact_only_outputs": [
+    "spy_grid.csv",
+    "spy_shortlist.csv",
+    "spy_meta.json",
+    "soxx_grid.csv",
+    "soxx_shortlist.csv",
+    "soxx_meta.json",
+    "mags7_tsm_grid.csv",
+    "mags7_tsm_shortlist.csv",
+    "mags7_tsm_meta.json",
+    "optimizer.log"
+  ]
+}
