@@ -46,21 +46,39 @@ def rank_baselines(
         rows.append(row)
     frame = pd.DataFrame(rows)
     frame["pass"] = (
-        (frame.train_excess_median > 0)
-        & (frame.test_excess_median > 0)
-        & (frame.test_sharpe_excess_median >= -0.05)
-        & (frame.worst_test_dd_delta >= -0.04)
+        (frame.train_excess_median.round(METRIC_DECIMALS) > 0)
+        & (frame.test_excess_median.round(METRIC_DECIMALS) > 0)
+        & (frame.test_sharpe_excess_median.round(METRIC_DECIMALS) >= -0.05)
+        & (frame.worst_test_dd_delta.round(METRIC_DECIMALS) >= -0.04)
         & (frame.changes >= spec.min_changes)
     )
-    for col in ("train_excess_median", "test_excess_median", "test_sharpe_excess_median", "worst_test_dd_delta"):
-        frame[col + "_rank"] = frame[col].rank(pct=True)
+    rank_columns = (
+        "train_excess_median",
+        "test_excess_median",
+        "test_sharpe_excess_median",
+        "worst_test_dd_delta",
+    )
+    for col in rank_columns:
+        frame[col + "_rank"] = quantised_rank(frame[col])
     frame["score"] = (
         0.20 * frame.train_excess_median_rank
         + 0.40 * frame.test_excess_median_rank
         + 0.25 * frame.test_sharpe_excess_median_rank
         + 0.15 * frame.worst_test_dd_delta_rank
     )
-    return frame.sort_values(["pass", "score"], ascending=[False, False])
+    frame["score_q"] = frame.score.round(6)
+    frame["test_excess_q"] = frame.test_excess_median.round(METRIC_DECIMALS)
+    frame["train_excess_q"] = frame.train_excess_median.round(METRIC_DECIMALS)
+    frame["exit_ma_sort"] = frame.exit_ma.fillna(-1)
+    return frame.sort_values(
+        [
+            "pass", "score_q", "test_excess_q", "train_excess_q",
+            "trend_ma", "trend_slope", "rsi_entry", "lookback",
+            "reclaim", "rsi_exit", "exit_ma_sort", "baseline_id",
+        ],
+        ascending=[False, False, False, False, True, True, True, True, True, True, True, True],
+        kind="mergesort",
+    )
 
 
 def neighbour_stability(shortlist: pd.DataFrame, all_rows: pd.DataFrame) -> pd.DataFrame:
@@ -74,7 +92,9 @@ def neighbour_stability(shortlist: pd.DataFrame, all_rows: pd.DataFrame) -> pd.D
         output.append({
             "baseline_id": row.baseline_id,
             "neighbour_count": int(len(neighbours)),
-            "neighbour_positive_share": float((neighbours.test_excess_median > 0).mean()),
+            "neighbour_positive_share": float(
+                (neighbours.test_excess_median.round(METRIC_DECIMALS) > 0).mean()
+            ),
             "neighbour_worst_test_excess": float(neighbours.test_excess_median.min()),
         })
     return pd.DataFrame(output)
