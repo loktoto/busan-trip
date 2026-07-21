@@ -42,6 +42,12 @@ Costs are charged in proportion to the change in effective leverage. Stress cost
 - A moving-block bootstrap is applied to the winner's holdout daily excess returns.
 - Promotion requires positive development, fold, development-stress, full-stress and holdout evidence plus at least 70% bootstrap probability of positive annualised mean excess. Experimental assets cannot receive production promotion.
 
+## Input reproducibility gate
+
+Earlier same-code runs produced different SPY and SOXX winners even though their date ranges and session counts matched. The final workflow therefore downloads every required ticker sequentially and single-threaded, stores the adjusted OHLCV table as a compressed artifact, and writes a SHA-256 fingerprint for each ticker plus one aggregate fingerprint.
+
+A strategy result is not considered reproducible unless a second same-code run has the same aggregate input fingerprint and the same summary output hash. A mismatch is treated as a data-provider instability, not as evidence in favour of any candidate.
+
 ## Daily baseline family
 
 Entry requires price above a rising long moving average, a recent RSI(2) oversold event and a cross back above a short moving average. MAGS7+TSM also requires MAGS and TSM above their own 100-day averages. Exit uses RSI(2) recovery and optionally a close below an exit moving average.
