@@ -2,18 +2,10 @@
 """Combinatorially symmetric cross-validation (CSCV) diagnostic.
 
 Input is the `candidate_fold_matrix.csv` produced by `robust_validation.py`.
-Only rows with sample=TEST_ALL are used, so each cell is already an outer
-out-of-sample utility for one candidate on one non-overlapping test partition.
-
-The implementation follows the CSCV selection/ranking logic:
-1. split an even number of partitions into equal in-sample/out-of-sample halves;
-2. select the candidate with the highest mean in-sample utility;
-3. rank that selected candidate in the complementary half;
-4. PBO is the fraction of splits where the in-sample winner ranks below the
-   out-of-sample median.
-
-This does not make a sparse five-year sample large. Fewer than eight usable
-partitions is classified as underpowered and no promotable PBO claim is made.
+Only rows with sample=TEST_ALL are used. Formal PBO is calculated only when the
+candidate matrix declares independent OOS labels and the recorded label windows
+do not overlap. Dense rolling five-year diagnostics therefore fail closed rather
+than manufacturing a low PBO from dependent outcomes.
 """
 from __future__ import annotations
 
@@ -27,6 +19,46 @@ import numpy as np
 import pandas as pd
 
 
+def _label_independence(candidate_rows: pd.DataFrame) -> dict:
+    needed = {"fold", "test_start", "label_end", "independent_oos_labels"}
+    if not needed.issubset(candidate_rows.columns):
+        return {
+            "declared_independent": False,
+            "verified_non_overlapping": False,
+            "reason": "LABEL_WINDOW_METADATA_MISSING",
+            "overlap_pairs": [],
+        }
+    meta = (
+        candidate_rows[["fold", "test_start", "label_end", "independent_oos_labels"]]
+        .drop_duplicates("fold")
+        .sort_values("test_start")
+        .copy()
+    )
+    meta["test_start"] = pd.to_datetime(meta["test_start"], errors="coerce")
+    meta["label_end"] = pd.to_datetime(meta["label_end"], errors="coerce")
+    declared = bool(meta["independent_oos_labels"].fillna(False).astype(bool).all())
+    overlap_pairs: list[dict] = []
+    for i in range(len(meta) - 1):
+        left = meta.iloc[i]
+        right = meta.iloc[i + 1]
+        if pd.isna(left.label_end) or pd.isna(right.test_start) or left.label_end >= right.test_start:
+            overlap_pairs.append(
+                {
+                    "left_fold": int(left.fold),
+                    "right_fold": int(right.fold),
+                    "left_label_end": str(left.label_end.date()) if not pd.isna(left.label_end) else None,
+                    "right_test_start": str(right.test_start.date()) if not pd.isna(right.test_start) else None,
+                }
+            )
+    verified = declared and not overlap_pairs
+    return {
+        "declared_independent": declared,
+        "verified_non_overlapping": verified,
+        "reason": "OK" if verified else "DEPENDENT_OR_UNVERIFIED_LABEL_WINDOWS",
+        "overlap_pairs": overlap_pairs,
+    }
+
+
 def build_utility_matrix(
     candidate_rows: pd.DataFrame,
     floor_margin: float = 1.0,
@@ -35,7 +67,6 @@ def build_utility_matrix(
     missing = required - set(candidate_rows.columns)
     if missing:
         raise ValueError(f"Candidate matrix is missing columns: {sorted(missing)}")
-    # Bracket access is mandatory here: DataFrame.sample is a pandas method.
     z = candidate_rows.loc[
         candidate_rows["sample"].eq("TEST_ALL"),
         ["fold", "sample", "candidate_index", "robust_mean"],
@@ -44,17 +75,9 @@ def build_utility_matrix(
         raise ValueError("No TEST_ALL rows; rerun robust_validation with the current engine")
     z["robust_mean"] = pd.to_numeric(z["robust_mean"], errors="coerce")
     matrix = z.pivot_table(
-        index="fold",
-        columns="candidate_index",
-        values="robust_mean",
-        aggfunc="last",
-    ).sort_index()
-    matrix = matrix.astype(float)
+        index="fold", columns="candidate_index", values="robust_mean", aggfunc="last"
+    ).sort_index().astype(float)
 
-    # A partition with no evaluable market episode for any candidate contains no
-    # selection information and is removed. Candidate-specific non-finite values
-    # are genuine failures to produce an evaluable result and receive a fold-local
-    # penalty below the worst finite candidate rather than being silently dropped.
     finite_matrix = np.isfinite(matrix.to_numpy(dtype=float))
     all_missing = ~finite_matrix.any(axis=1)
     removed_folds = matrix.index[all_missing].astype(int).tolist()
@@ -72,15 +95,17 @@ def build_utility_matrix(
 
     if matrix.shape[1] < 2:
         raise ValueError("CSCV requires at least two candidates")
+    independence = _label_independence(candidate_rows.loc[candidate_rows["sample"].eq("TEST_ALL")])
+    matrix.attrs["label_independence"] = independence
     return matrix, {
         "removed_no_event_folds": removed_folds,
         "candidate_failure_penalties": replacements,
         "floor_margin": floor_margin,
+        "label_independence": independence,
     }
 
 
 def _even_partition_sets(folds: list[int]) -> list[tuple[int | None, tuple[int, ...]]]:
-    """Use all partitions when even; leave each one out in turn when odd."""
     if len(folds) % 2 == 0:
         return [(None, tuple(folds))]
     return [(dropped, tuple(f for f in folds if f != dropped)) for dropped in folds]
@@ -92,6 +117,15 @@ def cscv_pbo(
     max_combinations: int = 100_000,
     seed: int = 7,
 ) -> tuple[pd.DataFrame, dict]:
+    independence = matrix.attrs.get("label_independence", {})
+    if not independence.get("verified_non_overlapping", False):
+        return pd.DataFrame(), {
+            "classification": "CSCV/PBO BLOCKED — DEPENDENT OR UNVERIFIED LABEL WINDOWS",
+            "usable_partitions": int(len(matrix)),
+            "candidate_count": int(matrix.shape[1]),
+            "pbo": np.nan,
+            "label_independence": independence,
+        }
     folds = [int(x) for x in matrix.index]
     if len(folds) < min_partitions:
         return pd.DataFrame(), {
@@ -100,6 +134,7 @@ def cscv_pbo(
             "required_partitions": min_partitions,
             "candidate_count": int(matrix.shape[1]),
             "pbo": np.nan,
+            "label_independence": independence,
         }
 
     rng = np.random.default_rng(seed)
@@ -115,8 +150,7 @@ def cscv_pbo(
             combos = [combos[int(i)] for i in chosen]
         active_set = set(active)
         for split_id, insample in enumerate(combos, start=1):
-            insample_set = set(insample)
-            outsample = tuple(sorted(active_set - insample_set))
+            outsample = tuple(sorted(active_set - set(insample)))
             is_mean = matrix.loc[list(insample)].mean(axis=0)
             oos_mean = matrix.loc[list(outsample)].mean(axis=0)
             selected = int(is_mean.idxmax())
@@ -125,7 +159,6 @@ def cscv_pbo(
             n_candidates = float(len(oos_ranks))
             rank_fraction = (rank - 0.5) / n_candidates
             clipped = float(np.clip(rank_fraction, 1e-9, 1 - 1e-9))
-            logit = math.log(clipped / (1 - clipped))
             corr = float(is_mean.corr(oos_mean, method="spearman")) if len(is_mean) > 1 else np.nan
             records.append(
                 {
@@ -138,7 +171,7 @@ def cscv_pbo(
                     "oos_selected_utility": float(oos_mean.loc[selected]),
                     "oos_best_utility": float(oos_mean.max()),
                     "oos_rank_fraction": rank_fraction,
-                    "logit_rank": logit,
+                    "logit_rank": math.log(clipped / (1 - clipped)),
                     "below_oos_median": bool(rank_fraction <= 0.5),
                     "is_oos_spearman": corr,
                     "degradation": float(oos_mean.loc[selected] - is_mean.loc[selected]),
@@ -148,25 +181,25 @@ def cscv_pbo(
     detail = pd.DataFrame(records)
     if detail.empty:
         raise RuntimeError("CSCV generated no split records")
-    pbo = float(detail["below_oos_median"].mean())
     summary = {
-        "classification": "CSCV/PBO DIAGNOSTIC ON OUTER OOS PARTITIONS — NOT GUARANTEED",
+        "classification": "CSCV/PBO ON NON-OVERLAPPING OUTER OOS LABELS — NOT GUARANTEED",
         "usable_partitions": len(folds),
         "candidate_count": int(matrix.shape[1]),
         "partition_set_count": len(partition_sets),
         "total_possible_combinations_before_cap": int(total_possible),
         "evaluated_splits": int(len(detail)),
-        "pbo": pbo,
+        "pbo": float(detail["below_oos_median"].mean()),
         "median_oos_rank_fraction": float(detail["oos_rank_fraction"].median()),
         "median_degradation": float(detail["degradation"].median()),
         "negative_oos_selected_fraction": float((detail["oos_selected_utility"] < 0).mean()),
         "median_is_oos_spearman": float(detail["is_oos_spearman"].dropna().median())
         if detail["is_oos_spearman"].notna().any()
         else np.nan,
+        "label_independence": independence,
         "interpretation": (
             "PBO is the share of CSCV splits where the in-sample winner ranks below "
-            "the median candidate out of sample; lower is better, but no fixed cutoff "
-            "overrides sample size, regime coverage or economic significance."
+            "the median candidate out of sample. It remains a diagnostic, not a "
+            "replacement for regime coverage or economic significance."
         ),
     }
     return detail, summary
