@@ -80,12 +80,59 @@ No new asset parameter is promoted merely because the revised engine exists. SPY
 
 No new live parameter or tranche size is promoted in this pass. The changes improve falsifiability and reduce selection bias; they do not manufacture a better historical result. Asset-specific promotion requires immutable IBKR/point-in-time datasets to pass the new robust validator and ablation gates.
 
+## 2026-07-21 — Labelled-fold, CSCV and feature-provenance pass
+
+### Further biases found and corrected
+
+1. **The old five-year defaults generated zero folds.**
+   - `1008 train + 84 purge + 252 test` already exceeds the useful five-year IBKR daily sample once a forward label horizon is reserved.
+   - Fix: introduce explicit `MODERN_5Y_PRIMARY`, `MODERN_5Y_DENSE_DIAGNOSTIC` and `LONG_CYCLE` protocols with preflight fold-count checks.
+
+2. **Test-window boundaries truncated future bottom labels.**
+   - Old behaviour: an episode that started in a test fold but recovered after the fold boundary was treated as incomplete or ignored.
+   - Fix: restrict signals to the fold, retain a fixed evaluation-only forward tail, and exclude all trades generated in that tail.
+
+3. **A 260-session warm-up forgot path-dependent state.**
+   - Old behaviour: unresolved cycle highs and underwater duration could be reset inside a long bear market.
+   - Fix: preserve all available history before the signal interval; only the allowed signal dates are restricted.
+
+4. **The latest year was implicitly treated as historically labelled.**
+   - Fix: reserve the final 252 sessions as an unlabelled live tail. They may produce monitor states but cannot enter completed historical accuracy claims.
+
+5. **Only the selected OOS candidate was persisted.**
+   - Fix: record every candidate as `TEST_ALL` on every identical non-overlapping OOS partition, enabling a genuine CSCV/PBO diagnostic.
+
+6. **Feature names were accepted as proof of methodology.**
+   - Fix: require a point-in-time manifest, revision policy, availability lags and optional immutable SHA256. A simple IV-minus-HV series cannot be promoted as genuine downside VRP; current-constituent breadth remains a survivorship-biased proxy.
+
+7. **Leveraged-product boundary and benchmark bias.**
+   - Open positions at the dataset end were silently omitted.
+   - Fix: retain an auditable `END_OF_DATA` exit, require recent bottom stress and falling realised volatility for entry, and compare actual product returns with theoretical daily-reset 2× and linear 2× paths.
+
+### Additional IBKR corporate-action findings
+
+- SSO: 2-for-1 splits on 2022-01-13 and 2025-11-20.
+- QLD: 2-for-1 split on 2025-11-20.
+- USD: 2-for-1 splits on 2024-11-07 and 2025-11-20.
+- Corporate-action continuity therefore applies independently to both underlying and leveraged-product files.
+
+### Statistical interpretation
+
+- `MODERN_5Y_PRIMARY` is the model-selection protocol but yields only about three fully labelled folds in a five-year daily sample after the forward tail is reserved.
+- `MODERN_5Y_DENSE_DIAGNOSTIC` can provide about nine shorter partitions for CSCV/PBO diagnostics; it is explicitly prohibited from promoting live parameters by itself.
+- Formal PBO is classified as underpowered when fewer than eight usable partitions remain after no-event folds are removed.
+- No fixed PBO threshold overrides regime coverage, economic significance, adverse excursion or feature provenance.
+
+### Optimisation decision
+
+**No parameter promoted.** This pass invalidates any result generated with zero-fold defaults, truncated labels, short path history or unmanifested features. Numerical candidate matrices and leverage results must be regenerated from immutable adjusted daily datasets before any live threshold or tranche can be upgraded.
+
 ### Next research gate
 
-1. export or archive continuous adjusted IBKR OHLCV for all four underlyings and all three leveraged products;
-2. create immutable point-in-time breadth, VRP and credit manifests;
-3. populate the candidate-by-fold matrix for SPY, QQQ, SMH and SOXX;
-4. compare price-only versus each incremental feature family on identical folds;
-5. test actual SSO, QLD and USD tactical entries independently;
+1. export or archive continuous adjusted IBKR OHLCV for SPY, QQQ, SMH, SOXX, SSO, QLD and USD with immutable manifests;
+2. populate primary and dense candidate-by-fold matrices for all four underlyings;
+3. run CSCV/PBO only on complete identical OOS candidate partitions;
+4. run price-only versus breadth, true downside-VRP and credit ablations with point-in-time manifests;
+5. test actual SSO, QLD and USD tactical entries, tracking gaps and path dependency independently;
 6. run longer dot-com/GFC stress histories separately from the modern five-year IBKR validation window;
-7. promote only parameters that survive the one-SE, worst-regime and feature-ablation gates.
+7. promote only parameters that survive one-SE, worst-regime, feature-provenance, ablation and actual-product gates.
