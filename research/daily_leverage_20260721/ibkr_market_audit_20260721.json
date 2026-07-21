@@ -19,16 +19,20 @@
   "snapshots": {
     "SPY": {"last": 745.68, "bid": 745.54, "ask": 745.60, "historical_vol_annual": 0.1714605595, "implied_vol_annual": 0.1482708746, "iv_percentile_13w": 0.6031746268, "iv_percentile_26w": 0.4480000138, "iv_percentile_52w": 0.6533864737, "avg_90d_usd_volume": 39092885889},
     "SSO": {"last": 66.90, "prior_close": 66.33, "bid": 66.93, "ask": 66.94, "historical_vol_annual": 0.3257703006, "implied_vol_annual": 0.2782163074, "iv_percentile_13w": 0.4761904776, "iv_percentile_26w": 0.3280000091, "iv_percentile_52w": 0.5697211027, "avg_90d_usd_volume": 234794992},
+    "SPUU": {"last": 212.02, "is_close": true, "bid": 204.00, "ask": 213.59, "historical_vol_annual": 0.2714747214, "implied_vol_annual": 0.2905937133, "iv_percentile_13w": 0.5873016119, "iv_percentile_26w": 0.4480000138, "iv_percentile_52w": 0.6334661245, "avg_90d_usd_volume": 4566525},
     "SOXX": {"last": 547.92, "prior_close": 524.14, "bid": 546.00, "ask": 546.55, "historical_vol_annual": 0.7501181202, "implied_vol_annual": 0.6675885609, "iv_percentile_13w": 1.0, "iv_percentile_26w": 1.0, "iv_percentile_52w": 1.0, "avg_90d_usd_volume": 5391805495},
     "USD": {"last": 88.35, "bid": 88.14, "ask": 88.57, "historical_vol_annual": 1.1446345646, "iv_percentile_13w": 0.6825397015, "iv_percentile_26w": 0.8399999738, "iv_percentile_52w": 0.9203187227, "avg_90d_usd_volume": 92200893},
+    "SOXL": {"last": 153.88, "prior_close": 136.81, "bid": 153.81, "ask": 153.96, "historical_vol_annual": 2.2527387117, "implied_vol_annual": 1.9293731769, "iv_percentile_13w": 1.0, "iv_percentile_26w": 1.0, "iv_percentile_52w": 1.0, "avg_90d_usd_volume": 9515872871},
     "MAGS": {"last": 66.87, "bid": 66.88, "ask": 67.05, "historical_vol_annual": 0.2438800644, "implied_vol_annual": 0.2629186836, "iv_percentile_13w": 0.5396825671, "iv_percentile_26w": 0.4560000002, "iv_percentile_52w": 0.6414342523, "avg_90d_usd_volume": 279381631},
     "MAGX": {"last": 55.10, "prior_close": 54.84, "bid": 54.28, "ask": 55.40, "historical_vol_annual": 0.4675360057, "implied_vol_annual": 0.5447424443, "iv_percentile_13w": 0.7619047761, "iv_percentile_26w": 0.6159999967, "iv_percentile_52w": 0.7330677509, "avg_90d_usd_volume": 6421185},
     "TSM": {"last": 417.97, "bid": 417.71, "ask": 418.00, "historical_vol_annual": 0.5640800002, "implied_vol_annual": 0.5272225865, "iv_percentile_13w": 0.8571428657, "iv_percentile_26w": 0.9279999733, "iv_percentile_52w": 0.9641434550, "avg_90d_usd_volume": 5941252011},
     "TSMX": {"last": 78.60, "prior_close": 73.36, "bid": 78.76, "ask": 78.98, "historical_vol_annual": 1.1069818194, "avg_90d_usd_volume": 85079936}
   },
   "implementation_implications": [
+    "SPUU is excluded from production optimisation because the IBKR snapshot and 90-day dollar volume indicate substantially weaker execution quality than SSO.",
     "SPY and SSO volatility approximately scales by two, but the actual-product path remains necessary because compounding and tracking frictions matter.",
     "SOXX and USD are in an extreme volatility regime; fixed 2x exposure must be compared with volatility-targeted sizing.",
+    "SOXL is liquid enough to test as a 50% blend with SOXX for effective 2x exposure, but its 3x product volatility must remain explicit.",
     "MAGX liquidity is materially weaker than MAGS, so MAGS7+TSM switching uses a substantially higher turnover-cost assumption.",
     "Intraday snapshot values are retained only for market-state and execution-cost calibration, never as completed-close backtest observations."
   ]
