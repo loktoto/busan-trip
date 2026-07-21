@@ -40,19 +40,34 @@ def histories(n: int = 300) -> tuple[pd.DataFrame, pd.DataFrame]:
     return underlying, leveraged
 
 
-def fake_indicators(df, cfg, features=None):
+def indicator_frame(df):
     x = df.copy().reset_index(drop=True)
     n = len(x)
     x["confirmation"] = False
-    x.loc[205, "confirmation"] = True
     x["sma20"] = 99.0
     x["sma10"] = 99.0
     x["sma10_slope"] = 0.01
     x["atrp"] = np.linspace(0.03, 0.01, n)
+    x["rv20"] = np.linspace(0.40, 0.15, n)
+    x["cycle_dd"] = -0.10
+    x["exhaustion"] = False
+    x["crash"] = False
     x["credit_veto"] = False
+    return x
+
+
+def fake_indicators(df, cfg, features=None):
+    x = indicator_frame(df)
+    x.loc[205, "confirmation"] = True
     # Force a recovery-structure exit at close 210, executed next open.
     x.loc[210, "sma10"] = 101.0
     x.loc[210, "sma10_slope"] = -0.01
+    return x
+
+
+def fake_end_of_data_indicators(df, cfg, features=None):
+    x = indicator_frame(df)
+    x.loc[len(x) - 5, "confirmation"] = True
     return x
 
 
@@ -76,3 +91,20 @@ def test_signals_use_underlying_and_execution_uses_actual_product(monkeypatch):
     assert abs(t.exit_price - expected_exit) < 1e-10
     assert t.exit_reasons == "RECOVERY_STRUCTURE_BREAK"
     assert t.return_after_costs == expected_exit / expected_entry - 1
+    assert np.isfinite(t.tracking_gap_vs_daily_reset)
+    assert np.isfinite(t.path_dependency_gap_vs_linear_two_x)
+    assert summary["entry_requires_recent_bottom_stress"] is True
+
+
+def test_open_trade_is_not_silently_dropped_at_dataset_end(monkeypatch):
+    underlying, leveraged = histories()
+    monkeypatch.setattr(leverage, "indicators", fake_end_of_data_indicators)
+    trades, summary = tactical_backtest(
+        underlying,
+        leveraged,
+        Config(symbol="TEST"),
+        LeverageConfig(target_return=10.0, max_holding_days=42),
+    )
+    assert len(trades) == 1
+    assert trades.iloc[0].exit_reasons == "END_OF_DATA"
+    assert summary["end_of_data_exit_count"] == 1
