@@ -54,6 +54,24 @@ def test_alignment_uses_only_same_completed_dates():
     assert pd.Timestamp("2020-01-08") not in set(a["Date"])
 
 
+def test_confirmation_veto_preserves_exhaustion_probe():
+    x = paired.apply_variant(
+        pair_frame(), Config(symbol="SOXX"), "SMH_CONFIRMATION_VETO"
+    )
+    assert bool(x.loc[1, "exhaustion"])
+    assert not bool(x.loc[1, "confirmation"])
+
+
+def test_confirmation_gate_preserves_exhaustion_but_requires_smh_for_state4():
+    x = paired.apply_variant(
+        pair_frame(), Config(symbol="SOXX"), "SMH_CONFIRMATION_GATE"
+    )
+    assert bool(x.loc[0, "exhaustion"])
+    assert not bool(x.loc[0, "confirmation"])
+    assert bool(x.loc[1, "exhaustion"])
+    assert not bool(x.loc[1, "confirmation"])  # pair veto has priority
+
+
 def test_veto_only_removes_larger_state_transitions():
     x = paired.apply_variant(pair_frame(), Config(symbol="SOXX"), "SMH_VETO_ONLY")
     assert bool(x.loc[0, "exhaustion"])
