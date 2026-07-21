@@ -3,7 +3,7 @@
 - Request: `bottom-20260721T155800Z-bootstrap1`
 - Input source: `IBKR`
 - Input created: `2026-07-21T15:58:00Z`
-- Model commit: `879d1ec38782180081bdc8d8b5c3fd6404cfd0b1`
+- Model commit: `d7ea8884e302016a269ddf7a75091747db7eb449`
 - Input SHA256: `f6555d1cb50c8019bdab2f9754a79aff6d314a1197aeaebfce23434b188eec99`
 
 | Asset | Close | Cycle DD | 52W DD | State | Candidate tranche | Cumulative |
