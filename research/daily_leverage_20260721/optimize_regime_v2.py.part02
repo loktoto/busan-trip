@@ -1,0 +1,110 @@
+def metrics(returns: pd.Series) -> dict[str, float]:
+    x = returns.dropna()
+    if len(x) < 40:
+        return {"cagr": np.nan, "sharpe": np.nan, "maxdd": np.nan, "calmar": np.nan, "vol": np.nan}
+    equity = (1 + x).cumprod()
+    years = max((x.index[-1] - x.index[0]).days / 365.25, len(x) / DAYS)
+    cagr = float(equity.iloc[-1] ** (1 / years) - 1)
+    vol = float(x.std(ddof=1) * math.sqrt(DAYS))
+    sharpe = float(x.mean() * DAYS / vol) if vol > 0 else np.nan
+    drawdown = equity / equity.cummax() - 1
+    maxdd = float(drawdown.min())
+    return {
+        "cagr": cagr,
+        "sharpe": sharpe,
+        "maxdd": maxdd,
+        "calmar": cagr / abs(maxdd) if maxdd < 0 else np.nan,
+        "vol": vol,
+    }
+
+
+def stateful(entry: pd.Series, exit_: pd.Series) -> pd.Series:
+    active = False
+    values: list[bool] = []
+    for enter, leave in zip(entry.fillna(False), exit_.fillna(False)):
+        if active and bool(leave):
+            active = False
+        elif not active and bool(enter):
+            active = True
+        values.append(active)
+    return pd.Series(values, index=entry.index, dtype=bool)
+
+
+def risk_features(
+    native: pd.DataFrame,
+    data: dict[str, pd.DataFrame],
+    spec: AssetSpec,
+) -> pd.DataFrame:
+    idx = native.index
+    credit_idx = idx.intersection(data["HYG"].index).intersection(data["LQD"].index)
+    breadth_idx = idx.intersection(data[spec.breadth_num].index).intersection(data[spec.breadth_den].index)
+    vix_idx = idx.intersection(data["^VIX"].index).intersection(data["^VIX3M"].index)
+
+    features = pd.DataFrame(index=idx)
+    credit = pd.Series(np.nan, index=idx)
+    credit.loc[credit_idx] = (
+        data["HYG"].loc[credit_idx, "Close"] / data["LQD"].loc[credit_idx, "Close"]
+    )
+    breadth = pd.Series(np.nan, index=idx)
+    breadth.loc[breadth_idx] = (
+        data[spec.breadth_num].loc[breadth_idx, "Close"]
+        / data[spec.breadth_den].loc[breadth_idx, "Close"]
+    )
+    vix = pd.Series(np.nan, index=idx)
+    vix3m = pd.Series(np.nan, index=idx)
+    vix.loc[vix_idx] = data["^VIX"].loc[vix_idx, "Close"]
+    vix3m.loc[vix_idx] = data["^VIX3M"].loc[vix_idx, "Close"]
+
+    features["credit_level"] = credit > credit.rolling(50).mean()
+    features["credit_slope"] = credit > credit.shift(20)
+    features["breadth_level"] = breadth > breadth.rolling(50).mean()
+    features["breadth_slope"] = breadth > breadth.shift(20)
+    rv20 = annualised_realised_vol(native["Close"], 20)
+    rv100 = annualised_realised_vol(native["Close"], 100)
+    features["rv20"] = rv20
+    features["rv100"] = rv100
+    features["rv_ratio"] = rv20 < 1.15 * rv100
+    features["vix_below_30"] = vix < 30
+    features["vix_contango"] = vix < vix3m
+    features["credit_breadth"] = features["credit_level"] & features["breadth_level"]
+    features["credit_rv"] = features["credit_level"] & features["rv_ratio"]
+    features["breadth_rv"] = features["breadth_level"] & features["rv_ratio"]
+    features["triple_risk_on"] = (
+        features["credit_level"] & features["breadth_level"] & features["vix_contango"]
+    )
+    features["none"] = True
+    bool_cols = [column for column in features.columns if column not in ("rv20", "rv100")]
+    features[bool_cols] = features[bool_cols].fillna(False).astype(bool)
+    return features
+
+
+def component_gate(spec: AssetSpec, data: dict[str, pd.DataFrame], index: pd.DatetimeIndex) -> pd.Series:
+    gate = pd.Series(True, index=index)
+    if not spec.component_gate:
+        return gate
+    common = index.intersection(data["MAGS"].index).intersection(data["TSM"].index)
+    gate[:] = False
+    mags = data["MAGS"].loc[common, "Close"]
+    tsm = data["TSM"].loc[common, "Close"]
+    gate.loc[common] = (mags > mags.rolling(100).mean()) & (tsm > tsm.rolling(100).mean())
+    return gate
+
+
+def baseline_states(
+    spec: AssetSpec,
+    native: pd.DataFrame,
+    data: dict[str, pd.DataFrame],
+) -> tuple[list[BaselineParams], dict[int, pd.Series]]:
+    close = native["Close"]
+    r2 = rsi(close, 2)
+    windows = set(spec.trend_mas + spec.reclaims + tuple(x for x in spec.exit_mas if x))
+    sma = {window: close.rolling(window).mean() for window in windows}
+    comp_ok = component_gate(spec, data, close.index)
+    params: list[BaselineParams] = []
+    states: dict[int, pd.Series] = {}
+    iterator = itertools.product(
+        spec.trend_mas,
+        spec.trend_slopes,
+        spec.rsi_entries,
+        spec.lookbacks,
+        spec.reclaims,
