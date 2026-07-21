@@ -10,6 +10,10 @@ Two modern five-year protocols are intentionally separated:
 - MODERN_5Y_PRIMARY: longer train/test windows for model selection;
 - MODERN_5Y_DENSE_DIAGNOSTIC: shorter non-overlapping test partitions used only
   for instability/CSCV diagnostics. It must not replace the primary protocol.
+
+The latest fixed forward horizon is reserved as an unlabelled live tail. Those
+rows can be scored by the live monitor but cannot be used to claim historical
+bottom-proximity accuracy because their future trough labels do not yet exist.
 """
 from __future__ import annotations
 
@@ -32,7 +36,8 @@ from validation import episode_bootstrap, parameter_grid, score_period, selectio
 
 
 PROTOCOLS = {
-    # About five years of daily bars yields roughly four to five primary folds.
+    # About five years of daily bars yields roughly three fully labelled primary folds
+    # after reserving a 252-session forward evaluation tail.
     "MODERN_5Y_PRIMARY": {
         "train_days": 504,
         "test_days": 126,
@@ -40,13 +45,14 @@ PROTOCOLS = {
         "step_days": 126,
         "role": "PRIMARY_MODEL_SELECTION",
     },
-    # Produces more non-overlapping test partitions, but shorter training samples.
-    # Use for PBO/selection-instability diagnostics only.
+    # Shorter training and 63-session partitions produce enough partitions for a
+    # CSCV diagnostic on a five-year sample. It is diagnostic-only because the
+    # training sample is too short to promote live parameters by itself.
     "MODERN_5Y_DENSE_DIAGNOSTIC": {
-        "train_days": 378,
-        "test_days": 84,
+        "train_days": 315,
+        "test_days": 63,
         "purge_days": 84,
-        "step_days": 84,
+        "step_days": 63,
         "role": "DIAGNOSTIC_ONLY",
     },
     # Requires materially more than five years of daily data.
@@ -83,8 +89,17 @@ def resolve_protocol(
     return out
 
 
-def expected_fold_count(n_rows: int, train_days: int, test_days: int, purge_days: int, step_days: int) -> int:
-    available = n_rows - (train_days + purge_days + test_days)
+def expected_fold_count(
+    n_rows: int,
+    train_days: int,
+    test_days: int,
+    purge_days: int,
+    step_days: int,
+    evaluation_tail_days: int = 252,
+) -> int:
+    available = n_rows - (
+        train_days + purge_days + test_days + evaluation_tail_days
+    )
     return 0 if available < 0 else 1 + available // step_days
 
 
@@ -99,12 +114,15 @@ def robust_walk_forward(
     step_days: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     step_days = test_days if step_days is None else step_days
-    predicted_folds = expected_fold_count(len(prices), train_days, test_days, purge_days, step_days)
+    tail = base.episode_eval_max_days
+    predicted_folds = expected_fold_count(
+        len(prices), train_days, test_days, purge_days, step_days, tail
+    )
     if predicted_folds <= 0:
-        need = train_days + purge_days + test_days
+        need = train_days + purge_days + test_days + tail
         raise ValueError(
-            f"Validation protocol requires at least {need} rows but received {len(prices)}; "
-            "the old 1008/84/252 defaults cannot run on a five-year IBKR window"
+            f"Validation protocol requires at least {need} rows including a {tail}-row "
+            f"forward label tail, but received {len(prices)}"
         )
 
     fold_rows: list[dict] = []
@@ -120,7 +138,7 @@ def robust_walk_forward(
         train_end = train_start + train_days
         test_start = train_end + purge_days
         test_end = test_start + test_days
-        if test_end > len(prices):
+        if test_end + tail > len(prices):
             break
         fold += 1
         stats_rows = []
@@ -145,7 +163,7 @@ def robust_walk_forward(
             fold_rows.append(
                 {
                     "fold": fold,
-                    "status": "SKIPPED_NO_COMPLETE_TRAIN_EPISODE",
+                    "status": "SKIPPED_NO_EVALUABLE_TRAIN_EPISODE",
                     "train_start": prices.iloc[train_start].Date.date(),
                     "train_end": prices.iloc[train_end - 1].Date.date(),
                     "test_start": prices.iloc[test_start].Date.date(),
@@ -190,7 +208,7 @@ def robust_walk_forward(
         fold_rows.append(
             {
                 "fold": fold,
-                "status": "OK" if np.isfinite(test_stats["robust_mean"]) else "NO_COMPLETE_TEST_EPISODE",
+                "status": "OK" if np.isfinite(test_stats["robust_mean"]) else "NO_EVALUABLE_TEST_EPISODE",
                 "train_start": prices.iloc[train_start].Date.date(),
                 "train_end": prices.iloc[train_end - 1].Date.date(),
                 "test_start": prices.iloc[test_start].Date.date(),
@@ -214,7 +232,7 @@ def robust_walk_forward(
         train_start += step_days
 
     if fold == 0:
-        raise RuntimeError("No validation folds were generated after protocol preflight")
+        raise RuntimeError("No fully labelled validation folds were generated")
 
     return (
         pd.DataFrame(fold_rows),
@@ -265,9 +283,16 @@ def main() -> None:
         "candidate_count": len(candidates),
         "fold_count": int(len(folds)),
         "expected_fold_count": expected_fold_count(
-            len(prices), protocol["train_days"], protocol["test_days"], protocol["purge_days"], protocol["step_days"]
+            len(prices),
+            protocol["train_days"],
+            protocol["test_days"],
+            protocol["purge_days"],
+            protocol["step_days"],
+            base.episode_eval_max_days,
         ),
         "windows": {k: protocol[k] for k in ("train_days", "test_days", "purge_days", "step_days")},
+        "evaluation_tail_days": base.episode_eval_max_days,
+        "unlabelled_live_tail": True,
         "selection_rule": "simplest candidate within one standard error of best regime-robust training utility",
         "bootstrap": episode_bootstrap(episodes),
         "selection_instability": selection_instability(folds),
