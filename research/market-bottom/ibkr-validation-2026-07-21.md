@@ -15,27 +15,33 @@
 
 Actual tactical leveraged products resolved and rechecked through IBKR:
 
-| Underlying sleeve | Product | IBKR contract | Exchange | Five-year corporate actions requiring adjusted prices |
+| Underlying sleeve | Product | IBKR contract | Exchange | Corporate actions requiring adjusted prices |
 |---|---|---:|---|---|
 | SPY | SSO | 39622943 | ARCA | 2-for-1 splits on 2022-01-13 and 2025-11-20; distributions present. |
 | QQQ | QLD | 39622938 | ARCA | 2-for-1 split on 2025-11-20; distributions present. |
 | SMH/SOXX | USD | 42808834 | ARCA | 2-for-1 splits on 2024-11-07 and 2025-11-20; distributions present. |
 
-The five-year IBKR window is suitable for modern product validation and rolling walk-forward tests. It is not sufficient by itself to represent dot-com or GFC regimes. Longer external histories must therefore be labelled **LONG-CYCLE STRESS TEST**, not mixed into the same untouched IBKR holdout.
+The five-year IBKR window is suitable for modern product and recent-regime validation. It is not sufficient by itself to represent dot-com or GFC regimes. Longer external histories must be labelled **LONG-CYCLE STRESS TEST**, not mixed into the same untouched IBKR holdout.
 
-## Labelled validation capacity
+## Labelled validation capacity and leakage correction
 
-A historical signal cannot be scored against a future 42/63/84-session trough until that future path exists. The engine now reserves a full 252-session evaluation tail rather than treating the latest year as already labelled.
+A training score uses future prices to determine whether a signal was near the later 42/63/84-session minimum and to measure the broader bear episode. If training signals are followed by a 252-session evaluation tail, the test signal window cannot begin after only an 84-session purge: training selection would already have observed prices inside the test period.
+
+The engine now requires:
+
+```text
+purge_days >= evaluation_tail_days
+```
 
 For an approximately 1,258-row five-year daily window:
 
-| Protocol | Train | Purge | Test | Step | Fully labelled folds | Role |
+| Protocol | Train | Purge | Test | Step | Approximate fully labelled observations | Role |
 |---|---:|---:|---:|---:|---:|---|
-| `MODERN_5Y_PRIMARY` | 504 | 84 | 126 | 126 | about 3 | Primary one-SE model selection. |
-| `MODERN_5Y_DENSE_DIAGNOSTIC` | 315 | 84 | 63 | 63 | about 9 | CSCV/PBO and selection-instability diagnostic only. |
-| Old default | 1,008 | 84 | 252 | 252 | 0 before label-tail correction | Invalid for the five-year IBKR window. |
+| `MODERN_5Y_PRIMARY` | 504 | 252 | 126 | 126 | about 1 | Clean recent holdout only. |
+| `MODERN_5Y_DENSE_DIAGNOSTIC` | 315 | 252 | 63 | 63 | about 6 | Rolling sensitivity diagnostic; future label windows overlap, so formal CSCV/PBO is blocked. |
+| `LONG_CYCLE` | 1,008 | 252 | 252 | 504 | requires roughly 20+ years for eight partitions | Non-overlapping label protocol for long-cycle CSCV/PBO research. |
 
-The dense protocol is not allowed to promote live parameters by itself: shorter training windows increase estimator variance and may contain too few distinct drawdown regimes. It exists to expose instability, not manufacture additional evidence.
+The latest 252 trading sessions remain an unlabelled live tail. They can generate current monitor states but cannot be included in completed historical accuracy claims.
 
 ## Current volatility cross-check
 
@@ -48,9 +54,9 @@ The dense protocol is not allowed to promote live parameters by itself: shorter 
 
 ### Interpretation
 
-1. **High IV percentile is panic intensity, not exhaustion.** SMH and SOXX are near the top of their own one-year implied-volatility ranges, but realised volatility remains higher than implied volatility. Actual selling volatility is still outrunning option-implied volatility.
-2. **The model must separate panic from transition.** A first ordinary-ETF probe may use drawdown and liquidation intensity, but an exhaustion tranche requires deceleration/divergence rather than merely a high IV reading.
-3. **Cross-asset thresholds are invalid.** A QQQ IV percentile above 90% and a semiconductor IV percentile near 100% do not represent the same realised-volatility regime or expected adverse excursion.
+1. **High IV percentile is panic intensity, not exhaustion.** Semiconductor realised volatility remained above implied volatility.
+2. **Panic and transition remain separate features.** Larger additions require deceleration/divergence rather than a high IV reading alone.
+3. **Cross-asset thresholds remain invalid.** QQQ and semiconductor IV percentiles do not imply the same adverse-excursion distribution.
 
 ## Option-volume context
 
@@ -61,15 +67,16 @@ The dense protocol is not allowed to promote live parameters by itself: shorter 
 | SMH | 78,985 | 255,100 | 75,338 | 274,150 |
 | SOXX | 13,762 | 48,243 | 22,263 | 50,198 |
 
-Raw put/call volume is not a clean capitulation indicator. SMH normally has substantially more put than call volume, and SOXX put volume in this snapshot is close to its own average. The engine therefore retains option volume as context only and does not convert it into a standalone bottom vote.
+Raw put/call volume is context only. SMH normally carries substantially more put volume, and SOXX put volume in this snapshot was close to its own average.
 
-## Data-engineering changes required by the IBKR audit
+## Data-engineering requirements
 
-- Run a split-like discontinuity audit on both the underlying and leveraged product before every backtest.
-- Archive symbol, contract, exchange, bar source, regular-hours setting, delay, retrieval timestamp and corporate actions.
-- Reject unadjusted split jumps before calculating drawdown, ATR, new lows, volatility or leveraged P&L.
-- Preserve the complete historical price path before each fold because cycle highs and underwater duration are path-dependent.
-- Restrict signals to the train/test window while allowing an evaluation-only forward tail; never allow tail trades into the fold.
-- Use actual SSO, QLD and USD histories for tactical leverage performance and separately report tracking gap and daily-reset path dependence.
-- Keep the modern five-year IBKR validation separate from longer stress-test datasets.
+- Audit both underlying and leveraged-product files for split-like discontinuities.
+- Archive symbol, contract, exchange, bar source, RTH setting, delay, retrieval timestamp and corporate actions.
+- Preserve all earlier price history because cycle highs and underwater duration are path-dependent.
+- Restrict signals to the requested fold while retaining an evaluation-only forward tail.
+- Require the training-label purge to cover the full evaluation tail.
+- Block formal CSCV/PBO when OOS future-label windows overlap or fewer than eight independent partitions survive.
+- Use actual SSO, QLD and USD adjusted prices and separately report tracking gap and daily-reset path dependence.
+- Keep modern five-year validation separate from longer dot-com/GFC stress histories.
 - Never store private account, position or order data in this public repository.
