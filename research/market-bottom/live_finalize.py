@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Final deterministic governance pass for live bottom results.
 
-This stage does not create new signals. It corrects provenance labelling and
-prevents an active, previously deployed episode from being displayed as
-NO_SETUP merely because the drawdown recovered above the watch threshold.
+This stage does not create new signals. It corrects provenance labelling,
+reconciles lifecycle state, and ensures alert fields describe the final state.
 """
 from __future__ import annotations
 
@@ -13,6 +12,25 @@ from pathlib import Path
 
 
 PRIMARY = ("SPY", "QQQ", "SOXX")
+
+
+def _reconcile_changes(result: dict) -> None:
+    assets = result.get("assets", {})
+    changes = []
+    for change in result.get("material_changes", []):
+        item = dict(change)
+        symbol = item.get("symbol")
+        if symbol in PRIMARY and item.get("type") == "STATE":
+            item["new"] = assets[symbol].get("state")
+            if item.get("old") == item.get("new"):
+                continue
+        elif symbol in PRIMARY and item.get("type") == "TRANCHE":
+            item["new"] = assets[symbol].get("candidate_tranche", 0.0)
+            if item.get("old") == item.get("new"):
+                continue
+        changes.append(item)
+    result["material_changes"] = changes
+    result["material_change"] = bool(changes)
 
 
 def finalize(result: dict) -> dict:
@@ -60,6 +78,7 @@ def finalize(result: dict) -> dict:
             adjustments.append({"type": "ACTIVE_EPISODE_RECOVERY", "symbol": symbol, "old": 0, "new": 5})
 
     result["governance_adjustments"] = adjustments
+    _reconcile_changes(result)
     return result
 
 
@@ -81,7 +100,11 @@ def main() -> None:
                 text += f"- `{json.dumps(item, ensure_ascii=False, sort_keys=True)}`\n"
         args.report.write_text(text)
 
-    print(json.dumps({"source": result["source"], "adjustments": result["governance_adjustments"]}, sort_keys=True))
+    print(json.dumps({
+        "source": result["source"],
+        "adjustments": result["governance_adjustments"],
+        "material_changes": result["material_changes"],
+    }, sort_keys=True))
 
 
 if __name__ == "__main__":
