@@ -1,0 +1,110 @@
+        spec.rsi_exits,
+        spec.exit_mas,
+    )
+    for baseline_id, values in enumerate(iterator):
+        trend_ma, trend_slope, rsi_entry, lookback, reclaim, rsi_exit, exit_ma = values
+        trend = (close > sma[trend_ma]) & (sma[trend_ma] > sma[trend_ma].shift(trend_slope))
+        oversold = r2.rolling(lookback).min() < rsi_entry
+        reclaim_signal = (close > sma[reclaim]) & (close.shift(1) <= sma[reclaim].shift(1))
+        entry = trend & oversold & reclaim_signal & comp_ok
+        exit_signal = r2 > rsi_exit
+        if exit_ma is not None:
+            exit_signal |= close < sma[exit_ma]
+        params.append(BaselineParams(*values))
+        states[baseline_id] = stateful(entry, exit_signal)
+    return params, states
+
+
+def target_leverage_series(
+    state: pd.Series,
+    rv20: pd.Series,
+    max_leverage: float,
+    target_vol: float | None,
+) -> pd.Series:
+    if target_vol is None:
+        leverage = pd.Series(max_leverage, index=state.index, dtype=float)
+    else:
+        leverage = (target_vol / rv20.replace(0, np.nan)).clip(lower=1.0, upper=max_leverage)
+        leverage = leverage.fillna(1.0)
+    return pd.Series(np.where(state, leverage, 1.0), index=state.index, dtype=float)
+
+
+def run_returns(
+    native: pd.DataFrame,
+    levered: pd.DataFrame,
+    close_state: pd.Series,
+    risk: pd.DataFrame,
+    overlay: str,
+    target_vol: float | None,
+    max_leverage: float,
+    product_leverage: float,
+    cost_bps: float,
+) -> tuple[pd.Series, pd.Series]:
+    idx = native.index.intersection(levered.index).intersection(risk.index)
+    native = native.loc[idx]
+    levered = levered.loc[idx]
+    filtered_state = (close_state.reindex(idx).fillna(False).astype(bool) & risk.loc[idx, overlay]).astype(bool)
+    close_leverage = target_leverage_series(filtered_state, risk.loc[idx, "rv20"], max_leverage, target_vol)
+    held_leverage = close_leverage.shift(1).fillna(1.0)
+
+    native_ret = open_to_open_return(native)
+    levered_ret = open_to_open_return(levered)
+    blend = ((held_leverage - 1.0) / max(product_leverage - 1.0, 1e-9)).clip(0, 1)
+    active_ret = (1 - blend) * native_ret + blend * levered_ret
+    returns = native_ret.where(held_leverage <= 1.000001, active_ret)
+    turnover = held_leverage.diff().abs().fillna(0) / max(max_leverage - 1.0, 1e-9)
+    returns -= turnover * cost_bps / 10_000.0
+    return returns.iloc[:-1], held_leverage.iloc[:-1]
+
+
+def interval_metrics(returns: pd.Series, benchmark: pd.Series, start: str, end: str) -> dict[str, float]:
+    strategy = metrics(returns.loc[start:end])
+    base = metrics(benchmark.loc[start:end])
+    return {
+        "cagr": strategy["cagr"],
+        "sharpe": strategy["sharpe"],
+        "maxdd": strategy["maxdd"],
+        "excess": strategy["cagr"] - base["cagr"],
+        "sharpe_excess": strategy["sharpe"] - base["sharpe"],
+        "dd_delta": strategy["maxdd"] - base["maxdd"],
+    }
+
+
+def development_folds(index: pd.DatetimeIndex, development_end: pd.Timestamp, experimental: bool):
+    start = index.min()
+    dev = index[index <= development_end]
+    if len(dev) < 160:
+        raise RuntimeError("Insufficient development data")
+    if experimental:
+        cut1 = dev[int(len(dev) * 0.50)]
+        cut2 = dev[int(len(dev) * 0.75)]
+        return [
+            (str(start.date()), str((cut1 - pd.Timedelta(days=1)).date()), str(cut1.date()), str((cut2 - pd.Timedelta(days=1)).date())),
+            (str(start.date()), str((cut2 - pd.Timedelta(days=1)).date()), str(cut2.date()), str(development_end.date())),
+        ]
+    years = sorted(set(dev.year))
+    anchors = [years[max(2, int(len(years) * 0.35))], years[max(3, int(len(years) * 0.60))]]
+    fold1_test_start = pd.Timestamp(f"{anchors[0]}-01-01")
+    fold1_test_end = pd.Timestamp(f"{anchors[1]-1}-12-31")
+    fold2_test_start = pd.Timestamp(f"{anchors[1]}-01-01")
+    fold2_test_end = development_end
+    return [
+        (str(start.date()), str((fold1_test_start - pd.Timedelta(days=1)).date()), str(fold1_test_start.date()), str(fold1_test_end.date())),
+        (str(start.date()), str((fold2_test_start - pd.Timedelta(days=1)).date()), str(fold2_test_start.date()), str(fold2_test_end.date())),
+    ]
+
+
+def block_bootstrap_excess(
+    strategy: pd.Series,
+    benchmark: pd.Series,
+    seed: int = 20260721,
+    samples: int = 800,
+    block: int = 20,
+) -> dict[str, float]:
+    aligned = pd.concat([strategy.rename("s"), benchmark.rename("b")], axis=1).dropna()
+    excess = (aligned["s"] - aligned["b"]).to_numpy()
+    if len(excess) < 100:
+        return {"prob_positive_mean": np.nan, "mean_ci_low": np.nan, "mean_ci_high": np.nan}
+    rng = np.random.default_rng(seed)
+    means = np.empty(samples)
+    n = len(excess)
