@@ -1,8 +1,16 @@
-
-
-def generate_exit_rules(signal: pd.DataFrame, cache: dict[str, Any]) -> list[tuple[ExitRule,pd.Series,int]]:
+def generate_exit_rules(asset: dict[str, Any], signal: pd.DataFrame, cache: dict[str, Any], data: dict[str, pd.DataFrame]) -> list[tuple[ExitRule,pd.Series,int]]:
     c = signal.Close
     out: list[tuple[ExitRule,pd.Series,int]] = []
+    if asset["kind"] == "INVERSE_VOL":
+        vix = data["^VIX"].Close.reindex(c.index)
+        vix3m = data["^VIX3M"].Close.reindex(c.index)
+        vix_spike = vix.pct_change() > 0.20
+        for cap, backwardation, ma in itertools.product([25,30,35],[0.0,0.02],[20,50]):
+            exit_signal = (vix > cap) | (vix > vix3m * (1 + backwardation)) | vix_spike | (c < cache[f"sma{ma}"] * (1 - HYST))
+            out.append((ExitRule("inverse_vol_risk_off", (cap,backwardation,ma)), exit_signal, 0))
+        for hold in [10,20,40]:
+            out.append((ExitRule("time_stop", (hold,)), pd.Series(False,index=c.index), hold))
+        return out
     for rsi_exit, ma in itertools.product([70,80,90],[10,20,50]):
         x = (cache["rsi2"] > rsi_exit) | (c < cache[f"sma{ma}"] * (1 - HYST))
         out.append((ExitRule("rsi_or_ma", (rsi_exit,ma)), x, 0))
@@ -15,11 +23,11 @@ def generate_exit_rules(signal: pd.DataFrame, cache: dict[str, Any]) -> list[tup
 
 def build_overlays(asset: dict[str, Any], index: pd.DatetimeIndex, signal: pd.DataFrame, cache, data) -> dict[str,pd.Series]:
     overlays: dict[str,pd.Series] = {"none": pd.Series(True,index=index)}
-    regime = data.get(asset["regime"])
+    regime = data.get(resolve_ticker(asset["regime"]))
     if regime is not None:
         rc = regime.Close.reindex(index)
         overlays["regime_trend"] = rc > rc.rolling(200).mean() * (1 + HYST)
-    bn = data.get(asset["breadth_num"]); bd = data.get(asset["breadth_den"])
+    bn = data.get(resolve_ticker(asset["breadth_num"])); bd = data.get(resolve_ticker(asset["breadth_den"]))
     if bn is not None and bd is not None:
         ratio = bn.Close.reindex(index) / bd.Close.reindex(index)
         overlays["breadth"] = ratio > ratio.rolling(50).mean() * (1 + HYST)
@@ -93,3 +101,4 @@ def strategy_returns(state: pd.Series, trade: pd.DataFrame, cash: pd.DataFrame, 
     turnover = exposure.diff().abs().fillna(0)
     ret = ret - turnover*cost_bps/10000.0
     return ret.iloc[:-1], exposure.iloc[:-1]
+
