@@ -158,6 +158,9 @@ jobs:
             $previous \
             --result runtime/market-bottom/generated/latest-result.json \
             --report runtime/market-bottom/generated/latest-report.md
+          python research/market-bottom/live_finalize.py \
+            --result runtime/market-bottom/generated/latest-result.json \
+            --report runtime/market-bottom/generated/latest-report.md
           python -m json.tool runtime/market-bottom/generated/latest-result.json >/dev/null
       - name: Archive immutable live output
         if: steps.runtime.outputs.present == 'true'
