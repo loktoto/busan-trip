@@ -22,6 +22,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 INPUT_DIR = OUT / "inputs"
 INPUT_DIR.mkdir(parents=True, exist_ok=True)
 CONFIG_PATH = Path("research/universal_entry_exit_20260721/universe_v3.json")
+TICKER_ALIASES = {"WRD": "WRD.PA"}  # HSBC MSCI World Paris listing; avoid the unrelated U.S. ADR
 
 
 @dataclass(frozen=True)
