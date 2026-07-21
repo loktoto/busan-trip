@@ -15,7 +15,16 @@
     "crash_z": -2.0,
     "crash_volume": 1.25,
     "exhaustion_bonus": 0.075,
-    "confirmation_bonus": 0.125
+    "confirmation_bonus": 0.125,
+    "exhaustion_votes": 2,
+    "confirmation_votes": 3,
+    "recovery_dd": 0.002,
+    "episode_eval_max_days": 252,
+    "transaction_cost_bps": 1.0,
+    "slippage_bps": 2.0,
+    "credit_veto_z": 2.0,
+    "feature_z_window": 252,
+    "feature_min_periods": 60
   },
   "SPY": {
     "watch_dd": 0.05,
