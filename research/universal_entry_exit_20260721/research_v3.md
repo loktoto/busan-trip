@@ -13,13 +13,13 @@ Two distinct decisions are evaluated:
 1. **Swing timing** — move between cash proxy BIL and the traded instrument.
 2. **Core add/reduce** — retain the 1x core and add or remove a 0.5x tranche. Financing on the extra tranche is represented by the BIL return.
 
-Leveraged ETFs are evaluated only in swing mode. Their signal is generated from the unleveraged underlying where one exists, while realised returns, drawdowns and transaction costs use the actual leveraged product. SVIX receives a dedicated volatility-regime input and is not treated as an ordinary equity ETF.
+Leveraged ETFs are evaluated only in swing mode. Their signal is generated from the unleveraged underlying where one exists, while realised returns, drawdowns and transaction costs use the actual leveraged product. SVIX receives dedicated VIX/VIX3M contango, VIX-cap, volatility-spike and SVIX-trend entry/exit families; generic equity RSI rules are not used for SVIX.
 
 ## Universe
 
 The configuration includes broad equity, momentum/value, international, semiconductor, memory, photonics, metals/miners, uranium, crypto, Europe, inverse-volatility and regional ETFs. It also includes the Mag 7, TSM, AVGO, AMD, MU, ORCL, AAOI, NBIS, CRCL, MARA, PLTR, LITE, COHR, DELL, SMCI, SOFI, HOOD, HIMS, RBRK, MXL, RDW, ALAB, NU, DLO, ZETA, CSTM, KTOS and FN.
 
-New funds such as DRAM and FOTO and short-history stocks are always marked experimental until a meaningful final holdout exists. Taiwan 00935 and Japan 2644 are included with their local Yahoo symbols; calendar and FX differences remain explicit limitations.
+New funds such as DRAM and FOTO and every instrument with fewer than 1,000 common trading sessions are always marked experimental until a meaningful final holdout exists. The HSBC MSCI World holding is mapped to its Paris listing `WRD.PA`, not the unrelated U.S. ADR using ticker WRD. Taiwan 00935 and Japan 2644 are included with their local Yahoo symbols; calendar and FX differences remain explicit limitations.
 
 ## Stage 1: entry event study
 
@@ -99,6 +99,6 @@ The tested families reflect several evidence strands rather than one technical i
 
 ## Limitations
 
-Historical earnings calendars are not sufficiently complete in the selected reproducible data source. The workflow therefore does not pretend to backtest an earnings blackout. Stock outputs will separately flag large recent overnight gaps; a production monitor should integrate a verified corporate-event calendar before executing a new position near earnings.
+Historical earnings calendars are not sufficiently complete in the selected reproducible data source. The workflow therefore does not pretend to backtest an earnings blackout. Stock outputs record the latest overnight gap and the largest absolute gap in the prior 20 sessions. Any new stock `ENTER` or `ADD` promotion is labelled `EVENT_CHECK` until a verified corporate-event calendar is checked; reductions and exits are not blocked.
 
 No historical promotion guarantees future outperformance. The purpose of the gates is to reject fragile rules, not to manufacture a signal for every ticker.
