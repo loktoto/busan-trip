@@ -1,4 +1,6 @@
 from pathlib import Path
+import sys
+import types
 
 root = Path(__file__).parent
 parts = sorted(root.glob("optimize_universal_entry_exit.py.part??"))
@@ -8,7 +10,12 @@ if not parts:
 if not patches:
     raise RuntimeError("No v3.2 robustness patches found")
 
-namespace = {"__name__": "universal_entry_exit_core", "__file__": str(Path(__file__))}
+module_name = "universal_entry_exit_core"
+module = types.ModuleType(module_name)
+module.__file__ = str(Path(__file__))
+sys.modules[module_name] = module
+namespace = module.__dict__
+
 source = "".join(path.read_text() for path in parts)
 exec(compile(source, "optimize_universal_entry_exit.py", "exec"), namespace)
 patch_source = "".join(path.read_text() for path in patches)
