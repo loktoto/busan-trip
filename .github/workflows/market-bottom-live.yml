@@ -5,7 +5,11 @@ on:
     branches:
       - "agent/market-bottom-strategy"
     paths:
-      - "runtime/market-bottom/latest-input.json"
+      - "runtime/market-bottom/latest-request.json"
+      - "runtime/market-bottom/data/SPY.csv"
+      - "runtime/market-bottom/data/QQQ.csv"
+      - "runtime/market-bottom/data/SOXX.csv"
+      - "runtime/market-bottom/data/SMH.csv"
 
 permissions:
   contents: write
@@ -34,19 +38,24 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r research/market-bottom/requirements.txt
 
-      - name: Validate and calculate
+      - name: Assemble, validate and calculate
         run: |
           mkdir -p runtime/market-bottom/generated
+          python research/market-bottom/prepare_live_input.py \
+            --request runtime/market-bottom/latest-request.json \
+            --repo-root . \
+            --out runtime/market-bottom/generated/latest-input.json
           previous=""
           if [ -f runtime/market-bottom/latest-result.json ]; then
             previous="--previous runtime/market-bottom/latest-result.json"
           fi
           python research/market-bottom/live_monitor.py \
-            --input runtime/market-bottom/latest-input.json \
+            --input runtime/market-bottom/generated/latest-input.json \
             --config research/market-bottom/config.example.json \
             $previous \
             --result runtime/market-bottom/generated/latest-result.json \
             --report runtime/market-bottom/generated/latest-report.md
+          python -m json.tool runtime/market-bottom/generated/latest-input.json >/dev/null
           python -m json.tool runtime/market-bottom/generated/latest-result.json >/dev/null
 
       - name: Archive immutable run output
@@ -54,7 +63,9 @@ jobs:
         with:
           name: market-bottom-live-${{ github.run_id }}
           path: |
-            runtime/market-bottom/latest-input.json
+            runtime/market-bottom/latest-request.json
+            runtime/market-bottom/data/*.csv
+            runtime/market-bottom/generated/latest-input.json
             runtime/market-bottom/generated/latest-result.json
             runtime/market-bottom/generated/latest-report.md
           if-no-files-found: error
