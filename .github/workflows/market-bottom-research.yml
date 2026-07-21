@@ -45,3 +45,56 @@ jobs:
           path: research/market-bottom/pytest.log
           if-no-files-found: error
           retention-days: 7
+
+      - name: Run public SMH-SOXX paired reproducibility diagnostic
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf paired-diagnostic-data paired-diagnostic-output
+          mkdir -p paired-diagnostic-data paired-diagnostic-output
+          {
+            echo "Classification: PUBLIC REPRODUCIBILITY DIAGNOSTIC — NOT IBKR HOLDOUT"
+            python fetch_public_prices.py --symbol SMH --out paired-diagnostic-data/SMH.csv
+            smh_status=$?
+            python fetch_public_prices.py --symbol SOXX --out paired-diagnostic-data/SOXX.csv
+            soxx_status=$?
+            if [ "$smh_status" -ne 0 ] || [ "$soxx_status" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: public price fetch failed (SMH=$smh_status SOXX=$soxx_status)"
+              exit 0
+            fi
+            python data_audit.py --csv paired-diagnostic-data/SMH.csv --out paired-diagnostic-output/audit-SMH
+            audit_smh=$?
+            python data_audit.py --csv paired-diagnostic-data/SOXX.csv --out paired-diagnostic-output/audit-SOXX
+            audit_soxx=$?
+            if [ "$audit_smh" -ne 0 ] || [ "$audit_soxx" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: adjusted-price audit failed (SMH=$audit_smh SOXX=$audit_soxx)"
+              exit 0
+            fi
+            python paired_semiconductor.py \
+              --smh-csv paired-diagnostic-data/SMH.csv \
+              --soxx-csv paired-diagnostic-data/SOXX.csv \
+              --config config.example.json \
+              --out paired-diagnostic-output/full-history
+            full_status=$?
+            python paired_semiconductor.py \
+              --smh-csv paired-diagnostic-data/SMH.csv \
+              --soxx-csv paired-diagnostic-data/SOXX.csv \
+              --config config.example.json \
+              --signal-start 2024-01-01 \
+              --out paired-diagnostic-output/modern-2024
+            modern_status=$?
+            echo "paired diagnostic exit status: full=$full_status modern=$modern_status"
+          } 2>&1 | tee paired-diagnostic.log
+          exit 0
+      - name: Archive paired semiconductor diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paired-semiconductor-${{ github.run_id }}
+          path: |
+            research/market-bottom/paired-diagnostic.log
+            research/market-bottom/paired-diagnostic-data/*.manifest.json
+            research/market-bottom/paired-diagnostic-output/**
+          if-no-files-found: warn
+          retention-days: 7
