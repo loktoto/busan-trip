@@ -3,7 +3,7 @@
 - Request: `bottom-20260721T155800Z-bootstrap1`
 - Input source: `IBKR`
 - Input created: `2026-07-21T15:58:00Z`
-- Model commit: `7e8d73ccb3cf18120af835a470590d1bf6834fed`
+- Model commit: `879d1ec38782180081bdc8d8b5c3fd6404cfd0b1`
 - Input SHA256: `f6555d1cb50c8019bdab2f9754a79aff6d314a1197aeaebfce23434b188eec99`
 
 | Asset | Close | Cycle DD | 52W DD | State | Candidate tranche | Cumulative |
@@ -19,6 +19,6 @@ SMH close 580.70; cycle drawdown -13.19%; state 1 BOTTOM_WATCH. No tranche is as
 `NEUTRAL` — informational only; production weight remains zero.
 
 ## Material changes
-- `{"type": "INITIAL_RESULT"}`
+- None
 
 > Research signal only. No order is created or transmitted.
