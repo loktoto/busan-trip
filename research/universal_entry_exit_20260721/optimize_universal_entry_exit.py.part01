@@ -40,10 +40,14 @@ def load_config() -> dict[str, Any]:
     return json.loads(CONFIG_PATH.read_text())
 
 
+def resolve_ticker(ticker: str) -> str:
+    return TICKER_ALIASES.get(ticker, ticker)
+
+
 def download_all(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], dict[str, Any]]:
     required = {"BIL", "HYG", "LQD"}
     for a in config["assets"]:
-        required.update([a["symbol"], a["signal"], a["regime"], a["breadth_num"], a["breadth_den"]])
+        required.update(resolve_ticker(x) for x in [a["symbol"], a["signal"], a["regime"], a["breadth_num"], a["breadth_den"]])
     data: dict[str, pd.DataFrame] = {}
     manifest: dict[str, Any] = {"tickers": {}, "missing": {}}
     for i, ticker in enumerate(sorted(required), 1):
@@ -67,8 +71,8 @@ def download_all(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], dict[
 
 
 def align_asset(asset: dict[str, Any], data: dict[str, pd.DataFrame]):
-    trade = data.get(asset["symbol"])
-    signal = data.get(asset["signal"])
+    trade = data.get(resolve_ticker(asset["symbol"]))
+    signal = data.get(resolve_ticker(asset["signal"]))
     if trade is None or signal is None:
         return None
     idx = trade.index.intersection(signal.index)
