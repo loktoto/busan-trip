@@ -6,7 +6,8 @@
     strict_promotion = bool(
         winner["development_pass"]
         and winner["holdout_pass"]
-        and winner["stress_excess"] > 0
+        and winner["stress_development_excess"] > 0
+        and winner["stress_full_excess"] > 0
         and bootstrap["prob_positive_mean"] >= (0.60 if spec.experimental else 0.70)
         and not spec.experimental
     )
@@ -20,6 +21,7 @@
         "baseline_candidates": int(len(baseline_grid)),
         "stage2_candidates": int(len(grid)),
         "development_passes": int(grid.development_pass.sum()),
+        "selection_policy": "winner selected only by development_score; holdout used once for approval",
         "winner": {**winner, **base_params, **full, **bootstrap},
         "strict_promotion": strict_promotion,
         "experimental": spec.experimental,
@@ -42,7 +44,7 @@ def main() -> None:
         "# Regime-aware daily leverage optimisation v2",
         "",
         "Signals use completed daily closes and execute at the next regular-session open.",
-        "Selection uses development folds first; 2025-2026 (or the available 2026 slice for MAGS) is held out from ranking.",
+        "Winner selection is development-only; the final holdout can only approve or reject that preselected winner.",
         "",
     ]
     for spec in SPECS:
@@ -67,12 +69,14 @@ def main() -> None:
             "reclaim": winner["reclaim"],
             "rsi_exit": winner["rsi_exit"],
             "exit_ma": winner["exit_ma"],
+            "development_score": winner["development_score"],
             "full_excess": winner["excess"],
             "full_sharpe_excess": winner["sharpe_excess"],
             "full_dd_delta": winner["dd_delta"],
             "holdout_excess": winner["holdout_excess"],
             "holdout_sharpe_excess": winner["holdout_sharpe_excess"],
-            "stress_excess": winner["stress_excess"],
+            "stress_development_excess": winner["stress_development_excess"],
+            "stress_full_excess": winner["stress_full_excess"],
             "bootstrap_prob_positive": winner["prob_positive_mean"],
             "current_leverage": winner["current_leverage"],
         })
@@ -91,7 +95,7 @@ def main() -> None:
             f"- Exit: {exit_text}",
             f"- Full CAGR excess: {winner['excess']:.2%}; Sharpe delta: {winner['sharpe_excess']:.3f}; MaxDD delta: {winner['dd_delta']:.2%}",
             f"- Holdout CAGR excess: {winner['holdout_excess']:.2%}; holdout Sharpe delta: {winner['holdout_sharpe_excess']:.3f}",
-            f"- Stress-cost CAGR excess: {winner['stress_excess']:.2%}",
+            f"- Stress-cost excess: development {winner['stress_development_excess']:.2%}; full sample {winner['stress_full_excess']:.2%}",
             f"- Holdout block-bootstrap probability of positive annualised mean excess: {winner['prob_positive_mean']:.1%}",
             f"- Current effective leverage: {winner['current_leverage']:.2f}x",
             "",
@@ -100,8 +104,8 @@ def main() -> None:
     pd.DataFrame(summaries).to_csv(OUT / "summary.csv", index=False)
     (OUT / "summary.md").write_text("\n".join(report))
     manifest = {
-        "version": "v2",
-        "method": "two-stage development selection, final holdout, cost stress, block bootstrap",
+        "version": "v2-leakage-corrected",
+        "method": "development-only winner selection, final holdout approval, development/full cost stress, block bootstrap",
         "data_provider": "Yahoo Finance adjusted OHLCV for reproducible CI; IBKR used as independent contract/current-market audit",
         "outputs": sorted(path.name for path in OUT.iterdir()),
     }
