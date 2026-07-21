@@ -47,7 +47,6 @@ jobs:
           path: research/market-bottom/pytest.log
           if-no-files-found: error
           retention-days: 7
-
       - name: Run public SMH-SOXX paired reproducibility diagnostic
         if: always()
         shell: bash
@@ -138,6 +137,12 @@ jobs:
               python research/market-bottom/fetch_public_prices.py --symbol "$symbol" --out "$file"
             fi
           done
+      - name: Remove incomplete current-session bars
+        if: steps.runtime.outputs.present == 'true'
+        run: |
+          python research/market-bottom/sanitize_runtime_bars.py \
+            --request runtime/market-bottom/latest-request.json \
+            --data-dir runtime/market-bottom/data
       - name: Assemble, validate and calculate
         if: steps.runtime.outputs.present == 'true'
         shell: bash
