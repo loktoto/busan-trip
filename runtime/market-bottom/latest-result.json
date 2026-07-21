@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "request_id": "bottom-20260721T155800Z-bootstrap1",
-  "source": "IBKR",
+  "source": "IBKR_SNAPSHOT_PUBLIC_ADJUSTED_BOOTSTRAP",
   "input_created_at": "2026-07-21T15:58:00Z",
-  "calculated_at": "2026-07-21T16:03:37.296394+00:00",
+  "calculated_at": "2026-07-21T16:04:15.169511+00:00",
   "bar_status": "INTRADAY_CONTEXT",
-  "model_commit": "d7ea8884e302016a269ddf7a75091747db7eb449",
+  "model_commit": "7e0ea5c5cf8626b587dd27a1d690b15f157142bd",
   "input_sha256": "f6555d1cb50c8019bdab2f9754a79aff6d314a1197aeaebfce23434b188eec99",
-  "classification": "AUDITED_PROVISIONAL_RESEARCH_SIGNAL",
+  "classification": "AUDITED_PROVISIONAL_MIXED_SOURCE_BOOTSTRAP",
   "assets": {
     "SPY": {
       "symbol": "SPY",
@@ -108,8 +108,8 @@
       "symbol": "QQQ",
       "official_bar_date": "2026-07-21",
       "official_close": 707.5349731445312,
-      "state": 0,
-      "state_name": "NO_SETUP",
+      "state": 5,
+      "state_name": "RECOVERY_UNDERWAY",
       "cycle_high": 745.3408813476562,
       "cycle_drawdown": -0.050722976760335325,
       "drawdown_52w": -0.050722976760335325,
@@ -197,7 +197,8 @@
       "candidate_tranche": 0.0,
       "candidate_target_cumulative": 0.075,
       "candidate_reason": "NONE",
-      "eligible_at_next_open": false
+      "eligible_at_next_open": false,
+      "state_adjustment": "ACTIVE_DEPLOYED_EPISODE_ABOVE_WATCH_THRESHOLD"
     },
     "SOXX": {
       "symbol": "SOXX",
@@ -290,7 +291,7 @@
       "current_episode": 17,
       "cumulative_model_deployment": 0.22500000000000003,
       "candidate_tranche": 0.0,
-      "candidate_target_cumulative": 0.0036222992678976765,
+      "candidate_target_cumulative": 0.22500000000000003,
       "candidate_reason": "NO_NEW_EVENT",
       "eligible_at_next_open": false
     },
@@ -399,5 +400,23 @@
     "drawdown_gap": 0.029309375071424726
   },
   "material_changes": [],
-  "material_change": false
+  "material_change": false,
+  "data_provenance": {
+    "live_snapshot": "IBKR",
+    "historical_daily_bars": "PUBLIC_ADJUSTED_BOOTSTRAP",
+    "promotion_eligible": false
+  },
+  "governance_adjustments": [
+    {
+      "type": "ACTIVE_EPISODE_RECOVERY",
+      "symbol": "QQQ",
+      "old": 0,
+      "new": 5
+    },
+    {
+      "type": "TARGET_FLOOR",
+      "symbol": "SOXX",
+      "value": 0.22500000000000003
+    }
+  ]
 }
