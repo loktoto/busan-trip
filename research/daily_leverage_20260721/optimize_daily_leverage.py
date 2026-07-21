@@ -154,7 +154,7 @@ def run_returns(
     held = close_state.reindex(idx).shift(1).fillna(False).astype(bool)
     native_ret = open_return(native)
     levered_ret = open_return(levered)
-    blend = (target_leverage - 1.0) / (2.0 - 1.0)
+    blend = target_leverage - 1.0
     active_ret = (1 - blend) * native_ret + blend * levered_ret
     ret = native_ret.where(~held, active_ret)
     changes = held.astype(int).diff().abs().fillna(0)
@@ -255,7 +255,7 @@ def evaluate(spec: Spec, data: dict[str, pd.DataFrame]):
     states: dict[int, pd.Series] = {}
     for candidate_id, candidate in enumerate(make_candidates(spec, native, data)):
         ret, held = run_returns(native, levered, candidate["state"], spec.target_leverage, 10)
-        train = metrics(ret.loc[: split - pd.Timedelta(days=1)])
+        train_metrics = metrics(ret.loc[: split - pd.Timedelta(days=1)])
         oos = metrics(ret.loc[split:])
         full = metrics(ret)
         changes = int(held.astype(int).diff().abs().fillna(0).sum())
@@ -264,10 +264,10 @@ def evaluate(spec: Spec, data: dict[str, pd.DataFrame]):
             "candidate_id": candidate_id,
             "changes": changes,
             "avg_exposure": float(1 + held.mean() * (spec.target_leverage - 1)),
-            "train_cagr": train["cagr"], "train_sharpe": train["sharpe"], "train_maxdd": train["maxdd"],
-            "train_excess": train["cagr"] - btrain["cagr"],
-            "train_sharpe_excess": train["sharpe"] - btrain["sharpe"],
-            "train_dd_delta": train["maxdd"] - btrain["maxdd"],
+            "train_cagr": train_metrics["cagr"], "train_sharpe": train_metrics["sharpe"], "train_maxdd": train_metrics["maxdd"],
+            "train_excess": train_metrics["cagr"] - btrain["cagr"],
+            "train_sharpe_excess": train_metrics["sharpe"] - btrain["sharpe"],
+            "train_dd_delta": train_metrics["maxdd"] - btrain["maxdd"],
             "oos_cagr": oos["cagr"], "oos_sharpe": oos["sharpe"], "oos_maxdd": oos["maxdd"],
             "oos_excess": oos["cagr"] - boos["cagr"],
             "oos_sharpe_excess": oos["sharpe"] - boos["sharpe"],
@@ -283,9 +283,20 @@ def evaluate(spec: Spec, data: dict[str, pd.DataFrame]):
         (grid.train_excess > 0) & (grid.train_sharpe_excess >= 0)
         & (grid.train_dd_delta >= -0.03) & (grid.changes >= spec.min_changes)
     )
+    strict_count = int(grid.train_pass.sum())
+    selection_mode = "strict" if strict_count else "diagnostic_fallback"
     train = grid[grid.train_pass].copy()
     if train.empty:
-        raise RuntimeError(f"{spec.name}: no training candidate passed")
+        train = grid[
+            grid.train_excess.notna()
+            & grid.train_sharpe_excess.notna()
+            & (grid.changes >= max(1, spec.min_changes // 2))
+        ].copy()
+    if train.empty:
+        train = grid[grid.train_excess.notna()].copy()
+    if train.empty:
+        raise RuntimeError(f"{spec.name}: no finite candidate metrics")
+
     for column in ("train_excess", "train_sharpe_excess", "train_dd_delta"):
         train[column + "_pct"] = train[column].rank(pct=True)
     train["train_score"] = (
@@ -316,7 +327,8 @@ def evaluate(spec: Spec, data: dict[str, pd.DataFrame]):
     shortlist = shortlist.merge(pd.DataFrame(validation), on="candidate_id", how="left")
     primary = spec.roll_years[0]
     shortlist["oos_pass"] = (
-        (shortlist.oos_excess > 0) & (shortlist.oos_sharpe_excess >= 0)
+        (strict_count > 0)
+        & (shortlist.oos_excess > 0) & (shortlist.oos_sharpe_excess >= 0)
         & (shortlist.oos_dd_delta >= -0.03) & (shortlist.stress_excess > 0)
         & (shortlist[f"roll{primary}_beat"] >= 0.70)
     )
@@ -332,7 +344,8 @@ def evaluate(spec: Spec, data: dict[str, pd.DataFrame]):
     meta = {
         "asset": spec.name, "start": str(idx.min().date()), "end": str(idx.max().date()),
         "split": str(split.date()), "sessions": len(idx), "candidates": len(grid),
-        "train_pass": int(grid.train_pass.sum()), "benchmark": bfull, "winner": winner,
+        "train_pass": strict_count, "selection_mode": selection_mode,
+        "benchmark": bfull, "winner": winner,
     }
     return grid, shortlist, meta
 
@@ -342,7 +355,8 @@ def main() -> None:
     summary_rows = []
     report = [
         "# Daily leverage optimisation — actual-product validation", "",
-        "Signals are calculated at the close and applied at the following regular-session open.", "",
+        "Signals are calculated at the close and applied at the following regular-session open.",
+        "A diagnostic fallback is reported when no candidate passes the strict training gate; fallback rules are not promoted.", "",
     ]
     for spec in SPECS:
         grid, shortlist, meta = evaluate(spec, data)
@@ -353,6 +367,7 @@ def main() -> None:
         w = meta["winner"]
         summary_rows.append({
             "asset": spec.name, "start": meta["start"], "end": meta["end"],
+            "selection_mode": meta["selection_mode"], "strict_train_pass": meta["train_pass"],
             "oos_pass": bool(w["oos_pass"]), "current_state": w["current_state"],
             "regime": int(w["regime"]), "slope": int(w["slope"]),
             "rsi_entry": int(w["rsi_entry"]), "look": int(w["look"]),
@@ -369,14 +384,15 @@ def main() -> None:
         report += [
             f"## {spec.name}", "",
             f"- Actual-product overlap: {meta['start']} to {meta['end']} ({meta['sessions']} sessions)",
-            f"- Search: {meta['candidates']:,} candidates; {meta['train_pass']:,} passed the training gate",
+            f"- Search: {meta['candidates']:,} candidates; {meta['train_pass']:,} passed the strict training gate",
+            f"- Selection mode: **{meta['selection_mode']}**",
             f"- Entry: rising SMA{int(w['regime'])} over {int(w['slope'])} sessions; RSI(2)<{int(w['rsi_entry'])} within {int(w['look'])} sessions; reclaim SMA{int(w['reclaim'])}",
             f"- Exit: {exit_text}",
             f"- Full CAGR: {w['full_cagr']:.2%} vs native {meta['benchmark']['cagr']:.2%}",
             f"- Full Sharpe: {w['full_sharpe']:.2f} vs native {meta['benchmark']['sharpe']:.2f}",
             f"- Full MaxDD: {w['full_maxdd']:.2%} vs native {meta['benchmark']['maxdd']:.2%}",
             f"- OOS excess: {w['oos_excess']:.2%}; stress-cost excess: {w['stress_excess']:.2%}",
-            f"- OOS gate: {'PASS' if w['oos_pass'] else 'FAIL'}; current state: **{w['current_state']}**", "",
+            f"- Promotion gate: {'PASS' if w['oos_pass'] else 'FAIL'}; current state: **{w['current_state']}**", "",
         ]
     pd.DataFrame(summary_rows).to_csv(OUT / "optimised_summary.csv", index=False)
     (OUT / "optimised_summary.md").write_text("\n".join(report))
