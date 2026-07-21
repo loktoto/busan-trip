@@ -1,0 +1,95 @@
+
+
+def score_candidate(ret, bench, dev_end, blocks) -> dict[str,float]:
+    dev = interval_metrics(ret,bench,ret.index.min(),dev_end)
+    block_rows = [interval_metrics(ret,bench,s,e) for s,e in blocks]
+    return {
+        **{f"dev_{k}":v for k,v in dev.items()},
+        "block_excess_median": float(np.nanmedian([b["excess"] for b in block_rows])),
+        "block_excess_worst": float(np.nanmin([b["excess"] for b in block_rows])),
+        "block_sharpe_median": float(np.nanmedian([b["sharpe_delta"] for b in block_rows])),
+        "block_dd_worst": float(np.nanmin([b["dd_delta"] for b in block_rows])),
+    }
+
+
+def bootstrap_excess(strategy: pd.Series, benchmark: pd.Series, samples=600, block=20) -> dict[str,float]:
+    aligned = pd.concat([strategy.rename("s"),benchmark.rename("b")],axis=1).dropna()
+    ex = (aligned.s-aligned.b).to_numpy()
+    if len(ex) < 80:
+        return {"prob_positive":np.nan,"ci_low":np.nan,"ci_high":np.nan}
+    rng = np.random.default_rng(20260721)
+    starts = np.arange(max(1,len(ex)-block+1)); means=[]
+    for _ in range(samples):
+        picks = rng.choice(starts,size=math.ceil(len(ex)/block),replace=True)
+        draw = np.concatenate([ex[p:p+block] for p in picks])[:len(ex)]
+        means.append(draw.mean()*DAYS)
+    a=np.asarray(means)
+    return {"prob_positive":float((a>0).mean()),"ci_low":float(np.quantile(a,.025)),"ci_high":float(np.quantile(a,.975))}
+
+
+def canonical(v, d=6):
+    if v is None or pd.isna(v): return None
+    z=round(float(v),d)
+    return 0.0 if abs(z)<0.5*10**(-d) else z
+
+
+def evaluate_asset(asset: dict[str,Any], data: dict[str,pd.DataFrame]) -> tuple[dict[str,Any],pd.DataFrame,pd.DataFrame]:
+    aligned = align_asset(asset,data)
+    if aligned is None:
+        return {"symbol":asset["symbol"],"status":"SKIPPED","reason":"missing or insufficient trade/signal history"},pd.DataFrame(),pd.DataFrame()
+    trade, signal = aligned
+    common = trade.index.intersection(signal.index).intersection(data["BIL"].index)
+    trade=trade.loc[common]; signal=signal.loc[common]
+    experimental = bool(asset.get("experimental",False) or len(common)<750)
+    dev_end, holdout_start, blocks = split_dates(common,experimental)
+    cache=indicator_cache(signal)
+    entry_rules=generate_entry_rules(signal,cache)
+    entry_rank=rank_entries(entry_rules,trade,dev_end,blocks,experimental)
+    selected_ids=entry_rank[entry_rank["pass"]].head(8).entry_id.tolist()
+    if not selected_ids: selected_ids=entry_rank.head(8).entry_id.tolist()
+    exits=generate_exit_rules(signal,cache)
+    overlays=build_overlays(asset,common,signal,cache,data)
+    bench=open_returns(trade).iloc[:-1]
+    modes=["swing"] if asset["kind"] in ("LETF","INVERSE_VOL") else ["swing","add_on"]
+    base_rows=[]; state_cache={}
+    for entry_id in selected_ids:
+        erule, entry=entry_rules[int(entry_id)]
+        for exit_id,(xrule,xsignal,max_hold) in enumerate(exits):
+            for mode in modes:
+                state=managed_state(entry,xsignal,overlays["none"],trade,atr(trade,14),"none",max_hold)
+                ret,expo=strategy_returns(state,trade,data["BIL"],mode,float(asset["cost_bps"]))
+                sm=score_candidate(ret,bench,dev_end,blocks)
+                row={"entry_id":int(entry_id),"exit_id":exit_id,"entry_family":erule.family,"entry_params":json.dumps(erule.params),
+                     "exit_family":xrule.family,"exit_params":json.dumps(xrule.params),"mode":mode,"overlay":"none","stop":"none",
+                     "changes":int((expo.diff().abs()>0.01).sum()),"current_state":bool(state.iloc[-1]),**sm}
+                base_rows.append(row)
+                state_cache[(int(entry_id),exit_id,mode,"none","none")]=(state,ret,expo)
+    base=pd.DataFrame(base_rows)
+    min_changes=3 if experimental else 6
+    base["development_pass"]=(base.dev_excess>0)&(base.dev_sharpe_delta>=0)&(base.dev_dd_delta>=-0.03)&(base.block_excess_median>0)&(base.block_excess_worst>-0.03)&(base.changes>=min_changes)
+    for col in ["dev_excess","dev_sharpe_delta","dev_dd_delta","block_excess_median","block_sharpe_median","block_dd_worst"]:
+        base[col+"_rank"]=base[col].rank(pct=True)
+    base["development_score"]=0.25*base.dev_excess_rank+0.20*base.dev_sharpe_delta_rank+0.10*base.dev_dd_delta_rank+0.25*base.block_excess_median_rank+0.10*base.block_sharpe_median_rank+0.10*base.block_dd_worst_rank
+    stage3=[]
+    for mode in modes:
+        pool=base[(base["mode"]==mode)&base.development_pass].sort_values(["development_score","entry_id","exit_id"],ascending=[False,True,True]).head(4)
+        if pool.empty: pool=base[base["mode"]==mode].nlargest(4,"development_score")
+        for p in pool.itertuples():
+            erule,entry=entry_rules[int(p.entry_id)]
+            xrule,xsignal,max_hold=exits[int(p.exit_id)]
+            for overlay_name,stop in itertools.product(list(overlays),["none","hard8","hard12","atr3","atr4"]):
+                state=managed_state(entry,xsignal,overlays[overlay_name],trade,atr(trade,14),stop,max_hold)
+                ret,expo=strategy_returns(state,trade,data["BIL"],mode,float(asset["cost_bps"]))
+                sm=score_candidate(ret,bench,dev_end,blocks)
+                stress_ret,_=strategy_returns(state,trade,data["BIL"],mode,max(float(asset["cost_bps"])*2,float(asset["cost_bps"])+20))
+                stress=interval_metrics(stress_ret,bench,ret.index.min(),dev_end)
+                stage3.append({"entry_id":int(p.entry_id),"exit_id":int(p.exit_id),"entry_family":erule.family,"entry_params":json.dumps(erule.params),
+                               "exit_family":xrule.family,"exit_params":json.dumps(xrule.params),"mode":mode,"overlay":overlay_name,"stop":stop,
+                               "changes":int((expo.diff().abs()>0.01).sum()),"current_state":bool(state.iloc[-1]),"previous_state":bool(state.iloc[-2]),
+                               "stress_dev_excess":stress["excess"],**sm})
+                state_cache[(int(p.entry_id),int(p.exit_id),mode,overlay_name,stop)]=(state,ret,expo)
+    grid=pd.DataFrame(stage3)
+    grid["development_pass"]=(grid.dev_excess>0)&(grid.dev_sharpe_delta>=0)&(grid.dev_dd_delta>=-0.03)&(grid.block_excess_median>0)&(grid.block_excess_worst>-0.03)&(grid.stress_dev_excess>0)&(grid.changes>=min_changes)
+    for col in ["dev_excess","dev_sharpe_delta","dev_dd_delta","block_excess_median","block_sharpe_median","block_dd_worst","stress_dev_excess"]:
+        grid[col+"_rank"]=grid[col].rank(pct=True)
+    grid["development_score"]=0.20*grid.dev_excess_rank+0.15*grid.dev_sharpe_delta_rank+0.10*grid.dev_dd_delta_rank+0.20*grid.block_excess_median_rank+0.10*grid.block_sharpe_median_rank+0.10*grid.block_dd_worst_rank+0.15*grid.stress_dev_excess_rank
