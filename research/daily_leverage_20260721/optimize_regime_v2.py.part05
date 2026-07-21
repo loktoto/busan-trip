@@ -75,27 +75,28 @@
 
     grid = pd.DataFrame(results)
     grid["development_pass"] = (
-        (grid.development_excess > 0)
-        & (grid.development_sharpe_excess >= 0)
-        & (grid.development_dd_delta >= -0.03)
-        & (grid.fold_test_excess_median > 0)
-        & (grid.fold_test_excess_worst > -0.01)
-        & (grid.fold_test_dd_worst >= -0.04)
-        & (grid.stress_development_excess > 0)
+        (grid.development_excess.round(METRIC_DECIMALS) > 0)
+        & (grid.development_sharpe_excess.round(METRIC_DECIMALS) >= 0)
+        & (grid.development_dd_delta.round(METRIC_DECIMALS) >= -0.03)
+        & (grid.fold_test_excess_median.round(METRIC_DECIMALS) > 0)
+        & (grid.fold_test_excess_worst.round(METRIC_DECIMALS) > -0.01)
+        & (grid.fold_test_dd_worst.round(METRIC_DECIMALS) >= -0.04)
+        & (grid.stress_development_excess.round(METRIC_DECIMALS) > 0)
         & (grid.changes >= spec.min_changes)
     )
     dev = grid[grid.development_pass].copy()
     if dev.empty:
         dev = grid.copy()
-    for col in (
+    rank_columns = (
         "development_excess",
         "development_sharpe_excess",
         "fold_test_excess_median",
         "fold_test_sharpe_median",
         "stress_development_excess",
         "fold_test_dd_worst",
-    ):
-        dev[col + "_rank"] = dev[col].rank(pct=True)
+    )
+    for col in rank_columns:
+        dev[col + "_rank"] = quantised_rank(dev[col])
     dev["development_score"] = (
         0.20 * dev.development_excess_rank
         + 0.15 * dev.development_sharpe_excess_rank
@@ -104,14 +105,23 @@
         + 0.15 * dev.stress_development_excess_rank
         + 0.10 * dev.fold_test_dd_worst_rank
     )
-    development_shortlist = dev.nlargest(30, "development_score").copy()
-    development_shortlist["holdout_pass"] = (
-        (development_shortlist.holdout_excess > 0)
-        & (development_shortlist.holdout_sharpe_excess >= -0.05)
-        & (development_shortlist.holdout_dd_delta >= -0.03)
+    dev["development_score_q"] = dev.development_score.round(6)
+    dev["fold_excess_q"] = dev.fold_test_excess_median.round(METRIC_DECIMALS)
+    dev["stress_excess_q"] = dev.stress_development_excess.round(METRIC_DECIMALS)
+    dev["target_vol_sort"] = dev.target_vol.fillna(-1.0)
+    dev = dev.sort_values(
+        [
+            "development_score_q", "fold_excess_q", "stress_excess_q",
+            "baseline_id", "implementation", "overlay", "target_vol_sort",
+        ],
+        ascending=[False, False, False, True, True, True, True],
+        kind="mergesort",
     )
-    development_shortlist = development_shortlist.sort_values(
-        "development_score", ascending=False
+    development_shortlist = dev.head(30).copy()
+    development_shortlist["holdout_pass"] = (
+        (development_shortlist.holdout_excess.round(METRIC_DECIMALS) > 0)
+        & (development_shortlist.holdout_sharpe_excess.round(METRIC_DECIMALS) >= -0.05)
+        & (development_shortlist.holdout_dd_delta.round(METRIC_DECIMALS) >= -0.03)
     )
     winner = development_shortlist.iloc[0].to_dict()
     winner_target_vol = None if pd.isna(winner["target_vol"]) else float(winner["target_vol"])
