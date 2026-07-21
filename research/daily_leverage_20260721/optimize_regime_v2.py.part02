@@ -1,3 +1,19 @@
+SIGNAL_EPS = 0.0001  # one basis point; well above observed Yahoo adjustment noise
+METRIC_DECIMALS = 4  # rank annualised metrics only to one-basis-point precision
+
+
+def robust_above(left: pd.Series, right: pd.Series) -> pd.Series:
+    return left > right * (1.0 + SIGNAL_EPS)
+
+
+def robust_below(left: pd.Series, right: pd.Series) -> pd.Series:
+    return left < right * (1.0 - SIGNAL_EPS)
+
+
+def quantised_rank(series: pd.Series) -> pd.Series:
+    return series.round(METRIC_DECIMALS).rank(pct=True, method="average")
+
+
 def metrics(returns: pd.Series) -> dict[str, float]:
     x = returns.dropna()
     if len(x) < 40:
@@ -55,17 +71,17 @@ def risk_features(
     vix.loc[vix_idx] = data["^VIX"].loc[vix_idx, "Close"]
     vix3m.loc[vix_idx] = data["^VIX3M"].loc[vix_idx, "Close"]
 
-    features["credit_level"] = credit > credit.rolling(50).mean()
-    features["credit_slope"] = credit > credit.shift(20)
-    features["breadth_level"] = breadth > breadth.rolling(50).mean()
-    features["breadth_slope"] = breadth > breadth.shift(20)
+    features["credit_level"] = robust_above(credit, credit.rolling(50).mean())
+    features["credit_slope"] = robust_above(credit, credit.shift(20))
+    features["breadth_level"] = robust_above(breadth, breadth.rolling(50).mean())
+    features["breadth_slope"] = robust_above(breadth, breadth.shift(20))
     rv20 = annualised_realised_vol(native["Close"], 20)
     rv100 = annualised_realised_vol(native["Close"], 100)
     features["rv20"] = rv20
     features["rv100"] = rv100
-    features["rv_ratio"] = rv20 < 1.15 * rv100
-    features["vix_below_30"] = vix < 30
-    features["vix_contango"] = vix < vix3m
+    features["rv_ratio"] = rv20 < 1.15 * rv100 * (1.0 - SIGNAL_EPS)
+    features["vix_below_30"] = vix < 30.0 - 30.0 * SIGNAL_EPS
+    features["vix_contango"] = robust_below(vix, vix3m)
     features["credit_breadth"] = features["credit_level"] & features["breadth_level"]
     features["credit_rv"] = features["credit_level"] & features["rv_ratio"]
     features["breadth_rv"] = features["breadth_level"] & features["rv_ratio"]
@@ -86,7 +102,9 @@ def component_gate(spec: AssetSpec, data: dict[str, pd.DataFrame], index: pd.Dat
     gate[:] = False
     mags = data["MAGS"].loc[common, "Close"]
     tsm = data["TSM"].loc[common, "Close"]
-    gate.loc[common] = (mags > mags.rolling(100).mean()) & (tsm > tsm.rolling(100).mean())
+    gate.loc[common] = robust_above(mags, mags.rolling(100).mean()) & robust_above(
+        tsm, tsm.rolling(100).mean()
+    )
     return gate
 
 
