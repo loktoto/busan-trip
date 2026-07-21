@@ -3,6 +3,10 @@
 
 The primary score measures bottom proximity, missed episodes, adverse excursion and
 capital deployed near the later trough. It deliberately does not optimise CAGR.
+
+Signals are restricted to the requested train/test interval. Evaluation is allowed
+to use a forward tail because bottom proximity is a forward-labelled outcome. No
+trades generated inside that tail are retained.
 """
 from __future__ import annotations
 
@@ -37,22 +41,68 @@ def parameter_grid(base: Config, grid: dict) -> list[Config]:
     return [replace(base, **dict(zip(keys, values))) for values in itertools.product(*(grid[k] for k in keys))]
 
 
-def subset_with_warmup(df: pd.DataFrame, start: int, end: int, warmup: int = 260) -> tuple[pd.DataFrame, int]:
+def subset_with_warmup_and_tail(
+    df: pd.DataFrame,
+    start: int,
+    end: int,
+    warmup: int = 260,
+    evaluation_tail: int = 252,
+) -> tuple[pd.DataFrame, int, int]:
+    """Return a causal signal interval plus a forward evaluation-only tail.
+
+    `offset` is the first permitted signal row inside the subset and `signal_end`
+    is the exclusive last permitted signal row. Future rows are present only so
+    the evaluator can measure later troughs/recovery.
+    """
+    if not (0 <= start < end <= len(df)):
+        raise ValueError("Require 0 <= start < end <= len(df)")
     left = max(0, start - warmup)
-    return df.iloc[left:end].reset_index(drop=True), start - left
+    right = min(len(df), end + evaluation_tail)
+    return df.iloc[left:right].reset_index(drop=True), start - left, end - left
 
 
-def score_period(prices: pd.DataFrame, features: pd.DataFrame | None, cfg: Config, start: int, end: int) -> tuple[float, pd.DataFrame]:
-    sub, offset = subset_with_warmup(prices, start, end)
+def score_period(
+    prices: pd.DataFrame,
+    features: pd.DataFrame | None,
+    cfg: Config,
+    start: int,
+    end: int,
+) -> tuple[float, pd.DataFrame]:
+    sub, offset, signal_end = subset_with_warmup_and_tail(
+        prices,
+        start,
+        end,
+        evaluation_tail=cfg.episode_eval_max_days,
+    )
     sub_features = None
     if features is not None:
         d0, d1 = sub.Date.min(), sub.Date.max()
         sub_features = features.loc[(features.Date >= d0) & (features.Date <= d1)].copy()
     x = indicators(sub, cfg, sub_features)
     trades, catalog = run(x, cfg)
-    catalog = catalog.loc[catalog.start_index >= offset].copy()
+
+    # Each episode is assigned to exactly one signal partition by its start date.
+    # This avoids double-counting an episode across adjacent test partitions.
+    catalog = catalog.loc[
+        (catalog.start_index >= offset) & (catalog.start_index < signal_end)
+    ].copy()
     allowed = set(catalog.episode)
-    trades = trades.loc[trades.episode.isin(allowed)].copy() if not trades.empty else trades
+    if not trades.empty:
+        trades = trades.loc[
+            trades.episode.isin(allowed)
+            & (trades.signal_index >= offset)
+            & (trades.signal_index < signal_end)
+        ].copy()
+
+    # A still-unrecovered episode is nevertheless evaluable once the full fixed
+    # 252-session horizon is observed. Near-dataset-end episodes without the full
+    # horizon remain incomplete and are excluded rather than filled with hindsight.
+    if not catalog.empty:
+        fixed_horizon_observed = (
+            catalog.start_index.astype(int) + cfg.episode_eval_max_days <= len(x) - 1
+        )
+        catalog.loc[fixed_horizon_observed, "complete"] = True
+
     _, ep, _ = evaluate(x, trades, catalog, cfg)
     return utility(ep), ep
 
@@ -64,10 +114,12 @@ def walk_forward(
     train_days: int,
     test_days: int,
     purge_days: int,
+    step_days: int | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     rows, episodes = [], []
     fold = 0
     train_start = 0
+    step_days = test_days if step_days is None else step_days
     while True:
         train_end = train_start + train_days
         test_start = train_end + purge_days
@@ -92,10 +144,10 @@ def walk_forward(
                     "train_utility": np.nan,
                     "test_utility": np.nan,
                     "config": None,
-                    "status": "SKIPPED_NO_COMPLETE_TRAIN_EPISODE",
+                    "status": "SKIPPED_NO_EVALUABLE_TRAIN_EPISODE",
                 }
             )
-            train_start += test_days
+            train_start += step_days
             continue
         train_scores.sort(reverse=True)
         best_train, best_i = train_scores[0]
@@ -112,7 +164,7 @@ def walk_forward(
                 "train_utility": best_train,
                 "test_utility": test_score if np.isfinite(test_score) else np.nan,
                 "config": json.dumps(asdict(cfg), sort_keys=True),
-                "status": "OK" if np.isfinite(test_score) else "NO_COMPLETE_TEST_EPISODE",
+                "status": "OK" if np.isfinite(test_score) else "NO_EVALUABLE_TEST_EPISODE",
             }
         )
         if not ep.empty:
@@ -120,7 +172,7 @@ def walk_forward(
             ep["fold"] = fold
             ep["candidate_index"] = best_i
             episodes.append(ep)
-        train_start += test_days
+        train_start += step_days
     return pd.DataFrame(rows), pd.concat(episodes, ignore_index=True) if episodes else pd.DataFrame()
 
 
@@ -162,7 +214,7 @@ def selection_instability(folds: pd.DataFrame) -> dict:
         return {
             "classification": "PBO-INSPIRED DIAGNOSTIC — NOT FORMAL CSCV PBO",
             "folds": 0,
-            "note": "No folds contained complete train and test episodes.",
+            "note": "No folds contained evaluable train and test episodes.",
         }
     train = valid.train_utility.to_numpy(float)
     test = valid.test_utility.to_numpy(float)
@@ -184,9 +236,10 @@ def main() -> None:
     ap.add_argument("--config", type=Path, required=True)
     ap.add_argument("--grid", type=Path, required=True)
     ap.add_argument("--features-csv", type=Path)
-    ap.add_argument("--train-days", type=int, default=1008)
-    ap.add_argument("--test-days", type=int, default=252)
+    ap.add_argument("--train-days", type=int, default=504)
+    ap.add_argument("--test-days", type=int, default=126)
     ap.add_argument("--purge-days", type=int, default=84)
+    ap.add_argument("--step-days", type=int, default=126)
     ap.add_argument("--out", type=Path, default=Path("validation-output"))
     a = ap.parse_args()
 
@@ -195,12 +248,21 @@ def main() -> None:
     base = load_config(a.config, a.symbol)
     grid = json.loads(a.grid.read_text())
     candidates = parameter_grid(base, grid)
-    folds, episodes = walk_forward(prices, features, candidates, a.train_days, a.test_days, a.purge_days)
+    folds, episodes = walk_forward(
+        prices,
+        features,
+        candidates,
+        a.train_days,
+        a.test_days,
+        a.purge_days,
+        a.step_days,
+    )
     result = {
         "symbol": a.symbol,
         "candidate_count": len(candidates),
         "fold_count": len(folds),
         "purge_days": a.purge_days,
+        "evaluation_tail_days": base.episode_eval_max_days,
         "bootstrap": episode_bootstrap(episodes),
         "selection_instability": selection_instability(folds),
     }
