@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "request_id": "bottom-20260721T155800Z-bootstrap1",
+  "created_at": "2026-07-21T15:58:00Z",
+  "source": "IBKR",
+  "bar_status": "INTRADAY_CONTEXT",
+  "model_commit": "006cff32152393a5e0a397d9b1fc3cca8ac3c09c",
+  "assets": {
+    "SPY": {
+      "bars_path": "runtime/market-bottom/data/SPY.csv",
+      "snapshot": {
+        "snapshot_source": "IBKR",
+        "historical_bars_source": "PUBLIC_ADJUSTED_BOOTSTRAP_FOR_FIRST_RUN",
+        "timestamp_utc": "2026-07-21T15:56:37Z",
+        "delayed_seconds": 900,
+        "last": 747.86,
+        "prior_close": 742.09,
+        "change": 5.77,
+        "change_pct": 0.78,
+        "open": 746.27,
+        "high": 748.01,
+        "low": 744.18,
+        "volume": 11099069.476602,
+        "historical_vol_30d_annual": 0.17146055946485186,
+        "implied_vol_annual": 0.13648685539866934,
+        "iv_percentile_52w": 0.4780876636505127,
+        "high_52w": 760.3900146484375,
+        "low_52w": 614.052001953125
+      }
+    },
+    "QQQ": {
+      "bars_path": "runtime/market-bottom/data/QQQ.csv",
+      "snapshot": {
+        "snapshot_source": "IBKR",
+        "historical_bars_source": "PUBLIC_ADJUSTED_BOOTSTRAP_FOR_FIRST_RUN",
+        "timestamp_utc": "2026-07-21T15:57:02Z",
+        "delayed_seconds": 900,
+        "last": 707.98,
+        "prior_close": 696.06,
+        "change": 11.92,
+        "change_pct": 1.71,
+        "open": 706.63,
+        "high": 708.99,
+        "low": 702.80,
+        "volume": 12319923.582174,
+        "historical_vol_30d_annual": 0.295399192180886,
+        "implied_vol_annual": 0.2390635025574443,
+        "iv_percentile_52w": 0.8486055731773376,
+        "high_52w": 748.6500244140625,
+        "low_52w": 549.64501953125
+      }
+    },
+    "SOXX": {
+      "bars_path": "runtime/market-bottom/data/SOXX.csv",
+      "snapshot": {
+        "snapshot_source": "IBKR",
+        "historical_bars_source": "PUBLIC_ADJUSTED_BOOTSTRAP_FOR_FIRST_RUN",
+        "timestamp_utc": "2026-07-21T15:57:09Z",
+        "delayed_seconds": 900,
+        "last": 549.63,
+        "prior_close": 524.14,
+        "change": 25.49,
+        "change_pct": 4.86,
+        "open": 549.53,
+        "high": 553.11,
+        "low": 540.15,
+        "volume": 4903493.912207,
+        "historical_vol_30d_annual": 0.7501181202104107,
+        "implied_vol_annual": 0.6329083082821992,
+        "iv_percentile_52w": 0.9641434550285339,
+        "high_52w": 655.9500122070312,
+        "low_52w": 231.35400390625
+      }
+    },
+    "SMH": {
+      "bars_path": "runtime/market-bottom/data/SMH.csv",
+      "snapshot": {
+        "snapshot_source": "IBKR",
+        "historical_bars_source": "PUBLIC_ADJUSTED_BOOTSTRAP_FOR_FIRST_RUN",
+        "timestamp_utc": "2026-07-21T15:57:22Z",
+        "delayed_seconds": 900,
+        "last": 580.74,
+        "prior_close": 558.83,
+        "change": 21.91,
+        "change_pct": 3.92,
+        "open": 581.49,
+        "high": 584.00,
+        "low": 572.05,
+        "volume": 3370376.310867,
+        "historical_vol_30d_annual": 0.634412007273885,
+        "implied_vol_annual": 0.5885641034089396,
+        "iv_percentile_52w": 0.9920318722724915,
+        "high_52w": 671.8300170898438,
+        "low_52w": 279.19000244140625
+      }
+    }
+  }
+}
