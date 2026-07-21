@@ -1,0 +1,95 @@
+    ]
+    return dev_end, holdout_start, blocks
+
+
+def indicator_cache(signal: pd.DataFrame) -> dict[str, Any]:
+    close = signal.Close
+    cache: dict[str, Any] = {"rsi2": rsi(close, 2), "rsi5": rsi(close, 5)}
+    for n in [5,10,20,50,100,150,200,252]:
+        cache[f"sma{n}"] = close.rolling(n).mean()
+    for n in [10,20,50,100]:
+        cache[f"high{n}"] = close.shift(1).rolling(n).max()
+        cache[f"low{n}"] = close.shift(1).rolling(n).min()
+    mean20 = close.rolling(20).mean()
+    std20 = close.rolling(20).std(ddof=1)
+    cache["z20"] = (close - mean20) / std20.replace(0, np.nan)
+    cache["atr14"] = atr(signal, 14)
+    cache["rv20"] = close.pct_change().rolling(20).std(ddof=1) * math.sqrt(DAYS)
+    cache["rv100"] = close.pct_change().rolling(100).std(ddof=1) * math.sqrt(DAYS)
+    for n in [63,126,252]:
+        cache[f"mom{n}"] = close / close.shift(n) - 1
+    return cache
+
+
+def generate_entry_rules(signal: pd.DataFrame, cache: dict[str, Any]) -> list[tuple[EntryRule,pd.Series]]:
+    c = signal.Close
+    r2 = cache["rsi2"]
+    out: list[tuple[EntryRule,pd.Series]] = []
+    for trend_ma, slope, threshold, look, reclaim in itertools.product(
+        [100,200], [10,20], [5,10,20], [3,5,10], [5,10,20]
+    ):
+        t = cache[f"sma{trend_ma}"]
+        s = cache[f"sma{reclaim}"]
+        trend = (c > t * (1 + HYST)) & (t > t.shift(slope) * (1 + HYST))
+        oversold = r2.rolling(look).min() < threshold
+        cross = (c > s * (1 + HYST)) & (c.shift(1) <= s.shift(1) * (1 + HYST))
+        out.append((EntryRule("pullback_reclaim", (trend_ma,slope,threshold,look,reclaim)), trend & oversold & cross))
+    for trend_ma, threshold, zcut, bullish in itertools.product([100,200],[5,15],[-1.0,-1.75],[False,True]):
+        t = cache[f"sma{trend_ma}"]
+        e = (c > t * (1 + HYST)) & (r2 < threshold) & (cache["z20"] < zcut)
+        if bullish:
+            e &= c > signal.Open
+        out.append((EntryRule("trend_mean_reversion", (trend_ma,threshold,zcut,bullish)), e))
+    for trend_ma, breakout in itertools.product([100,200],[20,50,100]):
+        t = cache[f"sma{trend_ma}"]
+        e = (c > t * (1 + HYST)) & (t > t.shift(20) * (1 + HYST)) & (c > cache[f"high{breakout}"] * (1 + HYST))
+        out.append((EntryRule("breakout", (trend_ma,breakout)), e))
+    for trend_ma, mom_n, pullback in itertools.product([100,200],[63,126,252],[0.0,0.05]):
+        t = cache[f"sma{trend_ma}"]
+        recent_high = c.rolling(20).max()
+        e = (c > t * (1 + HYST)) & (cache[f"mom{mom_n}"] > 0) & ((recent_high / c - 1) <= pullback + 1e-12)
+        e &= ~e.shift(1).fillna(False)
+        out.append((EntryRule("time_series_momentum", (trend_ma,mom_n,pullback)), e))
+    return out
+
+
+def event_forward_returns(entry: pd.Series, trade: pd.DataFrame, horizon: int, cooldown: int = 5) -> pd.Series:
+    events = entry.fillna(False).to_numpy(dtype=bool)
+    chosen = np.zeros(len(events), dtype=bool)
+    last = -cooldown - 1
+    for i, flag in enumerate(events):
+        if flag and i - last > cooldown:
+            chosen[i] = True
+            last = i
+    open_ = trade.Open
+    fwd = open_.shift(-(horizon + 1)) / open_.shift(-1) - 1
+    return fwd[chosen]
+
+
+def rank_entries(rules, trade, dev_end, blocks, experimental: bool) -> pd.DataFrame:
+    rows = []
+    min_events = 3 if experimental else 6
+    for entry_id, (rule, signal) in enumerate(rules):
+        row: dict[str, Any] = {"entry_id": entry_id, "family": rule.family, "params": json.dumps(rule.params)}
+        vals = []
+        for h in [5,10,20,40]:
+            r = event_forward_returns(signal.loc[:dev_end], trade.loc[:dev_end], h)
+            row[f"n{h}"] = len(r)
+            row[f"median{h}"] = float(r.median()) if len(r) else np.nan
+            row[f"win{h}"] = float((r > 0).mean()) if len(r) else np.nan
+            vals.append(row[f"median{h}"])
+        block_positive = []
+        for start,end in blocks:
+            r = event_forward_returns(signal.loc[start:end], trade.loc[start:end], 20)
+            block_positive.append(float(r.median() > 0) if len(r) >= 2 else np.nan)
+        row["block_positive_share"] = float(np.nanmean(block_positive)) if np.isfinite(block_positive).any() else 0.0
+        row["pass"] = row["n20"] >= min_events and row["median10"] > 0 and row["median20"] > 0 and row["block_positive_share"] >= 2/3
+        rows.append(row)
+    frame = pd.DataFrame(rows)
+    for col in ["median5","median10","median20","median40","win20","block_positive_share"]:
+        frame[col+"_rank"] = frame[col].rank(pct=True)
+    frame["entry_score"] = (
+        0.10*frame.median5_rank + 0.20*frame.median10_rank + 0.30*frame.median20_rank
+        + 0.15*frame.median40_rank + 0.10*frame.win20_rank + 0.15*frame.block_positive_share_rank
+    )
+    return frame.sort_values(["pass","entry_score","entry_id"], ascending=[False,False,True])
