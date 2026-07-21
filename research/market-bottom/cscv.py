@@ -35,10 +35,14 @@ def build_utility_matrix(
     missing = required - set(candidate_rows.columns)
     if missing:
         raise ValueError(f"Candidate matrix is missing columns: {sorted(missing)}")
-    z = candidate_rows.loc[candidate_rows.sample == "TEST_ALL", list(required)].copy()
+    # Bracket access is mandatory here: DataFrame.sample is a pandas method.
+    z = candidate_rows.loc[
+        candidate_rows["sample"].eq("TEST_ALL"),
+        ["fold", "sample", "candidate_index", "robust_mean"],
+    ].copy()
     if z.empty:
         raise ValueError("No TEST_ALL rows; rerun robust_validation with the current engine")
-    z["robust_mean"] = pd.to_numeric(z.robust_mean, errors="coerce")
+    z["robust_mean"] = pd.to_numeric(z["robust_mean"], errors="coerce")
     matrix = z.pivot_table(
         index="fold",
         columns="candidate_index",
@@ -51,12 +55,13 @@ def build_utility_matrix(
     # selection information and is removed. Candidate-specific non-finite values
     # are genuine failures to produce an evaluable result and receive a fold-local
     # penalty below the worst finite candidate rather than being silently dropped.
-    all_missing = ~np.isfinite(matrix).any(axis=1)
+    finite_matrix = np.isfinite(matrix.to_numpy(dtype=float))
+    all_missing = ~finite_matrix.any(axis=1)
     removed_folds = matrix.index[all_missing].astype(int).tolist()
     matrix = matrix.loc[~all_missing].copy()
     replacements = 0
     for fold in matrix.index:
-        row = matrix.loc[fold].to_numpy(float)
+        row = matrix.loc[fold].to_numpy(dtype=float)
         finite = np.isfinite(row)
         if not finite.any():
             continue
@@ -143,7 +148,7 @@ def cscv_pbo(
     detail = pd.DataFrame(records)
     if detail.empty:
         raise RuntimeError("CSCV generated no split records")
-    pbo = float(detail.below_oos_median.mean())
+    pbo = float(detail["below_oos_median"].mean())
     summary = {
         "classification": "CSCV/PBO DIAGNOSTIC ON OUTER OOS PARTITIONS — NOT GUARANTEED",
         "usable_partitions": len(folds),
@@ -152,11 +157,11 @@ def cscv_pbo(
         "total_possible_combinations_before_cap": int(total_possible),
         "evaluated_splits": int(len(detail)),
         "pbo": pbo,
-        "median_oos_rank_fraction": float(detail.oos_rank_fraction.median()),
-        "median_degradation": float(detail.degradation.median()),
-        "negative_oos_selected_fraction": float((detail.oos_selected_utility < 0).mean()),
-        "median_is_oos_spearman": float(detail.is_oos_spearman.dropna().median())
-        if detail.is_oos_spearman.notna().any()
+        "median_oos_rank_fraction": float(detail["oos_rank_fraction"].median()),
+        "median_degradation": float(detail["degradation"].median()),
+        "negative_oos_selected_fraction": float((detail["oos_selected_utility"] < 0).mean()),
+        "median_is_oos_spearman": float(detail["is_oos_spearman"].dropna().median())
+        if detail["is_oos_spearman"].notna().any()
         else np.nan,
         "interpretation": (
             "PBO is the share of CSCV splits where the in-sample winner ranks below "
