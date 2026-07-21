@@ -84,7 +84,8 @@ def build_utility_matrix(
     matrix = matrix.loc[~all_missing].copy()
     replacements = 0
     for fold in matrix.index:
-        row = matrix.loc[fold].to_numpy(dtype=float)
+        # pandas may expose a read-only NumPy view; penalties require a writable copy.
+        row = matrix.loc[fold].to_numpy(dtype=float, copy=True)
         finite = np.isfinite(row)
         if not finite.any():
             continue
