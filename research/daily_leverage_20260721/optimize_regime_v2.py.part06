@@ -6,8 +6,8 @@
     strict_promotion = bool(
         winner["development_pass"]
         and winner["holdout_pass"]
-        and winner["stress_development_excess"] > 0
-        and winner["stress_full_excess"] > 0
+        and round(float(winner["stress_development_excess"]), METRIC_DECIMALS) > 0
+        and round(float(winner["stress_full_excess"]), METRIC_DECIMALS) > 0
         and bootstrap["prob_positive_mean"] >= (0.60 if spec.experimental else 0.70)
         and not spec.experimental
     )
@@ -21,13 +21,20 @@
         "baseline_candidates": int(len(baseline_grid)),
         "stage2_candidates": int(len(grid)),
         "development_passes": int(grid.development_pass.sum()),
-        "selection_policy": "winner selected only by development_score; holdout used once for approval",
+        "selection_policy": "winner selected only by quantised development score; holdout used once for approval",
+        "noise_policy": "1bp signal hysteresis, 1bp metric quantisation and deterministic parameter tie-breaks",
         "winner": {**winner, **base_params, **full, **bootstrap},
         "strict_promotion": strict_promotion,
         "experimental": spec.experimental,
         "folds": folds,
     }
     return baseline_grid, grid, development_shortlist, meta
+
+
+def _canonical_number(value, decimals: int = METRIC_DECIMALS):
+    if value is None or pd.isna(value):
+        return None
+    return round(float(value), decimals)
 
 
 def main() -> None:
@@ -45,6 +52,7 @@ def main() -> None:
         "",
         "Signals use completed daily closes and execute at the next regular-session open.",
         "Winner selection is development-only; the final holdout can only approve or reject that preselected winner.",
+        "Signals use a one-basis-point hysteresis band and rankings use one-basis-point metric quantisation.",
         "",
     ]
     for spec in SPECS:
@@ -61,24 +69,24 @@ def main() -> None:
             "experimental": meta["experimental"],
             "implementation": winner["implementation"],
             "overlay": winner["overlay"],
-            "target_vol": winner["target_vol"],
-            "trend_ma": winner["trend_ma"],
-            "trend_slope": winner["trend_slope"],
-            "rsi_entry": winner["rsi_entry"],
-            "lookback": winner["lookback"],
-            "reclaim": winner["reclaim"],
-            "rsi_exit": winner["rsi_exit"],
-            "exit_ma": winner["exit_ma"],
-            "development_score": winner["development_score"],
-            "full_excess": winner["excess"],
-            "full_sharpe_excess": winner["sharpe_excess"],
-            "full_dd_delta": winner["dd_delta"],
-            "holdout_excess": winner["holdout_excess"],
-            "holdout_sharpe_excess": winner["holdout_sharpe_excess"],
-            "stress_development_excess": winner["stress_development_excess"],
-            "stress_full_excess": winner["stress_full_excess"],
-            "bootstrap_prob_positive": winner["prob_positive_mean"],
-            "current_leverage": winner["current_leverage"],
+            "target_vol": _canonical_number(winner["target_vol"]),
+            "trend_ma": int(winner["trend_ma"]),
+            "trend_slope": int(winner["trend_slope"]),
+            "rsi_entry": int(winner["rsi_entry"]),
+            "lookback": int(winner["lookback"]),
+            "reclaim": int(winner["reclaim"]),
+            "rsi_exit": int(winner["rsi_exit"]),
+            "exit_ma": None if pd.isna(winner["exit_ma"]) else int(winner["exit_ma"]),
+            "development_score": _canonical_number(winner["development_score"], 6),
+            "full_excess": _canonical_number(winner["excess"]),
+            "full_sharpe_excess": _canonical_number(winner["sharpe_excess"]),
+            "full_dd_delta": _canonical_number(winner["dd_delta"]),
+            "holdout_excess": _canonical_number(winner["holdout_excess"]),
+            "holdout_sharpe_excess": _canonical_number(winner["holdout_sharpe_excess"]),
+            "stress_development_excess": _canonical_number(winner["stress_development_excess"]),
+            "stress_full_excess": _canonical_number(winner["stress_full_excess"]),
+            "bootstrap_prob_positive": _canonical_number(winner["prob_positive_mean"]),
+            "current_leverage": _canonical_number(winner["current_leverage"]),
         })
         decision = "PROMOTE" if meta["strict_promotion"] else ("EXPERIMENTAL" if meta["experimental"] else "REJECT")
         exit_text = f"RSI(2)>{int(winner['rsi_exit'])}"
@@ -101,11 +109,11 @@ def main() -> None:
             "",
         ])
 
-    pd.DataFrame(summaries).to_csv(OUT / "summary.csv", index=False)
+    pd.DataFrame(summaries).to_csv(OUT / "summary.csv", index=False, float_format="%.6f")
     (OUT / "summary.md").write_text("\n".join(report))
     manifest = {
-        "version": "v2-leakage-corrected",
-        "method": "development-only winner selection, final holdout approval, development/full cost stress, block bootstrap",
+        "version": "v2-noise-robust",
+        "method": "development-only selection, final holdout approval, cost stress, block bootstrap, 1bp hysteresis and quantised ranking",
         "data_provider": "Yahoo Finance adjusted OHLCV for reproducible CI; IBKR used as independent contract/current-market audit",
         "outputs": sorted(path.name for path in OUT.iterdir()),
     }
