@@ -40,7 +40,18 @@
                     product_leverage,
                     max(cost_bps * 2.0, cost_bps + 20.0),
                 )
-                stress = interval_metrics(stress_returns, benchmark, str(common.min().date()), str(common.max().date()))
+                stress_dev = interval_metrics(
+                    stress_returns,
+                    benchmark,
+                    str(common.min().date()),
+                    str(development_end.date()),
+                )
+                stress_full = interval_metrics(
+                    stress_returns,
+                    benchmark,
+                    str(common.min().date()),
+                    str(common.max().date()),
+                )
                 results.append({
                     **asdict(candidate),
                     "development_excess": dev["excess"],
@@ -54,7 +65,8 @@
                     "holdout_excess": holdout["excess"],
                     "holdout_sharpe_excess": holdout["sharpe_excess"],
                     "holdout_dd_delta": holdout["dd_delta"],
-                    "stress_excess": stress["excess"],
+                    "stress_development_excess": stress_dev["excess"],
+                    "stress_full_excess": stress_full["excess"],
                     "avg_leverage": float(leverage.mean()),
                     "max_leverage_observed": float(leverage.max()),
                     "changes": int((leverage.diff().abs() > 0.05).sum()),
@@ -69,7 +81,7 @@
         & (grid.fold_test_excess_median > 0)
         & (grid.fold_test_excess_worst > -0.01)
         & (grid.fold_test_dd_worst >= -0.04)
-        & (grid.stress_excess > 0)
+        & (grid.stress_development_excess > 0)
         & (grid.changes >= spec.min_changes)
     )
     dev = grid[grid.development_pass].copy()
@@ -80,7 +92,7 @@
         "development_sharpe_excess",
         "fold_test_excess_median",
         "fold_test_sharpe_median",
-        "stress_excess",
+        "stress_development_excess",
         "fold_test_dd_worst",
     ):
         dev[col + "_rank"] = dev[col].rank(pct=True)
@@ -89,7 +101,7 @@
         + 0.15 * dev.development_sharpe_excess_rank
         + 0.25 * dev.fold_test_excess_median_rank
         + 0.15 * dev.fold_test_sharpe_median_rank
-        + 0.15 * dev.stress_excess_rank
+        + 0.15 * dev.stress_development_excess_rank
         + 0.10 * dev.fold_test_dd_worst_rank
     )
     development_shortlist = dev.nlargest(30, "development_score").copy()
@@ -98,13 +110,8 @@
         & (development_shortlist.holdout_sharpe_excess >= -0.05)
         & (development_shortlist.holdout_dd_delta >= -0.03)
     )
-    development_shortlist["final_score"] = (
-        0.75 * development_shortlist.development_score
-        + 0.15 * development_shortlist.holdout_excess.rank(pct=True)
-        + 0.10 * development_shortlist.holdout_sharpe_excess.rank(pct=True)
-    )
     development_shortlist = development_shortlist.sort_values(
-        ["holdout_pass", "final_score"], ascending=[False, False]
+        "development_score", ascending=False
     )
     winner = development_shortlist.iloc[0].to_dict()
     winner_target_vol = None if pd.isna(winner["target_vol"]) else float(winner["target_vol"])
