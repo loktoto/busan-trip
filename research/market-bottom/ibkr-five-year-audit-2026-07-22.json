@@ -1,0 +1,63 @@
+{
+  "classification": "DERIVED IBKR AUDIT METADATA — RAW LICENSED BARS NOT PERSISTED",
+  "captured_at_utc": "2026-07-22T04:49:00Z",
+  "request": {
+    "period": "FIVE_YEARS",
+    "step": "ONE_DAY",
+    "outside_rth": false,
+    "include_corporate_actions": true,
+    "reported_delay_seconds": 900
+  },
+  "window": {
+    "start": "2021-07-26",
+    "end": "2026-07-21"
+  },
+  "assets": {
+    "SPY": {
+      "exchange": "ARCA",
+      "latest_completed_rth_bar": {
+        "Date": "2026-07-21",
+        "Open": 746.29,
+        "High": 749.04,
+        "Low": 744.18,
+        "Close": 748.28,
+        "Volume": 20947830
+      },
+      "split_actions_in_window": []
+    },
+    "QQQ": {
+      "exchange": "NASDAQ",
+      "latest_completed_rth_bar": {
+        "Date": "2026-07-21",
+        "Open": 706.59,
+        "High": 710.05,
+        "Low": 702.80,
+        "Close": 708.97,
+        "Volume": 19922744
+      },
+      "split_actions_in_window": []
+    },
+    "SOXX": {
+      "exchange": "NASDAQ",
+      "latest_completed_rth_bar": {
+        "Date": "2026-07-21",
+        "Open": 549.10,
+        "High": 555.16,
+        "Low": 540.15,
+        "Close": 552.69,
+        "Volume": 6547236
+      },
+      "split_actions_in_window": [
+        {
+          "date": "2024-03-07",
+          "ratio": 3.0
+        }
+      ]
+    }
+  },
+  "governance": {
+    "raw_ibkr_bars_committed": false,
+    "reason": "Repository is public; raw licensed history is not redistributed.",
+    "use": "Independent validation of recent-window boundaries, latest completed RTH bars and corporate-action handling. Reproducible numerical backtests use audited public adjusted histories."
+  }
+}
