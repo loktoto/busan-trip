@@ -37,6 +37,7 @@ jobs:
         run: |
           python -m py_compile research/index_mags_entry_exit_20260722/run_index_mags_v5.py
           python -m py_compile research/index_mags_entry_exit_20260722/focused_basket_patch.py
+          python -m py_compile research/index_mags_entry_exit_20260722/compare_focused_repeats.py
           python -m json.tool research/index_mags_entry_exit_20260722/universe_index_mags.json >/dev/null
           python - <<'PY'
           import base64, gzip
@@ -154,6 +155,7 @@ jobs:
     needs: aggregate-repetition
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -164,86 +166,8 @@ jobs:
           pattern: index-mags-entry-exit-aggregate-*
           path: aggregates
           merge-multiple: false
-      - name: Compare full six-asset identity
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import hashlib
-          import json
-          import pandas as pd
-
-          files = sorted(Path('aggregates').glob('*/focused_summary_*.csv'))
-          if len(files) != 2:
-              raise RuntimeError(f'Expected two repetition summaries, found {len(files)}')
-          frames = [pd.read_csv(path).sort_values('symbol').reset_index(drop=True) for path in files]
-          expected = ['MAGS10','MAGS7','QQQ','SMH','SOXX','SPY']
-          for frame in frames:
-              if frame.symbol.astype(str).tolist() != expected:
-                  raise RuntimeError(f'Unexpected universe: {frame.symbol.tolist()}')
-
-          identity_columns = [
-              'symbol','decision','production_action','diagnostic_action','mode',
-              'entry_family','entry_params','exit_family','exit_params','overlay','stop',
-              'v5_status','v5_replace_v4','v5_decision','v5_production_action',
-              'v5_diagnostic_action','v5_mode','v5_components','v5_ensemble_size',
-              'v5_current_exposure'
-          ]
-          missing = [column for column in identity_columns if column not in frames[0].columns or column not in frames[1].columns]
-          if missing:
-              raise RuntimeError(f'Missing identity columns: {missing}')
-          left = frames[0][identity_columns].fillna('').astype(str)
-          right = frames[1][identity_columns].fillna('').astype(str)
-          unequal = left.ne(right)
-          if unequal.any().any():
-              differences = []
-              for row_index, column_index in zip(*unequal.to_numpy().nonzero()):
-                  differences.append({
-                      'symbol': left.iloc[row_index]['symbol'],
-                      'column': identity_columns[column_index],
-                      'left': left.iloc[row_index, column_index],
-                      'right': right.iloc[row_index, column_index],
-                  })
-              raise RuntimeError(f'Focused identity mismatch: {differences[:30]}')
-
-          metric_tolerances = {
-              'holdout_excess': 0.0005,
-              'holdout_sharpe_delta': 0.002,
-              'holdout_dd_delta': 0.0005,
-              'stress_full_excess': 0.0005,
-              'v5_holdout_excess': 0.0005,
-              'v5_holdout_sharpe_delta': 0.002,
-              'v5_holdout_dd_delta': 0.0005,
-              'v5_stress_full_excess': 0.0005,
-          }
-          metric_differences = {}
-          for column, tolerance in metric_tolerances.items():
-              if column not in frames[0].columns or column not in frames[1].columns:
-                  raise RuntimeError(f'Missing metric column: {column}')
-              delta = (
-                  pd.to_numeric(frames[0][column], errors='coerce')
-                  - pd.to_numeric(frames[1][column], errors='coerce')
-              ).abs()
-              bad = delta > tolerance
-              if bad.fillna(False).any():
-                  metric_differences[column] = {
-                      frames[0].iloc[i]['symbol']: float(delta.iloc[i])
-                      for i in delta.index[bad.fillna(False)]
-                  }
-          if metric_differences:
-              raise RuntimeError(f'Focused metric instability: {metric_differences}')
-
-          canonical = left.to_csv(index=False)
-          digest = hashlib.sha256(canonical.encode()).hexdigest()
-          result = {
-              'status': 'PASS',
-              'assets': expected,
-              'identity_sha256': digest,
-              'source_summaries': [str(path) for path in files],
-          }
-          Path('focused_repeatability.json').write_text(json.dumps(result, indent=2))
-          frames[0].to_csv('focused_summary.csv', index=False, float_format='%.8f')
-          print(json.dumps(result, indent=2))
-          PY
+      - name: Compare production identity and audit rejected diagnostics
+        run: python research/index_mags_entry_exit_20260722/compare_focused_repeats.py
       - name: Upload canonical focused result
         uses: actions/upload-artifact@v4
         with:
