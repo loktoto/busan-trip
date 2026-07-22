@@ -38,6 +38,7 @@ jobs:
           cat research/universal_entry_exit_20260721/robustness_patch_v3_2.py.part?? > /tmp/v4_patch.py
           python -m py_compile /tmp/v4_core.py /tmp/v4_patch.py
           python -m py_compile research/universal_entry_exit_20260722_v5/run_universal_v5.py
+          python -m py_compile research/universal_entry_exit_20260722_v5/v5_hotfix.py
           python - <<'PY2'
           import base64, gzip
           from pathlib import Path
@@ -99,8 +100,15 @@ jobs:
           if len(files) != 10:
               raise RuntimeError(f'Expected 10 shard summaries, found {len(files)}')
           frame = pd.concat([pd.read_csv(path) for path in files], ignore_index=True).sort_values('symbol').reset_index(drop=True)
+          if len(frame) != 85:
+              raise RuntimeError(f'Expected 85 asset rows, found {len(frame)}')
           if frame.symbol.duplicated().any():
               raise RuntimeError('Duplicate symbols across V5 shards')
+          v5_status = frame.get('v5_status', pd.Series('', index=frame.index)).fillna('').astype(str)
+          challenger_errors = frame[v5_status.str.startswith('ERROR')]
+          if not challenger_errors.empty:
+              details = ', '.join(f"{row.symbol}: {row.v5_status}" for _, row in challenger_errors.iterrows())
+              raise RuntimeError(f'V5 challenger errors must fail CI: {details}')
           out = Path('combined_v5')
           out.mkdir(parents=True, exist_ok=True)
           frame.to_csv(out / 'summary.csv', index=False, float_format='%.6f')
@@ -130,7 +138,7 @@ jobs:
                       f"{row.v5_holdout_sharpe_delta:.3f} | {row.v5_dsr_probability:.1%} | {row.v5_pbo_proxy:.1%} |"
                   )
               lines.append('')
-          status_counts = frame.get('v5_status', pd.Series(dtype=str)).fillna('MISSING').value_counts()
+          status_counts = v5_status.replace('', 'MISSING').value_counts()
           lines += ['## Challenger status', ''] + [f'- {name}: {count}' for name, count in status_counts.items()] + ['']
           (out / 'summary.md').write_text('\n'.join(lines))
           (out / 'aggregate_manifest.json').write_text(json.dumps({
