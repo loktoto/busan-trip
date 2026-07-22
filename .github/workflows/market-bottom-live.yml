@@ -63,14 +63,14 @@ jobs:
             --repo-root . \
             --out runtime/market-bottom/generated/latest-input.json
 
-      - name: Calculate deterministic v1.1 state
+      - name: Calculate v1.1 trading state with v1.5 taxonomy
         shell: bash
         run: |
           previous=""
           if [ -f runtime/market-bottom/latest-result.json ]; then
             previous="--previous runtime/market-bottom/latest-result.json"
           fi
-          python research/market-bottom/run_live_v11.py \
+          PYTHONPATH=research/market-bottom python research/market-bottom/run_live_v15.py \
             --input runtime/market-bottom/generated/latest-input.json \
             --config research/market-bottom/config.example.json \
             $previous \
@@ -89,6 +89,8 @@ jobs:
           assert result['request_id'] == request['request_id']
           assert result['source'] == 'IBKR'
           assert result['official_eligible'] is True
+          assert result['engine_version'] == '1.5-reporting'
+          assert result['trading_engine_version'] == '1.1'
           assert result['input_sha256']
           assert result['model_commit'] and result['model_commit'] != 'LOCAL'
           created = datetime.fromisoformat(request['created_at'].replace('Z', '+00:00'))
@@ -99,12 +101,20 @@ jobs:
           for symbol in ('SPY', 'QQQ', 'SOXX'):
               asset = result['assets'][symbol]
               assert asset['candidate_target_cumulative'] + 1e-12 >= asset['cumulative_model_deployment']
+              taxonomy = asset['bottom_taxonomy']
+              assert taxonomy['reporting_only'] is True
+              assert taxonomy['trade_authority'] == 'NONE'
+              assert taxonomy['leverage_authority'] == 'NONE_FROM_TAXONOMY'
+              assert taxonomy['participation_status']
+              assert taxonomy['local_swing_status']
+              assert taxonomy['cycle_bottom_status']
           assert result['assets']['SMH']['candidate_tranche'] == 0.0
           assert result['semiconductor_pair']['production_weight'] == 0.0
           print(json.dumps({
               'request_id': result['request_id'],
               'model_commit': result['model_commit'],
               'calculated_at': result['calculated_at'],
+              'engine_version': result['engine_version'],
           }, sort_keys=True))
           PY
 
@@ -134,6 +144,6 @@ jobs:
             echo "No runtime result changes"
             exit 0
           fi
-          git commit -m "runtime: publish market-bottom v1.1 result [skip ci]"
+          git commit -m "runtime: publish market-bottom v1.5 taxonomy result [skip ci]"
           git pull --rebase origin agent/market-bottom-strategy
           git push origin HEAD:agent/market-bottom-strategy
