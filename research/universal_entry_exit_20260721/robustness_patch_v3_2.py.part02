@@ -1,0 +1,140 @@
+# Universal entry/exit v4 patch: broader universe, excess-return entry study,
+# longer multi-regime holdout, and additional interpretable entry/exit families.
+
+V4_CONFIG_PATH = Path("research/universal_entry_exit_20260721/universe_v4_additions.json")
+IBKR_STATIC_DIR = Path("research/universal_entry_exit_20260721/ibkr_static")
+END_DATE = "2026-07-22"  # exclusive: last completed US session 2026-07-21
+OUT = Path("research_outputs/universal_entry_exit_v4_20260722")
+OUT.mkdir(parents=True, exist_ok=True)
+INPUT_DIR = OUT / "inputs"
+INPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+_v3_load_config = load_config
+_v3_download_ticker = download_ticker
+_v3_indicator_cache = indicator_cache
+_v3_generate_entry_rules = generate_entry_rules
+_v3_generate_exit_rules = generate_exit_rules
+_v3_build_overlays = build_overlays
+
+
+def load_config() -> dict[str, Any]:
+    config = _v3_load_config()
+    additions = json.loads(V4_CONFIG_PATH.read_text()) if V4_CONFIG_PATH.exists() else {"assets": []}
+    existing = {item["symbol"] for item in config["assets"]}
+    for asset in additions.get("assets", []):
+        if asset["symbol"] not in existing:
+            config["assets"].append(asset)
+            existing.add(asset["symbol"])
+    config["as_of"] = "2026-07-22"
+    config["completed_close_cutoff"] = "2026-07-21"
+    return config
+
+
+def download_ticker(ticker: str) -> tuple[pd.DataFrame | None, list[str]]:
+    slug = ticker.replace("^", "IDX_").replace("/", "_")
+    for suffix in (".csv.gz", ".csv"):
+        path = IBKR_STATIC_DIR / f"{slug}{suffix}"
+        if path.exists():
+            try:
+                frame = pd.read_csv(path, index_col=0, parse_dates=True)
+                frame = clean_frame(frame, ticker)
+                if frame is not None:
+                    return frame, [f"IBKR static input: {path}"]
+            except Exception as exc:
+                return None, [f"IBKR static read failed: {type(exc).__name__}: {exc}"]
+    return _v3_download_ticker(ticker)
+
+
+def split_dates(index: pd.DatetimeIndex, experimental: bool) -> tuple[pd.Timestamp, pd.Timestamp, list[tuple[pd.Timestamp,pd.Timestamp]]]:
+    # Reserve a multi-regime holdout that includes the 2022 bear market where history permits.
+    if len(index) >= 2500 and index.min() < pd.Timestamp("2016-01-01"):
+        candidate = index[index >= pd.Timestamp("2022-01-01")]
+        holdout_start = candidate.min() if len(candidate) else index[int(len(index) * 0.72)]
+    elif len(index) >= 1500:
+        candidate = index[index >= pd.Timestamp("2023-01-01")]
+        holdout_start = candidate.min() if len(candidate) else index[int(len(index) * 0.70)]
+    elif len(index) >= 1000:
+        holdout_start = index[int(len(index) * 0.68)]
+    elif len(index) >= 600:
+        holdout_start = index[int(len(index) * 0.65)]
+    else:
+        holdout_start = index[int(len(index) * 0.60)]
+    dev_end = index[index < holdout_start].max()
+    dev_idx = index[index <= dev_end]
+    if len(dev_idx) < 120:
+        raise RuntimeError("insufficient development sample")
+    if len(dev_idx) >= 1600:
+        cut_points = [0.25, 0.50, 0.75]
+    elif len(dev_idx) >= 800:
+        cut_points = [0.33, 0.66]
+    else:
+        cut_points = [0.50]
+    cuts = [dev_idx[min(len(dev_idx)-1, int(len(dev_idx)*q))] for q in cut_points]
+    starts = [dev_idx.min()] + cuts
+    ends = [c - pd.Timedelta(days=1) for c in cuts] + [dev_end]
+    blocks = [(s, e) for s, e in zip(starts, ends) if s <= e]
+    return dev_end, holdout_start, blocks
+
+
+def indicator_cache(signal: pd.DataFrame) -> dict[str, Any]:
+    cache = _v3_indicator_cache(signal)
+    close = signal.Close
+    for n in [10, 20, 50, 100]:
+        cache[f"ema{n}"] = close.ewm(span=n, adjust=False, min_periods=n).mean()
+    atr_pct = cache["atr14"] / close.replace(0, np.nan)
+    cache["atr_pct"] = atr_pct
+    cache["atr_pct_rank252"] = atr_pct.rolling(252, min_periods=126).rank(pct=True)
+    vol_med = signal.Volume.rolling(20, min_periods=10).median().replace(0, np.nan)
+    cache["volume_ratio20"] = signal.Volume / vol_med
+    cache["high63"] = close.shift(1).rolling(63).max()
+    cache["drawdown63"] = close / close.rolling(63).max() - 1
+    return cache
+
+
+def _all_forward_returns(trade: pd.DataFrame, horizon: int) -> pd.Series:
+    return trade.Open.shift(-(horizon + 1)) / trade.Open.shift(-1) - 1
+
+
+def rank_entries(rules, trade, dev_end, blocks, experimental: bool) -> pd.DataFrame:
+    """Rank timing edge versus the unconditional forward return, not raw bull-market returns."""
+    rows = []
+    min_events = 3 if experimental else 6
+    for entry_id, (rule, signal) in enumerate(rules):
+        row: dict[str, Any] = {"entry_id": entry_id, "family": rule.family, "params": json.dumps(rule.params)}
+        for h in [5, 10, 20, 40]:
+            event = event_forward_returns(signal.loc[:dev_end], trade.loc[:dev_end], h)
+            unconditional = _all_forward_returns(trade.loc[:dev_end], h).dropna()
+            baseline = float(unconditional.median()) if len(unconditional) else np.nan
+            row[f"n{h}"] = len(event)
+            row[f"raw_median{h}"] = float(event.median()) if len(event) else np.nan
+            row[f"median{h}"] = row[f"raw_median{h}"] - baseline if len(event) else np.nan
+            row[f"win{h}"] = float((event > baseline).mean()) if len(event) else np.nan
+        block_positive = []
+        for start, end in blocks:
+            event = event_forward_returns(signal.loc[start:end], trade.loc[start:end], 20)
+            unconditional = _all_forward_returns(trade.loc[start:end], 20).dropna()
+            if len(event) >= 2 and len(unconditional):
+                block_positive.append(float(event.median() > unconditional.median()))
+            else:
+                block_positive.append(np.nan)
+        finite = np.asarray(block_positive, dtype=float)
+        row["block_positive_share"] = float(np.nanmean(finite)) if np.isfinite(finite).any() else 0.0
+        row["pass"] = (
+            row["n20"] >= min_events
+            and row["median10"] > 0
+            and row["median20"] > 0
+            and row["block_positive_share"] >= 2 / 3
+        )
+        rows.append(row)
+    frame = pd.DataFrame(rows)
+    frame = quantize_columns(frame, {
+        "median5": 0.0005, "median10": 0.0005, "median20": 0.0005, "median40": 0.0005,
+        "win20": 0.005, "block_positive_share": 0.01,
+    })
+    for col in ["median5", "median10", "median20", "median40", "win20", "block_positive_share"]:
+        frame[col + "_rank"] = frame[col + "_q"].rank(pct=True, method="average")
+    frame["entry_score"] = (
+        0.10 * frame.median5_rank + 0.20 * frame.median10_rank + 0.30 * frame.median20_rank
+        + 0.15 * frame.median40_rank + 0.10 * frame.win20_rank + 0.15 * frame.block_positive_share_rank
+    ).round(6)
+    return frame.sort_values(["pass", "entry_score", "entry_id"], ascending=[False, False, True])
