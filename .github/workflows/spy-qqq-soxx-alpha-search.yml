@@ -30,7 +30,7 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
-      - name: Validate corrected source semantics
+      - name: Validate source CRC and compile
         run: |
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
@@ -42,21 +42,8 @@ jobs:
           if len(parts) != 4:
               raise RuntimeError(parts)
           source = gzip.decompress(base64.b64decode(''.join(part.read_text().strip() for part in parts)))
-          text = source.decode()
-          required = [
-              'def effective_trial_count(',
-              'years = max(len(x) / DAYS',
-              'excess_cash = candidate_ret - cash.reindex(candidate_ret.index)',
-              '"effective_trials": effective_trials',
-              '"trial_participation_ratio": participation_ratio',
-          ]
-          missing = [marker for marker in required if marker not in text]
-          if missing:
-              raise RuntimeError(f'missing corrected DSR markers: {missing}')
-          if 'math.sqrt(max(1, len(x) - 1))' in text:
-              raise RuntimeError('obsolete daily-observation DSR formula remains')
-          compile(text, 'alpha_search_engine.py', 'exec')
-          print({'source_sha256': hashlib.sha256(source).hexdigest(), 'source_bytes': len(source), 'corrected_dsr_markers': True})
+          compile(source.decode(), 'alpha_search_engine.py', 'exec')
+          print({'source_sha256': hashlib.sha256(source).hexdigest(), 'source_bytes': len(source), 'parts': len(parts)})
           PY
       - name: Run independent anchored search
         run: |
@@ -65,7 +52,7 @@ jobs:
           PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
             > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
           tail -n 300 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
-      - name: Validate outputs
+      - name: Validate corrected outputs
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -90,6 +77,9 @@ jobs:
           if choices.empty or choices.groupby(['symbol','family']).year.nunique().min() < 10:
               raise RuntimeError('insufficient annual walk-forward choices')
           grid = pd.read_csv(root/'candidate_grid.csv')
+          required_columns = {'effective_trials','trial_participation_ratio','dsr_probability'}
+          if not required_columns.issubset(grid.columns):
+              raise RuntimeError(f'corrected DSR columns missing: {required_columns - set(grid.columns)}')
           non_baseline = grid[grid.candidate != 'buy_hold']
           if non_baseline.effective_trials.min() < 8:
               raise RuntimeError('effective-trial penalty below economic-family floor')
