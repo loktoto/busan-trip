@@ -1,0 +1,109 @@
+name: SPY QQQ fixed ensemble challenger
+
+on:
+  pull_request:
+    branches: [agent/spy-qqq-soxx-alpha-search-20260722]
+    paths:
+      - research/spy_qqq_fixed_ensemble_20260722/**
+      - .github/workflows/spy-qqq-fixed-ensemble.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spy-qqq-fixed-ensemble-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repetitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
+      - name: Validate scripts
+        run: |
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
+          python -m py_compile research/spy_qqq_fixed_ensemble_20260722/validate_fixed_ensembles.py
+          python -m py_compile research/spy_qqq_fixed_ensemble_20260722/compare_repeats.py
+      - name: Rebuild frozen alpha engine and inputs
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
+          mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
+            > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
+          tail -n 100 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
+      - name: Run fixed-ensemble challenger
+        run: |
+          rm -rf research_outputs/spy_qqq_fixed_ensemble_20260722
+          mkdir -p research_outputs/spy_qqq_fixed_ensemble_20260722
+          PYTHONWARNINGS=ignore python research/spy_qqq_fixed_ensemble_20260722/validate_fixed_ensembles.py \
+            > research_outputs/spy_qqq_fixed_ensemble_20260722/optimizer.log 2>&1
+          tail -n 300 research_outputs/spy_qqq_fixed_ensemble_20260722/optimizer.log
+      - name: Validate outputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import pandas as pd
+          root = Path('research_outputs/spy_qqq_fixed_ensemble_20260722')
+          required = ['strategy_identity.csv','fixed_candidate_grid.csv','actual_product_validation.csv','actual_product_weights.csv','block_diagnostics.csv','run_manifest.json','report.md','optimizer.log']
+          missing = [name for name in required if not (root/name).exists()]
+          if missing:
+              raise RuntimeError(missing)
+          identity = pd.read_csv(root/'strategy_identity.csv')
+          if identity.symbol.tolist() != ['QQQ','SPY']:
+              raise RuntimeError(identity.symbol.tolist())
+          grid = pd.read_csv(root/'fixed_candidate_grid.csv')
+          if grid.groupby('symbol').size().ne(9).any():
+              raise RuntimeError(grid.groupby('symbol').size().to_dict())
+          products = pd.read_csv(root/'actual_product_validation.csv')
+          if sorted(products.ticker.unique().tolist()) != ['QLD','SSO','TQQQ','UPRO']:
+              raise RuntimeError(products.ticker.unique().tolist())
+          manifest = json.loads((root/'run_manifest.json').read_text())
+          print(identity.to_string(index=False))
+          print(products.to_string(index=False))
+          print({'identity_sha256':manifest['identity_sha256']})
+          PY
+      - name: Upload repetition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-fixed-ensemble-${{ matrix.repetition }}
+          path: research_outputs/spy_qqq_fixed_ensemble_20260722
+          if-no-files-found: warn
+          retention-days: 30
+
+  compare:
+    needs: repetitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependencies
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: spy-qqq-fixed-ensemble-*
+          path: repetitions
+          merge-multiple: false
+      - name: Compare repetitions
+        run: python research/spy_qqq_fixed_ensemble_20260722/compare_repeats.py
+      - name: Upload canonical result
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-fixed-ensemble-canonical
+          path: canonical
+          if-no-files-found: error
+          retention-days: 30
