@@ -1,0 +1,123 @@
+name: SOXX V5 repeatability gate
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/universal_entry_exit_20260721/**
+      - research/universal_entry_exit_20260722/**
+      - research/universal_entry_exit_20260722_v5/**
+      - .github/workflows/soxx-v5-repeatability.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: soxx-v5-repeatability-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Run SOXX-containing V5 shard
+        shell: bash
+        env:
+          UNIVERSE_SHARD: 1
+          UNIVERSE_SHARDS: 10
+        run: |
+          mkdir -p research_outputs/universal_entry_exit_v5_20260722
+          PYTHONWARNINGS=ignore python research/universal_entry_exit_20260722_v5/run_universal_v5.py > research_outputs/universal_entry_exit_v5_20260722/optimizer.log 2>&1
+          tail -n 160 research_outputs/universal_entry_exit_v5_20260722/optimizer.log
+      - name: Upload repetition
+        uses: actions/upload-artifact@v4
+        with:
+          name: soxx-v5-repeat-${{ matrix.repetition }}
+          path: research_outputs/universal_entry_exit_v5_20260722
+          if-no-files-found: error
+          retention-days: 14
+
+  compare:
+    needs: repeat
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependency
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: soxx-v5-repeat-*
+          path: repeats
+          merge-multiple: false
+      - name: Compare SOXX identity and metrics
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import pandas as pd
+
+          files = sorted(Path('repeats').glob('*/summary.csv'))
+          if len(files) != 2:
+              raise RuntimeError(f'Expected two repetition summaries, found {len(files)}')
+          rows = []
+          for path in files:
+              frame = pd.read_csv(path)
+              match = frame[frame.symbol.eq('SOXX')]
+              if len(match) != 1:
+                  raise RuntimeError(f'Expected one SOXX row in {path}, found {len(match)}')
+              rows.append(match.iloc[0])
+          left, right = rows
+          identity = [
+              'v5_status','v5_replace_v4','v5_decision','v5_production_action','v5_diagnostic_action',
+              'v5_mode','v5_components','v5_ensemble_size','v5_current_exposure'
+          ]
+          mismatches = {column: [left[column], right[column]] for column in identity if str(left[column]) != str(right[column])}
+          if mismatches:
+              raise RuntimeError(f'SOXX identity mismatch: {mismatches}')
+          tolerances = {
+              'v5_dsr_probability': 0.005,
+              'v5_pbo_proxy': 0.001,
+              'v5_holdout_excess': 0.0005,
+              'v5_holdout_sharpe_delta': 0.002,
+              'v5_holdout_dd_delta': 0.0005,
+              'v5_full_excess': 0.0005,
+              'v5_stress_full_excess': 0.0005,
+              'v5_bootstrap_prob_positive': 0.005,
+          }
+          metric_diffs = {column: abs(float(left[column]) - float(right[column])) for column in tolerances}
+          failures = {column: value for column, value in metric_diffs.items() if value > tolerances[column]}
+          if failures:
+              raise RuntimeError(f'SOXX metric instability: {failures}')
+          canonical = json.dumps({column: str(left[column]) for column in identity}, sort_keys=True, separators=(',', ':'))
+          result = {
+              'status': 'PASS',
+              'identity_sha256': hashlib.sha256(canonical.encode()).hexdigest(),
+              'identity': {column: left[column] if pd.notna(left[column]) else None for column in identity},
+              'metric_differences': metric_diffs,
+              'source_summaries': [str(path) for path in files],
+          }
+          Path('soxx_repeatability.json').write_text(json.dumps(result, indent=2, default=str))
+          print(json.dumps(result, indent=2, default=str))
+          PY
+      - name: Upload repeatability result
+        uses: actions/upload-artifact@v4
+        with:
+          name: soxx-v5-repeatability-result
+          path: soxx_repeatability.json
+          if-no-files-found: error
+          retention-days: 14
