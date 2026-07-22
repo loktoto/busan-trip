@@ -1,0 +1,11 @@
+{
+  "assets": [
+    {"symbol":"7709.HK","kind":"LETF","class":"korea_memory_2x","signal":"000660.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":35,"experimental":true},
+    {"symbol":"7747.HK","kind":"LETF","class":"korea_semiconductor_2x","signal":"005930.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":35,"experimental":true},
+    {"symbol":"3191.HK","kind":"ETF","class":"china_semiconductor","signal":"3191.HK","regime":"CQQQ","breadth_num":"3191.HK","breadth_den":"CQQQ","cost_bps":18},
+    {"symbol":"000660.KS","kind":"STOCK","class":"memory","signal":"000660.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":12},
+    {"symbol":"005930.KS","kind":"STOCK","class":"semiconductor","signal":"005930.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":10},
+    {"symbol":"S","kind":"STOCK","class":"cybersecurity","signal":"S","regime":"CIBR","breadth_num":"CIBR","breadth_den":"QQQ","cost_bps":8},
+    {"symbol":"GRAB","kind":"STOCK","class":"fintech_asia","signal":"GRAB","regime":"EEM","breadth_num":"EEM","breadth_den":"ACWI","cost_bps":10}
+  ]
+}
