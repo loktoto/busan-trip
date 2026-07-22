@@ -3,8 +3,8 @@
 - Request: `bottom-20260722T010300Z-rthclose`
 - Input source: `IBKR_SNAPSHOT_PUBLIC_ADJUSTED_BOOTSTRAP`
 - Input created: `2026-07-22T01:03:00Z`
-- Model commit: `a27a8e4dd780df907d029cc46d3a7f5df9c63fa1`
-- Input SHA256: `c9f8fd552025e9db94b70027ef6321bbc283c3a9fdbcfe75a8fcd5c6cf36022e`
+- Model commit: `956f88871b2049f0877e058e0eb169062e52f5af`
+- Input SHA256: `c2e90352be29f2aa1a188f6af637c7d5909775c739a0da5869baad79464ffc6a`
 
 | Asset | Close | Cycle DD | 52W DD | State | Candidate tranche | Cumulative |
 |---|---:|---:|---:|---|---:|---:|
