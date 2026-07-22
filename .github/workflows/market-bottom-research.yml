@@ -143,16 +143,18 @@ jobs:
           python research/market-bottom/sanitize_runtime_bars.py \
             --request runtime/market-bottom/latest-request.json \
             --data-dir runtime/market-bottom/data
-      - name: Assemble, validate and calculate
+      - name: Assemble live input
         if: steps.runtime.outputs.present == 'true'
-        shell: bash
         run: |
-          set -euo pipefail
           mkdir -p runtime/market-bottom/generated
           python research/market-bottom/prepare_live_input.py \
             --request runtime/market-bottom/latest-request.json \
             --repo-root . \
             --out runtime/market-bottom/generated/latest-input.json
+      - name: Calculate deterministic state
+        if: steps.runtime.outputs.present == 'true'
+        shell: bash
+        run: |
           previous=""
           if [ -f runtime/market-bottom/latest-result.json ]; then
             previous="--previous runtime/market-bottom/latest-result.json"
@@ -163,25 +165,28 @@ jobs:
             $previous \
             --result runtime/market-bottom/generated/latest-result.json \
             --report runtime/market-bottom/generated/latest-report.md
+      - name: Finalize governance and provenance
+        if: steps.runtime.outputs.present == 'true'
+        run: |
           python research/market-bottom/live_finalize.py \
             --result runtime/market-bottom/generated/latest-result.json \
             --report runtime/market-bottom/generated/latest-report.md
-          python -m json.tool runtime/market-bottom/generated/latest-result.json >/dev/null
-      - name: Archive immutable live output
+      - name: Validate live JSON
         if: steps.runtime.outputs.present == 'true'
+        run: python -m json.tool runtime/market-bottom/generated/latest-result.json >/dev/null
+      - name: Archive immutable live output
+        if: always() && steps.runtime.outputs.present == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: market-bottom-live-${{ github.run_id }}
           path: |
             runtime/market-bottom/latest-request.json
             runtime/market-bottom/data/*.csv
-            runtime/market-bottom/generated/latest-input.json
-            runtime/market-bottom/generated/latest-result.json
-            runtime/market-bottom/generated/latest-report.md
-          if-no-files-found: error
+            runtime/market-bottom/generated/**
+          if-no-files-found: warn
           retention-days: 14
       - name: Publish deterministic result and refreshed data
-        if: steps.runtime.outputs.present == 'true'
+        if: success() && steps.runtime.outputs.present == 'true'
         shell: bash
         run: |
           set -euo pipefail
