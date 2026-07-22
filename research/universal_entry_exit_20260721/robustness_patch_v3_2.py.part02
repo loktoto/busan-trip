@@ -31,6 +31,12 @@ def load_config() -> dict[str, Any]:
 
 
 def download_ticker(ticker: str) -> tuple[pd.DataFrame | None, list[str]]:
+    # Prefer the longer reproducible public history when it is valid. IBKR static
+    # files are an explicit fallback for new or missing products, not an override.
+    public_frame, public_errors = _v3_download_ticker(ticker)
+    if public_frame is not None:
+        return public_frame, public_errors
+
     slug = ticker.replace("^", "IDX_").replace("/", "_")
     for suffix in (".csv.gz", ".csv"):
         path = IBKR_STATIC_DIR / f"{slug}{suffix}"
@@ -45,10 +51,10 @@ def download_ticker(ticker: str) -> tuple[pd.DataFrame | None, list[str]]:
                 frame.index = pd.to_datetime(frame.index).tz_localize(None).normalize()
                 frame = frame[~frame.index.duplicated(keep="last")].sort_index()
                 if len(frame) >= 20:
-                    return frame, [f"IBKR static input: {path}"]
+                    return frame, public_errors + [f"IBKR static fallback: {path}"]
             except Exception as exc:
-                return None, [f"IBKR static read failed: {type(exc).__name__}: {exc}"]
-    return _v3_download_ticker(ticker)
+                return None, public_errors + [f"IBKR static read failed: {type(exc).__name__}: {exc}"]
+    return None, public_errors
 
 
 def split_dates(index: pd.DatetimeIndex, experimental: bool) -> tuple[pd.Timestamp, pd.Timestamp, list[tuple[pd.Timestamp,pd.Timestamp]]]:
