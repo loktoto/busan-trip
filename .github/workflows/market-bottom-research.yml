@@ -97,3 +97,51 @@ jobs:
             research/market-bottom/paired-diagnostic-output/**
           if-no-files-found: warn
           retention-days: 7
+      - name: Backtest conservative vs dual-path v1.2 monitor
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf recovery-v12-data recovery-v12-output recovery-v12.log
+          mkdir -p recovery-v12-data recovery-v12-output
+          {
+            echo "Classification: PUBLIC ADJUSTED REPRODUCIBILITY + DERIVED IBKR AUDIT"
+            failed=0
+            for symbol in SPY QQQ SOXX; do
+              python fetch_public_prices.py --symbol "$symbol" --out "recovery-v12-data/${symbol}.csv" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more public adjusted histories failed"
+              exit 0
+            fi
+            for symbol in SPY QQQ SOXX; do
+              python data_audit.py \
+                --csv "recovery-v12-data/${symbol}.csv" \
+                --out "recovery-v12-output/audit-${symbol}" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more continuity audits failed"
+              exit 0
+            fi
+            python validate_recovery_v12.py \
+              --data-dir recovery-v12-data \
+              --config config.example.json \
+              --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+              --recent-start 2021-07-26 \
+              --out recovery-v12-output
+            status=$?
+            echo "dual-path v1.2 validator exit status: $status"
+            exit "$status"
+          } 2>&1 | tee recovery-v12.log
+          exit ${PIPESTATUS[0]}
+      - name: Archive dual-path v1.2 backtest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-recovery-v12-${{ github.run_id }}
+          path: |
+            research/market-bottom/recovery-v12.log
+            research/market-bottom/recovery-v12-data/*.manifest.json
+            research/market-bottom/recovery-v12-output/**
+          if-no-files-found: warn
+          retention-days: 14
