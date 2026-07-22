@@ -130,7 +130,16 @@ jobs:
               --recent-start 2021-07-26 \
               --out recovery-v12-output
             status=$?
-            echo "dual-path v1.2 validator exit status: $status"
+            if [ "$status" -ne 0 ]; then
+              echo "dual-path v1.2 validator exit status: $status"
+              exit "$status"
+            fi
+            python recovery_v12_decision.py \
+              --result recovery-v12-output/result.json \
+              --out-json recovery-v12-output/asset-decision.json \
+              --out-md recovery-v12-output/asset-decision.md
+            status=$?
+            echo "dual-path v1.2 strict decision exit status: $status"
             exit "$status"
           } 2>&1 | tee recovery-v12.log
           exit ${PIPESTATUS[0]}
