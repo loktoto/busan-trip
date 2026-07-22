@@ -1,5 +1,6 @@
 {
   "assets": [
+    {"symbol":"VOO","kind":"ETF","class":"broad_us","signal":"SPY","regime":"SPY","breadth_num":"RSP","breadth_den":"SPY","cost_bps":4},
     {"symbol":"7709.HK","kind":"LETF","class":"korea_memory_2x","signal":"000660.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":35,"experimental":true},
     {"symbol":"7747.HK","kind":"LETF","class":"korea_semiconductor_2x","signal":"005930.KS","regime":"EWY","breadth_num":"FLKR","breadth_den":"EWY","cost_bps":35,"experimental":true},
     {"symbol":"3191.HK","kind":"ETF","class":"china_semiconductor","signal":"3191.HK","regime":"CQQQ","breadth_num":"3191.HK","breadth_den":"CQQQ","cost_bps":18},
