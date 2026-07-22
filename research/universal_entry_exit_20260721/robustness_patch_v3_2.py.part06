@@ -1,0 +1,22 @@
+# Deterministic CI sharding. Each asset is evaluated in exactly one shard.
+import os
+
+_v41_load_config = load_config
+
+
+def load_config() -> dict[str, Any]:
+    config = _v41_load_config()
+    shard_text = os.getenv("UNIVERSE_SHARD")
+    shards_text = os.getenv("UNIVERSE_SHARDS")
+    if shard_text is not None and shards_text is not None:
+        shard = int(shard_text)
+        shards = int(shards_text)
+        if shards <= 0 or shard < 0 or shard >= shards:
+            raise ValueError(f"invalid shard {shard}/{shards}")
+        config["assets"] = [
+            asset for index, asset in enumerate(config["assets"])
+            if index % shards == shard
+        ]
+        config["shard"] = shard
+        config["shards"] = shards
+    return config
