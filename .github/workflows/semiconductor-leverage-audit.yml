@@ -7,6 +7,12 @@ on:
     paths:
       - research/semiconductor_leverage/semiconductor_leverage_audit.py
       - .github/workflows/semiconductor-leverage-audit.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - research/semiconductor_leverage/semiconductor_leverage_audit.py
+      - .github/workflows/semiconductor-leverage-audit.yml
   workflow_dispatch:
 
 permissions:
@@ -35,6 +41,7 @@ jobs:
         run: python research/semiconductor_leverage/semiconductor_leverage_audit.py
 
       - name: Commit reproducible results
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
