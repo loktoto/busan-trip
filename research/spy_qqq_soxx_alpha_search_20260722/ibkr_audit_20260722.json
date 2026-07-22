@@ -1,0 +1,17 @@
+{
+  "audit_time_hkt": "2026-07-22",
+  "completed_close_cutoff": "2026-07-21",
+  "intraday_date_excluded": "2026-07-22",
+  "data_status": "IBKR delayed by 900 seconds where reported",
+  "contracts": {
+    "SPY": {"contract_id": 756733, "exchange": "ARCA", "completed_close": 748.28},
+    "QQQ": {"contract_id": 320227571, "exchange": "NASDAQ", "completed_close": 708.97},
+    "SOXX": {"contract_id": 12658194, "exchange": "NASDAQ", "completed_close": 552.69}
+  },
+  "notes": [
+    "IBKR contract search resolved exact US-listed ETF symbols.",
+    "The model must match 2026-07-21 completed closes within 0.30%.",
+    "2026-07-22 bars were still intraday when audited and are not signal observations.",
+    "No IBKR order instruction is created."
+  ]
+}

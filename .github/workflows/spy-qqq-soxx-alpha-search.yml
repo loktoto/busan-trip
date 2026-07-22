@@ -1,0 +1,146 @@
+name: SPY QQQ SOXX expanded alpha search
+
+on:
+  pull_request:
+    branches: [agent/index-mags-rebuild-v2-20260722]
+    paths:
+      - research/spy_qqq_soxx_alpha_search_20260722/**
+      - .github/workflows/spy-qqq-soxx-alpha-search.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spy-qqq-soxx-alpha-search-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repetitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
+      - name: Validate frozen V2 source and deterministic correction
+        run: |
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/validate_actual_products.py
+          python - <<'PY'
+          import base64, gzip, hashlib
+          from pathlib import Path
+          payload = Path('research/spy_qqq_soxx_alpha_search_20260722/source_v2.b64')
+          source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
+          digest = hashlib.sha256(source).hexdigest()
+          expected = 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a'
+          if digest != expected:
+              raise RuntimeError(f'{digest} != {expected}')
+          compile(source.decode(), 'alpha_search_engine_v2.py', 'exec')
+          print({'raw_source_sha256': digest, 'raw_source_bytes': len(source)})
+          PY
+      - name: Run independent anchored search
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
+          mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
+            > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
+          tail -n 300 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
+      - name: Validate actual-product paths and frozen rules
+        run: |
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/validate_actual_products.py \
+            > research_outputs/spy_qqq_soxx_alpha_search_20260722/implementation.log 2>&1
+          tail -n 300 research_outputs/spy_qqq_soxx_alpha_search_20260722/implementation.log
+      - name: Validate corrected outputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import pandas as pd
+          root = Path('research_outputs/spy_qqq_soxx_alpha_search_20260722')
+          required = [
+              'strategy_identity.csv','window_comparison.csv','candidate_grid.csv',
+              'block_diagnostics.csv','walk_forward_choices.csv','ibkr_close_parity.csv',
+              'actual_product_validation.csv','actual_product_weights.csv',
+              'pre2013_frozen_diagnostics.csv','implementation_report.md',
+              'run_manifest.json','input_manifest.json','report.md','optimizer.log','implementation.log',
+              'engine_patched.py','inputs/SOXL.csv.gz','inputs/USD.csv.gz'
+          ]
+          missing = [name for name in required if not (root/name).exists()]
+          if missing:
+              raise RuntimeError(missing)
+          identity = pd.read_csv(root/'strategy_identity.csv')
+          if identity.symbol.tolist() != ['QQQ','SOXX','SPY']:
+              raise RuntimeError(identity.symbol.tolist())
+          parity = pd.read_csv(root/'ibkr_close_parity.csv')
+          if (parity.absolute_pct_diff > 0.003).any():
+              raise RuntimeError(parity.to_dict('records'))
+          choices = pd.read_csv(root/'walk_forward_choices.csv')
+          if choices.empty or choices.groupby(['symbol','family']).year.nunique().min() < 10:
+              raise RuntimeError('insufficient annual walk-forward choices')
+          grid = pd.read_csv(root/'candidate_grid.csv')
+          required_columns = {'effective_trials','trial_participation_ratio','dsr_probability'}
+          if not required_columns.issubset(grid.columns):
+              raise RuntimeError(f'corrected DSR columns missing: {required_columns - set(grid.columns)}')
+          non_baseline = grid[grid.candidate != 'buy_hold']
+          if non_baseline.effective_trials.min() < 8 or non_baseline.dsr_probability.isna().any():
+              raise RuntimeError('corrected DSR output invalid')
+          products = pd.read_csv(root/'actual_product_validation.csv')
+          if sorted(products.implementation.tolist()) != ['SOXX_SOXL_3X','SOXX_USD_2X']:
+              raise RuntimeError(products.implementation.tolist())
+          frozen = pd.read_csv(root/'pre2013_frozen_diagnostics.csv')
+          if frozen.symbol.tolist() != ['QQQ','SOXX','SPY']:
+              raise RuntimeError(frozen.symbol.tolist())
+          manifest = json.loads((root/'run_manifest.json').read_text())
+          expected_method = 'annualised Sharpe; sampling horizon in years; excess over cash; effective-trial floor equals eight economic families'
+          if manifest.get('raw_source_sha256') != 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a':
+              raise RuntimeError(manifest)
+          if manifest.get('source_sha256') != '2ee009cf9f0ccb6e0ad41e3f6327e90813d3327beb18204a5a34ab6cbf11c3aa':
+              raise RuntimeError(manifest)
+          if manifest.get('dsr_method') != expected_method:
+              raise RuntimeError(manifest)
+          print(identity.to_string(index=False))
+          print(products.to_string(index=False))
+          print(frozen.to_string(index=False))
+          PY
+      - name: Upload repetition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-alpha-${{ matrix.repetition }}
+          path: research_outputs/spy_qqq_soxx_alpha_search_20260722
+          if-no-files-found: warn
+          retention-days: 30
+
+  compare:
+    needs: repetitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependencies
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: spy-qqq-soxx-alpha-*
+          path: repetitions
+          merge-multiple: false
+      - name: Compare source, annual choices, products and frozen rules
+        run: python research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
+      - name: Upload canonical result
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-alpha-canonical
+          path: canonical
+          if-no-files-found: error
+          retention-days: 30
