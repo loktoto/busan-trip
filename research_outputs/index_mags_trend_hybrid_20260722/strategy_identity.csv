@@ -1,0 +1,7 @@
+symbol,trend_rule,off_exposure,pullback_available,current_trend_on,current_pullback_addon,current_hybrid_exposure
+MAGS10,price_sma150,0.00000000,False,True,0.00000000,1.00000000
+MAGS7,dual_100_200,0.50000000,True,True,0.00000000,1.00000000
+QQQ,price_sma150,0.50000000,False,True,0.00000000,1.00000000
+SMH,composite_slow,0.00000000,True,True,0.00000000,1.00000000
+SOXX,dual_50_200,0.50000000,True,True,0.00000000,1.00000000
+SPY,price_sma100,0.00000000,False,True,0.00000000,1.00000000
