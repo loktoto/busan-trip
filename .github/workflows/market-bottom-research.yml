@@ -124,7 +124,7 @@ jobs:
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Bootstrap missing adjusted daily histories
+      - name: Refresh adjusted daily histories
         if: steps.runtime.outputs.present == 'true'
         shell: bash
         run: |
@@ -132,10 +132,10 @@ jobs:
           mkdir -p runtime/market-bottom/data
           for symbol in SPY QQQ SOXX SMH; do
             file="runtime/market-bottom/data/${symbol}.csv"
-            if [ ! -s "$file" ]; then
-              echo "BOOTSTRAP ${symbol}: PUBLIC ADJUSTED HISTORY — LIVE SNAPSHOT REMAINS IBKR"
-              python research/market-bottom/fetch_public_prices.py --symbol "$symbol" --out "$file"
-            fi
+            tmp="runtime/market-bottom/data/${symbol}.refresh.csv"
+            echo "REFRESH ${symbol}: PUBLIC ADJUSTED HISTORY — LIVE SNAPSHOT REMAINS IBKR"
+            python research/market-bottom/fetch_public_prices.py --symbol "$symbol" --out "$tmp"
+            mv "$tmp" "$file"
           done
       - name: Remove incomplete current-session bars
         if: steps.runtime.outputs.present == 'true'
@@ -180,7 +180,7 @@ jobs:
             runtime/market-bottom/generated/latest-report.md
           if-no-files-found: error
           retention-days: 14
-      - name: Publish deterministic result and bootstrap data
+      - name: Publish deterministic result and refreshed data
         if: steps.runtime.outputs.present == 'true'
         shell: bash
         run: |
@@ -194,6 +194,6 @@ jobs:
             echo "No runtime changes"
             exit 0
           fi
-          git commit -m "runtime: publish bottom result and bootstrap data [skip ci]"
+          git commit -m "runtime: publish bottom result and refreshed data [skip ci]"
           git pull --rebase origin agent/market-bottom-strategy
           git push origin HEAD:agent/market-bottom-strategy
