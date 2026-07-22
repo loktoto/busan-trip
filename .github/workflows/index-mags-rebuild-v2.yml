@@ -38,7 +38,9 @@ jobs:
           import base64, gzip, hashlib
           from pathlib import Path
           root = Path('research/index_mags_rebuild_20260722')
-          parts = sorted(root.glob('rebuild_v2.py.gz.b64.part??'))
+          parts = sorted(root.glob('source_v2.part??'))
+          if len(parts) != 6:
+              raise RuntimeError(f'expected six source parts; found {parts}')
           source = gzip.decompress(base64.b64decode(''.join(p.read_text().strip() for p in parts)))
           digest = hashlib.sha256(source).hexdigest()
           expected = '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66'
