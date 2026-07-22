@@ -1,0 +1,60 @@
+name: Market Bottom Stress Source Discovery v1.7
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/discover_stress_sources_v17.py"
+      - ".github/workflows/market-bottom-stress-source-discovery-v17.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/discover_stress_sources_v17.py"
+      - ".github/workflows/market-bottom-stress-source-discovery-v17.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile discovery module
+        run: python -m compileall -q discover_stress_sources_v17.py
+      - name: Query official/public stress sources
+        shell: bash
+        run: |
+          set -o pipefail
+          python discover_stress_sources_v17.py \
+            --out stress-source-discovery-v17.json 2>&1 | tee stress-source-discovery-v17.log
+      - name: Validate discovery contract
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('stress-source-discovery-v17.json').read_text())
+          assert payload['classification'].startswith('SOURCE DISCOVERY')
+          assert payload['ofr_api']['token_required'] is False
+          assert len(payload['public_volatility_symbol_probes']) >= 5
+          print(json.dumps({
+              'vol_available': [x['symbol'] for x in payload['public_volatility_symbol_probes'] if x.get('available')],
+              'fsi_candidate_urls': len(payload.get('ofr_fsi_page', {}).get('candidate_urls', [])),
+          }, sort_keys=True))
+          PY
+      - name: Archive stress source discovery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-stress-source-discovery-v17-${{ github.run_id }}
+          path: |
+            research/market-bottom/stress-source-discovery-v17.json
+            research/market-bottom/stress-source-discovery-v17.log
+          if-no-files-found: error
+          retention-days: 14
