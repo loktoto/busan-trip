@@ -105,8 +105,11 @@ expected_patched = "2ee009cf9f0ccb6e0ad41e3f6327e90813d3327beb18204a5a34ab6cbf11
 if patched_digest != expected_patched:
     raise RuntimeError(f"patched source SHA mismatch: {patched_digest} != {expected_patched}")
 compile(source, "alpha_search_engine.py", "exec")
+engine_output = Path("research_outputs/spy_qqq_soxx_alpha_search_20260722/engine_patched.py")
+engine_output.parent.mkdir(parents=True, exist_ok=True)
+engine_output.write_text(source)
 print({"raw_source_sha256": raw_digest, "patched_source_sha256": patched_digest, "patched_bytes": len(patched_bytes)})
-namespace = {"__name__": "__main__", "__file__": str(ROOT / "alpha_search_engine.py")}
+namespace = {"__name__": "__main__", "__file__": str(engine_output)}
 exec(compile(source, "alpha_search_engine.py", "exec"), namespace)
 manifest_path = Path("research_outputs/spy_qqq_soxx_alpha_search_20260722/run_manifest.json")
 manifest = json.loads(manifest_path.read_text())
