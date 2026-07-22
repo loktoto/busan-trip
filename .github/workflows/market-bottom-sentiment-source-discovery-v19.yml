@@ -1,0 +1,58 @@
+name: Market Bottom Sentiment Source Discovery v1.9
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/discover_sentiment_sources_v19.py"
+      - ".github/workflows/market-bottom-sentiment-source-discovery-v19.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/discover_sentiment_sources_v19.py"
+      - ".github/workflows/market-bottom-sentiment-source-discovery-v19.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Discover options sentiment sources
+        shell: bash
+        run: |
+          set -o pipefail
+          python discover_sentiment_sources_v19.py \
+            --out sentiment-source-discovery-v19.json 2>&1 | tee sentiment-source-discovery-v19.log
+      - name: Validate discovery output
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          payload = json.loads(Path('sentiment-source-discovery-v19.json').read_text())
+          assert payload['classification'].startswith('OPTIONS SENTIMENT SOURCE DISCOVERY')
+          assert len(payload['yahoo_symbol_probes']) == 6
+          assert len(payload['cboe_daily_page_probes']) == 5
+          print(json.dumps({
+              'available_yahoo_symbols': [x['symbol'] for x in payload['yahoo_symbol_probes'] if x.get('available')],
+              'cboe_pages_with_ratios': [x['date'] for x in payload['cboe_daily_page_probes'] if any(v is not None for v in x.get('ratios', {}).values())],
+          }, sort_keys=True))
+          PY
+      - name: Archive source discovery
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-sentiment-source-discovery-v19-${{ github.run_id }}
+          path: |
+            research/market-bottom/sentiment-source-discovery-v19.json
+            research/market-bottom/sentiment-source-discovery-v19.log
+          if-no-files-found: error
+          retention-days: 7
