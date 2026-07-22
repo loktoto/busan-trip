@@ -1,0 +1,104 @@
+name: Market Bottom Orthogonal v1.6
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/fetch_public_series.py"
+      - "research/market-bottom/orthogonal_indicators_v16.py"
+      - "research/market-bottom/validate_orthogonal_v16.py"
+      - "research/market-bottom/tests/test_orthogonal_v16.py"
+      - ".github/workflows/market-bottom-orthogonal-v16.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/fetch_public_series.py"
+      - "research/market-bottom/orthogonal_indicators_v16.py"
+      - "research/market-bottom/validate_orthogonal_v16.py"
+      - "research/market-bottom/tests/test_orthogonal_v16.py"
+      - ".github/workflows/market-bottom-orthogonal-v16.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+
+      - name: Compile and test orthogonal engine
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q .
+          PYTHONPATH=. pytest -q tests/test_orthogonal_v16.py --tb=short 2>&1 | tee orthogonal-v16-pytest.log
+
+      - name: Fetch audited public ETF histories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf orthogonal-v16-data orthogonal-v16-series orthogonal-v16-output
+          mkdir -p orthogonal-v16-data orthogonal-v16-series orthogonal-v16-output
+          for symbol in SPY QQQ SOXX RSP QQQE XSD HYG IEF; do
+            python fetch_public_prices.py --symbol "$symbol" --out "orthogonal-v16-data/${symbol}.csv"
+            python data_audit.py \
+              --csv "orthogonal-v16-data/${symbol}.csv" \
+              --out "orthogonal-v16-output/audit-${symbol}"
+          done
+
+      - name: Fetch volatility index proxy series
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fetch_public_series.py --symbol '^VIX' --out orthogonal-v16-series/VIX.csv
+          python fetch_public_series.py --symbol '^VXN' --out orthogonal-v16-series/VXN.csv
+          python fetch_public_series.py --symbol '^VIX3M' --out orthogonal-v16-series/VIX3M.csv
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          for name in ('VIX', 'VXN', 'VIX3M'):
+              path = Path(f'orthogonal-v16-series/{name}.csv')
+              frame = pd.read_csv(path)
+              assert list(frame.columns) == ['Date', 'Close']
+              assert len(frame) >= 260
+              assert frame.Close.notna().all()
+              assert (frame.Close > 0).all()
+              assert pd.to_datetime(frame.Date).is_monotonic_increasing
+          PY
+
+      - name: Run identical-sample orthogonal ablation
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python validate_orthogonal_v16.py \
+            --data-dir orthogonal-v16-data \
+            --series-dir orthogonal-v16-series \
+            --config config.example.json \
+            --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+            --recent-start 2021-07-26 \
+            --out orthogonal-v16-output 2>&1 | tee orthogonal-v16.log
+
+      - name: Archive orthogonal indicator evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-orthogonal-v16-${{ github.run_id }}
+          path: |
+            research/market-bottom/orthogonal-v16-pytest.log
+            research/market-bottom/orthogonal-v16.log
+            research/market-bottom/orthogonal-v16-data/*.manifest.json
+            research/market-bottom/orthogonal-v16-series/*.manifest.json
+            research/market-bottom/orthogonal-v16-output/**
+          if-no-files-found: error
+          retention-days: 14
