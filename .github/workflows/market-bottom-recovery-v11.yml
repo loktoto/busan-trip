@@ -1,0 +1,49 @@
+name: Market Bottom Recovery v1.1
+
+on:
+  pull_request:
+    branches:
+      - agent/market-bottom-strategy
+    paths:
+      - "research/market-bottom/**"
+      - "runtime/market-bottom/data/**"
+      - ".github/workflows/market-bottom-recovery-v11.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+
+      - name: Install dependencies
+        run: python -m pip install -r research/market-bottom/requirements.txt
+
+      - name: Run causal and regression tests
+        working-directory: research/market-bottom
+        run: pytest -q
+
+      - name: Run full-history baseline comparison
+        run: python research/market-bottom/validate_recovery_v11.py
+
+      - name: Upload validation outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-recovery-v11-validation
+          path: |
+            runtime/market-bottom/recovery-v11-validation.json
+            runtime/market-bottom/recovery-v11-validation.md
+          if-no-files-found: warn
