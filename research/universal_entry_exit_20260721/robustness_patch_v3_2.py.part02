@@ -37,8 +37,14 @@ def download_ticker(ticker: str) -> tuple[pd.DataFrame | None, list[str]]:
         if path.exists():
             try:
                 frame = pd.read_csv(path, index_col=0, parse_dates=True)
-                frame = clean_frame(frame, ticker)
-                if frame is not None:
+                frame.columns = [str(c).title() for c in frame.columns]
+                needed = ["Open", "High", "Low", "Close", "Volume"]
+                if any(c not in frame.columns for c in needed):
+                    raise ValueError(f"missing columns: {needed}")
+                frame = frame[needed].apply(pd.to_numeric, errors="coerce").dropna(subset=["Open", "Close"])
+                frame.index = pd.to_datetime(frame.index).tz_localize(None).normalize()
+                frame = frame[~frame.index.duplicated(keep="last")].sort_index()
+                if len(frame) >= 20:
                     return frame, [f"IBKR static input: {path}"]
             except Exception as exc:
                 return None, [f"IBKR static read failed: {type(exc).__name__}: {exc}"]
