@@ -23,6 +23,27 @@ from validate_stress_normalization_v17 import _ibkr_boundary
 PRIMARY = ("SPY", "QQQ", "SOXX")
 
 
+def _load_member_close(path: Path) -> pd.DataFrame:
+    """Load only adjusted Date/Close for cross-sectional member calculations.
+
+    Primary ETF OHLCV still passes the strict full-price audit.  The internal
+    engine does not consume member Open/High/Low/Volume, so rejecting a member for
+    a sub-machine-epsilon adjusted OHLC envelope mismatch is inappropriate.
+    """
+    frame = pd.read_csv(path, usecols=["Date", "Close"])
+    frame["Date"] = pd.to_datetime(frame.Date, utc=False).dt.tz_localize(None)
+    frame["Close"] = pd.to_numeric(frame.Close, errors="coerce")
+    frame = (
+        frame.dropna()
+        .sort_values("Date")
+        .drop_duplicates("Date", keep="last")
+        .reset_index(drop=True)
+    )
+    if len(frame) < 260 or (frame.Close <= 0).any():
+        raise ValueError(f"Invalid close-only member history: {path}")
+    return frame
+
+
 def _common_start(asset: pd.DataFrame, members: dict[str, pd.DataFrame], symbol: str) -> pd.Timestamp:
     starts = [pd.Timestamp(asset.Date.min())]
     starts.extend(pd.Timestamp(members[member].Date.min()) for member in PANELS[symbol])
@@ -157,7 +178,10 @@ def main() -> None:
 
     prices = {symbol: load_prices(args.data_dir / f"{symbol}.csv") for symbol in PRIMARY}
     all_members = sorted(set().union(*PANELS.values()))
-    member_prices = {member: load_prices(args.panel_dir / f"{member}.csv") for member in all_members}
+    member_prices = {
+        member: _load_member_close(args.panel_dir / f"{member}.csv")
+        for member in all_members
+    }
     boundary = _ibkr_boundary(args.ibkr_audit, prices)
     assets: dict[str, Any] = {}
     hard_failures: list[str] = []
