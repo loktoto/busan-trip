@@ -3,13 +3,22 @@
   "$id": "https://github.com/loktoto/busan-trip/research/market-bottom/live-request.schema.json",
   "title": "Bottom Zone Monitor Compact Runtime Request",
   "type": "object",
-  "required": ["schema_version", "request_id", "created_at", "source", "bar_status", "assets"],
+  "required": [
+    "schema_version",
+    "request_id",
+    "created_at",
+    "source",
+    "bar_status",
+    "expected_completed_rth_date",
+    "assets"
+  ],
   "properties": {
     "schema_version": {"const": "1.0"},
     "request_id": {"type": "string", "minLength": 1},
     "created_at": {"type": "string", "format": "date-time"},
     "source": {"const": "IBKR"},
     "bar_status": {"enum": ["LATEST_RTH_CLOSE", "INTRADAY_CONTEXT"]},
+    "expected_completed_rth_date": {"type": "string", "format": "date"},
     "model_commit": {"type": "string"},
     "assets": {
       "type": "object",
@@ -27,10 +36,17 @@
   "$defs": {
     "asset": {
       "type": "object",
-      "required": ["bars_path"],
+      "required": ["bars_path", "bars_source", "snapshot"],
       "properties": {
-        "bars_path": {"type": "string", "pattern": "^runtime/market-bottom/data/[A-Z]+\\.csv$"},
-        "features_path": {"type": "string", "pattern": "^runtime/market-bottom/data/[A-Za-z0-9_-]+\\.csv$"},
+        "bars_path": {
+          "type": "string",
+          "pattern": "^runtime/market-bottom/data/[A-Z]+\\.csv$"
+        },
+        "bars_source": {"const": "IBKR"},
+        "features_path": {
+          "type": "string",
+          "pattern": "^runtime/market-bottom/data/[A-Za-z0-9_-]+\\.csv$"
+        },
         "snapshot": {"type": "object"}
       },
       "additionalProperties": false
