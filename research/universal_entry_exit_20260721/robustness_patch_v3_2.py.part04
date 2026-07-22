@@ -1,0 +1,66 @@
+_v4_full_evaluate_asset = evaluate_asset
+
+
+def _ultra_short_summary(asset: dict[str, Any], trade: pd.DataFrame, signal: pd.DataFrame):
+    common = trade.index.intersection(signal.index)
+    trade = trade.loc[common]
+    signal = signal.loc[common]
+    close = signal.Close
+    ema10 = close.ewm(span=10, adjust=False, min_periods=10).mean()
+    ema20 = close.ewm(span=20, adjust=False, min_periods=20).mean()
+    r5 = rsi(close, 5)
+    av = atr(signal, 14)
+    state = (close > ema10 * (1 + HYST)) & (ema10 > ema20 * (1 + HYST))
+    state = state.fillna(False)
+    current = bool(state.iloc[-1])
+    previous = bool(state.iloc[-2]) if len(state) > 1 else False
+    action = "HOLD" if current else "WAIT"
+    if current and not previous:
+        action = "ADD"
+    elif (not current) and previous:
+        action = "REDUCE"
+    overnight_gap = trade.Open / trade.Close.shift(1) - 1
+    summary = {
+        "symbol": asset["symbol"], "kind": asset["kind"], "class": asset["class"],
+        "signal_symbol": resolve_ticker(asset["signal"]), "status": "OK", "experimental": True,
+        "sessions": len(common), "start": str(common.min().date()), "end": str(common.max().date()),
+        "development_end": None, "holdout_start": None, "decision": "EXPERIMENTAL",
+        "production_action": "NO_ACTION", "diagnostic_action": action, "mode": "diagnostic",
+        "entry_family": "ultra_short_ema_reclaim", "entry_params": json.dumps((10, 20)),
+        "exit_family": "ema20_or_atr3", "exit_params": json.dumps((20, 3)),
+        "overlay": "none", "stop": "atr3", "current_state": current,
+        "changes": int(state.astype(int).diff().abs().fillna(0).sum()),
+        "development_pass": False, "holdout_pass": False,
+        "dev_excess": np.nan, "dev_sharpe_delta": np.nan, "dev_dd_delta": np.nan,
+        "holdout_excess": np.nan, "holdout_sharpe_delta": np.nan, "holdout_dd_delta": np.nan,
+        "full_excess": np.nan, "full_sharpe_delta": np.nan, "full_dd_delta": np.nan,
+        "stress_full_excess": np.nan, "bootstrap_prob_positive": np.nan,
+        "last_close": float(trade.Close.iloc[-1]),
+        "last_overnight_gap": canonical(float(overnight_gap.iloc[-1])) if pd.notna(overnight_gap.iloc[-1]) else np.nan,
+        "recent_max_abs_gap_20": canonical(float(overnight_gap.tail(20).abs().max())) if overnight_gap.tail(20).notna().any() else np.nan,
+        "event_calendar_required": False,
+        "reason": "ultra-short IBKR history; diagnostic only, never production promotion",
+        "ema10": canonical(float(ema10.iloc[-1])), "ema20": canonical(float(ema20.iloc[-1])),
+        "rsi5": canonical(float(r5.iloc[-1])), "atr14": canonical(float(av.iloc[-1])),
+    }
+    entries = pd.DataFrame([{
+        "entry_id": 0, "family": "ultra_short_ema_reclaim", "params": json.dumps((10, 20)),
+        "n20": 0, "median20": np.nan, "pass": False,
+    }])
+    grid = pd.DataFrame([{
+        "entry_id": 0, "exit_id": 0, "entry_family": "ultra_short_ema_reclaim",
+        "entry_params": json.dumps((10, 20)), "exit_family": "ema20_or_atr3",
+        "exit_params": json.dumps((20, 3)), "mode": "diagnostic", "overlay": "none",
+        "stop": "atr3", "current_state": current, "development_pass": False,
+    }])
+    return summary, entries, grid
+
+
+def evaluate_asset(asset: dict[str, Any], data: dict[str, pd.DataFrame]):
+    trade = data.get(resolve_ticker(asset["symbol"]))
+    signal = data.get(resolve_ticker(asset["signal"]))
+    if trade is not None and signal is not None:
+        common = trade.index.intersection(signal.index)
+        if 20 <= len(common) < 160:
+            return _ultra_short_summary(asset, trade, signal)
+    return _v4_full_evaluate_asset(asset, data)
