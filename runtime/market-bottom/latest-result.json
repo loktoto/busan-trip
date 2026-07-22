@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "request_id": "bottom-20260722T005630Z-postclose",
-  "source": "IBKR",
+  "source": "IBKR_SNAPSHOT_PUBLIC_ADJUSTED_BOOTSTRAP",
   "input_created_at": "2026-07-22T00:56:30Z",
-  "calculated_at": "2026-07-22T00:58:35.234704+00:00",
+  "calculated_at": "2026-07-22T01:01:19.098108+00:00",
   "bar_status": "INTRADAY_CONTEXT",
-  "model_commit": "517d3ab5ae15c6a6a816ddead9271980dedb348e",
-  "input_sha256": "10a085218b6f1681da6383a3473182203a3d1f4dd1a5ac45b4b3a6dd68b1f60e",
-  "classification": "AUDITED_PROVISIONAL_RESEARCH_SIGNAL",
+  "model_commit": "8cc8e61b47d91dea8cb0060a674416029cdaa4a0",
+  "input_sha256": "acf17dbe9595f07dcb37f986767d8e25d60b76b321796e5735630d4b73b6c1ce",
+  "classification": "AUDITED_PROVISIONAL_MIXED_SOURCE_BOOTSTRAP",
   "assets": {
     "SPY": {
       "symbol": "SPY",
@@ -28,10 +28,10 @@
       },
       "atr14": 7.309993198939732,
       "atr_percent": 0.009850547688822995,
-      "realized_vol_20d": 0.11355337924083836,
-      "volume_ratio_20d": 0.9890167624417132,
+      "realized_vol_20d": 0.11355337924084055,
+      "volume_ratio_20d": 0.9902525843932353,
       "close_location": 0.08033510296554289,
-      "sell_pressure": 0.0014683803343986273,
+      "sell_pressure": 0.0014702151431898887,
       "underwater_days": 32,
       "long_bear": false,
       "new_low_10d": true,
@@ -109,8 +109,8 @@
       "symbol": "QQQ",
       "official_bar_date": "2026-07-20",
       "official_close": 696.0599975585938,
-      "state": 0,
-      "state_name": "NO_SETUP",
+      "state": 5,
+      "state_name": "RECOVERY_UNDERWAY",
       "cycle_high": 745.3408813476562,
       "cycle_drawdown": -0.06611858415703342,
       "drawdown_52w": -0.06611858415703342,
@@ -124,8 +124,8 @@
       },
       "atr14": 14.185721261160714,
       "atr_percent": 0.020380026593852022,
-      "realized_vol_20d": 0.2379009287454154,
-      "volume_ratio_20d": 0.7246713267767201,
+      "realized_vol_20d": 0.23790092874541713,
+      "volume_ratio_20d": 0.7284122641271019,
       "close_location": 0.05344887924029159,
       "sell_pressure": -0.0,
       "underwater_days": 32,
@@ -199,7 +199,8 @@
       "candidate_tranche": 0.0,
       "candidate_target_cumulative": 0.075,
       "candidate_reason": "NONE",
-      "eligible_at_next_open": false
+      "eligible_at_next_open": false,
+      "state_adjustment": "ACTIVE_DEPLOYED_EPISODE_ABOVE_WATCH_THRESHOLD"
     },
     "SOXX": {
       "symbol": "SOXX",
@@ -220,8 +221,8 @@
       },
       "atr14": 32.44000026157924,
       "atr_percent": 0.061891859722517276,
-      "realized_vol_20d": 0.6371237924691191,
-      "volume_ratio_20d": 0.642234228689671,
+      "realized_vol_20d": 0.63712379246912,
+      "volume_ratio_20d": 0.6442864461780533,
       "close_location": 0.07784380802011608,
       "sell_pressure": -0.0,
       "underwater_days": 19,
@@ -293,7 +294,7 @@
       "current_episode": 17,
       "cumulative_model_deployment": 0.22500000000000003,
       "candidate_tranche": 0.0,
-      "candidate_target_cumulative": 0.013601556064302581,
+      "candidate_target_cumulative": 0.22500000000000003,
       "candidate_reason": "NO_NEW_EVENT",
       "eligible_at_next_open": false
     },
@@ -316,8 +317,8 @@
       },
       "atr14": 28.350721086774552,
       "atr_percent": 0.05073228033528588,
-      "realized_vol_20d": 0.5236199138759221,
-      "volume_ratio_20d": 0.5805195303827284,
+      "realized_vol_20d": 0.5236199138759237,
+      "volume_ratio_20d": 0.5811273416382924,
       "close_location": 0.10238402163147883,
       "sell_pressure": -0.0,
       "underwater_days": 19,
@@ -402,13 +403,24 @@
     "smh_state": 1,
     "drawdown_gap": 0.035232290395134425
   },
-  "material_changes": [
+  "material_changes": [],
+  "material_change": false,
+  "data_provenance": {
+    "live_snapshot": "IBKR",
+    "historical_daily_bars": "PUBLIC_ADJUSTED_BOOTSTRAP",
+    "promotion_eligible": false
+  },
+  "governance_adjustments": [
     {
-      "type": "STATE",
+      "type": "ACTIVE_EPISODE_RECOVERY",
       "symbol": "QQQ",
-      "old": 5,
-      "new": 0
+      "old": 0,
+      "new": 5
+    },
+    {
+      "type": "TARGET_FLOOR",
+      "symbol": "SOXX",
+      "value": 0.22500000000000003
     }
-  ],
-  "material_change": true
+  ]
 }

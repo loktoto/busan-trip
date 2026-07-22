@@ -1,10 +1,10 @@
 # Bottom Zone Monitor — GitHub deterministic result
 
 - Request: `bottom-20260722T005630Z-postclose`
-- Input source: `IBKR`
+- Input source: `IBKR_SNAPSHOT_PUBLIC_ADJUSTED_BOOTSTRAP`
 - Input created: `2026-07-22T00:56:30Z`
-- Model commit: `517d3ab5ae15c6a6a816ddead9271980dedb348e`
-- Input SHA256: `10a085218b6f1681da6383a3473182203a3d1f4dd1a5ac45b4b3a6dd68b1f60e`
+- Model commit: `8cc8e61b47d91dea8cb0060a674416029cdaa4a0`
+- Input SHA256: `acf17dbe9595f07dcb37f986767d8e25d60b76b321796e5735630d4b73b6c1ce`
 
 | Asset | Close | Cycle DD | 52W DD | State | Candidate tranche | Cumulative |
 |---|---:|---:|---:|---|---:|---:|
@@ -19,6 +19,10 @@ SMH close 558.83; cycle drawdown -16.46%; state 1 BOTTOM_WATCH. No tranche is as
 `NEUTRAL` — informational only; production weight remains zero.
 
 ## Material changes
-- `{"new": 0, "old": 5, "symbol": "QQQ", "type": "STATE"}`
+- None
 
 > Research signal only. No order is created or transmitted.
+
+## Governance adjustments
+- `{"new": 5, "old": 0, "symbol": "QQQ", "type": "ACTIVE_EPISODE_RECOVERY"}`
+- `{"symbol": "SOXX", "type": "TARGET_FLOOR", "value": 0.22500000000000003}`
