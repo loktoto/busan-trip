@@ -154,3 +154,51 @@ jobs:
             research/market-bottom/recovery-v12-output/**
           if-no-files-found: warn
           retention-days: 14
+      - name: Validate QQQ and SOXX late-stage candidates v1.3
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf late-stage-v13-data late-stage-v13-output late-stage-v13.log
+          mkdir -p late-stage-v13-data late-stage-v13-output
+          {
+            echo "Classification: ASSET-SPECIFIC CAUSAL RESEARCH + DERIVED IBKR BOUNDARY"
+            failed=0
+            for symbol in QQQ SOXX; do
+              python fetch_public_prices.py --symbol "$symbol" --out "late-stage-v13-data/${symbol}.csv" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more public adjusted histories failed"
+              exit 0
+            fi
+            for symbol in QQQ SOXX; do
+              python data_audit.py \
+                --csv "late-stage-v13-data/${symbol}.csv" \
+                --out "late-stage-v13-output/audit-${symbol}" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more continuity audits failed"
+              exit 0
+            fi
+            python validate_late_stage_v13.py \
+              --data-dir late-stage-v13-data \
+              --config config.example.json \
+              --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+              --recent-start 2021-07-26 \
+              --out late-stage-v13-output
+            status=$?
+            echo "late-stage v1.3 validator exit status: $status"
+            exit "$status"
+          } 2>&1 | tee late-stage-v13.log
+          exit ${PIPESTATUS[0]}
+      - name: Archive QQQ and SOXX late-stage validation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-late-stage-v13-${{ github.run_id }}
+          path: |
+            research/market-bottom/late-stage-v13.log
+            research/market-bottom/late-stage-v13-data/*.manifest.json
+            research/market-bottom/late-stage-v13-output/**
+          if-no-files-found: warn
+          retention-days: 14
