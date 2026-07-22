@@ -39,7 +39,7 @@ jobs:
         run: |
           set -o pipefail
           python -m compileall -q .
-          pytest -q tests/test_late_stage_v13.py tests/test_late_stage_v14.py --tb=short 2>&1 | tee late-stage-v14-pytest.log
+          PYTHONPATH=. pytest -q tests/test_late_stage_v13.py tests/test_late_stage_v14.py --tb=short 2>&1 | tee late-stage-v14-pytest.log
       - name: Fetch and audit adjusted histories
         shell: bash
         run: |
@@ -56,7 +56,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          python validate_late_stage_v14.py \
+          PYTHONPATH=. python validate_late_stage_v14.py \
             --data-dir late-stage-v14-data \
             --config config.example.json \
             --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
