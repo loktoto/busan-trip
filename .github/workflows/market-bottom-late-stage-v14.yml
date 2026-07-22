@@ -1,0 +1,76 @@
+name: Market Bottom Late Stage v1.4
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/late_stage_v14.py"
+      - "research/market-bottom/validate_late_stage_v14.py"
+      - "research/market-bottom/tests/test_late_stage_v14.py"
+      - ".github/workflows/market-bottom-late-stage-v14.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/late_stage_v14.py"
+      - "research/market-bottom/validate_late_stage_v14.py"
+      - "research/market-bottom/tests/test_late_stage_v14.py"
+      - ".github/workflows/market-bottom-late-stage-v14.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+      - name: Compile and run regime tests
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q .
+          pytest -q tests/test_late_stage_v13.py tests/test_late_stage_v14.py --tb=short 2>&1 | tee late-stage-v14-pytest.log
+      - name: Fetch and audit adjusted histories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf late-stage-v14-data late-stage-v14-output
+          mkdir -p late-stage-v14-data late-stage-v14-output
+          for symbol in QQQ SOXX; do
+            python fetch_public_prices.py --symbol "$symbol" --out "late-stage-v14-data/${symbol}.csv"
+            python data_audit.py \
+              --csv "late-stage-v14-data/${symbol}.csv" \
+              --out "late-stage-v14-output/audit-${symbol}"
+          done
+      - name: Validate regime-aware candidates
+        shell: bash
+        run: |
+          set -o pipefail
+          python validate_late_stage_v14.py \
+            --data-dir late-stage-v14-data \
+            --config config.example.json \
+            --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+            --recent-start 2021-07-26 \
+            --out late-stage-v14-output 2>&1 | tee late-stage-v14.log
+      - name: Archive regime-aware validation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-late-stage-v14-${{ github.run_id }}
+          path: |
+            research/market-bottom/late-stage-v14-pytest.log
+            research/market-bottom/late-stage-v14.log
+            research/market-bottom/late-stage-v14-data/*.manifest.json
+            research/market-bottom/late-stage-v14-output/**
+          if-no-files-found: error
+          retention-days: 14
