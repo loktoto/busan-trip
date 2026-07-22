@@ -1,0 +1,175 @@
+name: Focused index and MAGS entry exit research
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/index_mags_entry_exit_20260722/**
+      - research/universal_entry_exit_20260721/**
+      - research/universal_entry_exit_20260722_v5/**
+      - .github/workflows/index-mags-entry-exit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: index-mags-entry-exit-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Compile focused research source
+        run: |
+          python -m py_compile research/index_mags_entry_exit_20260722/run_index_mags_v5.py
+          python -m py_compile research/index_mags_entry_exit_20260722/focused_basket_patch.py
+          python -m json.tool research/index_mags_entry_exit_20260722/universe_index_mags.json >/dev/null
+          python - <<'PY'
+          import base64, gzip
+          from pathlib import Path
+          root = Path('research/universal_entry_exit_20260722_v5')
+          parts = sorted(root.glob('challenger_patch_v5.py.gz.b64.part??'))
+          source = gzip.decompress(base64.b64decode(''.join(p.read_text() for p in parts).strip())).decode()
+          compile(source, 'v5_challenger.py', 'exec')
+          PY
+      - name: Run focused research
+        shell: bash
+        run: |
+          rm -rf research_outputs/index_mags_entry_exit_20260722
+          mkdir -p research_outputs/index_mags_entry_exit_20260722
+          PYTHONWARNINGS=ignore python research/index_mags_entry_exit_20260722/run_index_mags_v5.py \
+            > research_outputs/index_mags_entry_exit_20260722/optimizer.log 2>&1
+          tail -n 240 research_outputs/index_mags_entry_exit_20260722/optimizer.log
+      - name: Validate six-asset output
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import pandas as pd
+          path = Path('research_outputs/index_mags_entry_exit_20260722/summary.csv')
+          if not path.exists():
+              raise RuntimeError('Missing focused summary.csv')
+          frame = pd.read_csv(path)
+          expected = {'SPY','QQQ','SOXX','SMH','MAGS7','MAGS10'}
+          actual = set(frame['symbol'].astype(str))
+          if actual != expected or len(frame) != 6:
+              raise RuntimeError(f'Expected six focused assets {expected}; got {actual} / {len(frame)} rows')
+          if frame.get('v5_status', pd.Series('', index=frame.index)).fillna('').astype(str).str.startswith('ERROR').any():
+              raise RuntimeError('Focused V5 challenger contains errors')
+          print(frame[['symbol','decision','production_action','v5_status','v5_decision','v5_production_action','v5_mode','v5_current_exposure']].to_string(index=False))
+          PY
+      - name: Upload repetition
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-mags-entry-exit-${{ matrix.repetition }}
+          path: research_outputs/index_mags_entry_exit_20260722
+          if-no-files-found: error
+          retention-days: 14
+
+  compare:
+    needs: repeat
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependency
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: index-mags-entry-exit-*
+          path: repeats
+          merge-multiple: false
+      - name: Compare full six-asset identity
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import pandas as pd
+
+          files = sorted(Path('repeats').glob('*/summary.csv'))
+          if len(files) != 2:
+              raise RuntimeError(f'Expected two summaries, found {len(files)}')
+          frames = [pd.read_csv(path).sort_values('symbol').reset_index(drop=True) for path in files]
+          expected = ['MAGS10','MAGS7','QQQ','SMH','SOXX','SPY']
+          for frame in frames:
+              if frame.symbol.astype(str).tolist() != expected:
+                  raise RuntimeError(f'Unexpected universe: {frame.symbol.tolist()}')
+
+          identity_columns = [
+              'symbol','decision','production_action','diagnostic_action','mode',
+              'entry_family','entry_params','exit_family','exit_params','overlay','stop',
+              'v5_status','v5_replace_v4','v5_decision','v5_production_action',
+              'v5_diagnostic_action','v5_mode','v5_components','v5_ensemble_size',
+              'v5_current_exposure'
+          ]
+          left = frames[0][identity_columns].fillna('').astype(str)
+          right = frames[1][identity_columns].fillna('').astype(str)
+          unequal = left.ne(right)
+          if unequal.any().any():
+              differences = []
+              for row_index, column in zip(*unequal.to_numpy().nonzero()):
+                  differences.append({
+                      'symbol': left.iloc[row_index]['symbol'],
+                      'column': column,
+                      'left': left.iloc[row_index, column],
+                      'right': right.iloc[row_index, column],
+                  })
+              raise RuntimeError(f'Focused identity mismatch: {differences[:20]}')
+
+          metric_tolerances = {
+              'holdout_excess': 0.0005,
+              'holdout_sharpe_delta': 0.002,
+              'holdout_dd_delta': 0.0005,
+              'stress_full_excess': 0.0005,
+              'v5_holdout_excess': 0.0005,
+              'v5_holdout_sharpe_delta': 0.002,
+              'v5_holdout_dd_delta': 0.0005,
+              'v5_stress_full_excess': 0.0005,
+          }
+          metric_differences = {}
+          for column, tolerance in metric_tolerances.items():
+              delta = (pd.to_numeric(frames[0][column], errors='coerce') - pd.to_numeric(frames[1][column], errors='coerce')).abs()
+              bad = delta > tolerance
+              if bad.fillna(False).any():
+                  metric_differences[column] = {
+                      frames[0].iloc[i]['symbol']: float(delta.iloc[i]) for i in delta.index[bad.fillna(False)]
+                  }
+          if metric_differences:
+              raise RuntimeError(f'Focused metric instability: {metric_differences}')
+
+          canonical = left.to_csv(index=False)
+          digest = hashlib.sha256(canonical.encode()).hexdigest()
+          result = {
+              'status': 'PASS',
+              'assets': expected,
+              'identity_sha256': digest,
+              'source_summaries': [str(path) for path in files],
+          }
+          Path('focused_repeatability.json').write_text(json.dumps(result, indent=2))
+          frames[0].to_csv('focused_summary.csv', index=False, float_format='%.8f')
+          print(json.dumps(result, indent=2))
+          PY
+      - name: Upload canonical focused result
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-mags-entry-exit-canonical
+          path: |
+            focused_repeatability.json
+            focused_summary.csv
+            repeats
+          if-no-files-found: error
+          retention-days: 14
