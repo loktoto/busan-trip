@@ -52,6 +52,7 @@ jobs:
       - name: Run independent search
         run: |
           rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
+          mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
           PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
             > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
           tail -n 300 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
