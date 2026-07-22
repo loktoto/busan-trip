@@ -6,12 +6,14 @@ on:
       - research/semiconductor-leverage-audit-20260722-v2
     paths:
       - research/semiconductor_leverage/semiconductor_leverage_audit.py
+      - research/semiconductor_leverage/run_audit_fixed.py
       - .github/workflows/semiconductor-leverage-audit.yml
   pull_request:
     branches:
       - main
     paths:
       - research/semiconductor_leverage/semiconductor_leverage_audit.py
+      - research/semiconductor_leverage/run_audit_fixed.py
       - .github/workflows/semiconductor-leverage-audit.yml
   workflow_dispatch:
 
@@ -42,7 +44,7 @@ jobs:
         run: |
           mkdir -p research/semiconductor_leverage/results
           set -o pipefail
-          python research/semiconductor_leverage/semiconductor_leverage_audit.py 2>&1 | tee research/semiconductor_leverage/results/run.log
+          python research/semiconductor_leverage/run_audit_fixed.py 2>&1 | tee research/semiconductor_leverage/results/run.log
 
       - name: Commit reproducible results
         if: success() && github.event_name != 'pull_request'
