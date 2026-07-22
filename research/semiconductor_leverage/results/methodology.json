@@ -1,0 +1,7 @@
+{
+  "generated_utc": "2026-07-22T09:58:59.603376+00:00",
+  "data_end": "2026-07-21",
+  "method": "Adjusted daily OHLC; completed-close signal; next-open execution; 10 bps each position change; 0% cash return.",
+  "selection": "Robust score uses 3Y/5Y/10Y/MAX; 1Y excluded due exceptional 2025-26 semiconductor rally.",
+  "important": "USD and SOXL track different benchmarks. SOXL results use actual SOXL history only."
+}
