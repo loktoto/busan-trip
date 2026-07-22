@@ -12,7 +12,8 @@ def _feature_frame(symbol: str = "SPY", n: int = 210) -> pd.DataFrame:
     dates = pd.date_range("2020-01-01", periods=n, freq="B")
     close = np.full(n, 100.0)
     cycle_dd = np.zeros(n)
-    # Enter the 5% SPY watch zone, remain inside for one close, then rebound above it.
+    # Enter the 5% SPY watch zone without a baseline event, remain inside for one
+    # close, then rebound above it. This isolates the post-threshold path.
     close[200] = 94.0
     close[201] = 94.2
     close[202:] = 95.8
@@ -50,7 +51,7 @@ def _feature_frame(symbol: str = "SPY", n: int = 210) -> pd.DataFrame:
             "credit_veto": False,
         }
     )
-    frame.loc[200, ["r1", "r5", "newlow20", "close_loc"]] = [-0.06, -0.06, True, 0.20]
+    frame.loc[200, ["r1", "r5", "close_loc"]] = [-0.06, -0.06, 0.20]
     frame.loc[201, ["r1", "r5", "close_loc"]] = [0.002, -0.04, 0.55]
     frame.loc[202:, ["r1", "r5", "close_loc"]] = [0.017, 0.03, 0.85]
     frame.loc[:199, "underwater"] = 0
