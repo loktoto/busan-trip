@@ -2,8 +2,12 @@
 """Fetch public adjusted daily OHLCV for reproducibility diagnostics.
 
 This is not a substitute for the audited IBKR holdout. It exists so CI can run a
-transparent long-history SMH/SOXX paired diagnostic without committing licensed
-market data. Source availability failures are explicit and never silently replaced.
+transparent long-history diagnostic without committing licensed market data.
+Source availability failures are explicit and never silently replaced.
+
+A chart provider may expose a provisional daily bar while the exchange session is
+still open.  Research signals are completed-close only, so the current exchange-
+local session is removed until a conservative post-close buffer has elapsed.
 """
 from __future__ import annotations
 
@@ -13,11 +17,54 @@ import json
 import time
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, time as clock_time, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import numpy as np
 import pandas as pd
+
+
+def _remove_unfinished_exchange_session(
+    frame: pd.DataFrame,
+    exchange_timezone: str | None,
+    now_utc: datetime | None = None,
+) -> tuple[pd.DataFrame, dict]:
+    """Remove a provisional current-session bar before a 16:30 local cutoff.
+
+    The 30-minute buffer is deliberately conservative.  It prevents a provider's
+    intraday aggregate from entering a completed-close backtest while allowing a
+    same-day completed bar to be used after the regular session has settled.
+    """
+    now_utc = now_utc or datetime.now(timezone.utc)
+    timezone_name = exchange_timezone or "America/New_York"
+    try:
+        local_now = now_utc.astimezone(ZoneInfo(timezone_name))
+    except ZoneInfoNotFoundError:
+        timezone_name = "America/New_York"
+        local_now = now_utc.astimezone(ZoneInfo(timezone_name))
+
+    local_date = local_now.date()
+    conservative_close = clock_time(16, 30)
+    before_close_buffer = local_now.time().replace(tzinfo=None) < conservative_close
+    last_date = frame["Date"].max().date() if not frame.empty else None
+    drop_current = bool(before_close_buffer and last_date == local_date)
+
+    removed_rows = 0
+    removed_date = None
+    if drop_current:
+        keep = frame["Date"].dt.date < local_date
+        removed_rows = int((~keep).sum())
+        removed_date = local_date.isoformat()
+        frame = frame.loc[keep].copy().reset_index(drop=True)
+
+    return frame, {
+        "completed_session_policy": "DROP_CURRENT_EXCHANGE_DATE_BEFORE_16_30_LOCAL",
+        "exchange_timezone_effective": timezone_name,
+        "retrieval_local_time": local_now.isoformat(),
+        "unfinished_session_rows_removed": removed_rows,
+        "unfinished_session_date_removed": removed_date,
+    }
 
 
 def yahoo_chart(symbol: str, start: int, end: int) -> tuple[pd.DataFrame, dict]:
@@ -87,11 +134,16 @@ def yahoo_chart(symbol: str, start: int, end: int) -> tuple[pd.DataFrame, dict]:
     frame["High"] = frame[["Open", "High", "Low", "Close"]].max(axis=1)
     frame["Low"] = frame[["Open", "High", "Low", "Close"]].min(axis=1)
     frame = frame.drop_duplicates("Date", keep="last").reset_index(drop=True)
+
+    metadata = result.get("meta") or {}
+    frame, completed_session_audit = _remove_unfinished_exchange_session(
+        frame,
+        metadata.get("exchangeTimezoneName"),
+    )
     if len(frame) < 260:
         raise RuntimeError(f"Only {len(frame)} complete daily rows returned")
-    metadata = result.get("meta") or {}
     events = result.get("events") or {}
-    return frame, {
+    manifest = {
         "source": "Yahoo Finance chart API",
         "request_url_without_query": f"https://query1.finance.yahoo.com/v8/finance/chart/{symbol}",
         "symbol": symbol,
@@ -104,6 +156,8 @@ def yahoo_chart(symbol: str, start: int, end: int) -> tuple[pd.DataFrame, dict]:
         "volume_adjustment": "raw volume divided by AdjClose/Close; approximate split continuity",
         "role": "PUBLIC REPRODUCIBILITY / LONG-HISTORY DIAGNOSTIC — NOT IBKR HOLDOUT",
     }
+    manifest.update(completed_session_audit)
+    return frame, manifest
 
 
 def main() -> None:
