@@ -1,0 +1,71 @@
+{
+  "as_of": "2026-07-22",
+  "completed_close_cutoff": "2026-07-21",
+  "scope": "Focused index plus MAGS7 and Cboe MAGS10 research only",
+  "assets": [
+    {
+      "symbol": "SPY",
+      "kind": "ETF",
+      "class": "broad_us_index",
+      "signal": "SPY",
+      "regime": "SPY",
+      "breadth_num": "RSP",
+      "breadth_den": "SPY",
+      "cost_bps": 4
+    },
+    {
+      "symbol": "QQQ",
+      "kind": "ETF",
+      "class": "nasdaq_100_index",
+      "signal": "QQQ",
+      "regime": "QQQ",
+      "breadth_num": "QQEW",
+      "breadth_den": "QQQ",
+      "cost_bps": 5
+    },
+    {
+      "symbol": "SOXX",
+      "kind": "ETF",
+      "class": "semiconductor_index",
+      "signal": "SOXX",
+      "regime": "SOXX",
+      "breadth_num": "XSD",
+      "breadth_den": "SOXX",
+      "cost_bps": 8
+    },
+    {
+      "symbol": "SMH",
+      "kind": "ETF",
+      "class": "semiconductor_index",
+      "signal": "SMH",
+      "regime": "SOXX",
+      "breadth_num": "XSD",
+      "breadth_den": "SOXX",
+      "cost_bps": 7
+    },
+    {
+      "symbol": "MAGS7",
+      "kind": "ETF",
+      "class": "magnificent_7_equal_weight_synthetic",
+      "signal": "MAGS7",
+      "regime": "QQQ",
+      "breadth_num": "QQEW",
+      "breadth_den": "QQQ",
+      "cost_bps": 10,
+      "members": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA"],
+      "implementation": "MAGS ETF or direct equal-weight basket; leveraged modes are modelled only"
+    },
+    {
+      "symbol": "MAGS10",
+      "kind": "ETF",
+      "class": "cboe_magnificent_10_equal_weight_synthetic",
+      "signal": "MAGS10",
+      "regime": "QQQ",
+      "breadth_num": "QQEW",
+      "breadth_den": "QQQ",
+      "cost_bps": 12,
+      "members": ["AAPL", "MSFT", "NVDA", "AMZN", "GOOGL", "META", "TSLA", "AVGO", "AMD", "PLTR"],
+      "implementation": "Cboe MGTN methodology proxy; MGTN derivatives for live exposure; leveraged modes are modelled only"
+    }
+  ]
+}
