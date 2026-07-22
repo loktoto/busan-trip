@@ -5,7 +5,7 @@ import gzip
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-parts = sorted(ROOT.glob("rebuild_v2.py.gz.b64.part??"))
+parts = sorted(ROOT.glob("source_v2.part??"))
 if not parts:
     raise RuntimeError("Missing rebuilt V2 source payload")
 encoded = "".join(part.read_text().strip() for part in parts)
