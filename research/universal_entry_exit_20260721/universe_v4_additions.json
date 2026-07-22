@@ -16,6 +16,7 @@
     {"symbol":"INCY","kind":"STOCK","class":"biotechnology","signal":"INCY","regime":"XBI","breadth_num":"XBI","breadth_den":"SPY","cost_bps":7},
     {"symbol":"ERIC","kind":"STOCK","class":"telecom_equipment","signal":"ERIC","regime":"IXN","breadth_num":"IXN","breadth_den":"ACWI","cost_bps":8},
     {"symbol":"SNDK","kind":"STOCK","class":"memory","signal":"SNDK","regime":"SOXX","breadth_num":"XSD","breadth_den":"SOXX","cost_bps":7,"experimental":true},
-    {"symbol":"NVO","kind":"STOCK","class":"healthcare","signal":"NVO","regime":"XLV","breadth_num":"XLV","breadth_den":"SPY","cost_bps":5}
+    {"symbol":"NVO","kind":"STOCK","class":"healthcare","signal":"NVO","regime":"XLV","breadth_num":"XLV","breadth_den":"SPY","cost_bps":5},
+    {"symbol":"RKLB","kind":"STOCK","class":"space_high_beta","signal":"RKLB","regime":"ARKX","breadth_num":"ARKX","breadth_den":"SPY","cost_bps":10}
   ]
 }
