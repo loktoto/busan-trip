@@ -24,9 +24,11 @@ import pandas as pd
 from backtest import Config, episode_catalog, episode_ids, target_deployment
 
 RECOVERY_LOOKBACK = 5
+RECOVERY_WASHOUT_LOOKBACK = 3
 RECOVERY_MIN_BOUNCE = 0.015
 RECOVERY_ATR_MULTIPLE = 0.75
-RECOVERY_MIN_CLOSE_LOCATION = 0.60
+RECOVERY_MIN_CLOSE_LOCATION = 0.75
+RECOVERY_MIN_VOLUME_RATIO = 0.90
 
 
 def add_recovery_features(x: pd.DataFrame, cfg: Config) -> pd.DataFrame:
@@ -42,12 +44,26 @@ def add_recovery_features(x: pd.DataFrame, cfg: Config) -> pd.DataFrame:
         axis=1,
     ).max(axis=1)
 
+    prior_washout = (
+        y[["newlow10", "newlow20", "crash", "exhaustion"]]
+        .astype(bool)
+        .any(axis=1)
+        .shift(1)
+        .rolling(RECOVERY_WASHOUT_LOOKBACK, min_periods=1)
+        .max()
+        .fillna(0)
+        .astype(bool)
+    )
+    y["recent_washout"] = prior_washout
+
     prior_high = y.High.shift(1)
     y["recovery_probe"] = (
         (y.cycle_dd <= -cfg.start_dd)
+        & y.recent_washout
         & (y.recovery_bounce >= y.recovery_threshold)
         & (y.r1 > 0)
         & (y.close_loc >= RECOVERY_MIN_CLOSE_LOCATION)
+        & (y.vol_ratio >= RECOVERY_MIN_VOLUME_RATIO)
         & (y.Close > prior_high)
         & (~y.long_bear.astype(bool))
         & (~y.credit_veto.astype(bool))
@@ -173,6 +189,7 @@ def run_v11(x: pd.DataFrame, cfg: Config) -> tuple[pd.DataFrame, pd.DataFrame]:
                 "exhaustion_transition": exhaustion_transition,
                 "confirmation_transition": confirmation_transition,
                 "recovery_probe_transition": recovery_transition,
+                "recent_washout": bool(r.recent_washout),
                 "recovery_bounce": float(r.recovery_bounce),
                 "recovery_threshold": float(r.recovery_threshold),
                 "deployment_floor_applied": floor_applied,
@@ -246,6 +263,7 @@ def candidate_v11(x: pd.DataFrame, trades: pd.DataFrame, cfg: Config) -> dict[st
         "candidate_reason": "NONE",
         "eligible_at_next_open": False,
         "recovery_probe": bool(latest.recovery_probe),
+        "recent_washout": bool(latest.recent_washout),
         "recovery_bounce": float(latest.recovery_bounce),
         "recovery_threshold": float(latest.recovery_threshold),
         "recovery_probe_already_used": recovery_already_used,
