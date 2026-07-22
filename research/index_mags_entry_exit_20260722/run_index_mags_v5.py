@@ -1,6 +1,8 @@
 from pathlib import Path
 import base64
 import gzip
+import json
+import os
 import sys
 import types
 
@@ -44,4 +46,21 @@ namespace["END_DATE"] = "2026-07-22"
 namespace["START_DATE"] = "2005-01-01"
 
 exec(compile(focused_patch.read_text(), "focused_basket_patch.py", "exec"), namespace)
+
+requested_symbol = os.getenv("FOCUSED_SYMBOL", "").strip().upper()
+allowed_symbols = {"SPY", "QQQ", "SOXX", "SMH", "MAGS7", "MAGS10"}
+if requested_symbol and requested_symbol not in allowed_symbols:
+    raise RuntimeError(f"Unsupported FOCUSED_SYMBOL: {requested_symbol}")
+
+
+def focused_load_config() -> dict:
+    config = json.loads(config_path.read_text())
+    if requested_symbol:
+        config["assets"] = [asset for asset in config["assets"] if asset["symbol"] == requested_symbol]
+        if len(config["assets"]) != 1:
+            raise RuntimeError(f"Expected one config row for {requested_symbol}")
+    return config
+
+
+namespace["load_config"] = focused_load_config
 namespace["main"]()
