@@ -39,7 +39,7 @@ def _ultra_short_summary(asset: dict[str, Any], trade: pd.DataFrame, signal: pd.
         "last_overnight_gap": canonical(float(overnight_gap.iloc[-1])) if pd.notna(overnight_gap.iloc[-1]) else np.nan,
         "recent_max_abs_gap_20": canonical(float(overnight_gap.tail(20).abs().max())) if overnight_gap.tail(20).notna().any() else np.nan,
         "event_calendar_required": False,
-        "reason": "ultra-short IBKR history; diagnostic only, never production promotion",
+        "reason": "history too short for a 120-session development sample; diagnostic only, never production promotion",
         "ema10": canonical(float(ema10.iloc[-1])), "ema20": canonical(float(ema20.iloc[-1])),
         "rsi5": canonical(float(r5.iloc[-1])), "atr14": canonical(float(av.iloc[-1])),
     }
@@ -61,6 +61,6 @@ def evaluate_asset(asset: dict[str, Any], data: dict[str, pd.DataFrame]):
     signal = data.get(resolve_ticker(asset["signal"]))
     if trade is not None and signal is not None:
         common = trade.index.intersection(signal.index)
-        if 20 <= len(common) < 160:
+        if 20 <= len(common) < 200:
             return _ultra_short_summary(asset, trade, signal)
     return _v4_full_evaluate_asset(asset, data)
