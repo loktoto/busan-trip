@@ -30,21 +30,24 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
-      - name: Validate anchored source integrity
+      - name: Validate corrected source integrity
         run: |
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
           python - <<'PY'
           import base64, gzip, hashlib
           from pathlib import Path
-          payload = Path('research/spy_qqq_soxx_alpha_search_20260722/source_v2.b64')
-          source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
+          root = Path('research/spy_qqq_soxx_alpha_search_20260722')
+          parts = sorted(root.glob('source_v3.part??'))
+          if len(parts) != 4:
+              raise RuntimeError(parts)
+          source = gzip.decompress(base64.b64decode(''.join(part.read_text().strip() for part in parts)))
           digest = hashlib.sha256(source).hexdigest()
-          expected = 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a'
+          expected = 'f381e7642f1f61f05e8e5715878226395b779ebb6f7ab480789217d7c8cb41b3'
           if digest != expected:
               raise RuntimeError(f'{digest} != {expected}')
           compile(source.decode(), 'alpha_search_engine.py', 'exec')
-          print({'source_sha256': digest, 'source_bytes': len(source)})
+          print({'source_sha256': digest, 'source_bytes': len(source), 'parts': len(parts)})
           PY
       - name: Run independent anchored search
         run: |
@@ -77,14 +80,22 @@ jobs:
           choices = pd.read_csv(root/'walk_forward_choices.csv')
           if choices.empty or choices.groupby(['symbol','family']).year.nunique().min() < 10:
               raise RuntimeError('insufficient annual walk-forward choices')
+          grid = pd.read_csv(root/'candidate_grid.csv')
+          non_baseline = grid[grid.candidate != 'buy_hold']
+          if non_baseline.effective_trials.min() < 8:
+              raise RuntimeError('effective-trial penalty below economic-family floor')
+          if non_baseline.dsr_probability.isna().any():
+              raise RuntimeError('missing corrected DSR probability')
           manifest = json.loads((root/'run_manifest.json').read_text())
-          if manifest.get('source_sha256') != 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a':
+          expected = 'f381e7642f1f61f05e8e5715878226395b779ebb6f7ab480789217d7c8cb41b3'
+          if manifest.get('source_sha256') != expected:
               raise RuntimeError(manifest)
           print(identity.to_string(index=False))
           print({
               'identity_sha256': manifest['identity_sha256'],
               'raw_candidate_count_total': manifest['raw_candidate_count_total'],
               'final_candidate_count': manifest['final_candidate_count'],
+              'effective_trials': sorted(non_baseline.effective_trials.unique().tolist()),
           })
           PY
       - name: Upload repetition
@@ -111,7 +122,7 @@ jobs:
           pattern: spy-qqq-soxx-alpha-*
           path: repetitions
           merge-multiple: false
-      - name: Compare source, annual choices and final results
+      - name: Compare source, annual choices and corrected statistics
         run: python research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
       - name: Upload canonical result
         uses: actions/upload-artifact@v4
