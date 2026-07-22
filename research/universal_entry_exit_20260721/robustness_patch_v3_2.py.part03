@@ -1,0 +1,104 @@
+def generate_entry_rules(asset: dict[str, Any], signal: pd.DataFrame, cache: dict[str, Any], data: dict[str, pd.DataFrame]) -> list[tuple[EntryRule, pd.Series]]:
+    base = _v3_generate_entry_rules(asset, signal, cache, data)
+    if asset["kind"] == "INVERSE_VOL":
+        return base
+    c = signal.Close
+    low = signal.Low
+    r5 = cache["rsi5"]
+    additions: list[tuple[EntryRule, pd.Series]] = []
+
+    for trend_ma, breakout, compression, volume_floor in itertools.product(
+        [100, 200], [20, 50], [0.85, 1.00], [0.0, 1.0]
+    ):
+        trend = (c > cache[f"sma{trend_ma}"] * (1 + HYST)) & (
+            cache[f"sma{trend_ma}"] > cache[f"sma{trend_ma}"].shift(20) * (1 + HYST)
+        )
+        compressed = cache["rv20"] < compression * cache["rv100"]
+        volume_ok = True if volume_floor == 0.0 else cache["volume_ratio20"] >= volume_floor
+        condition = trend & compressed & volume_ok & (c > cache[f"high{breakout}"] * (1 + HYST))
+        entry = condition & ~condition.shift(1).fillna(False)
+        additions.append((EntryRule("vol_compression_breakout", (trend_ma, breakout, compression, volume_floor)), entry))
+
+    for trend_ma, ema_n, rsi_cap, look in itertools.product([100, 200], [10, 20], [45, 55], [3, 5]):
+        ema = cache[f"ema{ema_n}"]
+        long_trend = (c > cache[f"sma{trend_ma}"] * (1 + HYST)) & (cache["ema20"] > cache["ema50"])
+        touched = (low <= ema * 1.005).rolling(look).max().fillna(False).astype(bool)
+        reclaim = (c > ema * (1 + HYST)) & (c.shift(1) <= ema.shift(1) * 1.005)
+        entry = long_trend & touched & reclaim & (r5 < rsi_cap)
+        additions.append((EntryRule("ema_pullback_reclaim", (trend_ma, ema_n, rsi_cap, look)), entry))
+
+    for trend_ma, min_drawdown, reclaim in itertools.product([100, 200], [0.05, 0.10, 0.15], [10, 20]):
+        trend = c > cache[f"sma{trend_ma}"] * (1 + HYST)
+        prior_dd = cache["drawdown63"].rolling(10).min() <= -min_drawdown
+        short = cache[f"sma{reclaim}"]
+        cross = (c > short * (1 + HYST)) & (c.shift(1) <= short.shift(1) * (1 + HYST))
+        entry = trend & prior_dd & cross
+        additions.append((EntryRule("drawdown_reclaim", (trend_ma, min_drawdown, reclaim)), entry))
+
+    regime = data.get(resolve_ticker(asset["regime"]))
+    if regime is not None:
+        rc = regime.Close.reindex(c.index)
+        ratio = c / rc.replace(0, np.nan)
+        for trend_ma, breakout, rs_window in itertools.product([100, 200], [20, 50], [63, 126]):
+            rs_ok = ratio > ratio.rolling(rs_window).mean() * (1 + HYST)
+            price_break = c > cache[f"high{breakout}"] * (1 + HYST)
+            condition = (c > cache[f"sma{trend_ma}"] * (1 + HYST)) & rs_ok & price_break
+            entry = condition & ~condition.shift(1).fillna(False)
+            additions.append((EntryRule("relative_strength_breakout", (trend_ma, breakout, rs_window)), entry))
+
+    return base + additions
+
+
+def generate_exit_rules(asset: dict[str, Any], signal: pd.DataFrame, cache: dict[str, Any], data: dict[str, pd.DataFrame]) -> list[tuple[ExitRule, pd.Series, int]]:
+    base = _v3_generate_exit_rules(asset, signal, cache, data)
+    if asset["kind"] == "INVERSE_VOL":
+        return base
+    c = signal.Close
+    additions: list[tuple[ExitRule, pd.Series, int]] = []
+    for vol_multiple, ma in itertools.product([1.5, 2.0], [20, 50]):
+        signal_exit = (cache["rv20"] > vol_multiple * cache["rv100"]) | (
+            c < cache[f"sma{ma}"] * (1 - HYST)
+        )
+        additions.append((ExitRule("volatility_or_ma", (vol_multiple, ma)), signal_exit, 0))
+    regime = data.get(resolve_ticker(asset["regime"]))
+    if regime is not None:
+        rc = regime.Close.reindex(c.index)
+        ratio = c / rc.replace(0, np.nan)
+        for ma in [20, 50]:
+            rs_break = ratio < ratio.rolling(50).mean() * (1 - HYST)
+            signal_exit = rs_break & (c < cache[f"sma{ma}"] * (1 - HYST))
+            additions.append((ExitRule("relative_strength_or_ma", (ma,)), signal_exit, 0))
+    return base + additions
+
+
+def build_overlays(asset: dict[str, Any], index: pd.DatetimeIndex, signal: pd.DataFrame, cache, data) -> dict[str, pd.Series]:
+    overlays = _v3_build_overlays(asset, index, signal, cache, data)
+    if "regime_trend" in overlays and "breadth" in overlays:
+        overlays["regime_breadth"] = overlays["regime_trend"] & overlays["breadth"]
+    if "credit" in overlays and "realised_vol" in overlays:
+        overlays["credit_vol"] = overlays["credit"] & overlays["realised_vol"]
+    regime = data.get(resolve_ticker(asset["regime"]))
+    if regime is not None:
+        rc = regime.Close.reindex(index)
+        ratio = signal.Close.reindex(index) / rc.replace(0, np.nan)
+        overlays["rs_level"] = ratio > ratio.rolling(100).mean() * (1 + HYST)
+    return {k: v.reindex(index).fillna(False).astype(bool) for k, v in overlays.items()}
+
+
+_v3_render_report = render_report
+
+
+def render_report(summaries: list[dict[str, Any]], manifest: dict[str, Any]) -> str:
+    report = _v3_render_report(summaries, manifest)
+    report = report.replace("Universal daily entry/exit optimisation v3", "Universal daily entry/exit optimisation v4")
+    report = report.replace("Completed-close cutoff: 2026-07-20", "Completed-close cutoff: 2026-07-21")
+    preamble = (
+        "\n\n## V4 methodology changes\n\n"
+        "- Stage-1 entries are ranked on forward excess return versus the unconditional forward return, not merely positive raw returns.\n"
+        "- Long-history assets reserve 2022 onward as final holdout where possible, covering both bear and bull regimes.\n"
+        "- Added volatility-compression breakout, EMA pullback/reclaim, drawdown reclaim and relative-strength breakout entries.\n"
+        "- Added volatility-spike and relative-strength failure exits plus combined regime/breadth and credit/volatility overlays.\n"
+        "- Added 7709.HK, 7747.HK, 3191.HK, SK hynix, Samsung Electronics, SentinelOne and Grab.\n"
+        "- DRAM/FOTO can use committed IBKR static OHLC inputs when available; short histories remain experimental.\n"
+    )
+    return report + preamble
