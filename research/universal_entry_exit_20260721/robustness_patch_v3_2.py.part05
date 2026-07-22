@@ -1,0 +1,17 @@
+# V4.1: development-only day/night overlays for individual stocks.
+# Motivated by 2026 RFS evidence that stock momentum is concentrated in intraday returns.
+
+_v4_build_overlays_with_regimes = build_overlays
+
+
+def build_overlays(asset: dict[str, Any], index: pd.DatetimeIndex, signal: pd.DataFrame, cache, data) -> dict[str, pd.Series]:
+    overlays = _v4_build_overlays_with_regimes(asset, index, signal, cache, data)
+    if asset.get("kind") == "STOCK":
+        intraday = np.log(signal.Close.reindex(index) / signal.Open.reindex(index).replace(0, np.nan))
+        overnight = np.log(signal.Open.reindex(index) / signal.Close.reindex(index).shift(1).replace(0, np.nan))
+        overlays["intraday_mom5"] = intraday.rolling(5).sum() > HYST
+        overlays["intraday_mom20"] = intraday.rolling(20).sum() > HYST
+        overlays["intraday_vs_overnight20"] = (
+            intraday.rolling(20).sum() - overnight.rolling(20).sum()
+        ) > HYST
+    return {name: value.reindex(index).fillna(False).astype(bool) for name, value in overlays.items()}
