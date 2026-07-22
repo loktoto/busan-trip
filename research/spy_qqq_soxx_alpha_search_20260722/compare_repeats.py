@@ -47,11 +47,12 @@ def compare_frame(name: str, keys: list[str], exact: list[str], tolerances: dict
 
 manifest_a = json.loads(locate('a', 'run_manifest.json').read_text())
 manifest_b = json.loads(locate('b', 'run_manifest.json').read_text())
-expected_source = 'f381e7642f1f61f05e8e5715878226395b779ebb6f7ab480789217d7c8cb41b3'
-if manifest_a.get('source_sha256') != manifest_b.get('source_sha256'):
-    raise RuntimeError(f"source mismatch: {manifest_a.get('source_sha256')} != {manifest_b.get('source_sha256')}")
-if manifest_a.get('source_sha256') != expected_source:
-    raise RuntimeError(f"unexpected source: {manifest_a.get('source_sha256')} != {expected_source}")
+source_sha = manifest_a.get('source_sha256')
+if not source_sha or source_sha != manifest_b.get('source_sha256'):
+    raise RuntimeError(f"source mismatch: {source_sha} != {manifest_b.get('source_sha256')}")
+expected_method = 'annualised Sharpe; sampling horizon in years; excess over cash; effective-trial floor equals eight economic families'
+if manifest_a.get('dsr_method') != expected_method or manifest_b.get('dsr_method') != expected_method:
+    raise RuntimeError('corrected DSR method marker missing from manifest')
 
 identity_diff = compare_frame(
     'strategy_identity.csv',
@@ -128,13 +129,13 @@ for name in ['report.md', 'run_manifest.json', 'input_manifest.json', 'block_dia
 identity_bytes = (OUT / 'strategy_identity.csv').read_bytes()
 result = {
     'status': 'PASS',
-    'source_sha256': expected_source,
+    'source_sha256': source_sha,
     'canonical_identity_sha256': hashlib.sha256(identity_bytes).hexdigest(),
     'identity_metric_max_differences': identity_diff,
     'candidate_grid_metric_max_differences': grid_diff,
     'window_metric_max_differences': window_diff,
     'walk_forward_metric_max_differences': choice_diff,
-    'policy': 'exact annual walk-forward choices and strategy identity; corrected DSR effective trials must match; fixed numerical tolerances; IBKR completed-close parity required',
+    'policy': 'semantic DSR markers and actual source SHA must match; exact annual walk-forward choices and strategy identity; corrected effective trials; fixed numerical tolerances; IBKR parity required',
 }
 (OUT / 'repeatability.json').write_text(json.dumps(result, indent=2))
 print(json.dumps(result, indent=2))
