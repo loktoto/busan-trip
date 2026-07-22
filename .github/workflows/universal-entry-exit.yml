@@ -1,0 +1,58 @@
+name: Universal ETF and stock entry exit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/universal_entry_exit_20260722/**
+      - .github/workflows/universal-entry-exit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  optimise:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Decode and compile optimiser
+        shell: bash
+        run: |
+          python - <<'PY'
+          import base64, gzip
+          from pathlib import Path
+          root = Path('research/universal_entry_exit_20260722')
+          payload = base64.b64decode((root / 'optimize_universal_entry_exit.py.gz.b64').read_text().strip())
+          (root / 'optimize_universal_entry_exit.py').write_bytes(gzip.decompress(payload))
+          PY
+          python -m py_compile research/universal_entry_exit_20260722/run_universal_entry_exit.py
+          python -m py_compile research/universal_entry_exit_20260722/optimize_universal_entry_exit.py
+          test "$(sha256sum research/universal_entry_exit_20260722/optimize_universal_entry_exit.py | awk '{print $1}')" = "d05fab1b3158227acdfedd21ba0f7f6f707a59ae373eedd37cb1ffc0ad150cba"
+      - name: Run universal optimiser
+        shell: bash
+        run: |
+          mkdir -p research_outputs/universal_entry_exit_20260722
+          set +e
+          python research/universal_entry_exit_20260722/run_universal_entry_exit.py > research_outputs/universal_entry_exit_20260722/optimizer.log 2>&1
+          code=$?
+          tail -n 220 research_outputs/universal_entry_exit_20260722/optimizer.log
+          exit $code
+      - name: Show report
+        if: always()
+        run: |
+          test -f research_outputs/universal_entry_exit_20260722/report.md && cat research_outputs/universal_entry_exit_20260722/report.md || true
+      - name: Upload research outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-entry-exit-20260722
+          path: research_outputs/universal_entry_exit_20260722
+          if-no-files-found: warn
+          retention-days: 21
