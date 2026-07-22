@@ -1,0 +1,53 @@
+{
+  "as_of": "2026-07-22",
+  "completed_close_cutoff": "2026-07-21",
+  "purpose": "Independent IBKR contract, recent completed-close, volatility and liquidity audit. Intraday or delayed snapshots are not inserted into the backtest.",
+  "contracts": {
+    "SPY": {"contract_id": 756733, "exchange": "ARCA"},
+    "QQQ": {"contract_id": 320227571, "exchange": "NASDAQ"},
+    "SOXX": {"contract_id": 12658194, "exchange": "NASDAQ"},
+    "SMH": {"contract_id": 229725622, "exchange": "NASDAQ"},
+    "MAGS": {"contract_id": 624756922, "exchange": "BATS"}
+  },
+  "market_audit": {
+    "SPY": {
+      "last_snapshot": 745.71,
+      "prior_close": 748.28,
+      "annual_historical_volatility": 0.1688698398,
+      "average_90d_usd_volume": 38997434306
+    },
+    "QQQ": {
+      "last_snapshot": 702.98,
+      "prior_close": 708.97,
+      "annual_historical_volatility": 0.2926751266,
+      "average_90d_usd_volume": 30287909905
+    },
+    "SOXX": {
+      "completed_close_2026_07_21": 552.69,
+      "annual_historical_volatility_snapshot": 0.7493990050,
+      "history_note": "IBKR returned 1,000 completed RTH daily bars and corporate actions. The completed close is used only for parity checking."
+    },
+    "SMH": {
+      "last_snapshot": 572.42,
+      "prior_close": 584.08,
+      "annual_historical_volatility": 0.6334388999,
+      "average_90d_usd_volume": 6369645476
+    },
+    "MAGS": {
+      "last_snapshot": 66.81,
+      "prior_close": 66.95,
+      "annual_historical_volatility": 0.2354380011,
+      "average_90d_usd_volume": 278591409
+    }
+  },
+  "synthetic_basket_policy": {
+    "MAGS7": "Quarterly equal-weight synthetic index from AAPL, MSFT, NVDA, AMZN, GOOGL, META and TSLA. MAGS is used as a recent implementation reference, not as a full-history substitute.",
+    "MAGS10": "Quarterly equal-weight Cboe Magnificent 10 proxy using MAGS7 plus AVGO, AMD and PLTR. No IBKR-listed ETF is assumed to provide full historical replication."
+  },
+  "live_use_policy": [
+    "Use completed daily closes for signals and the following regular-session open for execution.",
+    "Do not mix live or 15-minute delayed snapshots into completed-close research observations.",
+    "Before acting on a signal, compare the most recent adjusted close and corporate-action treatment with IBKR.",
+    "No order instruction is created by this research."
+  ]
+}
