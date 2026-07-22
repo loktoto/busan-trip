@@ -38,15 +38,15 @@ jobs:
           import base64, gzip, hashlib
           from pathlib import Path
           root = Path('research/index_mags_rebuild_20260722')
-          parts = sorted(root.glob('source_v2.part??'))
+          parts = sorted(root.glob('source_v3.part??'))
           if len(parts) != 6:
               raise RuntimeError(f'expected six source parts; found {parts}')
           source = gzip.decompress(base64.b64decode(''.join(p.read_text().strip() for p in parts)))
           digest = hashlib.sha256(source).hexdigest()
-          expected = '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66'
+          expected = '94ea59a091bc0b6855e717d2c7b6d51893e2616955a4fbdfb691d1341f711d84'
           if digest != expected:
               raise RuntimeError(f'source SHA mismatch: {digest} != {expected}')
-          compile(source.decode(), 'index_mags_rebuild_v2.py', 'exec')
+          compile(source.decode(), 'index_mags_rebuild_v3.py', 'exec')
           print({'source_sha256': digest, 'bytes': len(source), 'parts': len(parts)})
           PY
       - name: Run independent full rebuild
@@ -78,6 +78,9 @@ jobs:
           summary = pd.read_csv(root / 'strategy_summary.csv')
           if len(summary) != 24 or summary.groupby('symbol').size().ne(4).any():
               raise RuntimeError(f'unexpected summary shape {summary.shape}')
+          baseline = summary[summary.strategy == 'Buy & Hold']
+          if baseline[['stress_2x_cagr_delta','stress_3x_cagr_delta']].abs().to_numpy().max() > 1e-12:
+              raise RuntimeError(f'Buy & Hold stress delta must be zero: {baseline[["symbol","stress_2x_cagr_delta","stress_3x_cagr_delta"]].to_dict("records")}')
           parity = pd.read_csv(root / 'ibkr_close_parity.csv')
           if (parity.absolute_pct_diff > 0.003).any():
               raise RuntimeError(f'IBKR parity failure: {parity.to_dict("records")}')
