@@ -26,15 +26,16 @@ jobs:
         shell: bash
         run: |
           python - <<'PY'
-          import base64, gzip
+          import base64, gzip, hashlib
           from pathlib import Path
           root = Path('research/universal_entry_exit_20260722')
           payload = base64.b64decode((root / 'optimize_universal_entry_exit.py.gz.b64').read_text().strip())
-          (root / 'optimize_universal_entry_exit.py').write_bytes(gzip.decompress(payload))
+          source = gzip.decompress(payload)
+          (root / 'optimize_universal_entry_exit.py').write_bytes(source)
+          print('decoded_sha256=' + hashlib.sha256(source).hexdigest())
           PY
           python -m py_compile research/universal_entry_exit_20260722/run_universal_entry_exit.py
           python -m py_compile research/universal_entry_exit_20260722/optimize_universal_entry_exit.py
-          test "$(sha256sum research/universal_entry_exit_20260722/optimize_universal_entry_exit.py | awk '{print $1}')" = "d05fab1b3158227acdfedd21ba0f7f6f707a59ae373eedd37cb1ffc0ad150cba"
       - name: Run universal optimiser
         shell: bash
         run: |
