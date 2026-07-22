@@ -30,6 +30,7 @@ These are added to V4.1's pullback/reclaim, trend mean reversion, volatility-com
 - Candidates are diversified by entry family and rejected when state correlation exceeds 0.90.
 - V5 tests two- and three-component ensembles. Activity is the mean vote, producing fractional exposure rather than an all-or-nothing switch.
 - Core ETF overlays remain capped at 1.5x. Tactical stocks and leveraged ETFs remain between cash and 1.0x.
+- Ordinary stocks are swing-only by default. Add-on mode is available only when the asset configuration explicitly marks the stock as a core holding.
 
 ## Event handling
 
@@ -60,3 +61,7 @@ For stocks, a gap larger than 4% or 1.5 prior ATR with at least 1.5x median volu
 - `REPLACE_V4`: V5 passed its own development, purged-block, DSR, PBO, stress, holdout and bootstrap gates and beat the frozen V4.1 result by the replacement margin.
 - `KEEP_V4`: V5 failed its own statistical gates or did not improve enough to justify changing the audited rule.
 - A replacement is still historical evidence, not guaranteed future outperformance.
+
+## Repeatability audit
+
+The documentation-only commit following semantic run 8 intentionally leaves all model source and parameters unchanged. Its workflow result is used solely to compare the 85-asset canonical identity SHA-256, replacement set and selected component rules against run 8.
