@@ -1,0 +1,123 @@
+{
+  "schema_version": "2.0",
+  "date": "2026-07-22",
+  "authoritative_report": "ground-up-market-bottom-report-final-2026-07-22.md",
+  "supersedes": [
+    "all prior bottom-monitor narrative reports",
+    "ground-up-market-bottom-report-2026-07-22.md",
+    "ground-up-market-bottom-claim-audit-2026-07-22.json"
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "classification": "CORRECTED",
+      "prior": "The v1.1 recovery overlay enhances bottom detection.",
+      "validated": "The overlay adds trades but does not improve hit rates and slightly worsens weighted distance for SPY, QQQ and SOXX.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C02",
+      "classification": "CORRECTED",
+      "prior": "The monitor is a close-to-bottom detector.",
+      "validated": "It is primarily a staged drawdown-participation engine; QQQ and SOXX enter materially before eventual troughs.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C03",
+      "classification": "NEW",
+      "prior": "Aggregate averages adequately describe model quality.",
+      "validated": "Episodes with final drawdowns of at least 25% are the principal failure regime and show very early, adverse deployment.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C04",
+      "classification": "CORRECTED",
+      "prior": "Positive forward return validates bottom timing.",
+      "validated": "Forward return is a secondary economic outcome; proximity and adverse excursion are the primary bottom-timing metrics.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C05",
+      "classification": "UPDATED",
+      "prior": "Breadth reversal can confirm a final bottom.",
+      "validated": "Breadth describes participation and rebound quality but failed as a standalone bottom-completion trigger.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C06",
+      "classification": "UPDATED",
+      "prior": "Financial or funding stress normalisation confirms the equity trough.",
+      "validated": "Stress can normalise during intermediate bear rallies; use it as context or a leverage veto.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C07",
+      "classification": "CORRECTED",
+      "prior": "The first v1.7 stress output is admissible.",
+      "validated": "The first output is invalid for promotion because breach age reset repeatedly; only corrected v1.8 is admissible.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C08",
+      "classification": "CORRECTED",
+      "prior": "Current-constituent sector panels can support production.",
+      "validated": "They are survivorship-biased discovery proxies and require historical point-in-time membership.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C09",
+      "classification": "RETAINED",
+      "prior": "SMH may directly gate SOXX.",
+      "validated": "SMH remains informational only because paired rules did not show persistent incremental value.",
+      "confidence": "MEDIUM_HIGH"
+    },
+    {
+      "id": "C10",
+      "classification": "CORRECTED",
+      "prior": "A local recovery can be called a cycle bottom.",
+      "validated": "Participation, local recovery and cycle-bottom evidence remain separate states.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C11",
+      "classification": "UPDATED",
+      "prior": "Actual-product leverage paths are not yet tested.",
+      "validated": "Actual adjusted-price product audits now exist for SSO, QLD and USD; all remain blocked from production.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C12",
+      "classification": "NEW",
+      "prior": "SOXX to USD can be evaluated as ordinary tracking.",
+      "validated": "SOXX to USD is a cross-index tactical proxy; its gap combines benchmark mismatch and product path and is not pure tracking error.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C13",
+      "classification": "NEW",
+      "prior": "All leveraged mappings have similar tactical risk.",
+      "validated": "USD showed a negative median tactical return, a worst trade near -23.24% and worst adverse excursion near -28.63%, materially worse than SSO and QLD in the audited rule.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C14",
+      "classification": "CORRECTED",
+      "prior": "The latest provider daily row can be treated as completed.",
+      "validated": "Providers may expose an unfinished current-session daily bar; the shared fetcher now excludes the current exchange-local row before a conservative 16:30 local cutoff.",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "C15",
+      "classification": "NEW",
+      "prior": "The next priority is another price or rebound indicator.",
+      "validated": "The next priority is deep-bear capital reservation followed by authorised point-in-time feature ablation.",
+      "confidence": "RESEARCH_PRIORITY"
+    }
+  ],
+  "production_changes": {
+    "entry_thresholds": "NONE",
+    "tranche_sizes": "NONE",
+    "leverage_rules": "NONE",
+    "orders_created_or_transmitted": false
+  }
+}
