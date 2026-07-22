@@ -49,7 +49,7 @@ def reconstruct_family_stream(engine, symbol: str, data: dict[str, pd.DataFrame]
     )
     oos_start = frame.index[frame.index >= OOS_START].min()
     final_returns, final_exposures, final_turnovers, final_families, final_descriptions, choices = engine.anchored_family_streams(
-        symbol, frame, cash, raw_returns, raw_exposures, raw_turnovers,
+        symbol, frame, cash, candidates, raw_returns, raw_exposures, raw_turnovers,
         raw_families, raw_descriptions, oos_start,
     )
     return {
