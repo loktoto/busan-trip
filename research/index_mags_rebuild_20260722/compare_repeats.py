@@ -48,6 +48,13 @@ def compare_frame(name: str, keys: list[str], exact: list[str], tolerances: dict
     return maxima
 
 
+manifest_a = json.loads(locate("a", "run_manifest.json").read_text())
+manifest_b = json.loads(locate("b", "run_manifest.json").read_text())
+source_sha_a = manifest_a.get("research_source_sha256")
+source_sha_b = manifest_b.get("research_source_sha256")
+if not source_sha_a or source_sha_a != source_sha_b:
+    raise RuntimeError(f"Research source SHA mismatch: {source_sha_a} != {source_sha_b}")
+
 identity_diff = compare_frame(
     "strategy_identity.csv",
     keys=["symbol"],
@@ -94,6 +101,11 @@ parity = pd.read_csv(OUT / "ibkr_close_parity.csv")
 if (parity.absolute_pct_diff > 0.003).any():
     raise RuntimeError(f"IBKR close parity failed: {parity[parity.absolute_pct_diff > 0.003].to_dict('records')}")
 
+summary = pd.read_csv(OUT / "strategy_summary.csv")
+baseline = summary[summary.strategy == "Buy & Hold"]
+if baseline[["stress_2x_cagr_delta", "stress_3x_cagr_delta"]].abs().to_numpy().max() > 1e-12:
+    raise RuntimeError("Canonical Buy & Hold stress-cost deltas are not exactly zero")
+
 for name in [
     "walk_forward_choices.csv", "mgtn_recent_parity.csv", "live_product_validation.json",
     "run_manifest.json", "input_manifest.json", "report.md",
@@ -105,11 +117,12 @@ identity_bytes = (OUT / "strategy_identity.csv").read_bytes()
 canonical_sha = hashlib.sha256(identity_bytes).hexdigest()
 result = {
     "status": "PASS",
+    "research_source_sha256": source_sha_a,
     "canonical_identity_sha256": canonical_sha,
     "identity_metric_max_differences": identity_diff,
     "summary_metric_max_differences": summary_diff,
     "window_metric_max_differences": window_diff,
-    "policy": "strategy identity must match exactly; numerical differences must remain within fixed tolerances",
+    "policy": "source and strategy identity must match exactly; numerical differences must remain within fixed tolerances",
 }
 (OUT / "repeatability.json").write_text(json.dumps(result, indent=2))
 print(json.dumps(result, indent=2))
