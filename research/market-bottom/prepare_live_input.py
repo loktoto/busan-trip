@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Assemble a compact runtime request plus repository-stored daily files.
 
-Completed daily history can be refreshed independently from hourly snapshots.  When
+Completed daily history can be refreshed independently from hourly snapshots. When
 IBKR supplies a newer completed RTH bar in the request snapshot, this assembler
 causally replaces/appends that exact date before the fixed calculation runs.
 """
@@ -52,7 +52,11 @@ def _merge_completed_bar(rows: list[dict[str, Any]], snapshot: dict[str, Any]) -
         raise ValueError(f"completed_rth_bar missing {sorted(missing)}")
 
     df = pd.DataFrame(rows + [{key: completed[key] for key in REQUIRED_BARS}])
-    df["Date"] = pd.to_datetime(df["Date"], utc=True, errors="raise").dt.tz_convert(None).dt.date.astype(str)
+    df["Date"] = (
+        pd.to_datetime(df["Date"], utc=True, errors="raise", format="mixed")
+        .dt.tz_convert(None)
+        .dt.date.astype(str)
+    )
     for col in REQUIRED_BARS[1:]:
         df[col] = pd.to_numeric(df[col], errors="raise")
     df = df.sort_values("Date").drop_duplicates("Date", keep="last").reset_index(drop=True)
