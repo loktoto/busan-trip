@@ -30,26 +30,23 @@ jobs:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
-      - name: Validate source integrity
+      - name: Validate anchored source integrity
         run: |
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
           python - <<'PY'
           import base64, gzip, hashlib
           from pathlib import Path
-          root = Path('research/spy_qqq_soxx_alpha_search_20260722')
-          parts = sorted(root.glob('source.part??'))
-          if len(parts) != 2:
-              raise RuntimeError(parts)
-          source = gzip.decompress(base64.b64decode(''.join(p.read_text().strip() for p in parts)))
+          payload = Path('research/spy_qqq_soxx_alpha_search_20260722/source_v2.b64')
+          source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
           digest = hashlib.sha256(source).hexdigest()
-          expected = '419857ef2492665d60f8bcd955aee4f85601d6d0de5854cff9fb5c6d0f678e7c'
+          expected = 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a'
           if digest != expected:
               raise RuntimeError(f'{digest} != {expected}')
           compile(source.decode(), 'alpha_search_engine.py', 'exec')
           print({'source_sha256': digest, 'source_bytes': len(source)})
           PY
-      - name: Run independent search
+      - name: Run independent anchored search
         run: |
           rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
           mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
@@ -63,8 +60,12 @@ jobs:
           import json
           import pandas as pd
           root = Path('research_outputs/spy_qqq_soxx_alpha_search_20260722')
-          required = ['strategy_identity.csv','window_comparison.csv','candidate_grid.csv','block_diagnostics.csv','ibkr_close_parity.csv','run_manifest.json','input_manifest.json','report.md','optimizer.log']
-          missing = [x for x in required if not (root/x).exists()]
+          required = [
+              'strategy_identity.csv','window_comparison.csv','candidate_grid.csv',
+              'block_diagnostics.csv','walk_forward_choices.csv','ibkr_close_parity.csv',
+              'run_manifest.json','input_manifest.json','report.md','optimizer.log'
+          ]
+          missing = [name for name in required if not (root/name).exists()]
           if missing:
               raise RuntimeError(missing)
           identity = pd.read_csv(root/'strategy_identity.csv')
@@ -73,9 +74,18 @@ jobs:
           parity = pd.read_csv(root/'ibkr_close_parity.csv')
           if (parity.absolute_pct_diff > 0.003).any():
               raise RuntimeError(parity.to_dict('records'))
+          choices = pd.read_csv(root/'walk_forward_choices.csv')
+          if choices.empty or choices.groupby(['symbol','family']).year.nunique().min() < 10:
+              raise RuntimeError('insufficient annual walk-forward choices')
           manifest = json.loads((root/'run_manifest.json').read_text())
+          if manifest.get('source_sha256') != 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a':
+              raise RuntimeError(manifest)
           print(identity.to_string(index=False))
-          print({'identity_sha256': manifest['identity_sha256'], 'candidate_count': manifest['candidate_count']})
+          print({
+              'identity_sha256': manifest['identity_sha256'],
+              'raw_candidate_count_total': manifest['raw_candidate_count_total'],
+              'final_candidate_count': manifest['final_candidate_count'],
+          })
           PY
       - name: Upload repetition
         if: always()
@@ -95,13 +105,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install comparison dependencies
-        run: python -m pip install --quiet pandas numpy
+        run: python -m pip install --quiet pandas
       - uses: actions/download-artifact@v4
         with:
           pattern: spy-qqq-soxx-alpha-*
           path: repetitions
           merge-multiple: false
-      - name: Compare repetitions
+      - name: Compare source, annual choices and final results
         run: python research/spy_qqq_soxx_alpha_search_20260722/compare_repeats.py
       - name: Upload canonical result
         uses: actions/upload-artifact@v4
