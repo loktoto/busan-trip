@@ -13,32 +13,33 @@ def indicator_cache(signal: pd.DataFrame) -> dict[str, Any]:
 
 def _choose_diverse(pool: pd.DataFrame, state_cache: dict[tuple, pd.Series], mode: str,
                     maximum: int = 6) -> list[tuple]:
-    """Choose one low-correlation component per entry family with stable block-first ranking.
+    """Choose one low-correlation component per entry family using absolute quality.
 
-    Cross-run auditing showed that tiny adjusted-price revisions could switch a SOXX
-    pullback exit between 30 and 40 sessions because percentile ranks changed across
-    the full grid. Prefer components whose worst purged block has non-negative alpha
-    and no more than one percentage point of drawdown degradation. Fall back to the
-    original development-pass tier only when the robust tier cannot supply enough
-    distinct families.
+    V5 keeps percentile scores for diagnostics, but component identity must not be
+    determined by ranks that change when unrelated candidates move. Prefer candidates
+    that pass development, stressed-cost and purged-block stability. Small tolerances
+    absorb adjusted-price noise; they do not relax the final production gates.
     """
     chosen: list[tuple] = []
     families: set[str] = set()
     subset = pool[pool["mode"] == mode].copy()
     if subset.empty:
         return chosen
+
+    if "stable_quality" not in subset:
+        subset["stable_quality"] = subset["development_score"].round(4)
     subset["robust_component"] = (
         subset["development_pass"].fillna(False).astype(bool)
-        & (subset["block_excess_worst"] >= 0.0)
-        & (subset["block_dd_worst"] >= -0.01)
+        & (subset["block_excess_worst"] >= -0.001)
+        & (subset["block_dd_worst"] >= -0.015)
         & (subset["stress_dev_excess"] > 0.0)
     )
-    subset["stable_score"] = subset["development_score"].round(3)
+    subset["stable_quality"] = subset["stable_quality"].round(4)
     subset["stable_block_excess"] = subset["block_excess_worst"].round(4)
     subset["stable_block_dd"] = subset["block_dd_worst"].round(4)
     subset = subset.sort_values(
         [
-            "robust_component", "development_pass", "stable_score",
+            "robust_component", "development_pass", "stable_quality",
             "stable_block_excess", "stable_block_dd", "entry_family",
             "entry_id", "exit_id", "overlay", "stop",
         ],
