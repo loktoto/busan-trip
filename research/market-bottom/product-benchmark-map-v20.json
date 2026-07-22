@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-07-22",
+  "products": {
+    "SSO": {
+      "signal_asset": "SPY",
+      "signal_asset_benchmark": "S&P 500 Index",
+      "leveraged_product_benchmark": "S&P 500 Index",
+      "relationship": "SAME_BENCHMARK_FAMILY",
+      "daily_target": 2.0,
+      "official_product_source": "https://www.proshares.com/our-etfs/leveraged-and-inverse/sso",
+      "official_signal_source": "https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy"
+    },
+    "QLD": {
+      "signal_asset": "QQQ",
+      "signal_asset_benchmark": "Nasdaq-100 Index",
+      "leveraged_product_benchmark": "Nasdaq-100 Index",
+      "relationship": "SAME_BENCHMARK_FAMILY",
+      "daily_target": 2.0,
+      "official_product_source": "https://www.proshares.com/our-etfs/leveraged-and-inverse/qld",
+      "official_signal_source": "https://www.invesco.com/qqq-etf/en/about.html"
+    },
+    "USD": {
+      "signal_asset": "SOXX",
+      "signal_asset_benchmark": "NYSE Semiconductor Index",
+      "leveraged_product_benchmark": "Dow Jones U.S. Semiconductors Index",
+      "relationship": "CROSS_INDEX_TACTICAL_PROXY",
+      "daily_target": 2.0,
+      "official_product_source": "https://www.proshares.com/our-etfs/leveraged-and-inverse/usd",
+      "official_signal_source": "https://www.ishares.com/us/products/239705/SOXX",
+      "governance": "Actual USD prices may be used for tactical P&L. A theoretical two-times SOXX path is not USD's stated benchmark and cannot be interpreted as product tracking error or used for promotion."
+    }
+  },
+  "general_daily_reset_source": "https://www.proshares.com/resources/geared-faqs",
+  "general_governance": "All three products have daily objectives. Holding-period returns can differ materially from the daily target because of compounding, volatility, fees, financing and market-price effects."
+}
