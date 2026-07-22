@@ -5,17 +5,15 @@ on:
     paths:
       - "research/market-bottom/**"
       - ".github/workflows/market-bottom-research.yml"
-      - "runtime/market-bottom/latest-request.json"
   push:
     branches:
       - "agent/market-bottom-strategy"
     paths:
       - "research/market-bottom/**"
       - ".github/workflows/market-bottom-research.yml"
-      - "runtime/market-bottom/latest-request.json"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   test:
@@ -99,106 +97,3 @@ jobs:
             research/market-bottom/paired-diagnostic-output/**
           if-no-files-found: warn
           retention-days: 7
-
-  live:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: agent/market-bottom-strategy
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-          cache-dependency-path: research/market-bottom/requirements.txt
-      - run: python -m pip install --upgrade pip
-      - run: python -m pip install -r research/market-bottom/requirements.txt
-      - name: Check runtime request
-        id: runtime
-        shell: bash
-        run: |
-          if [ -s runtime/market-bottom/latest-request.json ]; then
-            echo "present=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "present=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Refresh adjusted daily histories
-        if: steps.runtime.outputs.present == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p runtime/market-bottom/data
-          for symbol in SPY QQQ SOXX SMH; do
-            file="runtime/market-bottom/data/${symbol}.csv"
-            tmp="runtime/market-bottom/data/${symbol}.refresh.csv"
-            echo "REFRESH ${symbol}: PUBLIC ADJUSTED HISTORY — LIVE SNAPSHOT REMAINS IBKR"
-            python research/market-bottom/fetch_public_prices.py --symbol "$symbol" --out "$tmp"
-            mv "$tmp" "$file"
-          done
-      - name: Remove incomplete current-session bars
-        if: steps.runtime.outputs.present == 'true'
-        run: |
-          python research/market-bottom/sanitize_runtime_bars.py \
-            --request runtime/market-bottom/latest-request.json \
-            --data-dir runtime/market-bottom/data
-      - name: Assemble live input
-        if: steps.runtime.outputs.present == 'true'
-        run: |
-          mkdir -p runtime/market-bottom/generated
-          python research/market-bottom/prepare_live_input.py \
-            --request runtime/market-bottom/latest-request.json \
-            --repo-root . \
-            --out runtime/market-bottom/generated/latest-input.json
-      - name: Calculate deterministic state
-        if: steps.runtime.outputs.present == 'true'
-        shell: bash
-        run: |
-          previous=""
-          if [ -f runtime/market-bottom/latest-result.json ]; then
-            previous="--previous runtime/market-bottom/latest-result.json"
-          fi
-          python research/market-bottom/live_monitor.py \
-            --input runtime/market-bottom/generated/latest-input.json \
-            --config research/market-bottom/config.example.json \
-            $previous \
-            --result runtime/market-bottom/generated/latest-result.json \
-            --report runtime/market-bottom/generated/latest-report.md
-      - name: Finalize governance and provenance
-        if: steps.runtime.outputs.present == 'true'
-        run: |
-          python research/market-bottom/live_finalize.py \
-            --result runtime/market-bottom/generated/latest-result.json \
-            --report runtime/market-bottom/generated/latest-report.md
-      - name: Validate live JSON
-        if: steps.runtime.outputs.present == 'true'
-        run: python -m json.tool runtime/market-bottom/generated/latest-result.json >/dev/null
-      - name: Archive immutable live output
-        if: always() && steps.runtime.outputs.present == 'true'
-        uses: actions/upload-artifact@v4
-        with:
-          name: market-bottom-live-${{ github.run_id }}
-          path: |
-            runtime/market-bottom/latest-request.json
-            runtime/market-bottom/data/*.csv
-            runtime/market-bottom/generated/**
-          if-no-files-found: warn
-          retention-days: 14
-      - name: Publish deterministic result and refreshed data
-        if: success() && steps.runtime.outputs.present == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          cp runtime/market-bottom/generated/latest-result.json runtime/market-bottom/latest-result.json
-          cp runtime/market-bottom/generated/latest-report.md runtime/market-bottom/latest-report.md
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add runtime/market-bottom/data/*.csv runtime/market-bottom/latest-result.json runtime/market-bottom/latest-report.md
-          if git diff --cached --quiet; then
-            echo "No runtime changes"
-            exit 0
-          fi
-          git commit -m "runtime: publish bottom result and refreshed data [skip ci]"
-          git pull --rebase origin agent/market-bottom-strategy
-          git push origin HEAD:agent/market-bottom-strategy
