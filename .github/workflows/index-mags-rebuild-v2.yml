@@ -33,18 +33,22 @@ jobs:
       - name: Validate source payload and helper scripts
         run: |
           python -m py_compile research/index_mags_rebuild_20260722/run_rebuild.py
+          python -m py_compile research/index_mags_rebuild_20260722/correct_stress_alignment.py
           python -m py_compile research/index_mags_rebuild_20260722/compare_repeats.py
           python - <<'PY'
           import base64, gzip, hashlib
           from pathlib import Path
           root = Path('research/index_mags_rebuild_20260722')
-          parts = sorted(root.glob('source_v3.part??'))
+          parts = sorted(root.glob('source_v2.part??'))
           if len(parts) != 6:
               raise RuntimeError(f'expected six source parts; found {parts}')
           source = gzip.decompress(base64.b64decode(''.join(p.read_text().strip() for p in parts)))
           digest = hashlib.sha256(source).hexdigest()
-          compile(source.decode(), 'index_mags_rebuild_v3.py', 'exec')
-          print({'crc_and_compile': 'PASS', 'source_sha256': digest, 'bytes': len(source), 'parts': len(parts)})
+          expected = '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66'
+          if digest != expected:
+              raise RuntimeError(f'source SHA mismatch: {digest} != {expected}')
+          compile(source.decode(), 'index_mags_rebuild_v2.py', 'exec')
+          print({'crc_compile_sha': 'PASS', 'source_sha256': digest, 'bytes': len(source), 'parts': len(parts)})
           PY
       - name: Run independent full rebuild
         run: |
@@ -53,6 +57,8 @@ jobs:
           PYTHONWARNINGS=ignore python research/index_mags_rebuild_20260722/run_rebuild.py \
             > research_outputs/index_mags_rebuild_20260722/optimizer.log 2>&1
           tail -n 300 research_outputs/index_mags_rebuild_20260722/optimizer.log
+      - name: Correct stress-cost alignment and recompute gates
+        run: python research/index_mags_rebuild_20260722/correct_stress_alignment.py
       - name: Validate repetition output
         run: |
           python - <<'PY'
@@ -64,7 +70,7 @@ jobs:
               'strategy_identity.csv', 'strategy_summary.csv', 'window_comparison.csv',
               'walk_forward_choices.csv', 'ibkr_close_parity.csv', 'mgtn_recent_parity.csv',
               'live_product_validation.json', 'run_manifest.json', 'input_manifest.json',
-              'report.md', 'optimizer.log',
+              'stress_alignment_audit.csv', 'report.md', 'optimizer.log',
           ]
           missing = [name for name in required if not (root / name).exists()]
           if missing:
@@ -82,8 +88,10 @@ jobs:
           if (parity.absolute_pct_diff > 0.003).any():
               raise RuntimeError(f'IBKR parity failure: {parity.to_dict("records")}')
           manifest = json.loads((root / 'run_manifest.json').read_text())
-          if not manifest.get('research_source_sha256'):
-              raise RuntimeError('missing research_source_sha256')
+          if manifest.get('research_source_sha256') != '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66':
+              raise RuntimeError(f'unexpected research source: {manifest.get("research_source_sha256")}')
+          if manifest.get('stress_alignment_correction', {}).get('status') != 'PASS':
+              raise RuntimeError('stress alignment audit missing')
           print(identity[['symbol','recommendation','latest_trend_rule','latest_pullback_rule','current_hybrid_exposure']].to_string(index=False))
           print({'identity_sha256': manifest['identity_sha256'], 'research_source_sha256': manifest['research_source_sha256']})
           PY
