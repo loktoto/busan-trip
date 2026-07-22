@@ -1,0 +1,150 @@
+name: Universal entry exit challenger v5
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/universal_entry_exit_20260721/**
+      - research/universal_entry_exit_20260722/**
+      - research/universal_entry_exit_20260722_v5/**
+      - .github/workflows/universal-entry-exit-v5.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: universal-entry-exit-v5-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  optimise-universe-v5:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Compile frozen core and challenger
+        run: |
+          cat research/universal_entry_exit_20260721/optimize_universal_entry_exit.py.part?? > /tmp/v4_core.py
+          cat research/universal_entry_exit_20260721/robustness_patch_v3_2.py.part?? > /tmp/v4_patch.py
+          python -m py_compile /tmp/v4_core.py /tmp/v4_patch.py
+          python -m py_compile research/universal_entry_exit_20260722_v5/run_universal_v5.py
+          python - <<'PY2'
+          import base64, gzip
+          from pathlib import Path
+          root = Path("research/universal_entry_exit_20260722_v5")
+          parts = sorted(root.glob("challenger_patch_v5.py.gz.b64.part??"))
+          if not parts:
+              raise RuntimeError("No V5 source payload parts")
+          encoded = "".join(path.read_text() for path in parts)
+          src = gzip.decompress(base64.b64decode(encoded.strip()))
+          compile(src, "v5_challenger.py", "exec")
+          PY2
+          python -m json.tool research/universal_entry_exit_20260722_v5/ibkr_universe_audit_20260722.json >/dev/null
+      - name: Run V5 challenger shard
+        shell: bash
+        env:
+          UNIVERSE_SHARD: ${{ matrix.shard }}
+          UNIVERSE_SHARDS: 10
+        run: |
+          mkdir -p research_outputs/universal_entry_exit_v5_20260722
+          set +e
+          PYTHONWARNINGS=ignore python research/universal_entry_exit_20260722_v5/run_universal_v5.py > research_outputs/universal_entry_exit_v5_20260722/optimizer.log 2>&1
+          code=$?
+          tail -n 240 research_outputs/universal_entry_exit_v5_20260722/optimizer.log
+          exit $code
+      - name: Upload V5 shard artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-entry-exit-v5-shard-${{ matrix.shard }}
+          path: research_outputs/universal_entry_exit_v5_20260722
+          if-no-files-found: warn
+          retention-days: 14
+
+  aggregate-v5:
+    needs: optimise-universe-v5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install aggregation dependency
+        run: python -m pip install --quiet pandas
+      - name: Download shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: universal-entry-exit-v5-shard-*
+          path: shard_artifacts
+          merge-multiple: false
+      - name: Aggregate V5 canonical summary
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import pandas as pd
+
+          files = sorted(Path('shard_artifacts').glob('*/summary.csv'))
+          if len(files) != 10:
+              raise RuntimeError(f'Expected 10 shard summaries, found {len(files)}')
+          frame = pd.concat([pd.read_csv(path) for path in files], ignore_index=True).sort_values('symbol').reset_index(drop=True)
+          if frame.symbol.duplicated().any():
+              raise RuntimeError('Duplicate symbols across V5 shards')
+          out = Path('combined_v5')
+          out.mkdir(parents=True, exist_ok=True)
+          frame.to_csv(out / 'summary.csv', index=False, float_format='%.6f')
+          identity_cols = [c for c in [
+              'symbol','decision','production_action','v4_decision','v4_production_action','v5_status',
+              'v5_decision','v5_replace_v4','v5_production_action','v5_mode','v5_components',
+              'v5_dsr_probability','v5_pbo_proxy','v5_holdout_excess','v5_holdout_sharpe_delta',
+              'v5_stress_full_excess'
+          ] if c in frame.columns]
+          canonical = frame[identity_cols].to_csv(index=False, float_format='%.6f')
+          digest = hashlib.sha256(canonical.encode()).hexdigest()
+          replaced = frame[frame.get('v5_replace_v4', False).fillna(False).astype(bool)] if 'v5_replace_v4' in frame else frame.iloc[0:0]
+          lines = [
+              '# Universal ETF and stock entry/exit challenger V5', '',
+              'V4.1 is frozen. V5 holdout results can only approve or reject the development-selected ensemble.', '',
+              f'Coverage: {len(frame)} assets; V5 replacements: {len(replaced)}.',
+              f'Canonical V5 identity SHA-256: `{digest}`.', '',
+              '## Replacements', ''
+          ]
+          if replaced.empty:
+              lines += ['None.', '']
+          else:
+              lines += ['| Symbol | Action | Mode | Holdout alpha | Sharpe delta | DSR | PBO |', '|---|---|---|---:|---:|---:|---:|']
+              for _, row in replaced.iterrows():
+                  lines.append(
+                      f"| {row.symbol} | {row.production_action} | {row.v5_mode} | {row.v5_holdout_excess:.2%} | "
+                      f"{row.v5_holdout_sharpe_delta:.3f} | {row.v5_dsr_probability:.1%} | {row.v5_pbo_proxy:.1%} |"
+                  )
+              lines.append('')
+          status_counts = frame.get('v5_status', pd.Series(dtype=str)).fillna('MISSING').value_counts()
+          lines += ['## Challenger status', ''] + [f'- {name}: {count}' for name, count in status_counts.items()] + ['']
+          (out / 'summary.md').write_text('\n'.join(lines))
+          (out / 'aggregate_manifest.json').write_text(json.dumps({
+              'version': 'v5', 'shards': 10, 'symbols': len(frame), 'replacements': len(replaced),
+              'identity_sha256': digest, 'source_summaries': [str(path) for path in files]
+          }, indent=2))
+          print('\n'.join(lines))
+          PY
+      - name: Upload combined V5 audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-entry-exit-v5-20260722
+          path: |
+            combined_v5
+            shard_artifacts
+          if-no-files-found: error
+          retention-days: 14
