@@ -1,0 +1,28 @@
+{
+  "as_of": "2026-07-22",
+  "purpose": "Universe membership and execution audit; quantities and account values intentionally excluded.",
+  "active_ibkr_positions": [
+    "00935.TW", "2644.T", "7709.HK", "7747.HK", "DRAM", "FLKR", "FMTM", "FOTO",
+    "IDMO", "QQQM", "SOXX", "SPMO", "VT", "VTV"
+  ],
+  "leveraged_research_pairs": {
+    "QQQ_or_QQQM": ["QLD", "TQQQ"],
+    "SPY_or_VOO": ["SSO", "UPRO", "SPXL"],
+    "SMH_or_SOXX": ["USD", "SOXL"],
+    "AAPL": ["AAPU"],
+    "MSFT": ["MSFU"],
+    "NVDA": ["NVDL"],
+    "AMZN": ["AMZU"],
+    "GOOGL": ["GGLL"],
+    "META": ["METU"],
+    "TSLA": ["TSLL"],
+    "TSM": ["TSMX"],
+    "MU": ["MUU"]
+  },
+  "policy": [
+    "Current holdings define mandatory coverage, not automatic tactical promotion.",
+    "Hong Kong structured products 7709 and 7747 require official NAV/iNAV, premium-discount, spread and tracking controls outside generic price-only optimisation.",
+    "New stock actions require a fresh earnings and corporate-event check.",
+    "Public adjusted OHLC inputs must be parity-checked against IBKR recent completed closes before a production signal is acted upon."
+  ]
+}
