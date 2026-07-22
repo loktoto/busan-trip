@@ -47,9 +47,9 @@ def compare_frame(name: str, keys: list[str], exact: list[str], tolerances: dict
 
 manifest_a = json.loads(locate('a', 'run_manifest.json').read_text())
 manifest_b = json.loads(locate('b', 'run_manifest.json').read_text())
+expected_source = 'f381e7642f1f61f05e8e5715878226395b779ebb6f7ab480789217d7c8cb41b3'
 if manifest_a.get('source_sha256') != manifest_b.get('source_sha256'):
     raise RuntimeError(f"source mismatch: {manifest_a.get('source_sha256')} != {manifest_b.get('source_sha256')}")
-expected_source = 'd72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a'
 if manifest_a.get('source_sha256') != expected_source:
     raise RuntimeError(f"unexpected source: {manifest_a.get('source_sha256')} != {expected_source}")
 
@@ -97,6 +97,19 @@ choice_diff = compare_frame(
         'dev_worst_block_sharpe_delta': 0.08,
     },
 )
+grid_diff = compare_frame(
+    'candidate_grid.csv',
+    keys=['symbol', 'candidate'],
+    exact=['family', 'description', 'return_alpha_gate', 'defensive_gate', 'oos_start', 'oos_end'],
+    tolerances={
+        'cagr': 0.0015, 'sharpe': 0.015, 'maxdd': 0.005,
+        'annual_alpha': 0.0015, 'beta': 0.015,
+        'stress_3x_cagr_delta': 0.002,
+        'bootstrap_p_positive': 0.06, 'dsr_probability': 0.08,
+        'effective_trials': 0.0, 'trial_participation_ratio': 0.15,
+        'search_pbo': 0.08,
+    },
+)
 compare_frame(
     'ibkr_close_parity.csv',
     keys=['symbol'],
@@ -109,10 +122,7 @@ for rep in ['a', 'b']:
     if (parity.absolute_pct_diff > 0.003).any():
         raise RuntimeError(f'{rep}: IBKR parity failed {parity.to_dict("records")}')
 
-for name in [
-    'report.md', 'run_manifest.json', 'input_manifest.json',
-    'candidate_grid.csv', 'block_diagnostics.csv',
-]:
+for name in ['report.md', 'run_manifest.json', 'input_manifest.json', 'block_diagnostics.csv']:
     shutil.copy2(locate('a', name), OUT / name)
 
 identity_bytes = (OUT / 'strategy_identity.csv').read_bytes()
@@ -121,9 +131,10 @@ result = {
     'source_sha256': expected_source,
     'canonical_identity_sha256': hashlib.sha256(identity_bytes).hexdigest(),
     'identity_metric_max_differences': identity_diff,
+    'candidate_grid_metric_max_differences': grid_diff,
     'window_metric_max_differences': window_diff,
     'walk_forward_metric_max_differences': choice_diff,
-    'policy': 'exact annual walk-forward choices and strategy identity; fixed numerical tolerances; IBKR completed-close parity required',
+    'policy': 'exact annual walk-forward choices and strategy identity; corrected DSR effective trials must match; fixed numerical tolerances; IBKR completed-close parity required',
 }
 (OUT / 'repeatability.json').write_text(json.dumps(result, indent=2))
 print(json.dumps(result, indent=2))
