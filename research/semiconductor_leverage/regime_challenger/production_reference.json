@@ -1,0 +1,28 @@
+{
+  "source": "main:production/leverage_signal.json",
+  "source_blob_sha": "ded3e4ebc854bff27732477e705198cff6af92a7",
+  "canonical_research_commit": "110e0b27d2e26d2a0c2399a905e7ca07377b94cc",
+  "evidence_label": "anchored_pseudo_OOS_not_untouched_prospective",
+  "routes": {
+    "USD_2X": {
+      "canonical_name": "SOXX_USD_2X",
+      "cagr": 0.3957,
+      "buy_hold_cagr": 0.3022,
+      "cagr_delta": 0.0935,
+      "sharpe_delta": 0.103,
+      "maxdd_improvement": 0.0354,
+      "stress_3x_cost_cagr_delta": 0.084,
+      "dsr_probability": 0.88
+    },
+    "SOXL_3X": {
+      "canonical_name": "SOXX_SOXL_3X",
+      "cagr": 0.3576,
+      "buy_hold_cagr": 0.3022,
+      "cagr_delta": 0.0554,
+      "sharpe_delta": 0.032,
+      "maxdd_improvement": 0.0433,
+      "stress_3x_cost_cagr_delta": 0.0509,
+      "dsr_probability": 0.855
+    }
+  }
+}
