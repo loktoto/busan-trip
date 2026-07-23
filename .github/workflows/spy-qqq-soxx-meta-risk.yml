@@ -41,7 +41,7 @@ jobs:
           payload = Path('research/spy_qqq_soxx_meta_risk_20260723/source.b64')
           source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
           digest = hashlib.sha256(source).hexdigest()
-          expected = '92ffdfbf11d8b756d3c1b137d6ff39b9646702e0d3ef99d33c0903f4a778c67a'
+          expected = 'ee1453d55a7b528e7084e575f283af60237b9b562883e02a322fdd68809d129d'
           if digest != expected:
               raise RuntimeError(f'{digest} != {expected}')
           compile(source.decode(), 'meta_strategy_engine.py', 'exec')
@@ -92,6 +92,8 @@ jobs:
               raise RuntimeError(weights.to_dict('records'))
           if (weights.effective_gross_exposure > 1.500001).any():
               raise RuntimeError(weights.to_dict('records'))
+          if (weights.signal_date != '2026-07-22').any():
+              raise RuntimeError(f'stale current signal date: {weights.to_dict("records")}')
           parity = pd.read_csv(root/'ibkr_close_parity.csv')
           if parity.symbol.tolist() != ['QLD','QQQ','SOXX','SPY','SSO','USD'] or (parity.absolute_pct_diff > 0.003).any():
               raise RuntimeError(parity.to_dict('records'))
@@ -99,7 +101,7 @@ jobs:
           if choices.year.nunique() < 14:
               raise RuntimeError(choices.to_dict('records'))
           manifest = json.loads((root/'run_manifest.json').read_text())
-          if manifest.get('meta_source_sha256') != '92ffdfbf11d8b756d3c1b137d6ff39b9646702e0d3ef99d33c0903f4a778c67a':
+          if manifest.get('meta_source_sha256') != 'ee1453d55a7b528e7084e575f283af60237b9b562883e02a322fdd68809d129d':
               raise RuntimeError(manifest)
           print(identity.to_string(index=False))
           print(grid.to_string(index=False))
