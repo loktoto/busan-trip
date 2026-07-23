@@ -1,0 +1,30 @@
+{
+  "as_of_hkt": "2026-07-23T12:12:00+08:00",
+  "as_of_et": "2026-07-23T00:12:00-04:00",
+  "session": "OVERNIGHT",
+  "source": "Interactive Brokers market-data snapshots",
+  "positions": {"FOTO": {"shares": 90, "average_price": 20.20606889}},
+  "quotes": {
+    "HUT":  {"price":111.60,"bid":111.60,"ask":111.98,"volume":4649,"change_pct":1.58,"hv_daily":0.0727998,"iv52":0.8406374,"ts":1784779782,"quality":"live"},
+    "IREN": {"price":42.01,"bid":42.00,"ask":42.05,"volume":126225,"change_pct":1.77,"hv_daily":0.0646345,"iv52":0.9521912,"ts":1784779612,"quality":"live"},
+    "NBIS": {"price":227.88,"bid":227.80,"ask":228.34,"volume":115854,"change_pct":4.46,"hv_daily":0.0811972,"iv52":0.9920319,"ts":1784780106,"quality":"live"},
+    "WULF": {"price":19.83,"bid":19.78,"ask":19.87,"volume":12421,"change_pct":1.74,"hv_daily":0.0675307,"iv52":0.8645418,"ts":1784779518,"quality":"live"},
+    "MARA": {"price":12.38,"bid":12.36,"ask":12.39,"volume":8874,"change_pct":-0.24,"hv_daily":0.0654707,"iv52":0.8764941,"ts":1784779623,"quality":"live"},
+    "APLD": {"price":30.28,"bid":30.22,"ask":30.58,"volume":22073,"change_pct":0.66,"hv_daily":0.0682747,"iv52":0.7609562,"ts":1784779729,"quality":"live"},
+    "ORCL": {"price":126.24,"bid":126.20,"ask":126.50,"volume":47277,"change_pct":0.32,"hv_daily":0.0429691,"iv52":0.8286853,"ts":1784779731,"quality":"live"},
+    "CRWV": {"price":84.88,"bid":84.74,"ask":85.12,"volume":68096,"change_pct":2.71,"hv_daily":0.0580672,"iv52":0.8844622,"ts":1784779708,"quality":"live"},
+    "CRCL": {"price":66.66,"bid":66.70,"ask":66.80,"volume":65902,"change_pct":0.76,"hv_daily":0.0549586,"iv52":0.9322709,"ts":1784779630,"quality":"live"},
+    "RKLB": {"price":69.98,"bid":69.90,"ask":70.00,"volume":68110,"change_pct":0.33,"hv_daily":0.0577680,"iv52":0.8605578,"ts":1784779162,"quality":"live"},
+    "AAOI": {"price":112.50,"bid":112.41,"ask":112.94,"volume":47728,"change_pct":1.79,"hv_daily":0.0788532,"iv52":0.8605578,"ts":1784779540,"quality":"live"},
+    "ONDS": {"price":8.01,"bid":8.00,"ask":8.01,"volume":103686,"change_pct":0.12,"hv_daily":0.0527980,"iv52":0.2828685,"ts":1784779791,"quality":"live"},
+    "AXTI": {"price":54.20,"bid":54.13,"ask":54.50,"volume":32793,"change_pct":2.30,"hv_daily":0.0994620,"iv52":0.9402391,"ts":1784779737,"quality":"live"},
+    "MXL":  {"price":89.01,"bid":89.00,"ask":89.99,"volume":23852,"change_pct":2.55,"hv_daily":0.0846114,"iv52":0.9880478,"ts":1784779579,"quality":"live"},
+    "FOTO": {"price":20.75,"bid":20.55,"ask":20.80,"volume":601,"change_pct":0.78,"hv_daily":0.0431538,"iv52":0.4838710,"ts":1784776331,"quality":"thin_stale"},
+    "LITE": {"price":842.09,"bid":840.56,"ask":843.07,"volume":12566,"change_pct":1.49,"hv_daily":0.0639641,"iv52":0.9920319,"ts":1784779526,"quality":"live"},
+    "COHR": {"price":316.75,"bid":316.50,"ask":317.72,"volume":10141,"change_pct":1.46,"hv_daily":0.0694314,"iv52":0.9920319,"ts":1784779605,"quality":"live"},
+    "APH":  {"price":157.51,"bid":153.30,"ask":158.90,"volume":211,"change_pct":null,"hv_daily":0.0320367,"iv52":0.9960160,"ts":null,"quality":"close_only_wide"},
+    "FN":   {"price":513.67,"bid":473.45,"ask":566.31,"volume":4,"change_pct":null,"hv_daily":0.0489925,"iv52":0.9880478,"ts":null,"quality":"close_only_wide"},
+    "MU":   {"price":975.00,"bid":974.66,"ask":975.00,"volume":513052,"change_pct":1.23,"hv_daily":0.0756114,"iv52":0.9043825,"ts":1784779964,"quality":"live"},
+    "SNDK": {"price":1601.00,"bid":1599.62,"ask":1601.24,"volume":163042,"change_pct":0.11,"hv_daily":0.0834625,"iv52":0.9721116,"ts":1784779851,"quality":"live"}
+  }
+}
