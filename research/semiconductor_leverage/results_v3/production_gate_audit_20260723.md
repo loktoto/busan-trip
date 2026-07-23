@@ -119,3 +119,25 @@ Reasons:
 - keep a forward paper-live ledger before any production replacement.
 
 No order or order instruction was created.
+
+
+## Post-audit connector and CI recheck
+
+**Recheck time:** 2026-07-23 15:06 UTC
+
+- GitHub Actions at head `7265f1d029fa2ad6ab10e05199a0f6bc9307283b` now completed successfully:
+  - `Semiconductor Leverage V3` run `30018297778`
+  - `Semiconductor Leverage Audit` run `30018297781`
+- This corrects the earlier procedural observation that the audited head had no completed jobs. CI reproducibility is now confirmed.
+- The production verdict remains `REJECT_FOR_NOW / RETAIN_BASELINE`. Successful CI does not cure full-sample parameter-selection leakage, the lack of a frozen untouched holdout, poor early USD segments, weak neighbouring-parameter stability, sparse trades, or the missing corrected-DSR/PBO approval gate.
+- Fresh completed-close parity through 2026-07-22 passed exactly between IBKR and Alpaca for SOXX close, SMA50, SMA200 and RV40. This confirms the current rejection is not caused by a recent market-data mismatch.
+- Binance BTCUSDT daily bars, funding and open interest are available for a separately pre-registered cross-asset challenger. They have zero production weight and cannot alter the SOXX rule without full ablation and frozen holdout approval.
+
+### Frozen next experiments
+
+1. Pre-register a reduced SMH RSI5 pullback family before observing the next holdout.
+2. Implement a truly latched exit state and compare it with the reversible mask.
+3. Compare every candidate with SOXX Buy & Hold and the current SOXX annual-anchored trend-vol production rule.
+4. Add actual USD/SOXL cost stress, moving-block bootstrap, corrected DSR, CSCV/PBO and neighbour pass-rate thresholds.
+5. Test Binance funding/basis/open-interest features only as an ablation layer; reject the layer unless it improves multiple non-overlapping holdouts after costs.
+6. Maintain a forward paper-live ledger. Do not promote automatically and do not create an order.
