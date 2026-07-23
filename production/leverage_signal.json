@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "status": "PRODUCTION_MONITORING_ONLY",
+  "promoted_at": "2026-07-23T15:50:00Z",
+  "scope": "signal_only_no_capital_allocation",
+  "order_authority": "NONE",
+  "canonical_source": {
+    "pull_request": 13,
+    "branch": "agent/spy-qqq-soxx-alpha-search-20260722",
+    "commit": "110e0b27d2e26d2a0c2399a905e7ca07377b94cc",
+    "workflow": "SPY QQQ SOXX expanded alpha search",
+    "workflow_run": 29938806106,
+    "workflow_conclusion": "success",
+    "report": "research_outputs/spy_qqq_soxx_alpha_search_20260722/canonical_findings.md",
+    "raw_engine_sha256": "d72007c2fded90ac5282e222b40f76a97f1619871d601c644fa018daff7e2e4a",
+    "patched_engine_sha256": "2ee009cf9f0ccb6e0ad41e3f6327e90813d3327beb18204a5a34ab6cbf11c3aa",
+    "canonical_identity_sha256": "99e3b0c13f6be6c85d8b461b553deb52a8dda6b54405a1c5f4cb36e2261c6aee"
+  },
+  "production_signal": {
+    "underlying": "SOXX",
+    "name": "annual_anchored_trend_vol",
+    "calendar_2026_candidate": "trendvol_dual50_200_rv40_t0.40_c1.5",
+    "data_rule": "fully_completed_US_RTH_daily_bars_only",
+    "execution_assumption": "signal_on_completed_close_next_RTH_open",
+    "trend_gate": "SMA50_gt_SMA200",
+    "realized_volatility": {
+      "lookback_sessions": 40,
+      "annualization": 252,
+      "return_type": "close_to_close_simple_return",
+      "sample_standard_deviation": true
+    },
+    "volatility_target": 0.40,
+    "raw_exposure_formula": "clip(0.40 / SOXX_RV40, 0.50, 1.50)",
+    "smoothing": {
+      "type": "EWM",
+      "span": 5
+    },
+    "trend_off_exposure": 0.50,
+    "exposure_min": 0.50,
+    "exposure_max": 1.50,
+    "leverage_entry": "formal_cross_from_exposure_lte_1.0_to_gt_1.0",
+    "leverage_exit": "formal_cross_from_exposure_gt_1.0_to_lte_1.0",
+    "fixed_take_profit": null,
+    "approved_actual_product_validation": [
+      {
+        "route": "SOXX_USD_2X",
+        "warning": "USD is a cross-index tactical proxy; use actual USD adjusted prices and never infer its return by multiplying SOXX."
+      },
+      {
+        "route": "SOXX_SOXL_3X",
+        "warning": "SOXL has a 3x daily objective and material path dependence; use actual SOXL adjusted prices."
+      }
+    ]
+  },
+  "promotion_evidence": {
+    "signal_level_vs_SOXX_buy_hold": {
+      "cagr_delta_pp": 5.81,
+      "sharpe_delta": 0.039,
+      "max_drawdown_improvement_pp": 4.33,
+      "beta_adjusted_annual_alpha_pct": 4.08,
+      "three_x_cost_cagr_delta_pp": 5.39,
+      "bootstrap_probability_positive_pct": 95.7,
+      "corrected_DSR_pct": 85.6,
+      "search_PBO_pct": 2.9
+    },
+    "actual_product_paths": {
+      "SOXX_USD_2X": {
+        "cagr_delta_pp": 9.35,
+        "sharpe_delta": 0.103,
+        "max_drawdown_improvement_pp": 3.54,
+        "three_x_cost_cagr_delta_pp": 8.40,
+        "product_gate": "PASS"
+      },
+      "SOXX_SOXL_3X": {
+        "cagr_delta_pp": 5.54,
+        "sharpe_delta": 0.032,
+        "max_drawdown_improvement_pp": 4.33,
+        "three_x_cost_cagr_delta_pp": 5.09,
+        "product_gate": "PASS"
+      }
+    },
+    "evidence_label": "anchored_pseudo_OOS_not_untouched_prospective"
+  },
+  "latest_completed_close_smoke_test": {
+    "as_of_date": "2026-07-22",
+    "source": "IBKR_exact_US_contract_12658194_RTH_daily_delayed",
+    "bar_count": 1253,
+    "SOXX_close": 555.52,
+    "SMA50": 568.6268,
+    "SMA200": 394.9991,
+    "RV40": 0.71054558,
+    "raw_exposure": 0.56294770,
+    "EWM5_exposure": 0.56493335,
+    "trend_gate": true,
+    "formal_leverage_state": "OFF",
+    "next_open_action": "NO_LEVERAGED_ETF_ENTRY"
+  },
+  "research_only": {
+    "SPY": "No independently robust alpha in tested families; keep 1x baseline.",
+    "QQQ": "Promising but corrected DSR and search PBO failed the frozen gate; keep 1x baseline.",
+    "SMH": "Informational semiconductor cross-check only; no independent production trade authority.",
+    "MAGS7_MAGS10_TSM_and_single_stock_leverage": "Challenger only until independently validated with actual-product paths and constituent-bias controls.",
+    "PR19_meta_strategy": "Excluded from signal-only production because its result depends on a fixed capital allocation and portfolio-level scaling."
+  },
+  "challenger_promotion_gate": {
+    "asset_selection": "independent_per_underlying",
+    "capital_allocation_must_not_affect_signal_selection": true,
+    "required": [
+      "full_period_comparison_vs_same_underlying_buy_hold",
+      "true_chronological_holdout_or_frozen_preperiod_selection",
+      "rolling_1_3_5_10_year_windows_where_history_allows",
+      "actual_leveraged_product_adjusted_price_path",
+      "base_2x_3x_transaction_cost_stress",
+      "maximum_drawdown_and_Sharpe_guardrails",
+      "moving_block_bootstrap",
+      "corrected_deflated_Sharpe_ratio",
+      "CSCV_or_equivalent_selection_overfit_test",
+      "neighbouring_parameter_stability",
+      "IBKR_completed_close_parity",
+      "two_independent_repetitions"
+    ],
+    "holdout_policy": "holdout_may_approve_or_reject_but_must_not_retrain",
+    "replacement_policy": "replace production only when the challenger passes every mandatory gate and shows a material robust improvement"
+  },
+  "fail_safe": {
+    "retry_each_IBKR_endpoint_once": true,
+    "never_stop_entire_report_for_one_failed_module": true,
+    "never_label_stale_data_live": true,
+    "degraded_field_text": "N/A — IBKR未取得可靠資料",
+    "no_formal_signal_when_cutoff_or_adjustment_integrity_conflicts": true
+  }
+}
