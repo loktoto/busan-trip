@@ -41,13 +41,15 @@ Promotion requires the production candidate to pass and at least three of four v
 
 ## Benchmarks
 
-Primary benchmark: daily fixed-weight Buy & Hold using the same SPY/QQQ/SOXX strategic weights.
+Primary benchmark: literal initial-weight Buy & Hold. At the first pseudo-OOS open, the benchmark invests the same SPY/QQQ/SOXX strategic capital weights once and then allows the weights to drift without rebalancing.
 
 Additional dominance comparison: SOXX Buy & Hold over the exact common period. Production classification additionally requires higher CAGR, higher Sharpe and a smaller maximum drawdown than SOXX Buy & Hold.
 
+The earlier daily constant-mix benchmark was withdrawn because it was not literal Buy & Hold. The strategy was rerun from source against the stricter benchmark before promotion.
+
 ## Gate
 
-- CAGR at least 0.5 percentage point above the same-weight benchmark
+- CAGR at least 0.5 percentage point above the literal initial-weight Buy & Hold benchmark
 - Sharpe no lower
 - maximum drawdown no more than 3 percentage points worse
 - beta-adjusted alpha at least 0.5% annually
@@ -59,4 +61,8 @@ Additional dominance comparison: SOXX Buy & Hold over the exact common period. P
 - two independent downloads must agree on classification, current product weights and all inherited annual SOXX rule identities
 - IBKR parity is required against the completed 2026-07-22 closes
 
-The 2013-2026 evaluation is pseudo-OOS and is not described as untouched holdout evidence. No order instruction is created.
+## Reporting integrity
+
+Returns use signal-day close information with next-RTH-open execution. Current target weights preserve the latest completed-close signal date rather than truncating to the last realised open-to-open return date. The canonical workflow hard-requires a 2026-07-22 current signal date.
+
+The 2013-2026 evaluation is pseudo-OOS and is not described as untouched holdout evidence. PBO of zero is not interpreted as literal proof of no overfitting risk. No order instruction is created.
