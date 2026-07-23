@@ -1,0 +1,137 @@
+name: SPY QQQ core with SOXX risk-budget satellite
+
+on:
+  pull_request:
+    branches: [agent/spy-qqq-soxx-alpha-search-20260722]
+    paths:
+      - research/spy_qqq_soxx_core_satellite_20260723/**
+      - .github/workflows/spy-qqq-soxx-core-satellite.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spy-qqq-soxx-core-satellite-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repetitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
+      - name: Validate research source
+        run: |
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/validate_actual_products.py
+          python -m py_compile research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite.py
+          python -m py_compile research/spy_qqq_soxx_core_satellite_20260723/compare_repeats.py
+      - name: Rebuild frozen SOXX engine and inputs
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
+          mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
+            > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
+          tail -n 120 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
+      - name: Run fixed core-satellite study
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_core_satellite_20260723
+          mkdir -p research_outputs/spy_qqq_soxx_core_satellite_20260723
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite.py \
+            > research_outputs/spy_qqq_soxx_core_satellite_20260723/optimizer.log 2>&1
+          tail -n 300 research_outputs/spy_qqq_soxx_core_satellite_20260723/optimizer.log
+      - name: Validate outputs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import pandas as pd
+
+          root = Path('research_outputs/spy_qqq_soxx_core_satellite_20260723')
+          required = [
+              'strategy_identity.csv', 'candidate_grid.csv', 'family_summary.csv',
+              'block_diagnostics.csv', 'window_comparison.csv',
+              'current_strategy_weights.csv', 'cash_product_validation.csv',
+              'run_manifest.json', 'input_manifest.json', 'report.md', 'optimizer.log'
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise RuntimeError(f'missing outputs: {missing}')
+
+          identity = pd.read_csv(root / 'strategy_identity.csv')
+          if len(identity) != 1:
+              raise RuntimeError(identity.to_dict('records'))
+          if abs(float(identity.loc[0, 'production_sleeve']) - 0.20) > 1e-12:
+              raise RuntimeError('production sleeve is not fixed at 20%')
+
+          grid = pd.read_csv(root / 'candidate_grid.csv')
+          families = pd.read_csv(root / 'family_summary.csv')
+          if len(grid) != 60:
+              raise RuntimeError(f'expected 60 candidates, found {len(grid)}')
+          if len(families) != 12:
+              raise RuntimeError(f'expected 12 families, found {len(families)}')
+          if sorted(grid.sleeve.unique().round(2).tolist()) != [0.10, 0.15, 0.20, 0.25, 0.30]:
+              raise RuntimeError(f'unexpected sleeve grid: {sorted(grid.sleeve.unique())}')
+          if sorted(grid.product.unique().tolist()) != ['SOXL', 'USD']:
+              raise RuntimeError(f'unexpected products: {sorted(grid.product.unique())}')
+          if grid.groupby('family').size().ne(5).any():
+              raise RuntimeError('each family must contain exactly five sleeve sizes')
+          if pd.to_numeric(grid.effective_trials, errors='coerce').min() < 12:
+              raise RuntimeError('effective-trial count below economic-family floor')
+
+          manifest = json.loads((root / 'run_manifest.json').read_text())
+          if manifest.get('candidate_count') != 60 or manifest.get('family_count') != 12:
+              raise RuntimeError(manifest)
+          inputs = json.loads((root / 'input_manifest.json').read_text())
+          if set(inputs) != {'SPY', 'QQQ', 'SOXX', 'USD', 'SOXL', 'BIL'}:
+              raise RuntimeError(f'input manifest mismatch: {inputs.keys()}')
+          if any(inputs[symbol]['end'] > '2026-07-21' for symbol in ['SPY', 'QQQ', 'SOXX']):
+              raise RuntimeError('completed-close cutoff was breached')
+
+          print(identity.to_string(index=False))
+          print(families.to_string(index=False))
+          print({'identity_sha256': manifest['identity_sha256']})
+          PY
+      - name: Upload repetition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-core-satellite-${{ matrix.repetition }}
+          path: research_outputs/spy_qqq_soxx_core_satellite_20260723
+          if-no-files-found: warn
+          retention-days: 30
+
+  compare:
+    needs: repetitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependencies
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: spy-qqq-soxx-core-satellite-*
+          path: repetitions
+          merge-multiple: false
+      - name: Compare repetitions
+        run: python research/spy_qqq_soxx_core_satellite_20260723/compare_repeats.py
+      - name: Upload canonical result
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-core-satellite-canonical
+          path: canonical
+          if-no-files-found: error
+          retention-days: 30
