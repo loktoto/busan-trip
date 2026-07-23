@@ -83,8 +83,8 @@ jobs:
               raise RuntimeError(f'expected 12 families, found {len(families)}')
           if sorted(grid.sleeve.unique().round(2).tolist()) != [0.10, 0.15, 0.20, 0.25, 0.30]:
               raise RuntimeError(f'unexpected sleeve grid: {sorted(grid.sleeve.unique())}')
-          if sorted(grid.product.unique().tolist()) != ['SOXL', 'USD']:
-              raise RuntimeError(f'unexpected products: {sorted(grid.product.unique())}')
+          if sorted(grid['product'].unique().tolist()) != ['SOXL', 'USD']:
+              raise RuntimeError(f"unexpected products: {sorted(grid['product'].unique())}")
           if grid.groupby('family').size().ne(5).any():
               raise RuntimeError('each family must contain exactly five sleeve sizes')
           if pd.to_numeric(grid.effective_trials, errors='coerce').min() < 12:
