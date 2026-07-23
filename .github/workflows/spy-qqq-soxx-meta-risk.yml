@@ -1,0 +1,142 @@
+name: SPY QQQ SOXX meta risk strategy
+
+on:
+  pull_request:
+    branches: [agent/spy-qqq-soxx-alpha-search-20260722]
+    paths:
+      - research/spy_qqq_soxx_meta_risk_20260723/**
+      - .github/workflows/spy-qqq-soxx-meta-risk.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spy-qqq-soxx-meta-risk-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repetitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy scipy yfinance tabulate
+      - name: Validate source integrity and compile
+        run: |
+          python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
+          python -m py_compile research/spy_qqq_soxx_meta_risk_20260723/run_meta_strategy.py
+          python -m py_compile research/spy_qqq_soxx_meta_risk_20260723/compare_repeats.py
+          python - <<'PY'
+          import base64, gzip, hashlib
+          from pathlib import Path
+          payload = Path('research/spy_qqq_soxx_meta_risk_20260723/source.b64')
+          source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
+          digest = hashlib.sha256(source).hexdigest()
+          expected = 'ee1453d55a7b528e7084e575f283af60237b9b562883e02a322fdd68809d129d'
+          if digest != expected:
+              raise RuntimeError(f'{digest} != {expected}')
+          compile(source.decode(), 'meta_strategy_engine.py', 'exec')
+          print({'raw_meta_source_sha256': digest, 'bytes': len(source)})
+          PY
+      - name: Rebuild inherited SOXX alpha independently
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_alpha_search_20260722
+          mkdir -p research_outputs/spy_qqq_soxx_alpha_search_20260722
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py \
+            > research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log 2>&1
+          tail -n 120 research_outputs/spy_qqq_soxx_alpha_search_20260722/optimizer.log
+      - name: Run actual-product meta strategy
+        run: |
+          rm -rf research_outputs/spy_qqq_soxx_meta_risk_20260723
+          mkdir -p research_outputs/spy_qqq_soxx_meta_risk_20260723
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_meta_risk_20260723/run_meta_strategy.py \
+            > research_outputs/spy_qqq_soxx_meta_risk_20260723/optimizer.log 2>&1
+          tail -n 300 research_outputs/spy_qqq_soxx_meta_risk_20260723/optimizer.log
+      - name: Validate outputs and gates
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import pandas as pd
+          root = Path('research_outputs/spy_qqq_soxx_meta_risk_20260723')
+          required = [
+              'strategy_identity.csv','candidate_grid.csv','block_diagnostics.csv',
+              'current_weights.csv','window_comparison.csv','ibkr_close_parity.csv',
+              'inherited_soxx_choices.csv','input_manifest.json','run_manifest.json',
+              'report.md','optimizer.log','inputs/SPY.csv.gz','inputs/QQQ.csv.gz',
+              'inputs/SOXX.csv.gz','inputs/SSO.csv.gz','inputs/QLD.csv.gz','inputs/USD.csv.gz',
+          ]
+          missing = [name for name in required if not (root/name).exists()]
+          if missing:
+              raise RuntimeError(missing)
+          identity = pd.read_csv(root/'strategy_identity.csv')
+          if identity.production_variant.tolist() != ['growth_20_20_60']:
+              raise RuntimeError(identity.to_dict('records'))
+          grid = pd.read_csv(root/'candidate_grid.csv')
+          if sorted(grid.variant.tolist()) != ['aggressive_15_15_70','balanced_25_25_50','defensive_30_30_40','growth_20_20_60']:
+              raise RuntimeError(grid.variant.tolist())
+          if sorted(grid.route.unique().tolist()) != ['actual_2x']:
+              raise RuntimeError(grid.route.tolist())
+          weights = pd.read_csv(root/'current_weights.csv')
+          weight_cols = ['weight_spy','weight_qqq','weight_soxx','weight_sso','weight_qld','weight_usd','weight_cash']
+          if ((weights[weight_cols].sum(axis=1) - 1.0).abs() > 1e-6).any():
+              raise RuntimeError(weights.to_dict('records'))
+          if (weights.effective_gross_exposure > 1.500001).any():
+              raise RuntimeError(weights.to_dict('records'))
+          if (weights.signal_date != '2026-07-22').any():
+              raise RuntimeError(f'stale current signal date: {weights.to_dict("records")}')
+          parity = pd.read_csv(root/'ibkr_close_parity.csv')
+          if parity.symbol.tolist() != ['QLD','QQQ','SOXX','SPY','SSO','USD'] or (parity.absolute_pct_diff > 0.003).any():
+              raise RuntimeError(parity.to_dict('records'))
+          choices = pd.read_csv(root/'inherited_soxx_choices.csv')
+          if choices.year.nunique() < 14:
+              raise RuntimeError(choices.to_dict('records'))
+          manifest = json.loads((root/'run_manifest.json').read_text())
+          if manifest.get('meta_source_sha256') != 'e3e0cbb93947a9fe1546b4ef365d4f3723cd0ae7c59e6776b0634baf3873f0d1':
+              raise RuntimeError(manifest)
+          print(identity.to_string(index=False))
+          print(grid.to_string(index=False))
+          print(weights.to_string(index=False))
+          PY
+      - name: Upload repetition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-meta-risk-${{ matrix.repetition }}
+          path: research_outputs/spy_qqq_soxx_meta_risk_20260723
+          if-no-files-found: warn
+          retention-days: 30
+
+  compare:
+    needs: repetitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependencies
+        run: python -m pip install --quiet pandas
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: spy-qqq-soxx-meta-risk-*
+          path: repetitions
+          merge-multiple: false
+      - name: Compare repetitions
+        run: python research/spy_qqq_soxx_meta_risk_20260723/compare_repeats.py
+      - name: Upload canonical result
+        uses: actions/upload-artifact@v4
+        with:
+          name: spy-qqq-soxx-meta-risk-canonical
+          path: canonical
+          if-no-files-found: error
+          retention-days: 30
