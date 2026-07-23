@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import tempfile
 from pathlib import Path
 
 from engine import run
@@ -15,12 +16,45 @@ def f(v, n=2):
         return "N/A"
 
 
+def normalize_snapshot(snapshot_path: str) -> tuple[str, list[str]]:
+    data = json.loads(Path(snapshot_path).read_text())
+    adjustments: list[str] = []
+    for ticker, quote in data.get("quotes", {}).items():
+        last = quote.get("price")
+        mark = quote.get("mark")
+        bid = quote.get("bid")
+        ask = quote.get("ask")
+        quality = str(quote.get("quality", ""))
+        outside_nbbo = False
+        try:
+            outside_nbbo = (
+                last is not None and bid is not None and ask is not None
+                and (float(last) < float(bid) or float(last) > float(ask))
+            )
+        except (TypeError, ValueError):
+            outside_nbbo = False
+        stale = "stale" in quality or outside_nbbo
+        if stale and mark is not None:
+            quote["raw_last"] = last
+            quote["price"] = mark
+            quote["price_source"] = "IBKR mark (stale/outside-NBBO last)"
+            adjustments.append(ticker)
+        else:
+            quote["price_source"] = "IBKR last"
+    tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+    with tmp:
+        json.dump(data, tmp, ensure_ascii=False, indent=2)
+    return tmp.name, adjustments
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--snapshot", required=True)
     p.add_argument("--out", default="ta-monitor/output")
     a = p.parse_args()
-    result = apply_guardrails(run(a.snapshot))
+    normalized_path, quote_adjustments = normalize_snapshot(a.snapshot)
+    result = apply_guardrails(run(normalized_path))
+    result["quote_adjustments"] = quote_adjustments
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "latest.json").write_text(json.dumps(result, indent=2, ensure_ascii=False))
@@ -36,6 +70,7 @@ def main() -> int:
         f"- Last completed weekly bar: **{last_week}**",
         f"- Limitation: {result['bar_limitations']}",
         "- Guardrail: alerts use fresh executable-price R/R, not historical trigger-price R/R.",
+        f"- Stale-last normalization: **{', '.join(quote_adjustments) if quote_adjustments else 'none'}**",
         "",
         f"## BEST SETUP NOW: {result['best_setup_now'] or 'NONE'}",
         f"## BEST SETUP IF TRIGGERED: {result['best_if_triggered'] or 'NONE'}",
