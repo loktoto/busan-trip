@@ -1,0 +1,31 @@
+{
+  "as_of_hkt": "2026-07-23T21:38:01+08:00",
+  "as_of_et": "2026-07-23T09:38:01-04:00",
+  "session": "PREMARKET",
+  "source": "Interactive Brokers market-data snapshots",
+  "quote_window_hkt": "2026-07-23 21:31-21:38 HKT",
+  "positions": {"FOTO": {"shares": 90, "average_price": 20.20606964}},
+  "quotes": {
+    "HUT": {"price":109.0,"bid":109.01,"ask":112.49,"volume":203689.348004,"change_pct":-0.78,"hv_daily":0.07251,"iv52":0.82470119,"ts":1784813204,"quality":"wide"},
+    "IREN": {"price":40.56,"bid":40.51,"ask":40.58,"volume":1505665.950781,"change_pct":-1.74,"hv_daily":0.0645819,"iv52":0.95617533,"ts":1784813297,"quality":"live"},
+    "NBIS": {"price":213.91,"bid":213.3,"ask":214.01,"volume":928814.001887,"change_pct":-1.95,"hv_daily":0.0812053,"iv52":0.99203187,"ts":1784813325,"quality":"live"},
+    "WULF": {"price":19.44,"bid":19.15,"ask":19.69,"volume":486220.542658,"change_pct":-0.26,"hv_daily":0.0675004,"iv52":0.86055779,"ts":1784813302,"quality":"wide"},
+    "MARA": {"price":12.08,"bid":12.05,"ask":12.17,"volume":432978.385802,"change_pct":-2.66,"hv_daily":0.0651292,"iv52":0.84462154,"ts":1784813260,"quality":"live"},
+    "APLD": {"price":29.01,"bid":28.87,"ask":29.37,"volume":379023.791184,"change_pct":-3.56,"hv_daily":0.0681913,"iv52":0.76494026,"ts":1784813260,"quality":"wide"},
+    "ORCL": {"price":123.86,"bid":123.48,"ask":123.89,"volume":625912.054869,"change_pct":-1.57,"hv_daily":0.0427576,"iv52":0.83665341,"ts":1784813373,"quality":"live"},
+    "CRWV": {"price":81.06,"bid":80.94,"ask":81.48,"volume":744075.38418,"change_pct":-1.91,"hv_daily":0.0580917,"iv52":0.91235059,"ts":1784813268,"quality":"live"},
+    "CRCL": {"price":64.85,"bid":64.7,"ask":64.87,"volume":573118.358947,"change_pct":-1.98,"hv_daily":0.0555916,"iv52":0.96015936,"ts":1784813378,"quality":"live"},
+    "RKLB": {"price":68.08,"bid":68.1,"ask":68.25,"volume":694636.970207,"change_pct":-2.39,"hv_daily":0.0574741,"iv52":0.88047808,"ts":1784813400,"quality":"live"},
+    "AAOI": {"price":114.25,"mark":114.08999633789062,"bid":114.0,"ask":114.4,"volume":929601.540101,"change_pct":3.37,"hv_daily":0.0773742,"iv52":0.8565737,"ts":1784813865,"quality":"live"},
+    "ONDS": {"price":7.99,"bid":7.96,"ask":7.98,"volume":3300290.481569,"change_pct":-0.12,"hv_daily":0.0538539,"iv52":0.33864543,"ts":1784813415,"quality":"live"},
+    "AXTI": {"price":52.01,"bid":51.95,"ask":52.22,"volume":434402.53974,"change_pct":-1.83,"hv_daily":0.0994731,"iv52":0.95219123,"ts":1784813415,"quality":"live"},
+    "MXL": {"price":88.04,"bid":87.26,"ask":88.45,"volume":314255.660407,"change_pct":1.43,"hv_daily":0.0851461,"iv52":1.0,"ts":1784813423,"quality":"wide_event"},
+    "FOTO": {"price":20.77,"mark":20.759700775146484,"bid":20.75,"ask":20.78,"volume":17392.930742,"change_pct":0.87,"hv_daily":0.0424687,"iv52":0.65625,"ts":1784813881,"quality":"live"},
+    "LITE": {"price":836.75,"bid":835.07,"ask":838.87,"volume":180947.230196,"change_pct":0.85,"hv_daily":0.0633619,"iv52":1.0,"ts":1784813451,"quality":"live"},
+    "COHR": {"price":309.73,"bid":308.3,"ask":309.74,"volume":145802.58784,"change_pct":-0.79,"hv_daily":0.0682097,"iv52":0.99203187,"ts":1784813464,"quality":"live"},
+    "APH": {"price":157.93,"bid":157.51,"ask":158.38,"volume":88750.48923,"change_pct":0.27,"hv_daily":0.0314545,"iv52":1.0,"ts":1784813464,"quality":"live"},
+    "FN": {"price":514.0,"mark":515.72998046875,"bid":513.0,"ask":516.81,"volume":34058.041295,"change_pct":0.06,"hv_daily":0.0485869,"iv52":0.98406374,"ts":1784813585,"quality":"wide"},
+    "MU": {"price":973.95,"bid":974.03,"ask":975.24,"volume":2930437.437249,"change_pct":1.51,"hv_daily":0.074318,"iv52":0.92430282,"ts":1784813495,"quality":"live"},
+    "SNDK": {"price":1584.67,"bid":1581.37,"ask":1586.19,"volume":1081602.196021,"change_pct":-0.91,"hv_daily":0.0833813,"iv52":0.98007971,"ts":1784813504,"quality":"live"}
+  }
+}
