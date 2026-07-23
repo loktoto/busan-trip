@@ -27,7 +27,11 @@ jobs:
       - name: Run monitor
         shell: bash
         run: |
-          SNAPSHOT=$(ls -1t ta-monitor/ibkr_snapshot_*.json | head -1)
+          SNAPSHOT=$(find ta-monitor -maxdepth 1 -type f -name 'ibkr_snapshot_*.json' | sort | tail -1)
+          if [ -z "${SNAPSHOT}" ]; then
+            echo "No IBKR snapshot found" >&2
+            exit 1
+          fi
           echo "Using ${SNAPSHOT}"
           python ta-monitor/run.py --snapshot "${SNAPSHOT}" --out ta-monitor/output
           cat ta-monitor/output/latest.md
