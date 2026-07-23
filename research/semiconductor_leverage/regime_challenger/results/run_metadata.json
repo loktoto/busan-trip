@@ -1,0 +1,49 @@
+{
+  "calculation_date": "2026-07-23",
+  "equity_cutoff": "2026-07-21",
+  "production_authority_unchanged": "main:production/leverage_signal.json",
+  "candidate_scope": "SOXX-only signal; actual USD and SOXL product paths; no capital-allocation selection",
+  "frozen_development_end": "2012-12-31",
+  "frozen_oos_start": "2013-01-01",
+  "candidate_count": 81,
+  "frozen_candidate": "SOXX_RSI10_R5_H40_LSTOP12",
+  "search_pbo": 0.4,
+  "signal_level_oos": {
+    "start": "2013-01-02",
+    "end": "2026-07-20",
+    "cagr": 0.37893607301950905,
+    "benchmark_cagr": 0.30292018756516437,
+    "cagr_delta": 0.07601588545434468,
+    "sharpe": 1.050782158268371,
+    "benchmark_sharpe": 1.024263225227167,
+    "sharpe_delta": 0.026518933041203896,
+    "maxdd": -0.5081286989688749,
+    "benchmark_maxdd": -0.473738267723535,
+    "maxdd_improvement": -0.034390431245339914,
+    "terminal": 76.92380893278948,
+    "benchmark_terminal": 35.7449397653454
+  },
+  "comparison_to_static_current_rule_proxy": {
+    "start": "2013-01-02",
+    "end": "2026-07-20",
+    "cagr": 0.37893607301950905,
+    "benchmark_cagr": 0.3567861683647877,
+    "cagr_delta": 0.02214990465472133,
+    "sharpe": 1.050782158268371,
+    "benchmark_sharpe": 1.088556421354597,
+    "sharpe_delta": -0.03777426308622611,
+    "maxdd": -0.5081286989688749,
+    "benchmark_maxdd": -0.3871919817052416,
+    "maxdd_improvement": -0.12093671726363331,
+    "terminal": 76.92380893278948,
+    "benchmark_terminal": 61.80268705249552
+  },
+  "smh_reference_only": {
+    "daily_return_correlation": 0.9864963685649804,
+    "mean_absolute_daily_return_difference": 0.002241783199001146,
+    "interpretation": "SMH is diagnostic only and does not generate a candidate or trade row."
+  },
+  "binance_open_interest": "forward shadow only; historical endpoint limited to latest 30 days",
+  "decision": "REJECT_CHALLENGER_RETAIN_PRODUCTION",
+  "no_order_authority": true
+}

@@ -1,0 +1,49 @@
+name: SOXX Frozen Regime Challenger
+
+on:
+  push:
+    branches:
+      - agent/leverage-regime-challenger-20260723
+    paths:
+      - research/semiconductor_leverage/regime_challenger/**
+      - .github/workflows/soxx-frozen-regime-challenger.yml
+  pull_request:
+    paths:
+      - research/semiconductor_leverage/regime_challenger/**
+      - .github/workflows/soxx-frozen-regime-challenger.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frozen-backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install research dependencies
+        run: python -m pip install --upgrade pandas numpy scipy
+      - name: Download fixed-cutoff Binance inputs
+        run: python research/semiconductor_leverage/regime_challenger/download_binance_inputs.py
+      - name: Run frozen challenger twice
+        shell: bash
+        run: |
+          python research/semiconductor_leverage/regime_challenger/run_frozen_challenge.py
+          find research/semiconductor_leverage/regime_challenger/results -type f -print0 \
+            | sort -z | xargs -0 sha256sum > /tmp/frozen-first.sha256
+          python research/semiconductor_leverage/regime_challenger/run_frozen_challenge.py
+          find research/semiconductor_leverage/regime_challenger/results -type f -print0 \
+            | sort -z | xargs -0 sha256sum > /tmp/frozen-second.sha256
+          diff -u /tmp/frozen-first.sha256 /tmp/frozen-second.sha256
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: soxx-frozen-regime-challenger
+          path: |
+            research/semiconductor_leverage/regime_challenger/results
+            research/semiconductor_leverage/regime_challenger/inputs/binance_source_metadata.json

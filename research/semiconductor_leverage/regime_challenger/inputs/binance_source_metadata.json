@@ -1,0 +1,12 @@
+{
+  "source": "Binance connector public market data",
+  "calculation_date": "2026-07-23",
+  "cutoff": "2026-07-22",
+  "btc_spot_rows": 3262,
+  "funding_daily_rows": 2508,
+  "btc_spot_sha256": "f18787a59179a6fa129a253af30e6bfa571ea0e288695a712189e2b110c81171",
+  "funding_daily_sha256": "ef503ac45e9bfe1eb5c09a207fcc272a173815ab88a193ac02b5482f448048b0",
+  "timing_rule": "Use only prior fully completed UTC calendar day when aligning to a US equity completed-close signal.",
+  "open_interest_rule": "Not persisted or selected: Binance history is limited to the latest 30 days; forward-shadow only.",
+  "production_weight": 0
+}
