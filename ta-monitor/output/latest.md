@@ -6,6 +6,7 @@
 - Last completed weekly bar: **2026-07-17**
 - Limitation: Public extended-hours bars do not cover the full 20:00–04:00 ET overnight session.
 - Guardrail: alerts use fresh executable-price R/R, not historical trigger-price R/R.
+- Stale-last normalization: **none**
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: APH
