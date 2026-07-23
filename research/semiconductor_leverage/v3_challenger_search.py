@@ -91,7 +91,6 @@ def metrics(ret: pd.Series, pos: pd.Series) -> dict:
     if len(ret) < 100: return {}
     eq = (1+ret).cumprod(); years = len(ret)/252
     cagr = eq.iloc[-1]**(1/years)-1
-    vol = ret.std(ddof=0)*math.sqrt(252)
     shp = ret.mean()/ret.std(ddof=0)*math.sqrt(252) if ret.std(ddof=0)>0 else np.nan
     dd = eq/eq.cummax()-1; mdd = dd.min()
     return dict(cagr=cagr, sharpe=shp, maxdd=mdd,
@@ -110,7 +109,6 @@ def make_candidates(f: pd.DataFrame) -> dict[str, pd.Series]:
             for hold in [20, 30, 40, 50, 60]:
                 out[f"PB_RSI{low}_R{reclaim}_H{hold}"] = hold_state(trigger, hold)
                 for stop in [0.08, 0.12, 0.16]:
-                    # trailing exit proxied on signal asset close from entry peak
                     base = hold_state(trigger, hold)
                     peak = f.c.where(base>0).groupby((base.diff().fillna(base)!=0).cumsum()).cummax()
                     stopped = base * (f.c >= peak*(1-stop))
@@ -128,7 +126,6 @@ def make_candidates(f: pd.DataFrame) -> dict[str, pd.Series]:
         for ex in [1,2,3]:
             if ex < ent:
                 out[f"MHT_{ent}_{ex}"] = event_state(score>=ent, score<=ex)
-    # Hybrid: long trend with increased weight on oversold reclaim.
     for fast in [40, 50, 63]:
         reg = event_state(f.c > f[f"sma{fast}"], f.c < f.sma200)
         for low in [5, 7, 10]:
@@ -167,23 +164,32 @@ def main():
                     z=metrics(ret.loc[start:],pos.loc[start:])
                     if z: rows.append({"product":product,"signal":signal,"strategy":name,"window":win,**z})
     res=pd.DataFrame(rows); res.to_csv(OUT/"all_results.csv",index=False)
-    base=res[res.window.isin(["3Y","5Y","10Y","MAX"])]
+    base=res[res["window"].isin(["3Y","5Y","10Y","MAX"])]
     rank=base.groupby(["product","signal","strategy"],as_index=False).agg(
         median_cagr=("cagr","median"),worst_cagr=("cagr","min"),median_sharpe=("sharpe","median"),
         worst_sharpe=("sharpe","min"),median_calmar=("calmar","median"),worst_maxdd=("maxdd","min"),
         median_exposure=("exposure","median"),trades=("trades","sum"))
-    rank["score"]=(rank.median_sharpe.clip(-1,3)+rank.median_calmar.clip(-1,3)+
-                   .5*rank.worst_cagr.clip(-1,1)+.25*rank.worst_sharpe.clip(-1,2)-
-                   .25*(rank.worst_maxdd.abs()>0.65))
+    rank["score"]=(rank["median_sharpe"].clip(-1,3)+rank["median_calmar"].clip(-1,3)+
+                   .5*rank["worst_cagr"].clip(-1,1)+.25*rank["worst_sharpe"].clip(-1,2)-
+                   .25*(rank["worst_maxdd"].abs()>0.65))
     rank=rank.sort_values(["product","score"],ascending=[True,False]); rank.to_csv(OUT/"robust_rank.csv",index=False)
     rr=[]
     for product in ["USD","SOXL"]:
-        top=rank[rank.product==product].head(10)
-        for _,r in top.iterrows():
-            ret,pos=cache[(r.product,r.signal,r.strategy)]
+        top=rank[rank["product"]==product].head(10)
+        for _,row in top.iterrows():
+            ret,pos=cache[(row["product"],row["signal"],row["strategy"])]
             for y in [3,5]:
-                for x in rolling(ret,pos,y): rr.append({"product":r.product,"signal":r.signal,"strategy":r.strategy,**x})
-    pd.DataFrame(rr).to_csv(OUT/"top10_rolling.csv",index=False)
+                for x in rolling(ret,pos,y): rr.append({"product":row["product"],"signal":row["signal"],"strategy":row["strategy"],**x})
+    roll=pd.DataFrame(rr); roll.to_csv(OUT/"top10_rolling.csv",index=False)
+    summaries=[]
+    if not roll.empty:
+        for keys,sub in roll.groupby(["product","signal","strategy","years"]):
+            summaries.append({"product":keys[0],"signal":keys[1],"strategy":keys[2],"years":keys[3],
+                              "windows":len(sub),"positive_pct":(sub["cagr"]>0).mean(),
+                              "median_cagr":sub["cagr"].median(),"worst_cagr":sub["cagr"].min(),
+                              "median_sharpe":sub["sharpe"].median(),"worst_sharpe":sub["sharpe"].min(),
+                              "median_maxdd":sub["maxdd"].median(),"worst_maxdd":sub["maxdd"].min()})
+    pd.DataFrame(summaries).to_csv(OUT/"top10_rolling_summary.csv",index=False)
     meta={"generated_utc":pd.Timestamp.utcnow().isoformat(),"data_end":str(end.date()),
           "method":"actual adjusted ETF OHLC; completed close signal; next-open execution; 10bps changes",
           "families":["pullback reclaim","trailing stop","trend","vol targeting","MHT","trend-pullback hybrid"]}
@@ -192,8 +198,8 @@ def main():
            "|Product|Signal|Strategy|Median CAGR|Worst CAGR|Median Sharpe|Median Calmar|Worst DD|Exposure|",
            "|---|---|---|---:|---:|---:|---:|---:|---:|"]
     for product in ["USD","SOXL"]:
-        for _,r in rank[rank.product==product].head(10).iterrows():
-            lines.append(f"|{r.product}|{r.signal}|{r.strategy}|{r.median_cagr:.1%}|{r.worst_cagr:.1%}|{r.median_sharpe:.2f}|{r.median_calmar:.2f}|{r.worst_maxdd:.1%}|{r.median_exposure:.1%}|")
+        for _,row in rank[rank["product"]==product].head(10).iterrows():
+            lines.append(f"|{row['product']}|{row['signal']}|{row['strategy']}|{row['median_cagr']:.1%}|{row['worst_cagr']:.1%}|{row['median_sharpe']:.2f}|{row['median_calmar']:.2f}|{row['worst_maxdd']:.1%}|{row['median_exposure']:.1%}|")
     (OUT/"REPORT.md").write_text("\n".join(lines),encoding="utf-8")
     print("\n".join(lines))
 
