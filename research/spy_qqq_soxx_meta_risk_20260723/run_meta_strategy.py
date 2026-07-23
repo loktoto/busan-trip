@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 payload = ROOT / 'source.b64'
 source = gzip.decompress(base64.b64decode(payload.read_text().strip()))
-expected = '92ffdfbf11d8b756d3c1b137d6ff39b9646702e0d3ef99d33c0903f4a778c67a'
+expected = 'ee1453d55a7b528e7084e575f283af60237b9b562883e02a322fdd68809d129d'
 digest = hashlib.sha256(source).hexdigest()
 if digest != expected:
     raise RuntimeError(f'meta source SHA mismatch: {digest} != {expected}')
