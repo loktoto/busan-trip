@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "status": "PRODUCTION_REPORTING_POLICY",
+  "effective_at": "2026-07-24T00:00:00+08:00",
+  "scope": "hourly_leverage_signal_board",
+  "order_authority": "NONE",
+  "production_signal_logic_unchanged": true,
+  "production_manifest": "production/leverage_signal.json",
+  "mandatory_decision_summary": {
+    "position": "FIRST_SECTION_IN_EVERY_REPORT",
+    "coverage": {
+      "etfs_and_baskets": [
+        "SPY",
+        "QQQ",
+        "SOXX",
+        "SMH",
+        "MAGS7",
+        "MAGS10"
+      ],
+      "individual_stocks": [
+        "AAPL",
+        "MSFT",
+        "NVDA",
+        "AMZN",
+        "GOOGL",
+        "META",
+        "TSLA",
+        "TSM"
+      ]
+    },
+    "required_fields_per_asset": [
+      "asset",
+      "asset_type",
+      "leverage_decision",
+      "candidate_leverage_vehicle_or_none",
+      "trade_authority",
+      "two_to_four_key_reasons",
+      "contrary_evidence",
+      "preliminary_confidence_0_to_10",
+      "validation_status",
+      "final_confidence_0_to_10",
+      "conclusion_changed_after_validation",
+      "entry_requirement_or_missing_confirmation",
+      "invalidation_or_exit_condition",
+      "change_versus_prior_report"
+    ],
+    "allowed_leverage_decisions": [
+      "ENTER_LEVERAGE",
+      "ADD_LEVERAGE_SMALL",
+      "HOLD_EXISTING_LEVERAGE",
+      "WAIT",
+      "EXIT_OR_REVERT_TO_1X",
+      "DO_NOT_ENTER_LEVERAGE"
+    ],
+    "authority_labels": [
+      "FORMAL_PRODUCTION",
+      "RESEARCH_ONLY",
+      "NO_INDEPENDENT_TRADE_AUTHORITY",
+      "DATA_UNAVAILABLE"
+    ],
+    "direct_answer_required": true,
+    "boss_sentence_language": "Traditional_Chinese_Hong_Kong_Cantonese"
+  },
+  "confidence_validation_gate": {
+    "trigger": "preliminary_confidence_greater_than_6.0",
+    "applies_independently_to_every_asset": true,
+    "must_complete_in_same_run_before_publication": true,
+    "minimum_second_pass": [
+      "pull_second_fresh_IBKR_snapshot_when_available",
+      "re_read_latest_completed_US_RTH_bars",
+      "independently_recompute_trend_drawdown_volatility_and_trigger_conditions",
+      "cross_check_completed_close_date_and_corporate_action_continuity_with_Alpaca_or_another_independent_source",
+      "check_at_least_two_relevant_non_price_or_cross_market_domains",
+      "actively_search_for_disconfirming_evidence",
+      "compare_pass_1_and_pass_2_action_confidence_and_timestamps"
+    ],
+    "pass_rule": "directional_decision_and_authority_label_remain_materially_consistent_without_unresolved_data_conflict_or_decisive_contradiction",
+    "failure_rule": "use_the_more_conservative_decision_and_the_lower_confidence",
+    "unavailable_rule": "cap_final_confidence_at_6.0_and_do_not_create_a_new_leverage_entry",
+    "required_validation_ledger_fields": [
+      "asset",
+      "pass_1",
+      "pass_2",
+      "independent_checks",
+      "contradictions",
+      "result",
+      "final_confidence"
+    ]
+  },
+  "data_source_governance": {
+    "IBKR": {
+      "role": "PRIMARY_MARKET_DATA_AND_FORMAL_SIGNAL_AUTHORITY",
+      "rules": [
+        "use_exact_contracts",
+        "formal_signals_use_fully_completed_US_RTH_daily_bars_only",
+        "retry_each_failed_endpoint_once",
+        "never_label_stale_or_close_data_as_live"
+      ]
+    },
+    "GitHub": {
+      "role": "DETERMINISTIC_MODEL_IDENTITY_RESEARCH_EVIDENCE_AND_AUDIT_LOG",
+      "repository": "loktoto/busan-trip",
+      "rules": [
+        "verify_manifest_commit_and_hash",
+        "do_not_promote_research_only_assets_automatically",
+        "do_not_commit_licensed_raw_IBKR_or_account_data"
+      ]
+    },
+    "Alpaca": {
+      "role": "INDEPENDENT_US_EQUITY_PARITY_AND_CORPORATE_ACTION_CHECK",
+      "rules": [
+        "prefer_completed_SIP_bars",
+        "label_delayed_sip_or_IEX_fallbacks",
+        "parity_requires_matching_cutoff_and_close_difference_lte_0.20_percent",
+        "never_average_blend_or_splice_with_IBKR"
+      ]
+    },
+    "Binance": {
+      "role": "CROSS_ASSET_SHADOW_VALIDATION_ONLY",
+      "production_authority": "ZERO",
+      "allowed_uses": [
+        "BTC_and_ETH_spot_trend",
+        "perpetual_funding_basis_open_interest",
+        "deleveraging_and_liquidity_stress_context"
+      ],
+      "rules": [
+        "do_not_query_on_ordinary_hourly_runs_unless_required_for_a_triggered_second_pass_or_bounded_research_audit",
+        "crypto_context_cannot_create_enlarge_delay_reduce_or_revoke_a_US_equity_leverage_action",
+        "never_silently_blend_venues_or_timestamps"
+      ]
+    }
+  },
+  "individual_stock_leverage_guardrails": {
+    "default_authority": "RESEARCH_ONLY",
+    "new_leverage_entry_requires": [
+      "independent_underlying_specific_backtest",
+      "actual_leveraged_product_adjusted_price_validation",
+      "frozen_chronological_holdout",
+      "acceptable_liquidity_and_spread",
+      "no_unresolved_corporate_action_or_tracking_conflict",
+      "earnings_and_event_risk_check",
+      "daily_reset_path_dependence_assessment"
+    ],
+    "earnings_blackout": "do_not_promote_a_new_leverage_entry_during_the_five_completed_sessions_before_a_reliably_known_earnings_date",
+    "underlying_buy_does_not_imply_leverage_buy": true,
+    "no_suitable_product_output": "UNDERLYING_MAY_BE_ACTIONABLE_BUT_DO_NOT_USE_LEVERAGE"
+  },
+  "reporting_fail_safe": {
+    "always_preserve_summary_and_validation_ledger": true,
+    "degraded_field_text": "N/A — IBKR未取得可靠資料",
+    "one_failed_source_must_not_break_other_assets": true,
+    "no_fabrication": true
+  }
+}
