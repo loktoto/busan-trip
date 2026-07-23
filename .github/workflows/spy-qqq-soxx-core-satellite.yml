@@ -35,6 +35,7 @@ jobs:
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/run_alpha_search.py
           python -m py_compile research/spy_qqq_soxx_alpha_search_20260722/validate_actual_products.py
           python -m py_compile research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite.py
+          python -m py_compile research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite_checked.py
           python -m py_compile research/spy_qqq_soxx_core_satellite_20260723/compare_repeats.py
       - name: Rebuild frozen SOXX engine and inputs
         run: |
@@ -47,7 +48,7 @@ jobs:
         run: |
           rm -rf research_outputs/spy_qqq_soxx_core_satellite_20260723
           mkdir -p research_outputs/spy_qqq_soxx_core_satellite_20260723
-          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite.py \
+          PYTHONWARNINGS=ignore python research/spy_qqq_soxx_core_satellite_20260723/run_core_satellite_checked.py \
             > research_outputs/spy_qqq_soxx_core_satellite_20260723/optimizer.log 2>&1
           tail -n 300 research_outputs/spy_qqq_soxx_core_satellite_20260723/optimizer.log
       - name: Validate outputs
@@ -92,6 +93,8 @@ jobs:
           manifest = json.loads((root / 'run_manifest.json').read_text())
           if manifest.get('candidate_count') != 60 or manifest.get('family_count') != 12:
               raise RuntimeError(manifest)
+          if not manifest.get('raw_core_satellite_source_sha256') or not manifest.get('patched_core_satellite_source_sha256'):
+              raise RuntimeError('deterministic source hashes missing')
           inputs = json.loads((root / 'input_manifest.json').read_text())
           if set(inputs) != {'SPY', 'QQQ', 'SOXX', 'USD', 'SOXL', 'BIL'}:
               raise RuntimeError(f'input manifest mismatch: {inputs.keys()}')
