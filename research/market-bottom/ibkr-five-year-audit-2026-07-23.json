@@ -1,0 +1,99 @@
+{
+  "classification": "DERIVED IBKR AUDIT METADATA — RAW LICENSED BARS NOT PERSISTED",
+  "captured_at_utc": "2026-07-23T14:15:00Z",
+  "request": {
+    "period": "FIVE_YEARS",
+    "step": "ONE_DAY",
+    "outside_rth": false,
+    "include_corporate_actions": true
+  },
+  "window": {
+    "start": "2021-07-26",
+    "latest_public_comparison_date": "2026-07-21",
+    "latest_completed_rth_bar": "2026-07-22",
+    "unfinished_bar_excluded": "2026-07-23"
+  },
+  "assets": {
+    "SPY": {
+      "contract_id": 756733,
+      "primary_exchange": "ARCA",
+      "bars_returned": 1254,
+      "overlap_bars_compared": 1252,
+      "daily_return_correlation_to_public_adjusted_history": 0.9992228235650897,
+      "corporate_actions_returned": 20,
+      "split_actions": []
+    },
+    "QQQ": {
+      "contract_id": 320227571,
+      "primary_exchange": "NASDAQ",
+      "bars_returned": 1254,
+      "overlap_bars_compared": 1252,
+      "daily_return_correlation_to_public_adjusted_history": 0.9999126490285587,
+      "corporate_actions_returned": 21,
+      "split_actions": []
+    },
+    "SOXX": {
+      "contract_id": 12658194,
+      "primary_exchange": "NASDAQ",
+      "bars_returned": 1254,
+      "overlap_bars_compared": 1252,
+      "daily_return_correlation_to_public_adjusted_history": 0.9999307345682192,
+      "corporate_actions_returned": 22,
+      "split_actions": [
+        {
+          "date": "2024-03-07",
+          "ratio": 3.0
+        }
+      ]
+    },
+    "SMH": {
+      "contract_id": 229725622,
+      "primary_exchange": "NASDAQ",
+      "bars_returned": 1254,
+      "overlap_bars_compared": 1252,
+      "daily_return_correlation_to_public_adjusted_history": 0.9998338511740368,
+      "corporate_actions_returned": 6,
+      "split_actions": [
+        {
+          "date": "2023-05-05",
+          "ratio": 2.0
+        }
+      ]
+    }
+  },
+  "latest_completed_rth_2026_07_22": {
+    "SPY": {
+      "open": 746.62,
+      "high": 750.01,
+      "low": 746.37,
+      "close": 747.41
+    },
+    "QQQ": {
+      "open": 703.56,
+      "high": 709.64,
+      "low": 703.56,
+      "close": 705.35
+    },
+    "SOXX": {
+      "open": 539.55,
+      "high": 561.07,
+      "low": 539.55,
+      "close": 555.52
+    },
+    "SMH": {
+      "open": 572.86,
+      "high": 592.0,
+      "low": 572.8,
+      "close": 586.91
+    }
+  },
+  "comparison_note": {
+    "return_correlation_is_primary": true,
+    "reason": "The public files are split/distribution-adjusted while IBKR chart closes and explicit corporate-action rows use a different level convention. Return-path correlation and exact recent unadjusted closes are the appropriate cross-checks."
+  },
+  "governance": {
+    "raw_ibkr_bars_committed": false,
+    "account_or_position_data_committed": false,
+    "reason": "The repository is public and licensed raw history must not be redistributed."
+  }
+}
