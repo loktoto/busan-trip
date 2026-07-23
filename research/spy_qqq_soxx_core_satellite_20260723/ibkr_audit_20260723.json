@@ -1,0 +1,63 @@
+{
+  "audit_date": "2026-07-23",
+  "purpose": "Contract, liquidity and completed-close audit for the SPY/QQQ core with SOXX risk-budget satellite research. No account holdings or order instructions are used.",
+  "completed_close_cutoff": "2026-07-21",
+  "completed_close_parity_inherited_from_pr13": {
+    "SPY": 748.28,
+    "QQQ": 708.97,
+    "SOXX": 552.69
+  },
+  "contracts": {
+    "SOXL": {
+      "contract_id": 73340487,
+      "exchange": "ARCA",
+      "description": "Direxion Daily Semiconductor Bull 3X Shares",
+      "audit_snapshot": {
+        "last": 160.66,
+        "prior_close": 160.99,
+        "avg_90d_usd_volume": 9798056289,
+        "annual_historical_volatility": 2.2423107474953334
+      },
+      "role": "3x daily semiconductor implementation using a small sleeve weight"
+    },
+    "USD": {
+      "contract_id": 42808834,
+      "exchange": "ARCA",
+      "description": "ProShares Ultra Semiconductors",
+      "audit_snapshot": {
+        "last": 92.52,
+        "prior_close": 92.55,
+        "avg_90d_usd_volume": 95440390,
+        "annual_historical_volatility": 1.1429899655924893
+      },
+      "role": "2x daily semiconductor implementation"
+    },
+    "BIL": {
+      "contract_id": 296457239,
+      "exchange": "ARCA",
+      "description": "SPDR Bloomberg 1-3 Month T-Bill ETF",
+      "snapshot_status": "IBKR snapshot temporarily unavailable after one retry",
+      "role": "actual adjusted-price Treasury-bill return from 2013 onward"
+    },
+    "SGOV_cross_check": {
+      "contract_id": 424099317,
+      "exchange": "NYSE",
+      "description": "iShares 0-3 Month Treasury Bond ETF",
+      "audit_snapshot": {
+        "last": 100.61,
+        "bid": 100.61,
+        "ask": 100.62,
+        "avg_90d_usd_volume": 2040747697,
+        "annual_historical_volatility": 0.008192833509842613
+      },
+      "role": "independent liquidity and short-Treasury implementation cross-check"
+    }
+  },
+  "data_policy": [
+    "Intraday observations on and after 2026-07-22 are audit-only and excluded from completed-close signals.",
+    "Historical strategy calculations use adjusted product prices and completed daily bars.",
+    "BIL is used as the actual cash product where history is available; the fixed synthetic three-month Treasury series only fills missing dates.",
+    "SOXL and USD daily-reset paths are tested directly rather than approximating them as constant multiples of SOXX.",
+    "No IBKR account holdings, trades, balances or orders are used."
+  ]
+}
