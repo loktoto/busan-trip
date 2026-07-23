@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "status": "ACTIVE",
+  "purpose": "production_data_source_and_research_governance",
+  "production": {
+    "manifest": "main:production/leverage_signal.json",
+    "manifest_commit": "651ff6645b951bd6f8e9b86bfed3efbb1d64710b",
+    "class": "PRODUCTION_MONITORING_ONLY",
+    "signal": "SOXX annual_anchored_trend_vol",
+    "scope": "signal_only_no_capital_allocation",
+    "order_authority": "NONE",
+    "automatic_replacement": false
+  },
+  "data_source_governance": {
+    "formal_primary": {
+      "source": "Interactive Brokers (IBKR)",
+      "authority": "completed_US_RTH_daily_bars",
+      "exact_contracts": {
+        "SOXX": 12658194,
+        "USD": 42808834,
+        "SOXL": 73340487
+      },
+      "retry_on_failure": 1
+    },
+    "independent_parity": {
+      "source": "Alpaca",
+      "authority": "parity_and_fallback_only",
+      "preferred_completed_bar_feed": "SIP",
+      "recent_snapshot_fallback_order": [
+        "delayed_sip",
+        "IEX"
+      ],
+      "maximum_close_difference_pct": 0.2,
+      "rules": [
+        "never_silently_splice_series",
+        "never_average_conflicting_sources",
+        "never_label_delayed_data_live"
+      ]
+    },
+    "cross_asset_research": {
+      "source": "Binance",
+      "authority": "CHALLENGER_ONLY_ZERO_PRODUCTION_WEIGHT",
+      "features": [
+        "BTC_ETH_spot",
+        "perpetual_daily_bars",
+        "funding",
+        "basis",
+        "open_interest",
+        "volatility",
+        "liquidity"
+      ],
+      "rules": [
+        "do_not_query_on_ordinary_hourly_production_runs",
+        "cannot_change_SOXX_signal_without_separate_frozen_promotion"
+      ]
+    }
+  },
+  "latest_cross_source_smoke_test": {
+    "performed_at_utc": "2026-07-23T15:06:43Z",
+    "formal_cutoff": "2026-07-22",
+    "incomplete_2026_07_23_RTH_bar_excluded": true,
+    "ibkr": {
+      "completed_bar_count": 1253,
+      "SOXX_close": 555.52,
+      "SMA50": 568.6268,
+      "SMA200": 394.9991,
+      "RV40": 0.7105455811,
+      "raw_exposure": 0.5629476991,
+      "EWM5_exposure": 0.5649333452,
+      "trend_gate": true,
+      "leverage_state": "OFF"
+    },
+    "alpaca": {
+      "completed_bar_count": 286,
+      "SOXX_close": 555.52,
+      "USD_close": 92.55,
+      "SOXL_close": 160.99,
+      "SOXX_indicator_parity_with_IBKR": "EXACT_WITHIN_FLOATING_POINT",
+      "initial_recent_SIP_snapshot": "premium_feed_required",
+      "retry_feed": "delayed_sip",
+      "retry_result": "PASS"
+    },
+    "binance_shadow": {
+      "server_time_utc": "2026-07-23T15:06:43Z",
+      "BTCUSDT_last_completed_close": 66082,
+      "BTCUSDT_SMA50": 63107.982,
+      "BTCUSDT_SMA200": 72695.6075,
+      "BTCUSDT_RV40_annualized_365": 0.3143947358,
+      "mean_last_90_funding_observations": 0.00005424778,
+      "open_interest_BTC": 103816.081,
+      "classification": "CHALLENGER_ONLY_NOT_A_SOXX_TRIGGER"
+    },
+    "result": "PASS",
+    "formal_action": "NO_LEVERAGED_ETF_ENTRY"
+  },
+  "ongoing_research": {
+    "automation_title": "Hourly Leverage Signal Board",
+    "automation_id": "6a6191226730819185207dbeba05be04",
+    "production_frequency": "hourly",
+    "bounded_challenger_audit": "first_Saturday_after_each_new_US_trading_week",
+    "research_branch_policy": "scoped_branch_or_draft_PR_only",
+    "promotion_policy": "explicit_later_decision_after_every_frozen_gate_passes",
+    "first_priority": "PR16_SM_H_RSI5_pullback_reclaim_reaudit",
+    "research_failures_must_not_block_production": true
+  },
+  "privacy": {
+    "repository_visibility_at_validation": "public",
+    "licensed_raw_IBKR_data_committed": false,
+    "account_or_order_data_committed": false,
+    "credentials_committed": false
+  }
+}
