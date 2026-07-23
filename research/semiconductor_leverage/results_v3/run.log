@@ -1,0 +1,28 @@
+/home/runner/work/busan-trip/busan-trip/research/semiconductor_leverage/v3_challenger_search.py:193: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+  meta={"generated_utc":pd.Timestamp.utcnow().isoformat(),"data_end":str(end.date()),
+# Semiconductor Leverage V3 Challenger Search
+
+Data through 2026-07-22.
+
+|Product|Signal|Strategy|Median CAGR|Worst CAGR|Median Sharpe|Median Calmar|Worst DD|Exposure|
+|---|---|---|---:|---:|---:|---:|---:|---:|
+|USD|SMH|PB_RSI5_R10_H40|83.0%|30.7%|2.01|3.87|-36.4%|28.8%|
+|USD|SMH|PB_RSI5_R10_H40_TS16|83.0%|30.7%|2.01|3.87|-36.4%|28.8%|
+|USD|SMH|PB_RSI5_R10_H40_TS12|81.7%|29.4%|1.99|3.66|-34.8%|28.7%|
+|USD|SMH|PB_RSI5_R10_H40_TS8|78.5%|26.1%|1.96|3.46|-43.1%|28.2%|
+|USD|SMH|PB_RSI5_R10_H30|59.4%|25.5%|1.85|3.10|-37.5%|21.6%|
+|USD|SMH|PB_RSI5_R10_H30_TS16|59.4%|25.5%|1.85|3.10|-37.5%|21.6%|
+|USD|SMH|PB_RSI5_R10_H30_TS12|59.4%|24.5%|1.85|3.10|-44.2%|21.6%|
+|USD|SMH|PB_RSI5_R10_H50|82.8%|32.8%|1.79|3.07|-42.0%|35.2%|
+|USD|SMH|PB_RSI5_R10_H50_TS12|81.9%|31.2%|1.79|3.05|-41.9%|34.8%|
+|USD|SMH|PB_RSI5_R10_H50_TS16|82.0%|32.1%|1.78|2.99|-46.3%|35.1%|
+|SOXL|SMH|PB_RSI5_R10_H40|114.6%|45.2%|1.83|3.80|-53.7%|28.8%|
+|SOXL|SMH|PB_RSI5_R10_H40_TS16|114.6%|45.2%|1.83|3.80|-53.7%|28.8%|
+|SOXL|SMH|PB_RSI5_R10_H40_TS12|112.7%|42.5%|1.81|3.64|-52.2%|28.7%|
+|SOXL|SMH|PB_RSI5_R10_H40_TS8|106.9%|35.8%|1.77|3.44|-64.0%|28.2%|
+|SOXL|SMH|PB_RSI5_R10_H30|84.3%|36.2%|1.72|2.96|-62.0%|22.2%|
+|SOXL|SMH|PB_RSI5_R10_H30_TS16|84.3%|36.2%|1.72|2.96|-62.0%|22.2%|
+|SOXL|SMH|HYB_F40_L5_B35|107.2%|46.2%|1.62|2.90|-57.5%|47.4%|
+|SOXL|SMH|PB_RSI5_R10_H30_TS12|84.3%|33.9%|1.72|2.96|-67.4%|22.1%|
+|SOXL|SMH|PB_RSI5_R15_H40|88.2%|31.7%|1.64|2.75|-62.7%|23.0%|
+|SOXL|SMH|PB_RSI5_R15_H40_TS16|88.2%|31.7%|1.64|2.75|-62.7%|23.0%|
