@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "status": "PRODUCTION_MONITORING_ONLY",
-  "promoted_at": "2026-07-23T15:50:00Z",
+  "promoted_at": "2026-07-23T14:50:14Z",
   "scope": "signal_only_no_capital_allocation",
   "order_authority": "NONE",
   "canonical_source": {
@@ -29,15 +29,15 @@
       "return_type": "close_to_close_simple_return",
       "sample_standard_deviation": true
     },
-    "volatility_target": 0.40,
+    "volatility_target": 0.4,
     "raw_exposure_formula": "clip(0.40 / SOXX_RV40, 0.50, 1.50)",
     "smoothing": {
       "type": "EWM",
       "span": 5
     },
-    "trend_off_exposure": 0.50,
-    "exposure_min": 0.50,
-    "exposure_max": 1.50,
+    "trend_off_exposure": 0.5,
+    "exposure_min": 0.5,
+    "exposure_max": 1.5,
     "leverage_entry": "formal_cross_from_exposure_lte_1.0_to_gt_1.0",
     "leverage_exit": "formal_cross_from_exposure_gt_1.0_to_lte_1.0",
     "fixed_take_profit": null,
@@ -68,7 +68,7 @@
         "cagr_delta_pp": 9.35,
         "sharpe_delta": 0.103,
         "max_drawdown_improvement_pp": 3.54,
-        "three_x_cost_cagr_delta_pp": 8.40,
+        "three_x_cost_cagr_delta_pp": 8.4,
         "product_gate": "PASS"
       },
       "SOXX_SOXL_3X": {
@@ -89,7 +89,7 @@
     "SMA50": 568.6268,
     "SMA200": 394.9991,
     "RV40": 0.71054558,
-    "raw_exposure": 0.56294770,
+    "raw_exposure": 0.5629477,
     "EWM5_exposure": 0.56493335,
     "trend_gate": true,
     "formal_leverage_state": "OFF",
@@ -128,5 +128,12 @@
     "never_label_stale_data_live": true,
     "degraded_field_text": "N/A — IBKR未取得可靠資料",
     "no_formal_signal_when_cutoff_or_adjustment_integrity_conflicts": true
-  }
+  },
+  "metadata_corrections": [
+    {
+      "field": "promoted_at",
+      "reason": "aligned to the initial GitHub promotion commit timestamp; no signal, evidence or state changed",
+      "initial_promotion_commit": "b6952395b6cf7d90eec059044a969f38f94c53fd"
+    }
+  ]
 }
