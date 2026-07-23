@@ -17,6 +17,7 @@ The validated PR #19 production identity therefore remains unchanged. This audit
 - Exact IBKR US contract matches: SPY, SSO, QQQ, QLD, SOXX and USD.
 - IBKR returned 1,253 common completed daily bars from 2021-07-26 through 2026-07-22.
 - The unfinished 2026-07-23 bar was excluded.
+- Reporting correction: the cutoff-day unavailable next-open return is ignored by EWM, matching pandas and the canonical engine; this affects only the displayed current scale, not historical returns.
 - Completed 2026-07-22 closes matched the canonical workflow exactly: SPY 747.41, QQQ 705.35, SOXX 555.52, SSO 67.27, QLD 88.28 and USD 92.55.
 - The first request exceeded IBKR's 1,000-bar `step_count` limit; the required single retry used the supported `FIVE_YEARS` period and succeeded for every contract.
 
@@ -71,7 +72,7 @@ Despite the strong full-period numbers, the next validation segment and final te
 
 ## Current completed-close state
 
-The canonical adjusted-price engine remains authoritative for target weights: portfolio scale 0.8778x, SOXX alpha exposure about 0.5647x, effective gross exposure about 0.6485x, and 0% in SSO, QLD and USD. The connector-only raw-price audit independently estimated a 0.9187x scale and the same approximately 0.565x SOXX alpha exposure; both methods agree that no leveraged ETF entry is active.
+The canonical adjusted-price engine remains authoritative for target weights: portfolio scale 0.8778x, SOXX alpha exposure about 0.5647x, effective gross exposure about 0.6485x, and 0% in SSO, QLD and USD. The connector-only raw-price audit independently estimated a 0.8781x scale and the same approximately 0.565x SOXX alpha exposure; both methods agree that no leveraged ETF entry is active. The 0.8781x figure uses pandas-compatible EWM handling that carries the prior smoothed value across the cutoff day's unavailable next-open return.
 
 ## Limitations
 
