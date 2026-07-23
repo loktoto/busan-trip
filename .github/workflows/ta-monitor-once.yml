@@ -6,6 +6,7 @@ on:
     paths:
       - 'ta-monitor/config.py'
       - 'ta-monitor/engine.py'
+      - 'ta-monitor/post_validate.py'
       - 'ta-monitor/run.py'
       - 'ta-monitor/ibkr_snapshot_*.json'
       - '.github/workflows/ta-monitor-once.yml'
