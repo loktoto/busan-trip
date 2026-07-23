@@ -52,6 +52,8 @@ def apply_guardrails(result: dict) -> dict:
     result["results"].sort(key=lambda x: float(x.get("score", 0)), reverse=True)
     for rank, row in enumerate(result["results"], 1):
         row["rank"] = rank
+        score = float(row.get("score", 0))
+        row["tier"] = "A" if score >= 7.5 else "B" if score >= 6.5 else "C" if score >= 5.5 else "D"
     result["raw_7_plus"] = [r["ticker"] for r in result["results"] if float(r.get("score", 0)) >= 7]
     result["validated_7_plus"] = []
     valid_now = {
