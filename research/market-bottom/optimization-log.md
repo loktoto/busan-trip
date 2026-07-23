@@ -117,3 +117,63 @@ No live threshold, tranche or leveraged-entry rule was promoted.
 4. run point-in-time price/breadth/true downside-VRP/credit ablations;
 5. test actual SSO, QLD and USD entries, tracking gaps and path dependence;
 6. promote only candidates surviving one-SE, worst-regime, provenance, ablation, independent-PBO and actual-product gates.
+
+## 2026-07-23 — v4.0 local-bottom and deep-bear reserve pass
+
+### Fresh IBKR audit
+
+- Retrieved 1,254 five-year daily rows each for SPY, QQQ, SOXX and SMH.
+- Excluded the unfinished 2026-07-23 regular-session row.
+- Latest completed RTH boundary remains 2026-07-22.
+- Daily-return correlations against the audited public adjusted histories were
+  0.999223 for SPY, 0.999913 for QQQ, 0.999931 for SOXX and 0.999834 for SMH.
+- Reconfirmed the SOXX 3:1 split on 2024-03-07 and SMH 2:1 split on 2023-05-05.
+- Persisted derived audit metadata only; raw licensed bars were not committed.
+
+### Indicator families tested
+
+1. RSI/five-day z-score/Bollinger washout and reversal;
+2. strong-close price reversal;
+3. realised-volatility/ATR maturity;
+4. selling-pressure maturity;
+5. retest/higher-low structure;
+6. SMA10 reclaim and positive short trend.
+
+The indicator score slightly increased precision in isolated cases but materially
+increased missed episodes. It did not beat the existing spaced fresh-low ladder
+as a local-bottom trade gate.
+
+### Deep-bear reserve candidate
+
+- Added a persistent structural-bear latch so an intermediate rally cannot erase
+  a previously identified reserve regime.
+- Compared 12 pre-declared reserve policies.
+- Selected policies only on episodes beginning before 2018 and evaluated
+  promotion on episodes beginning in 2018 or later.
+- SPY's one-SE selection failed the holdout gate.
+- QQQ and SOXX retained the baseline during pre-2018 selection.
+- Modern-window gains in unselected policies were classified as post-hoc and
+  non-promotable.
+
+### Core grid
+
+A 48-combination grid per asset varied deployment power, spacing, long-bear cap,
+exhaustion votes and confirmation votes. Apparent pre-2018 gains were negligible
+and did not improve the 2018+ robust score.
+
+### Corrected interpretation
+
+- The existing model is a strong ordinary-correction/local-bottom participation
+  engine, not a universal final-cycle-bottom detector.
+- A fixed 252-session label is not the final trough label for every multi-year
+  bear; full-cycle distance is now a separate descriptive stress metric.
+- Lower weighted entry distance caused by withholding capital is not sufficient
+  evidence of a better bottom monitor.
+
+### Decision
+
+**No production threshold, tranche, parameter or leverage rule promoted.**
+
+The new local-bottom score and deep-bear reserve fields remain shadow-only. The
+production monitor must keep staged participation, local bottom and cycle-bottom
+evidence on separate lines.

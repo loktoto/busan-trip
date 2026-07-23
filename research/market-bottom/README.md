@@ -22,6 +22,7 @@ The objective is not to predict the exact lowest tick. It is to identify a suffi
 - [`strategy.md`](strategy.md) — signal hierarchy, states, staged sizing, SMH/SOXX pair governance and leverage rules.
 - [`backtest-results.md`](backtest-results.md) — historical research snapshots, limitations and rejected approaches.
 - [`optimization-log.md`](optimization-log.md) — causal-engine corrections and current optimisation gate.
+- [`bottom-monitor-optimisation-v40-2026-07-23.md`](bottom-monitor-optimisation-v40-2026-07-23.md) — fresh IBKR audit, chronological holdout, local-bottom ensemble and deep-bear reserve decision.
 - [`research-evidence.md`](research-evidence.md) — primary-source evidence mapped to model design.
 - [`ibkr-validation-2026-07-21.md`](ibkr-validation-2026-07-21.md) — IBKR windows, corporate actions, labelled capacity, volatility and product mapping.
 - [`feature-schema.md`](feature-schema.md) — point-in-time breadth, VRP and credit feature contract.
@@ -36,6 +37,9 @@ The objective is not to predict the exact lowest tick. It is to identify a suffi
 - [`ablation.py`](ablation.py) — identical-fold feature ablation with manifest blockers.
 - [`data_audit.py`](data_audit.py) — adjusted-price continuity and split-like discontinuity veto.
 - [`leverage.py`](leverage.py) — actual-product SSO/QLD/USD research, tracking gaps and path dependence.
+- [`deep_bear_reserve_v40.py`](deep_bear_reserve_v40.py) — shadow-only structural-bear capital-reservation candidate.
+- [`optimize_reserve_v40.py`](optimize_reserve_v40.py) — pre-2018 selection and 2018+ holdout comparison for 12 reserve policies.
+- [`local_bottom_ensemble_v41.py`](local_bottom_ensemble_v41.py) — six-family 63-session local-bottom research score; zero production weight.
 - [`tests/`](tests/) — causal, label-isolation, provenance, paired-semiconductor, CSCV and actual-product regression tests.
 
 ## Key conclusion
@@ -74,7 +78,10 @@ A higher CAGR alone does not pass the gate. The paired rule must improve bottom 
 
 The audits found omitted missed episodes, repeated bonuses, invalid rolling-low comparisons, zero-fold defaults, truncated labels, short path history and training-label leakage. Results generated before those corrections are not promotion evidence.
 
-**No asset parameter or SMH paired rule is currently promoted.**
+The v4.0 chronological holdout also rejected the new reserve policy as a
+production replacement and rejected the six-family local-bottom score as a trade
+gate. **No asset parameter, reserve overlay, indicator gate or SMH paired rule is
+currently promoted.**
 
 ## Validation protocols
 
