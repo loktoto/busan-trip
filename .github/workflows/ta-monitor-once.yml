@@ -1,0 +1,45 @@
+name: Fresh 21-stock TA monitor
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'ta-monitor/config.py'
+      - 'ta-monitor/engine.py'
+      - 'ta-monitor/run.py'
+      - 'ta-monitor/ibkr_snapshot_*.json'
+      - '.github/workflows/ta-monitor-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check pandas numpy requests
+      - name: Run monitor
+        shell: bash
+        run: |
+          SNAPSHOT=$(ls -1t ta-monitor/ibkr_snapshot_*.json | head -1)
+          echo "Using ${SNAPSHOT}"
+          python ta-monitor/run.py --snapshot "${SNAPSHOT}" --out ta-monitor/output
+          cat ta-monitor/output/latest.md
+      - name: Commit report output
+        shell: bash
+        run: |
+          git config user.name "ta-monitor-bot"
+          git config user.email "ta-monitor-bot@users.noreply.github.com"
+          git add ta-monitor/output/latest.json ta-monitor/output/latest.md
+          if git diff --cached --quiet; then
+            echo "No output change"
+          else
+            git commit -m "Update fresh TA monitor output [skip ci]"
+            git push
+          fi
