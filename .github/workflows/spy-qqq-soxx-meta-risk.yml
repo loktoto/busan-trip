@@ -45,7 +45,7 @@ jobs:
           if digest != expected:
               raise RuntimeError(f'{digest} != {expected}')
           compile(source.decode(), 'meta_strategy_engine.py', 'exec')
-          print({'meta_source_sha256': digest, 'bytes': len(source)})
+          print({'raw_meta_source_sha256': digest, 'bytes': len(source)})
           PY
       - name: Rebuild inherited SOXX alpha independently
         run: |
@@ -101,7 +101,7 @@ jobs:
           if choices.year.nunique() < 14:
               raise RuntimeError(choices.to_dict('records'))
           manifest = json.loads((root/'run_manifest.json').read_text())
-          if manifest.get('meta_source_sha256') != 'ee1453d55a7b528e7084e575f283af60237b9b562883e02a322fdd68809d129d':
+          if manifest.get('meta_source_sha256') != 'e3e0cbb93947a9fe1546b4ef365d4f3723cd0ae7c59e6776b0634baf3873f0d1':
               raise RuntimeError(manifest)
           print(identity.to_string(index=False))
           print(grid.to_string(index=False))
