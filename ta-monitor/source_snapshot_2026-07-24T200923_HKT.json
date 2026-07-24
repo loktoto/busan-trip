@@ -1,0 +1,26 @@
+{
+  "as_of_hkt": "2026-07-24T20:09:23+08:00",
+  "as_of_et": "2026-07-24T08:09:23-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "IBKR": {"status": "PARTIAL SUCCESS", "timestamp": "2026-07-24T20:09:23+08:00", "purpose": "primary fresh equity quotes", "confidence_impact": "Only HUT, AAOI and ONDS refreshed"},
+    "Alpaca": {"status": "FAILED", "timestamp": "2026-07-24T20:09:23+08:00", "purpose": "equity parity and completed-bar fallback", "confidence_impact": "No accessible Alpaca tool in this run"},
+    "Binance": {"status": "FAILED", "timestamp": "2026-07-24T20:09:23+08:00", "purpose": "BTC/ETH miner context", "confidence_impact": "No reliable fresh Binance data obtained"},
+    "GitHub": {"status": "SUCCESS", "timestamp": "2026-07-24T20:09:23+08:00", "purpose": "policy/config/audit", "confidence_impact": "Fresh snapshot committed; market calculation remains degraded"}
+  },
+  "quotes": {
+    "HUT": {"price": 118.5199966430664, "raw_last": 116.0, "bid": 118.0, "ask": 118.66, "volume": 11366.659195, "change_pct": -1.42, "hv_daily": 0.0709471, "iv52": 0.8725099563598633, "quality": "mark_used_stale_last"},
+    "AAOI": {"price": 112.38999938964844, "raw_last": 112.0, "bid": 112.06, "ask": 112.38, "volume": 75670.430328, "change_pct": -0.02, "hv_daily": 0.0752292, "iv52": 0.8525896668434143, "quality": "mark_used_outside_nbbo_last"},
+    "ONDS": {"price": 7.980000019073486, "raw_last": 7.9750000000000005, "bid": 7.970000000000001, "ask": 7.98, "volume": 317314.350897, "change_pct": 0.57, "hv_daily": 0.0521251, "iv52": 0.3306773006916046, "quality": "live"}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_bars": "N/A — 未取得可靠資料",
+    "pass2": "Not applicable; no validated raw 7+ candidate",
+    "note": "Partial snapshot only. Do not treat old GitHub model output as live."
+  }
+}
