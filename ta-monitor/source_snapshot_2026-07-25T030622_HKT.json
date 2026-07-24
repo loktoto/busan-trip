@@ -1,0 +1,36 @@
+{
+  "as_of_hkt": "2026-07-25T03:06:22+08:00",
+  "as_of_et": "2026-07-24T15:06:22-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS",
+    "alpaca": "FAILED_AFTER_ATTEMPT_CONNECTOR_UNAVAILABLE",
+    "binance": "FAILED_AFTER_ATTEMPT_CONNECTOR_UNAVAILABLE",
+    "bar_module": "N/A — 未取得全21隻一致completed bars"
+  },
+  "quotes": {
+    "HUT": {"source":"IBKR","last":110.71,"mark":110.72,"bid":110.50,"ask":110.85,"volume":2466358.98,"change_pct":-5.91,"open":116.26,"low":110.30,"high":117.98,"ivp52":0.8167,"historical_vol_annual":1.1263},
+    "AAOI": {"source":"IBKR","last":100.21,"mark":100.2567,"bid":100.20,"ask":100.41,"volume":5183332.38,"change_pct":-10.54,"open":108.77,"low":100.00,"high":109.71,"ivp52":0.8486,"historical_vol_annual":1.1942},
+    "ONDS": {"source":"IBKR","last":7.835,"mark":7.8301,"bid":7.83,"ask":7.84,"volume":88092528.71,"change_pct":-1.20,"open":7.95,"low":7.48,"high":8.18,"ivp52":0.3466,"historical_vol_annual":0.8275},
+    "FOTO": {"source":"IBKR","last":19.19,"mark":19.18,"bid":19.17,"ask":19.20,"volume":162928.02,"change_pct":-6.66,"open":20.41,"low":19.18,"high":20.41,"ivp52":0.0909,"historical_vol_annual":0.6403},
+    "APH": {"source":"IBKR","last":152.11,"mark":152.07,"bid":152.01,"ask":152.13,"volume":3467224.82,"change_pct":-3.38,"open":156.73,"low":152.01,"high":158.86,"ivp52":0.9761,"historical_vol_annual":0.4851},
+    "SOXX": {"source":"IBKR","last":525.30,"mark":525.2800,"bid":525.06,"ask":525.22,"volume":7614668.08,"change_pct":-4.71,"open":543.49,"low":525.11,"high":548.00,"ivp52":0.9721,"historical_vol_annual":0.6976}
+  },
+  "events": {
+    "MXL": {"date":"2026-07-23","label":"Q2 2026 results after close"},
+    "APLD": {"date":"2026-07-27","label":"FY2026 Q4/full-year results after close"},
+    "SNDK": {"date":"2026-08-05","label":"FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity":120,"average_price":20.13212167,"market_price":19.23,"unrealized_pnl":-108.254654},
+    "SOXX": {"quantity":13,"average_price":528.75752308,"market_price":526.37,"unrealized_pnl":-31.037864}
+  },
+  "calculation_metadata": {
+    "completed_bar_governance": "current week/day/hour/15m excluded",
+    "full_score_status": "WITHHELD — incomplete uniform completed-bar dataset",
+    "pass2_status": "NONE — no reliable raw score >=7",
+    "licensed_raw_history_committed": false,
+    "orders_created": false
+  }
+}
