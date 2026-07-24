@@ -1,36 +1,40 @@
 {
-  "as_of_hkt": "2026-07-24T23:09:55+08:00",
-  "as_of_et": "2026-07-24T11:09:55-04:00",
+  "as_of_hkt": "2026-07-25T01:05:47+08:00",
+  "as_of_et": "2026-07-24T13:05:47-04:00",
   "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "FAILED",
+      "status": "PARTIAL_SUCCESS",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "details": "Fresh snapshots obtained for FOTO and APH; account positions checked for SL/TP management. Bulk contract query returned no results; remaining tickers unavailable in bounded run."
     },
     "Alpaca": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "details": "Connector namespace unavailable after explicit discovery attempt."
     },
     "Binance": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "details": "Connector namespace unavailable after explicit discovery attempt."
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-24T23:11:24.024479+08:00",
+      "timestamp": "2026-07-25T01:07:22.730411+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable"
+      "impact": "Fresh market calculation unavailable",
+      "details": "production_policy.md and config.py fetched from main; audit snapshot committed."
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
