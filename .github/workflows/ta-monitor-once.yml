@@ -8,11 +8,17 @@ on:
       - 'ta-monitor/engine.py'
       - 'ta-monitor/post_validate.py'
       - 'ta-monitor/run.py'
+      - 'ta-monitor/production_policy.md'
+      - 'ta-monitor/source_snapshot_*.json'
       - 'ta-monitor/ibkr_snapshot_*.json'
       - '.github/workflows/ta-monitor-once.yml'
 
 permissions:
   contents: write
+
+concurrency:
+  group: ta-monitor-production
+  cancel-in-progress: false
 
 jobs:
   monitor:
@@ -20,21 +26,33 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check pandas numpy requests
-      - name: Run monitor
+      - name: Run monitor with hard fail-safe
         shell: bash
         run: |
-          SNAPSHOT=$(find ta-monitor -maxdepth 1 -type f -name 'ibkr_snapshot_*.json' | sort | tail -1)
-          if [ -z "${SNAPSHOT}" ]; then
-            echo "No IBKR snapshot found" >&2
-            exit 1
+          set +e
+          SNAPSHOT=$(find ta-monitor -maxdepth 1 -type f \( -name 'source_snapshot_*.json' -o -name 'ibkr_snapshot_*.json' \) | sort | tail -1)
+          if [ -n "${SNAPSHOT}" ]; then
+            echo "Using ${SNAPSHOT}"
+            python ta-monitor/run.py --snapshot "${SNAPSHOT}" --out ta-monitor/output
+            STATUS=$?
+          else
+            echo "No fresh source snapshot found; producing degraded report"
+            python ta-monitor/run.py --degraded --reason "No source snapshot found in repository" --out ta-monitor/output
+            STATUS=$?
           fi
-          echo "Using ${SNAPSHOT}"
-          python ta-monitor/run.py --snapshot "${SNAPSHOT}" --out ta-monitor/output
+          if [ "${STATUS}" -ne 0 ] || [ ! -s ta-monitor/output/latest.md ]; then
+            echo "Primary runner failed; forcing manual degraded output"
+            python ta-monitor/run.py --degraded --reason "Primary runner or output validation failed" --out ta-monitor/output
+          fi
+          test -s ta-monitor/output/latest.md
+          test -s ta-monitor/output/latest.json
           cat ta-monitor/output/latest.md
       - name: Commit report output
         shell: bash
@@ -46,5 +64,6 @@ jobs:
             echo "No output change"
           else
             git commit -m "Update fresh TA monitor output [skip ci]"
+            git pull --rebase origin main
             git push
           fi
