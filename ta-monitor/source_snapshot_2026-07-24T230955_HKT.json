@@ -1,0 +1,56 @@
+{
+  "as_of_hkt": "2026-07-24T23:09:55+08:00",
+  "as_of_et": "2026-07-24T11:09:55-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS",
+    "alpaca": "N/A — connector not available in this run after attempted discovery",
+    "binance": "N/A — connector not available in this run after attempted discovery"
+  },
+  "quotes": {
+    "FOTO": {
+      "authority": "IBKR",
+      "last": 19.55,
+      "mark": 19.449899673461914,
+      "bid": 19.45,
+      "ask": 19.50,
+      "volume": 78522.212487,
+      "change_pct": -4.91,
+      "open": 20.41,
+      "low": 19.33,
+      "high": 20.41,
+      "prior_close": 20.56,
+      "historical_vol_annual": 0.6402712881273688,
+      "iv_percentile_52w": 0.1515151560306549,
+      "is_close": false
+    },
+    "APH": {
+      "authority": "IBKR",
+      "last": 154.36,
+      "mark": 154.4250030517578,
+      "bid": 154.44,
+      "ask": 154.69,
+      "volume": 1732105.091669,
+      "change_pct": -1.95,
+      "open": 156.73,
+      "low": 153.50,
+      "high": 158.86,
+      "prior_close": 157.43,
+      "historical_vol_annual": 0.4851424223554564,
+      "iv_percentile_52w": 0.980079710483551,
+      "is_close": false
+    }
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+    "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa",
+    "completed_bar_status": "N/A — full 21-ticker completed-bar dataset unavailable",
+    "orders_created": false
+  }
+}
