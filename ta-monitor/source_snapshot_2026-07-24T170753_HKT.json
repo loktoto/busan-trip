@@ -1,0 +1,23 @@
+{
+  "as_of_hkt": "2026-07-24T17:07:53+08:00",
+  "as_of_et": "2026-07-24T05:07:53-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "IBKR": {"status": "PARTIAL SUCCESS", "purpose": "primary fresh equity quotes", "details": "HUT, IREN, ONDS, APH refreshed; remaining 17 not completed in this run"},
+    "Alpaca": {"status": "FAILED", "purpose": "equity parity and completed-bar fallback", "details": "connector unavailable in this run"},
+    "Binance": {"status": "FAILED", "purpose": "BTC/ETH miner context", "details": "connector unavailable in this run"},
+    "GitHub": {"status": "SUCCESS", "purpose": "policy/config/audit", "details": "partial source snapshot committed; old model output not treated as live"}
+  },
+  "quotes": {
+    "HUT": {"last": 116.0, "mark": 118.0, "bid": 117.52, "ask": 117.93, "volume": 3107.25, "change_pct": -1.42, "quality": "last-stale-vs-mark; use mark for level check"},
+    "IREN": {"last": 40.75, "mark": 40.75, "bid": 40.74, "ask": 40.79, "volume": 139907.689744, "change_pct": 0.42, "quality": "fresh"},
+    "ONDS": {"last": 7.95, "mark": 7.960000038146973, "bid": 7.95, "ask": 7.96, "volume": 83775.158635, "change_pct": 0.25, "quality": "fresh"},
+    "APH": {"last": 157.43, "mark": 157.42999267578125, "bid": 157.0, "ask": 159.59, "volume": 1015.6, "quality": "last flagged close; wide premarket spread"}
+  },
+  "calculation_metadata": {
+    "completed_bars_refreshed": false,
+    "ranking_recalculated": false,
+    "pass2_required": false,
+    "limitations": "No current full-universe completed-bar dataset; preserve 21-row degraded report and do not use prior output as live."
+  }
+}
