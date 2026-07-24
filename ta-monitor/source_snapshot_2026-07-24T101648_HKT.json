@@ -1,0 +1,86 @@
+{
+  "as_of_hkt": "2026-07-24T10:16:48+08:00",
+  "as_of_et": "2026-07-23T22:16:48-04:00",
+  "session": "OVERNIGHT",
+  "calculation_source": "IBKR overnight quotes + Alpaca delayed_sip quote parity + GitHub public OHLCV fallback + Binance cross-asset context",
+  "bar_limitations": "Alpaca SIP was unavailable; delayed_sip snapshots succeeded. Historical delayed_sip bars were rejected by the endpoint and the IEX batch returned incomplete symbol coverage, so GitHub engine public OHLCV is a labelled degraded bar fallback. Overnight quotes cannot confirm completed weekly/daily/1H/15m signals without the completed-bar engine pass.",
+  "source_status": {
+    "IBKR": {
+      "status": "SUCCESS",
+      "timestamp": "2026-07-24T10:16:00+08:00",
+      "latest_completed_bar": "2026-07-23 RTH",
+      "quality": "live/near-live overnight snapshots; ticker-level stale/wide flags retained",
+      "purpose": "Primary equity quote authority",
+      "impact": "21/21 contracts and snapshots succeeded; no endpoint retry required"
+    },
+    "Alpaca": {
+      "status": "RETRIED SUCCESS — SNAPSHOT / BARS DEGRADED",
+      "timestamp": "2026-07-23T23:59:59Z",
+      "latest_completed_bar": "2026-07-23 RTH",
+      "quality": "delayed_sip snapshot; SIP entitlement failed; historical delayed_sip rejected; IEX weekly batch incomplete",
+      "purpose": "Independent equity parity and fallback",
+      "impact": "Quote fallback/parity available; completed-bar confidence reduced"
+    },
+    "Binance": {
+      "status": "SUCCESS",
+      "timestamp": "2026-07-24T02:16:09Z",
+      "latest_completed_bar": "2026-07-24 02:00Z completed 1H",
+      "quality": "spot plus USD-M mark/funding and 1H klines",
+      "purpose": "BTC/ETH cross-asset context only",
+      "impact": "BTC weak/sideways recovery; ETH weaker; zero direct equity authority"
+    },
+    "GitHub": {
+      "status": "SUCCESS",
+      "timestamp": "2026-07-24T10:16:48+08:00",
+      "quality": "main branch production policy/config fetched",
+      "purpose": "Deterministic model and audit",
+      "impact": "Fresh snapshot committed to trigger engine"
+    }
+  },
+  "cross_asset": {
+    "BTCUSDT": {
+      "spot": 65160.0,
+      "change_24h_pct": -0.918,
+      "mark": 65132.2991087,
+      "funding": 0.00007106,
+      "completed_1h_direction": "RECOVERY_WITHIN_24H_DOWNTREND",
+      "comment": "Latest completed 1H rose from about 65056 to 65132, but 24h trend remains negative."
+    },
+    "ETHUSDT": {
+      "spot": 1876.76,
+      "change_24h_pct": -2.539,
+      "mark": 1875.77525662,
+      "funding": -0.00000249,
+      "completed_1h_direction": "WEAK_RECOVERY_WITHIN_DOWNTREND",
+      "comment": "ETH underperforms BTC and remains a cross-asset risk contradiction."
+    }
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close; post-event levels require recalculation"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "quotes": {
+    "HUT": {"price": 118.77, "mark": 118.7699966430664, "bid": 117.33, "ask": 119.0, "volume": 771.0, "change_pct": 0.93, "hv_daily": 0.07251, "iv52": 0.8007968068, "ts": 1784853944, "quality": "wide", "source": "IBKR"},
+    "IREN": {"price": 40.48, "mark": 40.4900016784668, "bid": 40.49, "ask": 40.55, "volume": 26431.0, "change_pct": -0.25, "hv_daily": 0.0645819, "iv52": 0.9203187227, "ts": 1784858944, "quality": "live", "source": "IBKR"},
+    "NBIS": {"price": 217.64, "mark": 217.63999938964844, "bid": 217.6, "ask": 218.45, "volume": 20417.0, "change_pct": -1.51, "hv_daily": 0.0812053, "iv52": 0.9920318723, "ts": 1784859000, "quality": "live", "source": "IBKR"},
+    "WULF": {"price": 20.06, "mark": 20.059999465942383, "bid": 19.91, "ask": 20.13, "volume": 1183.0, "change_pct": 0.05, "hv_daily": 0.0675004, "iv52": 0.8605577946, "ts": 1784855231, "quality": "wide", "source": "IBKR"},
+    "MARA": {"price": 12.78, "mark": 12.779999732971191, "bid": 12.78, "ask": 12.79, "volume": 8771.0, "change_pct": 0.08, "hv_daily": 0.0651292, "iv52": 0.9043824673, "ts": 1784858262, "quality": "live", "source": "IBKR"},
+    "APLD": {"price": 29.8, "mark": 29.799999237060547, "bid": 29.57, "ask": 29.81, "volume": 5654.0, "change_pct": -0.30, "hv_daily": 0.0681913, "iv52": 0.7529880404, "ts": 1784858472, "quality": "wide_event", "source": "IBKR"},
+    "ORCL": {"price": 122.18, "mark": 122.25, "bid": 122.25, "ask": 122.34, "volume": 35354.0, "change_pct": 1.78, "hv_daily": 0.0427576, "iv52": 0.8087649345, "ts": 1784858681, "quality": "stale_outside_nbbo", "source": "IBKR"},
+    "CRWV": {"price": 80.78, "mark": 80.77999877929688, "bid": 80.68, "ask": 80.96, "volume": 11638.0, "change_pct": -0.39, "hv_daily": 0.0580917, "iv52": 0.9163346887, "ts": 1784859090, "quality": "live", "source": "IBKR"},
+    "CRCL": {"price": 62.76, "mark": 62.849998474121094, "bid": 62.85, "ask": 62.92, "volume": 19833.0, "change_pct": 0.93, "hv_daily": 0.0555916, "iv52": 0.9282868505, "ts": 1784858898, "quality": "stale_outside_nbbo", "source": "IBKR"},
+    "RKLB": {"price": 69.77, "mark": 69.7699966430664, "bid": 69.7, "ask": 69.93, "volume": 31912.0, "change_pct": -0.31, "hv_daily": 0.0574741, "iv52": 0.8207171559, "ts": 1784858774, "quality": "live", "source": "IBKR"},
+    "AAOI": {"price": 111.98, "mark": 111.9800033569336, "bid": 111.7, "ask": 112.03, "volume": 15152.0, "change_pct": -0.04, "hv_daily": 0.0773742, "iv52": 0.8565737009, "ts": 1784858995, "quality": "live", "source": "IBKR"},
+    "ONDS": {"price": 7.94, "mark": 7.940000057220459, "bid": 7.94, "ask": 7.95, "volume": 30051.0, "change_pct": 0.13, "hv_daily": 0.0538539, "iv52": 0.3386454284, "ts": 1784859246, "quality": "live", "source": "IBKR"},
+    "AXTI": {"price": 52.7, "mark": 52.70000076293945, "bid": 52.66, "ask": 52.87, "volume": 2274.0, "change_pct": -0.43, "hv_daily": 0.0994731, "iv52": 0.9482071996, "ts": 1784858765, "quality": "live", "source": "IBKR"},
+    "MXL": {"price": 83.99, "mark": 83.94999694824219, "bid": 82.84, "ask": 83.95, "volume": 12369.0, "change_pct": -7.95, "hv_daily": 0.0851461, "iv52": 0.9282868505, "ts": 1784858302, "quality": "stale_outside_nbbo_wide_event", "source": "IBKR"},
+    "FOTO": {"price": 20.56, "mark": 20.68000030517578, "bid": 20.37, "ask": 20.68, "volume": 100.0, "change_pct": 0.0, "hv_daily": 0.0424687, "iv52": 0.25, "ts": 1784836801, "quality": "stale_wide", "source": "IBKR"},
+    "LITE": {"price": 823.44, "mark": 823.4400024414062, "bid": 822.86, "ask": 826.2, "volume": 2540.0, "change_pct": -1.22, "hv_daily": 0.0633619, "iv52": 0.9362549782, "ts": 1784859025, "quality": "live", "source": "IBKR"},
+    "COHR": {"price": 311.5, "mark": 311.5, "bid": 311.05, "ask": 312.15, "volume": 2818.0, "change_pct": -0.55, "hv_daily": 0.0682097, "iv52": 0.9880478382, "ts": 1784859002, "quality": "live", "source": "IBKR"},
+    "APH": {"price": 157.43, "mark": 157.5, "bid": 154.79, "ask": 161.56, "volume": 286.0, "change_pct": 0.0, "hv_daily": 0.0314545, "iv52": 1.0, "ts": 1784836796, "quality": "stale_wide", "source": "IBKR"},
+    "FN": {"price": 518.77, "mark": 517.72998046875, "bid": 479.07, "ask": 550.08, "volume": 0.0, "change_pct": 0.20, "hv_daily": 0.0485869, "iv52": 0.9960159659, "ts": 1784836790, "quality": "stale_extreme_spread", "source": "IBKR"},
+    "MU": {"price": 981.5, "mark": 981.5, "bid": 980.64, "ask": 981.54, "volume": 146309.0, "change_pct": -0.88, "hv_daily": 0.074318, "iv52": 0.8605577946, "ts": 1784859316, "quality": "live", "source": "IBKR"},
+    "SNDK": {"price": 1598.0, "mark": 1596.969970703125, "bid": 1594.8, "ask": 1596.97, "volume": 59601.0, "change_pct": -0.77, "hv_daily": 0.0833813, "iv52": 0.9641434550, "ts": 1784859270, "quality": "stale_outside_nbbo", "source": "IBKR"}
+  }
+}
