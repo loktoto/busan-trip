@@ -1,0 +1,32 @@
+{
+  "as_of_hkt": "2026-07-25T06:08:34+08:00",
+  "as_of_et": "2026-07-24T18:08:34-04:00",
+  "session": "US after-hours",
+  "source_status": {
+    "github": "success",
+    "ibkr": "partial success",
+    "alpaca": "unavailable in runtime after discovery attempt",
+    "binance": "unavailable in runtime after discovery attempt"
+  },
+  "quotes": {
+    "FOTO": {"source":"IBKR","last":19.51,"mark":19.5100002289,"bid":19.28,"ask":19.52,"change_pct":-5.11,"prior_close":20.56,"open":20.41,"low":19.09,"high":20.41,"volume":185544.103778,"historical_vol_annual":0.6402712881,"iv_percentile_52w":0.1515151560},
+    "APH": {"source":"IBKR","last":152.66,"mark":152.8540954590,"bid":152.67,"ask":153.40,"change_pct":-3.03,"prior_close":157.43,"open":156.73,"low":151.29,"high":158.86,"volume":5604584.914021,"historical_vol_annual":0.4851424224,"iv_percentile_52w":0.9760956168},
+    "ONDS": {"source":"IBKR","last":7.835,"mark":7.8350000381,"bid":7.83,"ask":7.84,"change_pct":-1.2,"prior_close":7.93,"open":7.95,"low":7.48,"high":8.18,"volume":101081527.558245,"historical_vol_annual":0.8274603100,"iv_percentile_52w":0.3466135561}
+  },
+  "events": {
+    "MXL": {"date":"2026-07-23","label":"Q2 2026 results after close"},
+    "APLD": {"date":"2026-07-27","label":"FY2026 Q4/full-year results after close"},
+    "SNDK": {"date":"2026-08-05","label":"FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity":120,"average_price":20.13212167,"market_price":19.51000025,"unrealized_pnl":-74.65457},
+    "SOXX": {"quantity":13,"average_price":528.75752308,"market_price":528.7000122,"unrealized_pnl":-0.7476414}
+  },
+  "calculation_metadata": {
+    "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+    "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa",
+    "completed_bar_model": "unavailable for full universe",
+    "pass2_required": false,
+    "notes": "No raw score >=7 established. No orders or credentials included."
+  }
+}
