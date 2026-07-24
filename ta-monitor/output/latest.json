@@ -1,43 +1,43 @@
 {
-  "as_of_hkt": "2026-07-24T17:07:53+08:00",
-  "as_of_et": "2026-07-24T05:07:53-04:00",
+  "as_of_hkt": "2026-07-24T20:09:23+08:00",
+  "as_of_et": "2026-07-24T08:09:23-04:00",
   "session": "PREMARKET",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
       "status": "PARTIAL SUCCESS",
-      "timestamp": null,
+      "timestamp": "2026-07-24T20:09:23+08:00",
       "quality": "N/A",
       "purpose": "primary fresh equity quotes",
       "impact": "Source not supplied by collector",
-      "details": "HUT, IREN, ONDS, APH refreshed; remaining 17 not completed in this run"
+      "confidence_impact": "Only HUT, AAOI and ONDS refreshed"
     },
     "Alpaca": {
       "status": "FAILED",
-      "timestamp": null,
+      "timestamp": "2026-07-24T20:09:23+08:00",
       "quality": "N/A",
       "purpose": "equity parity and completed-bar fallback",
       "impact": "Source not supplied by collector",
-      "details": "connector unavailable in this run"
+      "confidence_impact": "No accessible Alpaca tool in this run"
     },
     "Binance": {
       "status": "FAILED",
-      "timestamp": null,
+      "timestamp": "2026-07-24T20:09:23+08:00",
       "quality": "N/A",
       "purpose": "BTC/ETH miner context",
       "impact": "Source not supplied by collector",
-      "details": "connector unavailable in this run"
+      "confidence_impact": "No reliable fresh Binance data obtained"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-24T17:10:02.778525+08:00",
+      "timestamp": "2026-07-24T20:09:23+08:00",
       "quality": "policy/engine only",
       "purpose": "policy/config/audit",
       "impact": "Fresh market calculation unavailable",
-      "details": "partial source snapshot committed; old model output not treated as live"
+      "confidence_impact": "Fresh snapshot committed; market calculation remains degraded"
     }
   },
-  "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
+  "bar_limitations": "Engine failure after source collection: KeyError: 'IREN'",
   "quote_adjustments": [],
   "photonics_1h_up": null,
   "miners_1h_up": null,
@@ -57,7 +57,7 @@
       "daily": "DATA GAP",
       "hourly": "DATA GAP",
       "state": "NO SETUP",
-      "price": null,
+      "price": 118.5199966430664,
       "trigger": null,
       "tactical": null,
       "structural": null,
@@ -68,7 +68,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -91,7 +91,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -114,7 +114,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -137,7 +137,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -160,7 +160,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -183,7 +183,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -206,7 +206,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -229,7 +229,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -252,7 +252,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -275,7 +275,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -287,7 +287,7 @@
       "daily": "DATA GAP",
       "hourly": "DATA GAP",
       "state": "NO SETUP",
-      "price": null,
+      "price": 112.38999938964844,
       "trigger": null,
       "tactical": null,
       "structural": null,
@@ -298,7 +298,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -310,7 +310,7 @@
       "daily": "DATA GAP",
       "hourly": "DATA GAP",
       "state": "NO SETUP",
-      "price": null,
+      "price": 7.980000019073486,
       "trigger": null,
       "tactical": null,
       "structural": null,
@@ -321,7 +321,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -344,7 +344,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -367,7 +367,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -390,7 +390,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -413,7 +413,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -436,7 +436,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -459,7 +459,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -482,7 +482,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -505,7 +505,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     },
     {
@@ -528,11 +528,11 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'IREN'"
       ]
     }
   ],
   "failed_modules": [
-    "Engine failure after source collection: KeyError: 'price'"
+    "Engine failure after source collection: KeyError: 'IREN'"
   ]
 }
