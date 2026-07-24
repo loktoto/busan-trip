@@ -1,7 +1,7 @@
 {
-  "as_of_hkt": "2026-07-25T04:06:27+08:00",
-  "as_of_et": "2026-07-24T16:06:27-04:00",
-  "session": "AFTER_HOURS",
+  "as_of_hkt": "2026-07-25T05:06:59+08:00",
+  "as_of_et": "2026-07-24T17:06:59-04:00",
+  "session": "US_AFTER_HOURS",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
@@ -10,7 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "fresh_quotes": [
+      "quotes": [
         "HUT",
         "AAOI",
         "ONDS",
@@ -18,27 +18,27 @@
         "APH",
         "SOXX"
       ],
-      "positions_checked": true
+      "positions": "SUCCESS"
     },
     "Alpaca": {
-      "status": "N/A",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "reason": "Connector unavailable in this runtime after attempted discovery"
+      "reason": "connector namespace unavailable in runtime after explicit discovery attempt"
     },
     "Binance": {
-      "status": "N/A",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "reason": "Connector unavailable in this runtime after attempted discovery"
+      "reason": "connector namespace unavailable in runtime after explicit discovery attempt"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-25T04:08:11.666255+08:00",
+      "timestamp": "2026-07-25T05:08:49.064199+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
