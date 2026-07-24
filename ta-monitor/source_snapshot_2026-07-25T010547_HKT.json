@@ -1,0 +1,28 @@
+{
+  "as_of_hkt": "2026-07-25T01:05:47+08:00",
+  "as_of_et": "2026-07-24T13:05:47-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "IBKR": {"status": "PARTIAL_SUCCESS", "details": "Fresh snapshots obtained for FOTO and APH; account positions checked for SL/TP management. Bulk contract query returned no results; remaining tickers unavailable in bounded run."},
+    "Alpaca": {"status": "FAILED", "details": "Connector namespace unavailable after explicit discovery attempt."},
+    "Binance": {"status": "FAILED", "details": "Connector namespace unavailable after explicit discovery attempt."},
+    "GitHub": {"status": "SUCCESS", "details": "production_policy.md and config.py fetched from main; audit snapshot committed."}
+  },
+  "quotes": {
+    "FOTO": {"source": "IBKR", "last": 19.52, "mark": 19.5400009155, "bid": 19.51, "ask": 19.56, "volume": 115600.475479, "change": -1.04, "change_pct": -5.06, "open": 20.41, "high": 20.41, "low": 19.33, "historical_vol_annual": 0.6402712881, "iv_percentile_52w": 0.1515151560, "is_close": false},
+    "APH": {"source": "IBKR", "last": 154.33, "mark": 154.3950042725, "bid": 154.45, "ask": 154.64, "volume": 2507061.757476, "change": -3.10, "change_pct": -1.97, "open": 156.73, "high": 158.86, "low": 153.50, "historical_vol_annual": 0.4851424224, "iv_percentile_52w": 0.9840637445, "is_close": false}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "mode": "DATA_DEGRADED",
+    "completed_bar_calculation": "Unavailable for full universe in this run",
+    "pass2": "Not applicable; no reliable raw score >= 7.0",
+    "licensed_raw_history_committed": false,
+    "orders_or_credentials_committed": false,
+    "private_account_data_committed": false
+  }
+}
