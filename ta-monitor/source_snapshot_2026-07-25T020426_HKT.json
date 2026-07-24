@@ -1,0 +1,22 @@
+{
+  "as_of_hkt": "2026-07-25T02:04:26+08:00",
+  "as_of_et": "2026-07-24T14:04:26-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "IBKR": {"status": "PARTIAL_SUCCESS", "fresh_tickers": ["FOTO", "APH"], "notes": "Exact US contracts and fresh RTH snapshots obtained; remaining universe not completed within bounded run."},
+    "Alpaca": {"status": "FAILED", "notes": "Connector unavailable in this runtime after explicit discovery attempt."},
+    "Binance": {"status": "FAILED", "notes": "Connector unavailable in this runtime after explicit discovery attempt."},
+    "GitHub": {"status": "SUCCESS", "notes": "Production policy and config fetched; fresh audit snapshot committed."}
+  },
+  "quotes": {
+    "FOTO": {"authority": "IBKR", "last": 19.53, "mark": 19.50, "bid": 19.48, "ask": 19.52, "volume": 126575.184443, "change": -1.03, "change_pct": -5.01, "prior_close": 20.56, "open": 20.41, "low": 19.33, "high": 20.41, "historical_vol_annual": 0.6402712881, "iv_percentile_52w": 0.0606060624, "is_close": false},
+    "APH": {"authority": "IBKR", "last": 154.75, "mark": 154.7899932861, "bid": 154.72, "ask": 154.85, "volume": 2946590.226808, "change": -2.68, "change_pct": -1.70, "prior_close": 157.43, "open": 156.73, "low": 153.50, "high": 158.86, "historical_vol_annual": 0.4851424224, "iv_percentile_52w": 0.9840637445, "is_close": false}
+  },
+  "events": {"MXL": {"date": "2026-07-23"}, "APLD": {"date": "2026-07-27"}, "SNDK": {"date": "2026-08-05"}},
+  "calculation_metadata": {
+    "mode": "MANUAL_DEGRADED",
+    "completed_bar_calculation": "unavailable for full universe",
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
