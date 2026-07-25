@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-25T10:06:39+08:00",
-  "as_of_et": "2026-07-24T22:06:39-04:00",
+  "as_of_hkt": "2026-07-25T11:06:12+08:00",
+  "as_of_et": "2026-07-24T23:06:12-04:00",
   "session": "US_CLOSED",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -19,7 +19,8 @@
         "SOXX"
       ],
       "positions": "SUCCESS",
-      "note": "Market closed; values are last trade/mark, not executable live quotes."
+      "retry": "Key exact US contracts resolved and snapshots retried successfully",
+      "note": "US market closed; values are final trade/mark, not executable live quotes."
     },
     "Alpaca": {
       "status": "FAILED",
@@ -27,7 +28,7 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "retry": "Connector not available in runtime after discovery attempt"
+      "retry": "Connector discovery attempted; no Alpaca functions available in runtime"
     },
     "Binance": {
       "status": "FAILED",
@@ -35,11 +36,11 @@
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "retry": "Connector not available in runtime after discovery attempt"
+      "retry": "Connector discovery attempted; no Binance functions available in runtime"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-25T10:08:14.053485+08:00",
+      "timestamp": "2026-07-25T11:08:54.183699+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
