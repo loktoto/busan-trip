@@ -1,52 +1,43 @@
 {
-  "as_of_hkt": "2026-07-25T07:10:42+08:00",
-  "as_of_et": "2026-07-24T19:10:42-04:00",
-  "session": "US after-hours",
+  "as_of_hkt": "2026-07-25T08:16:53+08:00",
+  "as_of_et": "2026-07-24T20:16:53-04:00",
+  "session": "US CLOSED — after-hours ended",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "partial_success",
+      "status": "PARTIAL SUCCESS",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "fresh_symbols": [
-        "HUT",
-        "AAOI",
-        "ONDS",
-        "FOTO",
-        "APH",
-        "SOXX"
-      ],
-      "positions_checked": true
+      "detail": "fresh/last snapshots obtained for FOTO, APH, AAOI, ONDS; positions obtained; remaining universe not completed within bounded run"
     },
     "Alpaca": {
-      "status": "failed",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "reason": "connector namespace unavailable in this runtime after discovery attempt"
+      "detail": "connector not available in this runtime after discovery attempt"
     },
     "Binance": {
-      "status": "failed",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "reason": "connector unavailable in this runtime after discovery attempt"
+      "detail": "connector not available in this runtime after discovery attempt"
     },
     "GitHub": {
-      "status": "success",
-      "timestamp": "2026-07-25T07:13:33.617755+08:00",
+      "status": "SUCCESS",
+      "timestamp": "2026-07-25T08:18:26.043728+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
-      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
-      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
+      "detail": "production_policy.md and config.py fetched from main"
     }
   },
-  "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
+  "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
   "quote_adjustments": [],
   "photonics_1h_up": null,
   "miners_1h_up": null,
@@ -77,7 +68,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -100,7 +91,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -123,7 +114,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -146,7 +137,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -169,7 +160,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -192,7 +183,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -215,7 +206,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -238,7 +229,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -261,7 +252,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -284,7 +275,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -307,7 +298,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -330,7 +321,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -353,7 +344,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -376,7 +367,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -399,7 +390,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -422,7 +413,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -445,7 +436,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -468,7 +459,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -491,7 +482,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -514,7 +505,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     },
     {
@@ -537,11 +528,11 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'price'"
+        "Engine failure after source collection: KeyError: 'HUT'"
       ]
     }
   ],
   "failed_modules": [
-    "Engine failure after source collection: KeyError: 'price'"
+    "Engine failure after source collection: KeyError: 'HUT'"
   ]
 }
