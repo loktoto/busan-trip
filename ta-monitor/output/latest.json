@@ -1,43 +1,46 @@
 {
-  "as_of_hkt": "2026-07-26T03:06:12+08:00",
-  "as_of_et": "2026-07-25T15:06:12-04:00",
+  "as_of_hkt": "2026-07-26T04:03:47+08:00",
+  "as_of_et": "2026-07-25T16:03:47-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "partial",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Weekend official closes and marks only for HUT, FOTO and SOXX; no full-universe bars",
-      "attempts": [
-        "bulk contract query returned empty",
-        "HUT exact retry succeeded"
-      ]
+      "impact": "Source not supplied by collector",
+      "bulk_contract_query": "failed_empty",
+      "retry": "HUT_exact_success",
+      "quotes_obtained": [
+        "HUT",
+        "ONDS",
+        "FOTO",
+        "SOXX"
+      ],
+      "market_open": false
     },
     "Alpaca": {
-      "status": "UNAVAILABLE",
+      "status": "failed",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "No market clock, bulk snapshot or uniform completed bars",
-      "attempts": [
-        "connector discovery"
-      ]
+      "impact": "Source not supplied by collector",
+      "clock": "unauthorized_or_unavailable",
+      "snapshots": "not_obtained",
+      "bars": "not_obtained"
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "failed",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "HTTP/safety restriction; no reliable BTC/ETH funding, OI or 1H context",
-      "attempts": [
-        "official endpoint fetch attempt"
-      ]
+      "impact": "Source not supplied by collector",
+      "reason": "official endpoint returned HTTP 451 / access unavailable"
     },
     "GitHub": {
-      "status": "SUCCESS",
-      "timestamp": "2026-07-26T03:07:27.019682+08:00",
+      "status": "success",
+      "timestamp": "2026-07-26T04:05:19.069880+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
