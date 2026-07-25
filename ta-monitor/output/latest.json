@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T05:05:11+08:00",
-  "as_of_et": "2026-07-25T17:05:11-04:00",
+  "as_of_hkt": "2026-07-26T06:08:50+08:00",
+  "as_of_et": "2026-07-25T18:08:50-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -10,7 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "detail": "Fresh closed-session snapshots obtained for HUT, ONDS, FOTO and SOXX; last fields are official closes and were not treated as live. Full 21-symbol completed-bar collection unavailable in this run. Account positions were checked only for SL/TP management and are not included in this audit file."
+      "details": "Positions succeeded. Bulk 22-symbol contract searches returned empty twice. Exact HUT contract resolution and HUT/FOTO/SOXX snapshots succeeded; official-close fields were not treated as live. Full uniform completed bars unavailable."
     },
     "Alpaca": {
       "status": "failed",
@@ -18,7 +18,7 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "detail": "No Alpaca market-data connector was available in the runtime, so clock, SIP/delayed_sip/IEX snapshots and completed bars could not be collected."
+      "details": "No callable Alpaca connector was available in this runtime; clock, SIP/delayed_sip/IEX snapshots and uniform bars unavailable."
     },
     "Binance": {
       "status": "failed",
@@ -26,15 +26,15 @@
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "detail": "Official public endpoint attempt returned HTTP 451; no reliable BTC/ETH 1H, funding, open-interest or liquidity data obtained."
+      "details": "No callable Binance connector was available in this runtime; BTC/ETH trend, funding, open interest and liquidity unavailable."
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T05:06:50.323124+08:00",
+      "timestamp": "2026-07-26T06:10:16.364714+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
-      "detail": "production_policy.md and config.py fetched from main; audit snapshot committed."
+      "details": "production_policy.md and config.py fetched from main; audit snapshot committed."
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
