@@ -1,6 +1,6 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-26T01:04:49+08:00 / 2026-07-25T13:04:49-04:00**
+- As of: **2026-07-26T02:05:22+08:00 / 2026-07-25T14:05:22-04:00**
 - Session: **US_CLOSED_WEEKEND**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
@@ -11,10 +11,10 @@
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|partial_success|N/A|N/A|Primary equity quote/bar authority|Weekend official closes and marks only; no full-universe uniform bars|
-|Alpaca|unavailable|N/A|N/A|US-equity parity/fallback|No fallback clock, snapshots or uniform bars|
-|Binance|unavailable|N/A|N/A|Crypto/miner context only|No BTC/ETH 1H, funding, open interest or liquidity context|
-|GitHub|success|2026-07-26T01:06:29.410970+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|Alpaca|UNAVAILABLE_AFTER_ATTEMPT|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|UNAVAILABLE_AFTER_ATTEMPT|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-26T02:06:55.894815+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
