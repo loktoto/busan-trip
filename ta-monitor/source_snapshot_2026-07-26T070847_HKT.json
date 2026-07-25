@@ -1,0 +1,34 @@
+{
+  "as_of_hkt": "2026-07-26T07:08:47+08:00",
+  "as_of_et": "2026-07-25T19:08:47-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "unavailable", "attempts": ["market_clock", "bulk_snapshot_sip", "bulk_snapshot_delayed_sip", "bulk_snapshot_iex", "weekly_daily_1h_15m_bars"], "reason": "No Alpaca runtime connector available"},
+    "ibkr": {"status": "partial_success", "bulk_contract_search_attempts": 2, "bulk_contract_search_result": "empty", "exact_contracts": ["HUT", "ONDS", "AAOI", "APH", "FOTO", "SOXX"], "positions": "success"},
+    "binance": {"status": "unavailable", "attempts": ["BTCUSDT_1H", "ETHUSDT_1H", "funding", "open_interest", "liquidity"], "reason": "No Binance runtime connector available"}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "last": 117.67, "last_is_close": true, "plprice": 110.22000122070312, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "ONDS": {"source": "IBKR", "last": 7.93, "last_is_close": true, "plprice": 7.8302998542785645, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3466135561466217},
+    "AAOI": {"source": "IBKR", "last": 112.02, "last_is_close": true, "plprice": 99.30000305175781, "historical_vol_annual": 1.1770995206449963, "iv_percentile_52w": 0.8486055731773376},
+    "APH": {"source": "IBKR", "last": 157.43, "last_is_close": true, "plprice": 152.6699981689453, "historical_vol_annual": 0.4728460285621526, "iv_percentile_52w": 0.9760956168174744},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "plprice": 19.209999084472656, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_close": true, "plprice": 526.1300048828125, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_bars": {"weekly": "unavailable", "daily": "unavailable", "one_hour": "unavailable", "fifteen_minute": "unavailable"},
+    "scores": "withheld",
+    "pass_2": "not_applicable_no_reliable_raw_score_ge_7",
+    "official_close_not_treated_as_live": true
+  }
+}
