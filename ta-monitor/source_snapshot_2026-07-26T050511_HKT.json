@@ -1,0 +1,73 @@
+{
+  "as_of_hkt": "2026-07-26T05:05:11+08:00",
+  "as_of_et": "2026-07-25T17:05:11-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "ibkr": {
+      "status": "partial",
+      "detail": "Fresh closed-session snapshots obtained for HUT, ONDS, FOTO and SOXX; last fields are official closes and were not treated as live. Full 21-symbol completed-bar collection unavailable in this run. Account positions were checked only for SL/TP management and are not included in this audit file."
+    },
+    "alpaca": {
+      "status": "failed",
+      "detail": "No Alpaca market-data connector was available in the runtime, so clock, SIP/delayed_sip/IEX snapshots and completed bars could not be collected."
+    },
+    "binance": {
+      "status": "failed",
+      "detail": "Official public endpoint attempt returned HTTP 451; no reliable BTC/ETH 1H, funding, open-interest or liquidity data obtained."
+    },
+    "github": {
+      "status": "success",
+      "detail": "production_policy.md and config.py fetched from main; audit snapshot committed."
+    }
+  },
+  "quotes": {
+    "HUT": {
+      "source": "IBKR",
+      "last": 117.67,
+      "last_is_official_close": true,
+      "mark": 110.22000122070312,
+      "volume": 0.0,
+      "historical_vol_annual": 1.1122061199379907,
+      "iv_percentile_52w": 0.8326693177223206
+    },
+    "ONDS": {
+      "source": "IBKR",
+      "last": 7.93,
+      "last_is_official_close": true,
+      "mark": 7.8302998542785645,
+      "prior_close": 7.93,
+      "volume": 0.0,
+      "historical_vol_annual": 0.8374453754341952,
+      "iv_percentile_52w": 0.3466135561466217
+    },
+    "FOTO": {
+      "source": "IBKR",
+      "last": 20.56,
+      "last_is_official_close": true,
+      "mark": 19.209999084472656,
+      "volume": 0.0,
+      "historical_vol_annual": 0.6359296102259118,
+      "iv_percentile_52w": 0.1515151560306549
+    },
+    "SOXX": {
+      "source": "IBKR",
+      "last": 551.24,
+      "last_is_official_close": true,
+      "mark": 526.1300048828125,
+      "volume": 0.0,
+      "historical_vol_annual": 0.6910633634966623,
+      "iv_percentile_52w": 1.0
+    }
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+    "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa",
+    "completed_bar_governance": "Current week/day/hour/15m excluded; no uniform 21-symbol completed-bar dataset was available, so fixed scores and PASS 2 were withheld.",
+    "report_mode": "MANUAL_DATA_DEGRADED"
+  }
+}
