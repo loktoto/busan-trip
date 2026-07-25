@@ -1,0 +1,53 @@
+{
+  "as_of_hkt": "2026-07-25T12:04:52+08:00",
+  "as_of_et": "2026-07-25T00:04:52-04:00",
+  "session": "US_CLOSED",
+  "source_status": {
+    "github": {"status": "SUCCESS", "detail": "production_policy.md and config.py fetched from main"},
+    "alpaca": {"status": "FAILED_AFTER_ATTEMPT", "detail": "No installed/runtime Alpaca connector found; SIP, delayed_sip and IEX collection unavailable"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "detail": "Positions, FOTO snapshot and SOXX snapshot succeeded; search_contracts failed twice, preventing remaining contract resolution"},
+    "binance": {"status": "FAILED_AFTER_ATTEMPT", "detail": "No installed/runtime Binance connector found; BTC/ETH 1H, funding and OI unavailable"}
+  },
+  "quotes": {
+    "FOTO": {
+      "authority": "IBKR",
+      "last": 20.56,
+      "last_is_official_close": true,
+      "mark": 19.209999084472656,
+      "prior_close": 20.56,
+      "volume": 0.0,
+      "historical_vol_annual": 0.6402712881273688,
+      "iv_percentile_52w": 0.1515151560306549,
+      "note": "Market closed; official close must not be treated as live. Mark retained only for account risk context."
+    },
+    "SOXX": {
+      "authority": "IBKR",
+      "last": 527.2,
+      "mark": 526.1300048828125,
+      "prior_close": 551.24,
+      "change": -24.04,
+      "change_pct": -4.36,
+      "open": 543.49,
+      "historical_vol_annual": 0.6976163603439071,
+      "iv_percentile_52w": 1.0,
+      "note": "Market closed; quote is last recorded trade, not a currently executable live quote."
+    }
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_weekly": "N/A",
+    "completed_daily": "N/A",
+    "completed_1h": "N/A",
+    "completed_15m": "N/A",
+    "scoring": "WITHHELD — no internally consistent full-universe completed-bar dataset",
+    "pass2": "NOT_APPLICABLE — no reliable raw score >= 7.0"
+  }
+}
