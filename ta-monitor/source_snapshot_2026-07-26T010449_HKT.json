@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-26T01:04:49+08:00",
+  "as_of_et": "2026-07-25T13:04:49-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "unavailable", "retries": ["SIP unavailable", "delayed_sip unavailable", "IEX unavailable"], "impact": "No fallback clock, snapshots or uniform bars"},
+    "ibkr": {"status": "partial_success", "bulk_search_attempts": 2, "bulk_search_result": "empty", "individual_contracts": ["ONDS", "HUT", "FOTO", "SOXX"], "impact": "Weekend official closes and marks only; no full-universe uniform bars"},
+    "binance": {"status": "unavailable", "impact": "No BTC/ETH 1H, funding, open interest or liquidity context"}
+  },
+  "quotes": {
+    "ONDS": {"source": "IBKR", "last": 7.93, "last_is_close": true, "mark": 7.8302998543, "volume": 0, "historical_vol_annual": 0.8374453754, "iv_percentile_52w": 0.3466135561},
+    "HUT": {"source": "IBKR", "last": 117.67, "last_is_close": true, "mark": 110.2200012207, "volume": 0, "historical_vol_annual": 1.1122061199, "iv_percentile_52w": 0.8326693177},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "mark": 19.2099990845, "volume": 0, "historical_vol_annual": 0.6359296102, "iv_percentile_52w": 0.1515151560},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_close": true, "mark": 526.1300048828, "volume": 0, "historical_vol_annual": 0.6910633635, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "full_universe_score": "withheld",
+    "pass_2": "not_applicable_no_reliable_raw_score_ge_7",
+    "completed_weekly": "unavailable",
+    "completed_daily": "unavailable",
+    "completed_1h": "unavailable",
+    "completed_15m": "unavailable",
+    "notes": ["Official closes are not treated as live", "No stale prices used for unrefreshed tickers", "All 21 rows must remain in degraded report"]
+  }
+}
