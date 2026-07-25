@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-25T11:06:12+08:00",
+  "as_of_et": "2026-07-24T23:06:12-04:00",
+  "session": "US_CLOSED",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "quotes": ["HUT", "AAOI", "ONDS", "FOTO", "APH", "SOXX"], "positions": "SUCCESS", "retry": "Key exact US contracts resolved and snapshots retried successfully", "note": "US market closed; values are final trade/mark, not executable live quotes."},
+    "alpaca": {"status": "FAILED", "retry": "Connector discovery attempted; no Alpaca functions available in runtime"},
+    "binance": {"status": "FAILED", "retry": "Connector discovery attempted; no Binance functions available in runtime"}
+  },
+  "quotes": {
+    "HUT": {"last": 110.0, "mark": 110.22000122070312, "prior_close": 117.67, "change_pct": -6.52, "high": 117.98, "low": 109.0, "open": 116.26, "volume": 3680068.296874, "historical_vol_annual": 1.1262502970473838, "iv_percentile_52w": 0.8326693177223206, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"},
+    "AAOI": {"last": 99.28, "mark": 99.30000305175781, "prior_close": 112.02, "change_pct": -11.37, "high": 109.71, "low": 99.48, "open": 108.77, "volume": 7103669.873768, "historical_vol_annual": 1.1942265271820418, "iv_percentile_52w": 0.8486055731773376, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"},
+    "ONDS": {"last": 7.83, "mark": 7.8302998542785645, "prior_close": 7.93, "change_pct": -1.26, "high": 8.18, "low": 7.48, "open": 7.95, "volume": 101183896.515327, "historical_vol_annual": 0.8274603099862374, "iv_percentile_52w": 0.3466135561466217, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"},
+    "FOTO": {"last": 19.27, "mark": 19.209999084472656, "prior_close": 20.56, "change_pct": -6.27, "high": 20.41, "low": 19.09, "open": 20.41, "volume": 187195.175568, "historical_vol_annual": 0.6402712881273688, "iv_percentile_52w": 0.1515151560306549, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"},
+    "APH": {"last": 152.66, "mark": 152.6699981689453, "prior_close": 157.43, "change_pct": -3.03, "high": 158.86, "low": 151.29, "open": 156.73, "volume": 5606118.094766, "historical_vol_annual": 0.4851424223554564, "iv_percentile_52w": 0.9760956168174744, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"},
+    "SOXX": {"last": 527.2, "mark": 526.1300048828125, "prior_close": 551.24, "change_pct": -4.36, "high": 548.0, "low": 522.21, "open": 543.49, "volume": 10952032.513639, "historical_vol_annual": 0.6976163603439071, "iv_percentile_52w": 1.0, "authority": "IBKR", "quote_status": "MARKET_CLOSED_LAST_MARK"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "full_completed_bar_model": "UNAVAILABLE",
+    "pass2_candidates": [],
+    "entry_authority": "WITHHELD",
+    "completed_bar_note": "No uniform 21-ticker weekly/daily/1H/15m dataset available in this run.",
+    "note": "No stale output used as fresh market data. No orders created or transmitted."
+  }
+}
