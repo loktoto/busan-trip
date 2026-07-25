@@ -1,0 +1,29 @@
+{
+  "as_of_hkt": "2026-07-25T13:08:20+08:00",
+  "as_of_et": "2026-07-25T01:08:20-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "ibkr": {"status": "PARTIAL", "positions": "SUCCESS", "bulk_contract_resolution": "FAILED_AFTER_RETRY", "foto_snapshot": "OFFICIAL_CLOSE_ONLY", "soxx_snapshot": "NO_RELIABLE_QUOTE_FIELDS"},
+    "alpaca": {"status": "UNAVAILABLE_AFTER_DISCOVERY", "feed": null},
+    "binance": {"status": "UNAVAILABLE_AFTER_DISCOVERY"}
+  },
+  "quotes": {
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "prior_close": 20.56, "position_mark": 19.2099991, "quote_status": "NO_LIVE_BID_ASK"},
+    "SOXX": {"source": "IBKR", "position_mark": 526.1300049, "quote_status": "NO_RELIABLE_SNAPSHOT_FIELDS"}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_weekly": "UNAVAILABLE",
+    "completed_daily": "UNAVAILABLE",
+    "completed_1h": "UNAVAILABLE",
+    "completed_15m": "UNAVAILABLE",
+    "fixed_score": "WITHHELD",
+    "pass2": "NOT_APPLICABLE",
+    "reason": "Weekend closed session; Alpaca and Binance connectors unavailable; IBKR contract resolution failed after retry. No stale data promoted to live."
+  }
+}
