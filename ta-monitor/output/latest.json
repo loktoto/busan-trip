@@ -1,16 +1,16 @@
 {
-  "as_of_hkt": "2026-07-25T14:14:42+08:00",
-  "as_of_et": "2026-07-25T02:14:42-04:00",
+  "as_of_hkt": "2026-07-25T15:09:10+08:00",
+  "as_of_et": "2026-07-25T03:09:10-04:00",
   "session": "US_CLOSED_SATURDAY",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
       "status": "PARTIAL_SUCCESS",
       "timestamp": null,
-      "quality": "N/A",
+      "quality": "official-close and account-mark only; no live bid/ask while closed",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "note": "Resolved and refreshed HUT, AAOI, ONDS, FOTO, APH and SOXX. Market closed; last fields are official close. Full-universe bulk query failed and was retried once."
+      "retry": "bulk search returned empty; retry with HUT exact query succeeded"
     },
     "Alpaca": {
       "status": "UNAVAILABLE_AFTER_ATTEMPT",
@@ -18,7 +18,7 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "note": "No Alpaca connector functions available in this runtime."
+      "retry": "plugin discovery returned no Alpaca connector"
     },
     "Binance": {
       "status": "UNAVAILABLE_AFTER_ATTEMPT",
@@ -26,11 +26,11 @@
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "note": "No Binance connector functions available in this runtime."
+      "retry": "plugin discovery returned no Binance connector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-25T14:17:50.914789+08:00",
+      "timestamp": "2026-07-25T15:11:05.960095+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
