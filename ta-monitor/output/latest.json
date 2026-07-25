@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T00:06:21+08:00",
-  "as_of_et": "2026-07-25T12:06:21-04:00",
+  "as_of_hkt": "2026-07-26T01:04:49+08:00",
+  "as_of_et": "2026-07-25T13:04:49-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -9,28 +9,38 @@
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "detail": "Positions plus HUT, ONDS, FOTO and SOXX snapshots"
+      "impact": "Weekend official closes and marks only; no full-universe uniform bars",
+      "bulk_search_attempts": 2,
+      "bulk_search_result": "empty",
+      "individual_contracts": [
+        "ONDS",
+        "HUT",
+        "FOTO",
+        "SOXX"
+      ]
     },
     "Alpaca": {
-      "status": "unavailable_after_attempt",
+      "status": "unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "detail": "No installed/runtime Alpaca connector found"
+      "impact": "No fallback clock, snapshots or uniform bars",
+      "retries": [
+        "SIP unavailable",
+        "delayed_sip unavailable",
+        "IEX unavailable"
+      ]
     },
     "Binance": {
-      "status": "unavailable_after_attempt",
+      "status": "unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "detail": "No installed/runtime Binance connector found"
+      "impact": "No BTC/ETH 1H, funding, open interest or liquidity context"
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T00:08:02.420844+08:00",
+      "timestamp": "2026-07-26T01:06:29.410970+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
