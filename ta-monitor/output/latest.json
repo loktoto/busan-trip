@@ -1,40 +1,65 @@
 {
-  "as_of_hkt": "2026-07-26T06:08:50+08:00",
-  "as_of_et": "2026-07-25T18:08:50-04:00",
+  "as_of_hkt": "2026-07-26T07:08:47+08:00",
+  "as_of_et": "2026-07-25T19:08:47-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "partial",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "details": "Positions succeeded. Bulk 22-symbol contract searches returned empty twice. Exact HUT contract resolution and HUT/FOTO/SOXX snapshots succeeded; official-close fields were not treated as live. Full uniform completed bars unavailable."
+      "bulk_contract_search_attempts": 2,
+      "bulk_contract_search_result": "empty",
+      "exact_contracts": [
+        "HUT",
+        "ONDS",
+        "AAOI",
+        "APH",
+        "FOTO",
+        "SOXX"
+      ],
+      "positions": "success"
     },
     "Alpaca": {
-      "status": "failed",
+      "status": "unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "details": "No callable Alpaca connector was available in this runtime; clock, SIP/delayed_sip/IEX snapshots and uniform bars unavailable."
+      "attempts": [
+        "market_clock",
+        "bulk_snapshot_sip",
+        "bulk_snapshot_delayed_sip",
+        "bulk_snapshot_iex",
+        "weekly_daily_1h_15m_bars"
+      ],
+      "reason": "No Alpaca runtime connector available"
     },
     "Binance": {
-      "status": "failed",
+      "status": "unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "details": "No callable Binance connector was available in this runtime; BTC/ETH trend, funding, open interest and liquidity unavailable."
+      "attempts": [
+        "BTCUSDT_1H",
+        "ETHUSDT_1H",
+        "funding",
+        "open_interest",
+        "liquidity"
+      ],
+      "reason": "No Binance runtime connector available"
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T06:10:16.364714+08:00",
+      "timestamp": "2026-07-26T07:10:42.822109+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
-      "details": "production_policy.md and config.py fetched from main; audit snapshot committed."
+      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
