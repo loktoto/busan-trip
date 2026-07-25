@@ -1,0 +1,74 @@
+{
+  "as_of_hkt": "2026-07-25T23:08:38+08:00",
+  "as_of_et": "2026-07-25T11:08:38-04:00",
+  "session": "US_CLOSED_SATURDAY",
+  "source_status": {
+    "ibkr": {
+      "status": "partial_success",
+      "details": "Positions plus exact snapshots for HUT, FOTO and SOXX. Market closed; last fields are official closes and are not treated as live. Other 18 universe snapshots and uniform completed bars were not completed in this bounded run."
+    },
+    "alpaca": {
+      "status": "unavailable_after_attempt",
+      "details": "No Alpaca runtime connector was available for market clock, SIP/delayed_sip/IEX snapshots or bars."
+    },
+    "binance": {
+      "status": "unavailable_after_attempt",
+      "details": "No Binance runtime connector was available for BTC/ETH trend, funding, open interest or liquidity."
+    },
+    "github": {
+      "status": "success",
+      "details": "production_policy.md and config.py fetched from main; this audit snapshot committed."
+    }
+  },
+  "quotes": {
+    "HUT": {
+      "authority": "IBKR",
+      "last": 117.67,
+      "last_is_official_close": true,
+      "mark": 110.22000122070312,
+      "bid": null,
+      "ask": null,
+      "volume": 0.0,
+      "historical_vol_annual": 1.1122061199379907,
+      "iv_percentile_52w": 0.8326693177223206
+    },
+    "FOTO": {
+      "authority": "IBKR",
+      "last": 20.56,
+      "last_is_official_close": true,
+      "mark": 19.209999084472656,
+      "bid": null,
+      "ask": null,
+      "volume": 0.0,
+      "historical_vol_annual": 0.6359296102259118,
+      "iv_percentile_52w": 0.1515151560306549
+    },
+    "SOXX": {
+      "authority": "IBKR",
+      "last": 551.24,
+      "last_is_official_close": true,
+      "mark": 526.1300048828125,
+      "bid": null,
+      "ask": null,
+      "volume": 0.0,
+      "historical_vol_annual": 0.6910633634966623,
+      "iv_percentile_52w": 1.0
+    }
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+    "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa",
+    "completed_bar_governance": "No uniform weekly/daily/1H/15m dataset available; scoring withheld.",
+    "pass2": "No reliable raw score >= 7.0; PASS 2 not applicable.",
+    "data_quality": "MANUAL_DATA_DEGRADED"
+  }
+}
