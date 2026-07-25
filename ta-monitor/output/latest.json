@@ -1,40 +1,43 @@
 {
-  "as_of_hkt": "2026-07-25T12:04:52+08:00",
-  "as_of_et": "2026-07-25T00:04:52-04:00",
-  "session": "US_CLOSED",
+  "as_of_hkt": "2026-07-25T13:08:20+08:00",
+  "as_of_et": "2026-07-25T01:08:20-04:00",
+  "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "PARTIAL",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "detail": "Positions, FOTO snapshot and SOXX snapshot succeeded; search_contracts failed twice, preventing remaining contract resolution"
+      "positions": "SUCCESS",
+      "bulk_contract_resolution": "FAILED_AFTER_RETRY",
+      "foto_snapshot": "OFFICIAL_CLOSE_ONLY",
+      "soxx_snapshot": "NO_RELIABLE_QUOTE_FIELDS"
     },
     "Alpaca": {
-      "status": "FAILED_AFTER_ATTEMPT",
+      "status": "UNAVAILABLE_AFTER_DISCOVERY",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "detail": "No installed/runtime Alpaca connector found; SIP, delayed_sip and IEX collection unavailable"
+      "feed": null
     },
     "Binance": {
-      "status": "FAILED_AFTER_ATTEMPT",
+      "status": "UNAVAILABLE_AFTER_DISCOVERY",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "detail": "No installed/runtime Binance connector found; BTC/ETH 1H, funding and OI unavailable"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-25T12:06:16.914811+08:00",
+      "timestamp": "2026-07-25T13:09:40.940998+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
-      "detail": "production_policy.md and config.py fetched from main"
+      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
