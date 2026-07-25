@@ -1,36 +1,36 @@
 {
-  "as_of_hkt": "2026-07-25T18:07:05+08:00",
-  "as_of_et": "2026-07-25T06:07:05-04:00",
+  "as_of_hkt": "2026-07-25T19:07:21+08:00",
+  "as_of_et": "2026-07-25T07:07:21-04:00",
   "session": "US_CLOSED_SATURDAY",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "details": "Positions plus HUT/FOTO/SOXX snapshots; market closed; last fields are official close and not live."
+      "detail": "Positions and six priority snapshots; closed-session official-close/mark fields only"
     },
     "Alpaca": {
-      "status": "N/A",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "details": "No callable Alpaca market-data connector in this runtime."
+      "detail": "No installed/runtime Alpaca market-data connector found"
     },
     "Binance": {
-      "status": "N/A",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "details": "No callable Binance market-data connector in this runtime."
+      "detail": "No installed/runtime Binance market-data connector found"
     },
     "GitHub": {
-      "status": "SUCCESS",
-      "timestamp": "2026-07-25T18:08:23.364402+08:00",
+      "status": "success",
+      "timestamp": "2026-07-25T19:09:25.822636+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
