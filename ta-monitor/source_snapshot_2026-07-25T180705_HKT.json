@@ -1,0 +1,31 @@
+{
+  "as_of_hkt": "2026-07-25T18:07:05+08:00",
+  "as_of_et": "2026-07-25T06:07:05-04:00",
+  "session": "US_CLOSED_SATURDAY",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "details": "Positions plus HUT/FOTO/SOXX snapshots; market closed; last fields are official close and not live."},
+    "alpaca": {"status": "N/A", "details": "No callable Alpaca market-data connector in this runtime."},
+    "binance": {"status": "N/A", "details": "No callable Binance market-data connector in this runtime."}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "last": 117.67, "last_is_close": true, "mark": 110.22000122070312, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "prior_close": 20.56, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "mark": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "mark": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_bars": "N/A — no internally consistent full-universe weekly/daily/1H/15m dataset",
+    "scores": "WITHHELD",
+    "pass2": "NOT_APPLICABLE",
+    "notes": ["Official close values are not treated as live.", "No orders created or transmitted."]
+  }
+}
