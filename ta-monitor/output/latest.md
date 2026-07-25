@@ -1,6 +1,6 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-26T02:05:22+08:00 / 2026-07-25T14:05:22-04:00**
+- As of: **2026-07-26T03:06:12+08:00 / 2026-07-25T15:06:12-04:00**
 - Session: **US_CLOSED_WEEKEND**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
@@ -11,10 +11,10 @@
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|UNAVAILABLE_AFTER_ATTEMPT|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|UNAVAILABLE_AFTER_ATTEMPT|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-26T02:06:55.894815+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Weekend official closes and marks only for HUT, FOTO and SOXX; no full-universe bars|
+|Alpaca|UNAVAILABLE|N/A|N/A|US-equity parity/fallback|No market clock, bulk snapshot or uniform completed bars|
+|Binance|FAILED|N/A|N/A|Crypto/miner context only|HTTP/safety restriction; no reliable BTC/ETH funding, OI or 1H context|
+|GitHub|SUCCESS|2026-07-26T03:07:27.019682+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE

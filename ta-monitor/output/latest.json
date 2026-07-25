@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T02:05:22+08:00",
-  "as_of_et": "2026-07-25T14:05:22-04:00",
+  "as_of_hkt": "2026-07-26T03:06:12+08:00",
+  "as_of_et": "2026-07-25T15:06:12-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -9,28 +9,35 @@
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "details": "Positions plus exact snapshots for HUT, FOTO and SOXX. Bulk universe search returned empty twice."
+      "impact": "Weekend official closes and marks only for HUT, FOTO and SOXX; no full-universe bars",
+      "attempts": [
+        "bulk contract query returned empty",
+        "HUT exact retry succeeded"
+      ]
     },
     "Alpaca": {
-      "status": "UNAVAILABLE_AFTER_ATTEMPT",
+      "status": "UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "details": "No installed/runtime connector; plugin search returned no result"
+      "impact": "No market clock, bulk snapshot or uniform completed bars",
+      "attempts": [
+        "connector discovery"
+      ]
     },
     "Binance": {
-      "status": "UNAVAILABLE_AFTER_ATTEMPT",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "details": "No installed/runtime connector; plugin search returned no result"
+      "impact": "HTTP/safety restriction; no reliable BTC/ETH funding, OI or 1H context",
+      "attempts": [
+        "official endpoint fetch attempt"
+      ]
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-26T02:06:55.894815+08:00",
+      "timestamp": "2026-07-26T03:07:27.019682+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
