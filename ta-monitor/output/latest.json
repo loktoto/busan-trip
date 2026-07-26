@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T13:09:22+08:00",
-  "as_of_et": "2026-07-26T01:09:22-04:00",
+  "as_of_hkt": "2026-07-26T14:09:09+08:00",
+  "as_of_et": "2026-07-26T02:09:09-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -14,10 +14,11 @@
         "bulk universe search empty",
         "bulk universe retry empty",
         "HUT exact resolution success",
+        "ONDS exact resolution success",
         "positions success",
-        "HUT/FOTO/SOXX snapshots success"
+        "HUT/ONDS/FOTO/SOXX snapshots success"
       ],
-      "last_success": "2026-07-26T13:09:22+08:00"
+      "last_success": "2026-07-26T14:09:09+08:00"
     },
     "Alpaca": {
       "status": "unavailable_after_attempt",
@@ -26,7 +27,7 @@
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
       "attempts": [
-        "plugin discovery: no result"
+        "plugin discovery returned no Alpaca plugin"
       ],
       "last_success": null
     },
@@ -37,13 +38,13 @@
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
       "attempts": [
-        "plugin discovery: no result"
+        "plugin discovery returned no Binance plugin"
       ],
       "last_success": null
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T13:10:52.443144+08:00",
+      "timestamp": "2026-07-26T14:11:17.382378+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
