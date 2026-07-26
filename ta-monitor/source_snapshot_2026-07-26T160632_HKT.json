@@ -1,0 +1,51 @@
+{
+  "as_of_hkt": "2026-07-26T16:06:32+08:00",
+  "as_of_et": "2026-07-26T04:06:32-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "FAILED", "attempts": ["market_clock unavailable", "SIP unavailable", "delayed_sip unavailable", "IEX unavailable"], "last_success": null},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "bulk_search_attempts": 2, "bulk_search_result": "empty", "exact_symbols": ["HUT", "ONDS", "FOTO", "SOXX"]},
+    "binance": {"status": "FAILED", "reason": "No reliable BTC/ETH 1H, funding, open-interest or liquidity payload obtained in this run", "last_success": null}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "exchange": "NASDAQ", "last": 117.67, "last_is_close": true, "plprice": 110.22000122070312, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "ONDS": {"source": "IBKR", "exchange": "NASDAQ", "last": 7.93, "last_is_close": true, "plprice": 7.8302998542785645, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 0.8374453754341952, "iv_percentile_52w": 0.3466135561466217},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "plprice": 19.209999084472656, "prior_close": 20.56, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_close": true, "plprice": 526.1300048828125, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 0.6910633634966623, "iv_percentile_52w": 1.0},
+    "IREN": null,
+    "NBIS": null,
+    "WULF": null,
+    "MARA": null,
+    "APLD": null,
+    "ORCL": null,
+    "CRWV": null,
+    "CRCL": null,
+    "RKLB": null,
+    "AAOI": null,
+    "AXTI": null,
+    "MXL": null,
+    "LITE": null,
+    "COHR": null,
+    "APH": null,
+    "FN": null,
+    "MU": null,
+    "SNDK": null
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_bar_policy": "exclude current week/day/hour/15m interval",
+    "weekly_daily_1h_15m": "WITHHELD_NO_CONSISTENT_SERIES",
+    "fixed_scoring": "WITHHELD",
+    "pass2_candidates": [],
+    "notes": ["Official close values are not treated as live", "No orders created or transmitted"]
+  }
+}
