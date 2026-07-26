@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-27T01:04:19+08:00",
+  "as_of_et": "2026-07-26T13:04:19-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed_after_attempt", "detail": "No installed connector/plugin found; clock, SIP, delayed_sip, IEX snapshots and uniform bars unavailable."},
+    "ibkr": {"status": "partial_success", "detail": "Positions succeeded; bulk universe search retried and returned empty; exact contracts and snapshots succeeded for HUT, IREN, NBIS, WULF, MARA, FOTO and SOXX."},
+    "binance": {"status": "failed_after_attempt", "detail": "No installed connector/plugin found; official ETH futures endpoint returned HTTP 451; reliable BTC/ETH 1H, funding, OI and liquidity unavailable."}
+  },
+  "quotes": {
+    "HUT": {"authority": "IBKR", "last": 117.67, "last_is_close": true, "plprice": 110.22000122070312, "volume": 0, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "IREN": {"authority": "IBKR", "last": 40.58, "last_is_close": true, "plprice": 37.06999969482422, "volume": 0, "historical_vol_annual": 0.975882196184601, "iv_percentile_52w": 0.9163346886634827},
+    "NBIS": {"authority": "IBKR", "last": 220.97, "last_is_close": true, "plprice": 189.77999877929688, "volume": 0, "historical_vol_annual": 1.2418929119524436, "iv_percentile_52w": 0.9880478382110596},
+    "WULF": {"authority": "IBKR", "last": 20.05, "last_is_close": true, "plprice": 18.4950008392334, "volume": 0, "historical_vol_annual": 1.0315858442877548, "iv_percentile_52w": 0.7649402618408203},
+    "MARA": {"authority": "IBKR", "last": 12.77, "last_is_close": true, "plprice": 12.119999885559082, "volume": 0, "historical_vol_annual": 1.010215581798024, "iv_percentile_52w": 0.8406374454498291},
+    "FOTO": {"authority": "IBKR", "last": 20.56, "last_is_close": true, "plprice": 19.209999084472656, "volume": 0, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"authority": "IBKR", "last": 551.24, "last_is_close": true, "plprice": 526.1300048828125, "volume": 0, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_bars": "withheld_due_to_missing_uniform_series",
+    "scores": "withheld",
+    "pass2": "not_applicable_no_reliable_score_ge_7",
+    "note": "Official closes were not treated as live. Off-session plprice used for risk context only. No orders created or transmitted."
+  }
+}
