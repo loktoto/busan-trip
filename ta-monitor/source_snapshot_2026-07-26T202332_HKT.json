@@ -1,0 +1,33 @@
+{
+  "as_of_hkt": "2026-07-26T20:23:32+08:00",
+  "as_of_et": "2026-07-26T08:23:32-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "unavailable_after_attempt", "details": "No Alpaca connector/plugin available in runtime; clock, SIP, delayed_sip, IEX and bars unavailable."},
+    "ibkr": {"status": "partial_success", "details": "Bulk universe contract search returned empty; exact HUT and IREN contracts resolved; HUT, IREN, FOTO and SOXX snapshots collected. All returned last prices are official closes."},
+    "binance": {"status": "degraded", "details": "No Binance connector/plugin available; web verification did not provide a reliable current funding/open-interest payload."}
+  },
+  "quotes": {
+    "HUT": {"authority": "IBKR", "contract_id": 669228291, "last": 117.67, "last_is_close": true, "plprice": 110.22000122070312, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "IREN": {"authority": "IBKR", "contract_id": 526906130, "last": 40.58, "last_is_close": true, "plprice": 37.06999969482422, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 0.975882196184601, "iv_percentile_52w": 0.9163346886634827},
+    "FOTO": {"authority": "IBKR", "contract_id": 887244371, "last": 20.56, "last_is_close": true, "plprice": 19.209999084472656, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"authority": "IBKR", "contract_id": 12658194, "last": 551.24, "last_is_close": true, "plprice": 526.1300048828125, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "universe_size": 21,
+    "completed_bar_policy": "Exclude current week/day/hour/15m interval",
+    "uniform_weekly_bars": false,
+    "uniform_daily_bars": false,
+    "uniform_1h_bars": false,
+    "uniform_15m_bars": false,
+    "scores_withheld": true,
+    "pass2_candidates": [],
+    "notes": "Weekend degraded run. Official closes are not treated as live. No orders or account-private data included."
+  }
+}
