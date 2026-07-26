@@ -1,0 +1,31 @@
+{
+  "as_of_hkt": "2026-07-27T07:21:17+08:00",
+  "as_of_et": "2026-07-26T19:21:17-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed", "attempts": ["plugin discovery"], "result": "no connector available"},
+    "ibkr": {"status": "partial", "positions": "success", "quotes": ["ONDS", "APLD", "FOTO", "SOXX"], "bars": ["ONDS weekly", "ONDS daily", "ONDS 1H", "ONDS 15m"]},
+    "binance": {"status": "degraded", "result": "no connector; no reliable current funding/OI payload"}
+  },
+  "quotes": {
+    "ONDS": {"official_close": 7.93, "official_close_flag": true, "mark": 7.8302998543, "volume": 0, "historical_vol_annual": 0.8374453754, "iv_percentile_52w": 0.3466135561, "bid_ask": null},
+    "APLD": {"official_close": 29.89, "official_close_flag": true, "mark": 27.1900005341, "volume": 0, "historical_vol_annual": 0.9593409590, "iv_percentile_52w": 0.7011952400, "bid_ask": null},
+    "FOTO": {"official_close": 20.56, "official_close_flag": true, "mark": 19.2099990845, "volume": 0, "historical_vol_annual": 0.6359296102, "iv_percentile_52w": 0.1515151560, "bid_ask": null},
+    "SOXX": {"official_close": 551.24, "official_close_flag": true, "mark": 526.1300048828, "volume": 0, "historical_vol_annual": 0.6910633635, "iv_percentile_52w": 1.0, "bid_ask": null}
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "mark": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "mark": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_bar_governance": "current week/day/hour/15m excluded",
+    "full_universe_scoring": "withheld_due_to_incomplete_consistent_series",
+    "pass2": "not_required_no_reliable_raw_score_gte_7",
+    "onds": {"last_completed_week_close": 7.8, "last_completed_day_close": 7.8, "last_completed_1h_close": 7.81, "last_completed_15m_close": 7.81, "trigger": 7.85, "tactical_stop": 7.47, "structural_stop": 7.22, "tp2": 8.775}
+  }
+}
