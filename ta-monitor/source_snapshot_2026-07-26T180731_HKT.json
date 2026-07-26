@@ -1,0 +1,30 @@
+{
+  "as_of_hkt": "2026-07-26T18:07:31+08:00",
+  "as_of_et": "2026-07-26T06:07:31-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "FAILED", "reason": "No installed/runtime connector found after plugin discovery", "retries": ["SIP unavailable", "delayed_sip unavailable", "IEX unavailable"]},
+    "ibkr": {"status": "PARTIAL", "reason": "Bulk 22-symbol contract search returned empty after retry; exact HUT plus held FOTO/SOXX snapshots succeeded"},
+    "binance": {"status": "FAILED", "reason": "No installed/runtime connector found after plugin discovery"}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "last": 117.67, "last_is_official_close": true, "mark": 110.22000122070312, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_official_close": true, "mark": 19.209999084472656, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_official_close": true, "mark": 526.1300048828125, "volume": 0.0, "bid": null, "ask": null, "historical_vol_30d_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_weekly": "UNAVAILABLE",
+    "completed_daily": "UNAVAILABLE",
+    "completed_1h": "UNAVAILABLE",
+    "completed_15m": "UNAVAILABLE",
+    "fixed_scores": "WITHHELD",
+    "pass2": "NONE",
+    "note": "Official closes are not treated as live. No stale data used as live. No orders created or transmitted."
+  }
+}
