@@ -1,36 +1,49 @@
 {
-  "as_of_hkt": "2026-07-26T12:06:30+08:00",
-  "as_of_et": "2026-07-26T00:06:30-04:00",
+  "as_of_hkt": "2026-07-26T13:09:22+08:00",
+  "as_of_et": "2026-07-26T01:09:22-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "partial",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "reason": "Exact-contract snapshots collected for HUT, IREN, NBIS, WULF, MARA, FOTO and SOXX; completed multi-timeframe bars not collected"
+      "attempts": [
+        "bulk universe search empty",
+        "bulk universe retry empty",
+        "HUT exact resolution success",
+        "positions success",
+        "HUT/FOTO/SOXX snapshots success"
+      ],
+      "last_success": "2026-07-26T13:09:22+08:00"
     },
     "Alpaca": {
-      "status": "failed",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "reason": "No Alpaca runtime connector available; clock, SIP, delayed_sip, IEX and bars unavailable"
+      "attempts": [
+        "plugin discovery: no result"
+      ],
+      "last_success": null
     },
     "Binance": {
-      "status": "degraded",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "reason": "Official API documentation verified but no reliable live BTC/ETH funding, OI or 1H payload obtained"
+      "attempts": [
+        "plugin discovery: no result"
+      ],
+      "last_success": null
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T12:09:24.488924+08:00",
+      "timestamp": "2026-07-26T13:10:52.443144+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
