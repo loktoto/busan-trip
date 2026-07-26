@@ -1,20 +1,20 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-26T14:09:09+08:00 / 2026-07-26T02:09:09-04:00**
+- As of: **2026-07-26T16:06:32+08:00 / 2026-07-26T04:06:32-04:00**
 - Session: **US_CLOSED_WEEKEND**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'price'
+- Live-week / limitation: Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'
 - Stale-last normalization: **none**
 
 ## Source Status
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|partial_success|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|unavailable_after_attempt|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|unavailable_after_attempt|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|success|2026-07-26T14:11:17.382378+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
+|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
+|Binance|FAILED|N/A|N/A|Crypto/miner context only|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
+|GitHub|SUCCESS|2026-07-26T16:08:31.321721+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'price'
+- Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'
 
 ## Boss Action
 
