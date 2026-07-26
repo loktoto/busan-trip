@@ -1,0 +1,21 @@
+{
+  "as_of_hkt": "2026-07-27T03:06:07+08:00",
+  "as_of_et": "2026-07-26T15:06:07-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed_after_attempt", "detail": "clock and bulk snapshot endpoints unavailable without authenticated connector"},
+    "ibkr": {"status": "partial_success", "detail": "positions, HUT/ONDS/APLD/FOTO/SOXX snapshots; ONDS weekly/daily/1H histories"},
+    "binance": {"status": "failed_after_attempt", "detail": "public futures endpoint unavailable; ETH request returned HTTP 451"}
+  },
+  "quotes": {
+    "HUT": {"authority": "IBKR", "last": 117.67, "last_is_close": true, "mark": 110.22000122070312, "volume": 0, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "ONDS": {"authority": "IBKR", "last": 7.93, "last_is_close": true, "mark": 7.8302998542785645, "volume": 0, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3466135561466217},
+    "APLD": {"authority": "IBKR", "last": 29.89, "last_is_close": true, "mark": 27.190000534057617, "volume": 0, "historical_vol_annual": 0.9593409589878252, "iv_percentile_52w": 0.701195240020752},
+    "FOTO": {"authority": "IBKR", "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "volume": 0, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"authority": "IBKR", "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "volume": 0, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {"APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"}, "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}},
+  "positions": {"FOTO": {"quantity": 120, "average_price": 20.13212167, "mark": 19.2099991, "unrealized_pnl": -110.654708}, "SOXX": {"quantity": 13, "average_price": 528.75752308, "mark": 526.1300049, "unrealized_pnl": -34.1577363}},
+  "calculation_metadata": {"completed_week_excluded": true, "current_day_excluded": true, "current_hour_excluded": true, "current_15m_excluded": true, "full_universe_scoring": "withheld_due_to_missing_uniform_series", "pass2": "not_applicable_no_reliable_raw_score_ge_7"}
+}
