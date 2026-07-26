@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-26T23:07:49+08:00",
+  "as_of_et": "2026-07-26T11:07:49-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "unavailable_after_attempt", "detail": "No installed or discoverable Alpaca connector; clock, SIP, delayed_sip, IEX and bar modules unavailable."},
+    "ibkr": {"status": "partial_success", "detail": "Bulk 22-symbol search returned empty after one retry; positions and exact HUT/FOTO/SOXX snapshots succeeded."},
+    "binance": {"status": "failed_after_attempt", "detail": "No installed connector; official futures endpoint attempts did not yield a reliable payload and ETH premiumIndex returned HTTP 451."}
+  },
+  "quotes": {
+    "HUT": {"authority": "IBKR", "contract_id": 669228291, "last": 117.67, "last_is_close": true, "mark": 110.22000122070312, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "FOTO": {"authority": "IBKR", "contract_id": 887244371, "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"authority": "IBKR", "contract_id": 12658194, "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "volume": 0.0, "bid": null, "ask": null, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "universe": ["HUT","IREN","NBIS","WULF","MARA","APLD","ORCL","CRWV","CRCL","RKLB","AAOI","ONDS","AXTI","MXL","FOTO","LITE","COHR","APH","FN","MU","SNDK"],
+    "completed_weekly": false,
+    "completed_daily": false,
+    "completed_1h": false,
+    "completed_15m": false,
+    "scores_withheld": true,
+    "reason": "No internally consistent completed-bar dataset for all 21 tickers; official close not treated as live.",
+    "pass2_candidates": []
+  }
+}
