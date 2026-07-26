@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T22:07:18+08:00",
-  "as_of_et": "2026-07-26T10:07:18-04:00",
+  "as_of_hkt": "2026-07-26T23:07:49+08:00",
+  "as_of_et": "2026-07-26T11:07:49-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -10,14 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "bulk_contract_search": "failed after retry",
-      "exact_contracts": [
-        "HUT",
-        "FOTO",
-        "SOXX"
-      ],
-      "positions": "success",
-      "bars": "N/A — not completed at practical hourly scale"
+      "detail": "Bulk 22-symbol search returned empty after one retry; positions and exact HUT/FOTO/SOXX snapshots succeeded."
     },
     "Alpaca": {
       "status": "unavailable_after_attempt",
@@ -25,13 +18,7 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "clock": "N/A — runtime action unavailable",
-      "snapshot_feed_attempts": [
-        "sip",
-        "delayed_sip",
-        "iex"
-      ],
-      "bars": "N/A — runtime action unavailable"
+      "detail": "No installed or discoverable Alpaca connector; clock, SIP, delayed_sip, IEX and bar modules unavailable."
     },
     "Binance": {
       "status": "failed_after_attempt",
@@ -39,12 +26,11 @@
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "reason": "official futures endpoint unavailable in runtime; ETH request returned HTTP 451",
-      "btc_eth_context": "N/A — 未取得可靠資料"
+      "detail": "No installed connector; official futures endpoint attempts did not yield a reliable payload and ETH premiumIndex returned HTTP 451."
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T22:08:46.258440+08:00",
+      "timestamp": "2026-07-26T23:09:26.573026+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
