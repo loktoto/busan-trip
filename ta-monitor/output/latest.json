@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T07:08:47+08:00",
-  "as_of_et": "2026-07-25T19:08:47-04:00",
+  "as_of_hkt": "2026-07-26T08:09:25+08:00",
+  "as_of_et": "2026-07-25T20:09:25-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -10,51 +10,27 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "bulk_contract_search_attempts": 2,
-      "bulk_contract_search_result": "empty",
-      "exact_contracts": [
-        "HUT",
-        "ONDS",
-        "AAOI",
-        "APH",
-        "FOTO",
-        "SOXX"
-      ],
-      "positions": "success"
+      "details": "Positions retrieved; bulk 22-symbol contract searches returned no results after retry; exact HUT resolution and HUT/FOTO/SOXX snapshots succeeded. Weekend snapshots contain official close plus plprice only."
     },
     "Alpaca": {
-      "status": "unavailable",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "attempts": [
-        "market_clock",
-        "bulk_snapshot_sip",
-        "bulk_snapshot_delayed_sip",
-        "bulk_snapshot_iex",
-        "weekly_daily_1h_15m_bars"
-      ],
-      "reason": "No Alpaca runtime connector available"
+      "details": "No installed/runtime Alpaca connector found; SIP, delayed_sip, IEX snapshots and completed bars unavailable."
     },
     "Binance": {
-      "status": "unavailable",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "attempts": [
-        "BTCUSDT_1H",
-        "ETHUSDT_1H",
-        "funding",
-        "open_interest",
-        "liquidity"
-      ],
-      "reason": "No Binance runtime connector available"
+      "details": "No installed/runtime Binance connector found; BTC/ETH 1H, funding, open interest and liquidity unavailable."
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T07:10:42.822109+08:00",
+      "timestamp": "2026-07-26T08:11:04.850731+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
