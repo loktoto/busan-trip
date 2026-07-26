@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-27T01:04:19+08:00",
-  "as_of_et": "2026-07-26T13:04:19-04:00",
+  "as_of_hkt": "2026-07-27T03:06:07+08:00",
+  "as_of_et": "2026-07-26T15:06:07-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -10,7 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "detail": "Positions succeeded; bulk universe search retried and returned empty; exact contracts and snapshots succeeded for HUT, IREN, NBIS, WULF, MARA, FOTO and SOXX."
+      "detail": "positions, HUT/ONDS/APLD/FOTO/SOXX snapshots; ONDS weekly/daily/1H histories"
     },
     "Alpaca": {
       "status": "failed_after_attempt",
@@ -18,7 +18,7 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "detail": "No installed connector/plugin found; clock, SIP, delayed_sip, IEX snapshots and uniform bars unavailable."
+      "detail": "clock and bulk snapshot endpoints unavailable without authenticated connector"
     },
     "Binance": {
       "status": "failed_after_attempt",
@@ -26,11 +26,11 @@
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "detail": "No installed connector/plugin found; official ETH futures endpoint returned HTTP 451; reliable BTC/ETH 1H, funding, OI and liquidity unavailable."
+      "detail": "public futures endpoint unavailable; ETH request returned HTTP 451"
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-27T01:06:32.734505+08:00",
+      "timestamp": "2026-07-27T03:08:20.662592+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
