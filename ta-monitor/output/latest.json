@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-26T09:08:55+08:00",
-  "as_of_et": "2026-07-25T21:08:55-04:00",
+  "as_of_hkt": "2026-07-26T10:05:07+08:00",
+  "as_of_et": "2026-07-25T22:05:07-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -10,7 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "notes": "positions successful; bulk universe contract search returned empty; exact HUT and ONDS contracts resolved; HUT, ONDS, FOTO and SOXX snapshots collected; official close/mark only"
+      "details": "Positions succeeded. Bulk 22-symbol contract search returned empty results twice. Exact HUT and ONDS resolution succeeded. Fresh closed-session snapshots collected for HUT, ONDS, FOTO and SOXX; official closes are not treated as live."
     },
     "Alpaca": {
       "status": "unavailable_after_attempt",
@@ -18,24 +18,23 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "notes": "no callable Alpaca market clock/snapshot/bar connector in this runtime"
+      "details": "No callable Alpaca connector was available for market clock, SIP/delayed_sip/IEX snapshots or completed bars."
     },
     "Binance": {
-      "status": "degraded",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "notes": "no callable Binance connector; web search did not return reliable current funding/open-interest values"
+      "details": "No reliable BTC/ETH 1H, funding, open-interest or liquidity dataset was obtained."
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-26T09:10:29.623425+08:00",
+      "timestamp": "2026-07-26T10:06:41.159376+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
-      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
-      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
+      "details": "production_policy.md and config.py fetched from main; this audit snapshot committed."
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
