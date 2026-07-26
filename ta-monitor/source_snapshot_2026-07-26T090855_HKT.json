@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-26T09:08:55+08:00",
+  "as_of_et": "2026-07-25T21:08:55-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "IBKR": {"status": "partial_success", "notes": "positions successful; bulk universe contract search returned empty; exact HUT and ONDS contracts resolved; HUT, ONDS, FOTO and SOXX snapshots collected; official close/mark only"},
+    "Alpaca": {"status": "unavailable_after_attempt", "notes": "no callable Alpaca market clock/snapshot/bar connector in this runtime"},
+    "Binance": {"status": "degraded", "notes": "no callable Binance connector; web search did not return reliable current funding/open-interest values"},
+    "GitHub": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "contract_id": 669228291, "exchange": "NASDAQ", "last": 117.67, "last_is_close": true, "mark": 110.22000122070312, "volume": 0.0, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "ONDS": {"source": "IBKR", "contract_id": 455415330, "exchange": "NASDAQ", "last": 7.93, "last_is_close": true, "mark": 7.8302998542785645, "volume": 0.0, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3466135561466217},
+    "FOTO": {"source": "IBKR", "contract_id": 887244371, "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "volume": 0.0, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "contract_id": 12658194, "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "prior_close": 551.24, "volume": 0.0, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "mark": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "mark": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "weekly": "N/A — full internally consistent series unavailable",
+    "daily": "N/A — full internally consistent series unavailable",
+    "hourly": "N/A — full internally consistent series unavailable",
+    "fifteen_minute": "N/A — full internally consistent series unavailable",
+    "scores": "withheld",
+    "pass2": "not_applicable_no_reliable_raw_score_ge_7",
+    "official_close_not_live": true
+  }
+}
