@@ -1,0 +1,38 @@
+{
+  "as_of_hkt": "2026-07-26T12:06:30+08:00",
+  "as_of_et": "2026-07-26T00:06:30-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed", "reason": "No Alpaca runtime connector available; clock, SIP, delayed_sip, IEX and bars unavailable"},
+    "ibkr": {"status": "partial", "reason": "Exact-contract snapshots collected for HUT, IREN, NBIS, WULF, MARA, FOTO and SOXX; completed multi-timeframe bars not collected"},
+    "binance": {"status": "degraded", "reason": "Official API documentation verified but no reliable live BTC/ETH funding, OI or 1H payload obtained"}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "last": 117.67, "last_is_close": true, "mark": 110.22000122070312, "volume": 0.0, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206},
+    "IREN": {"source": "IBKR", "last": 40.58, "last_is_close": true, "mark": 37.06999969482422, "volume": 0.0, "historical_vol_annual": 0.975882196184601, "iv_percentile_52w": 0.9163346886634827},
+    "NBIS": {"source": "IBKR", "last": 220.97, "last_is_close": true, "mark": 189.77999877929688, "volume": 0.0, "historical_vol_annual": 1.2418929119524436, "iv_percentile_52w": 0.9880478382110596},
+    "WULF": {"source": "IBKR", "last": 20.05, "last_is_close": true, "mark": 18.4950008392334, "volume": 0.0, "historical_vol_annual": 1.0315858442877548, "iv_percentile_52w": 0.7649402618408203},
+    "MARA": {"source": "IBKR", "last": 12.77, "last_is_close": true, "mark": 12.119999885559082, "volume": 0.0, "historical_vol_annual": 1.010215581798024, "iv_percentile_52w": 0.8406374454498291},
+    "FOTO": {"source": "IBKR", "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "volume": 0.0, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"source": "IBKR", "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "volume": 0.0, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120.0, "average_price": 20.13212167, "market_price": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13.0, "average_price": 528.75752308, "market_price": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_weekly": false,
+    "completed_daily": false,
+    "completed_1h": false,
+    "completed_15m": false,
+    "score_status": "withheld",
+    "pass2_candidates": [],
+    "note": "No stale close was treated as live; all IBKR last values in this snapshot are official closes. Mark values are risk references only."
+  }
+}
