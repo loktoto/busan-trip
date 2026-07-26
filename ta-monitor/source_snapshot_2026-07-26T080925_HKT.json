@@ -1,0 +1,31 @@
+{
+  "as_of_hkt": "2026-07-26T08:09:25+08:00",
+  "as_of_et": "2026-07-25T20:09:25-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "unavailable_after_attempt", "details": "No installed/runtime Alpaca connector found; SIP, delayed_sip, IEX snapshots and completed bars unavailable."},
+    "ibkr": {"status": "partial_success", "details": "Positions retrieved; bulk 22-symbol contract searches returned no results after retry; exact HUT resolution and HUT/FOTO/SOXX snapshots succeeded. Weekend snapshots contain official close plus plprice only."},
+    "binance": {"status": "unavailable_after_attempt", "details": "No installed/runtime Binance connector found; BTC/ETH 1H, funding, open interest and liquidity unavailable."}
+  },
+  "quotes": {
+    "HUT": {"authority": "IBKR", "contract_exchange": "NASDAQ", "last": 117.67, "last_is_official_close": true, "plprice": 110.22000122070312, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8326693177223206, "bid": null, "ask": null, "volume": 0.0},
+    "FOTO": {"authority": "IBKR", "last": 20.56, "last_is_official_close": true, "plprice": 19.209999084472656, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549, "bid": null, "ask": null, "volume": 0.0},
+    "SOXX": {"authority": "IBKR", "last": 551.24, "last_is_official_close": true, "plprice": 526.1300048828125, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0, "bid": null, "ask": null, "volume": 0.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_bar_governance": "Current week/day/hour/15m excluded",
+    "weekly": "unavailable",
+    "daily": "unavailable",
+    "one_hour": "unavailable",
+    "fifteen_minute": "unavailable",
+    "score_status": "withheld",
+    "pass_2": "not_applicable_no_reliable_score_gte_7",
+    "notes": "No stale or official-close price was treated as live. No account credentials, orders or account position data committed."
+  }
+}
