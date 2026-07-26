@@ -1,41 +1,36 @@
 {
-  "as_of_hkt": "2026-07-26T18:07:31+08:00",
-  "as_of_et": "2026-07-26T06:07:31-04:00",
+  "as_of_hkt": "2026-07-26T20:23:32+08:00",
+  "as_of_et": "2026-07-26T08:23:32-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "reason": "Bulk 22-symbol contract search returned empty after retry; exact HUT plus held FOTO/SOXX snapshots succeeded"
+      "details": "Bulk universe contract search returned empty; exact HUT and IREN contracts resolved; HUT, IREN, FOTO and SOXX snapshots collected. All returned last prices are official closes."
     },
     "Alpaca": {
-      "status": "FAILED",
+      "status": "unavailable_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "reason": "No installed/runtime connector found after plugin discovery",
-      "retries": [
-        "SIP unavailable",
-        "delayed_sip unavailable",
-        "IEX unavailable"
-      ]
+      "details": "No Alpaca connector/plugin available in runtime; clock, SIP, delayed_sip, IEX and bars unavailable."
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "degraded",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "reason": "No installed/runtime connector found after plugin discovery"
+      "details": "No Binance connector/plugin available; web verification did not provide a reliable current funding/open-interest payload."
     },
     "GitHub": {
-      "status": "SUCCESS",
-      "timestamp": "2026-07-26T18:08:57.423781+08:00",
+      "status": "success",
+      "timestamp": "2026-07-26T20:24:49.495169+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
