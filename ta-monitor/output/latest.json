@@ -1,39 +1,49 @@
 {
-  "as_of_hkt": "2026-07-26T16:06:32+08:00",
-  "as_of_et": "2026-07-26T04:06:32-04:00",
+  "as_of_hkt": "2026-07-26T18:07:31+08:00",
+  "as_of_et": "2026-07-26T06:07:31-04:00",
   "session": "US_CLOSED_WEEKEND",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "FAILED",
+      "status": "PARTIAL",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+      "impact": "Source not supplied by collector",
+      "reason": "Bulk 22-symbol contract search returned empty after retry; exact HUT plus held FOTO/SOXX snapshots succeeded"
     },
     "Alpaca": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+      "impact": "Source not supplied by collector",
+      "reason": "No installed/runtime connector found after plugin discovery",
+      "retries": [
+        "SIP unavailable",
+        "delayed_sip unavailable",
+        "IEX unavailable"
+      ]
     },
     "Binance": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+      "impact": "Source not supplied by collector",
+      "reason": "No installed/runtime connector found after plugin discovery"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-26T16:08:31.321721+08:00",
+      "timestamp": "2026-07-26T18:08:57.423781+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable"
+      "impact": "Fresh market calculation unavailable",
+      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
+      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
     }
   },
-  "bar_limitations": "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'",
+  "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
   "quote_adjustments": [],
   "photonics_1h_up": null,
   "miners_1h_up": null,
@@ -64,7 +74,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -87,7 +97,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -110,7 +120,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -133,7 +143,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -156,7 +166,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -179,7 +189,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -202,7 +212,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -225,7 +235,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -248,7 +258,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -271,7 +281,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -294,7 +304,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -317,7 +327,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -340,7 +350,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -363,7 +373,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -386,7 +396,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -409,7 +419,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -432,7 +442,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -455,7 +465,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -478,7 +488,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -501,7 +511,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     },
     {
@@ -524,11 +534,11 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+        "Engine failure after source collection: KeyError: 'price'"
       ]
     }
   ],
   "failed_modules": [
-    "Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'"
+    "Engine failure after source collection: KeyError: 'price'"
   ]
 }
