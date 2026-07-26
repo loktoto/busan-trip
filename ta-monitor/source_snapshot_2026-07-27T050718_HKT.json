@@ -1,0 +1,32 @@
+{
+  "as_of_hkt": "2026-07-27T05:07:18+08:00",
+  "as_of_et": "2026-07-26T17:07:18-04:00",
+  "session": "US_CLOSED_WEEKEND",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed_after_attempt", "clock": "unavailable", "snapshot_feed": null, "bars": "unavailable"},
+    "ibkr": {"status": "partial_success", "bulk_contract_search": "failed_after_retry", "positions": "success", "snapshots": ["ONDS", "APLD", "FOTO", "SOXX"], "histories": ["ONDS_weekly"]},
+    "binance": {"status": "failed_after_attempt", "reason": "public futures endpoint unavailable; ETH request HTTP 451"}
+  },
+  "quotes": {
+    "ONDS": {"authority": "IBKR", "last": 7.93, "last_is_close": true, "mark": 7.8302998542785645, "volume": 0, "bid": null, "ask": null, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3466135561466217},
+    "APLD": {"authority": "IBKR", "last": 29.89, "last_is_close": true, "mark": 27.190000534057617, "volume": 0, "bid": null, "ask": null, "historical_vol_annual": 0.9593409589878252, "iv_percentile_52w": 0.701195240020752},
+    "FOTO": {"authority": "IBKR", "last": 20.56, "last_is_close": true, "mark": 19.209999084472656, "volume": 0, "bid": null, "ask": null, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.1515151560306549},
+    "SOXX": {"authority": "IBKR", "last": 551.24, "last_is_close": true, "mark": 526.1300048828125, "volume": 0, "bid": null, "ask": null, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 1.0}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "mark": 19.2099991, "unrealized_pnl": -110.654708},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "mark": 526.1300049, "unrealized_pnl": -34.1577363}
+  },
+  "calculation_metadata": {
+    "completed_bar_governance": "current week/day/hour/15m excluded",
+    "full_universe_scoring": "withheld_due_to_missing_consistent_series",
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
