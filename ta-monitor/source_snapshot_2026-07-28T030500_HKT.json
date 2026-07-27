@@ -1,0 +1,33 @@
+{
+  "as_of_hkt": "2026-07-28T03:05:00+08:00",
+  "as_of_et": "2026-07-27T15:05:00-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS_CORE_SHORT_AND_POSITIONS",
+    "alpaca": "UNAVAILABLE_AFTER_ATTEMPT",
+    "binance": "UNAVAILABLE_AFTER_ATTEMPT",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"last": 513.05, "bid": 512.94, "ask": 513.10, "change_pct": -2.65, "low": 500.00, "high": 534.30, "ivp52": 0.988},
+    "SMH": {"last": 546.23, "bid": 546.17, "ask": 546.23, "change_pct": -2.67, "low": 535.31, "high": 567.62, "ivp52": 0.968},
+    "MU": {"last": 890.39, "bid": 890.16, "ask": 890.79, "change_pct": -3.32, "low": 854.79, "high": 935.00, "ivp52": 0.836},
+    "SNDK": {"last": 1267.05, "bid": 1266.10, "ask": 1267.53, "change_pct": -11.80, "low": 1222.01, "high": 1462.99, "ivp52": 0.980},
+    "AMD": {"last": 490.36, "bid": 490.07, "ask": 490.43, "change_pct": -6.05, "low": 476.93, "high": 528.00, "ivp52": 0.948},
+    "INTC": {"last": 91.78, "bid": 91.71, "ask": 91.74, "change_pct": -0.58, "low": 86.94, "high": 94.98, "ivp52": 0.860},
+    "ARM": {"last": 263.72, "bid": 263.07, "ask": 263.62, "change_pct": 1.43, "low": 251.61, "high": 266.40, "ivp52": 0.916}
+  },
+  "positions": {
+    "SOXX": {"quantity": 15, "average_price": 525.34639333, "mark": 513.0430908},
+    "FOTO": {"quantity": 160, "average_price": 19.64937, "mark": 18.43499945}
+  },
+  "events": {"SNDK": "2026-08-05 after close"},
+  "calculation_metadata": {
+    "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
+    "config_sha": "996a72dd3d4207869ca9a6ca8eee04eaeb480737",
+    "pass2_candidates": [],
+    "orders_created": false,
+    "note": "Core short fresh IBKR quotes collected. Full long-board bars unavailable; report rendered degraded without fabricating values."
+  }
+}
