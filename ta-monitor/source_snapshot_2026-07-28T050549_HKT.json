@@ -1,0 +1,33 @@
+{
+  "as_of_hkt": "2026-07-28T05:05:49+08:00",
+  "as_of_et": "2026-07-27T17:05:49-04:00",
+  "session": "US_AFTER_HOURS",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS_CORE_SHORT_AND_POSITIONS",
+    "alpaca": "FAILED_UNAVAILABLE_IN_RUNTIME",
+    "binance": "FAILED_UNAVAILABLE_IN_RUNTIME",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"last": 515.49, "bid": 515.40, "ask": 516.00, "mark": 515.5900268554688, "change_pct": -2.19, "high": 534.30, "low": 500.00, "ivp_52w": 0.94},
+    "SMH": {"last": 549.01, "bid": 549.00, "ask": 549.70, "mark": 549.2000122070312, "change_pct": -2.17, "high": 567.62, "low": 535.31, "ivp_52w": 0.912},
+    "MU": {"last": 895.00, "bid": 895.35, "ask": 895.68, "mark": 895.3099975585938, "change_pct": -2.82, "high": 935.00, "low": 854.79, "ivp_52w": 0.836},
+    "SNDK": {"last": 1265.00, "bid": 1268.31, "ask": 1269.99, "mark": 1267.00, "change_pct": -11.94, "high": 1462.99, "low": 1222.01, "ivp_52w": 0.98},
+    "AMD": {"last": 494.00, "bid": 494.66, "ask": 494.85, "mark": 495.00, "change_pct": -5.35, "high": 528.00, "low": 476.93, "ivp_52w": 0.948},
+    "INTC": {"last": 91.20, "bid": 91.23, "ask": 91.30, "mark": 91.24230194091797, "change_pct": -1.21, "high": 94.98, "low": 86.94, "ivp_52w": 0.86},
+    "ARM": {"last": 265.40, "bid": 266.01, "ask": 266.50, "mark": 266.6499938964844, "change_pct": 2.07, "high": 268.20, "low": 251.61, "ivp_52w": 0.896}
+  },
+  "positions": {
+    "SOXX": {"position": 15, "average_price": 525.34639333, "market_price": 515.59002685, "unrealized_pnl": -146.34549725},
+    "FOTO": {"position": 160, "average_price": 19.64937, "market_price": 18.5799999, "unrealized_pnl": -171.099216}
+  },
+  "events": {"SNDK": "2026-08-05 after close"},
+  "calculation_metadata": {
+    "full_long_bars": false,
+    "full_short_bars": false,
+    "pass2_candidates": [],
+    "entry_alerts_withheld": true,
+    "reason": "Alpaca unavailable; completed bars and borrow fields unavailable"
+  }
+}
