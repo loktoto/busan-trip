@@ -1,20 +1,20 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-27T23:26:23+08:00 / 2026-07-27T11:26:23-04:00**
+- As of: **2026-07-27T23:43:39+08:00 / 2026-07-27T11:43:39-04:00**
 - Session: **US_RTH**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
 - Stale-last normalization: **none**
 
 ## Source Status
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
-|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
-|Binance|FAILED|N/A|N/A|Crypto/miner context only|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
-|GitHub|SUCCESS|2026-07-27T23:33:38.046355+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-27T23:44:44.109584+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'
+- Engine failure after source collection: KeyError: 'HUT'
 
 ## Boss Action
 
