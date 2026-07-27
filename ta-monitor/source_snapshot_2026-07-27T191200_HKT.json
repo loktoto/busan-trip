@@ -1,0 +1,40 @@
+{
+  "as_of_hkt": "2026-07-27T19:12:00+08:00",
+  "as_of_et": "2026-07-27T07:12:00-04:00",
+  "session": "US_PREMARKET",
+  "source_status": {
+    "github": "SUCCESS: production_policy.md and config.py fetched from main",
+    "alpaca": "FAILED: no installed connector/plugin; SIP, delayed_sip and IEX collectors unavailable",
+    "ibkr": "PARTIAL_SUCCESS: positions; fresh snapshots for ONDS, IREN, HUT, APLD, FOTO and SOXX; ONDS weekly/daily/1H/15m history",
+    "binance": "FAILED: no installed connector/plugin"
+  },
+  "quotes": {
+    "ONDS": {"last": 8.119, "bid": 8.11, "ask": 8.12, "volume": 570595.967882, "prior_close": 7.80, "change_pct": 4.09, "mark": 8.1190004349, "historical_vol_annual": 0.8374453754, "iv_percentile_52w": 0.34799999, "is_close": false},
+    "IREN": {"last": 38.40, "bid": 38.38, "ask": 38.45, "volume": 418733.445366, "prior_close": 37.07, "change_pct": 3.59, "mark": 38.4000015259, "historical_vol_annual": 0.9758821962, "iv_percentile_52w": 0.948000014, "is_close": false},
+    "HUT": {"last": 114.14, "bid": 113.75, "ask": 114.50, "volume": 10898.153937, "prior_close": 109.99, "change_pct": 3.77, "mark": 114.1200027466, "historical_vol_annual": 1.1122061199, "iv_percentile_52w": 0.852, "is_close": false},
+    "APLD": {"last": 28.16, "bid": 28.15, "ask": 28.25, "volume": 152885.937301, "change_pct": 3.57, "mark": 28.1571006775, "historical_vol_annual": 0.959340959, "iv_percentile_52w": 0.728, "is_close": false},
+    "FOTO": {"last": 19.84, "bid": 19.72, "ask": 19.94, "volume": 2975, "prior_close": 19.21, "change_pct": 3.28, "mark": 19.7633991241, "historical_vol_annual": 0.6359296102, "iv_percentile_52w": 0.617647052, "is_close": false},
+    "SOXX": {"last": 540.88, "bid": 540.02, "ask": 541.00, "volume": 130936.955282, "prior_close": 527.01, "change_pct": 2.63, "mark": 540.4600219727, "historical_vol_annual": 0.6910633635, "iv_percentile_52w": 0.984000027, "is_close": false}
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "market_price": 19.7633991, "unrealized_pnl": -44.246708},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "market_price": 540.69000245, "unrealized_pnl": 155.12223185}
+  },
+  "calculation_metadata": {
+    "completed_bar_exclusion": "current week/day/hour/15m excluded",
+    "onds_last_completed_week_close": 7.80,
+    "onds_last_completed_day_close": 7.80,
+    "onds_last_completed_1h_close": 8.10,
+    "onds_last_completed_15m_close": 8.10,
+    "onds_trigger": 7.85,
+    "onds_tactical_stop": 7.47,
+    "onds_tp2": 8.775,
+    "onds_current_rr_to_tp2_using_last": 1.01,
+    "pass2_candidates": [],
+    "full_universe_scoring": "WITHHELD: uniform completed series unavailable"
+  }
+}
