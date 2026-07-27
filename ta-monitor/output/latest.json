@@ -1,7 +1,7 @@
 {
-  "as_of_hkt": "2026-07-27T10:18:47+08:00",
-  "as_of_et": "2026-07-26T22:18:47-04:00",
-  "session": "US OVERNIGHT / SUNDAY EVENING; RTH CLOSED",
+  "as_of_hkt": "2026-07-27T12:09:22+08:00",
+  "as_of_et": "2026-07-27T00:09:22-04:00",
+  "session": "US OVERNIGHT; RTH CLOSED",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
@@ -10,7 +10,7 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "detail": "Fresh overnight snapshots obtained for HUT, IREN, ONDS, APLD and SOXX; FOTO close/mark and position obtained; ONDS weekly/daily histories obtained"
+      "detail": "Fresh overnight snapshots obtained for HUT, IREN, ONDS, APLD, FOTO and SOXX; ONDS 1H and 15m completed history obtained; positions obtained"
     },
     "Alpaca": {
       "status": "FAILED_AFTER_ATTEMPT",
@@ -18,19 +18,19 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "detail": "No installed Alpaca connector/plugin; clock, SIP, delayed_sip, IEX and uniform bars unavailable"
+      "detail": "No callable Alpaca connector in this runtime; market clock, SIP, delayed_sip, IEX and uniform bars unavailable"
     },
     "Binance": {
-      "status": "FAILED_AFTER_ATTEMPT",
+      "status": "PARTIAL_SUCCESS",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "detail": "No installed connector; official futures endpoint fetch failed/HTTP 451"
+      "detail": "ETHUSDT premium index/funding obtained from official endpoint; BTC and open-interest endpoints unavailable in this run"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-27T10:18:43.995014+08:00",
+      "timestamp": "2026-07-27T12:12:05.045561+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
