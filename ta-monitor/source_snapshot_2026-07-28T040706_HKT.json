@@ -1,0 +1,31 @@
+{
+  "as_of_hkt": "2026-07-28T04:07:06+08:00",
+  "as_of_et": "2026-07-27T16:07:06-04:00",
+  "session": "US_AFTER_HOURS",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS",
+    "alpaca": "UNAVAILABLE_AFTER_ATTEMPT",
+    "binance": "UNAVAILABLE_AFTER_ATTEMPT",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"last": 515.82, "bid": 515.13, "ask": 517.20, "change_pct": -2.12, "mark": 515.1300048828125, "volume": 13166529.587449, "high": 534.30, "low": 500.00, "ivp52": 0.94},
+    "SMH": {"last": 548.08, "bid": 547.35, "ask": 548.50, "change_pct": -2.34, "mark": 547.8504028320312, "volume": 32461962.643209, "high": 567.62, "low": 535.31, "ivp52": 0.912},
+    "MU": {"last": 899.62, "bid": 899.38, "ask": 899.77, "change_pct": -2.32, "mark": 899.6699829101562, "volume": 46095177.912227, "high": 935.00, "low": 854.79, "ivp52": 0.836},
+    "SNDK": {"last": 1284.83, "bid": 1280.81, "ask": 1282.30, "change_pct": -10.56, "mark": 1282.010009765625, "volume": 21086034.849629, "high": 1462.99, "low": 1222.01, "ivp52": 0.98},
+    "AMD": {"last": 495.00, "bid": 494.63, "ask": 495.24, "change_pct": -5.16, "mark": 495.15728759765625, "volume": 31058139.988705, "high": 528.00, "low": 476.93, "ivp52": 0.948},
+    "INTC": {"last": 91.33, "bid": 91.35, "ask": 91.42, "change_pct": -1.07, "mark": 91.33999633789062, "volume": 130590452.872706, "high": 94.98, "low": 86.94, "ivp52": 0.86},
+    "ARM": {"last": 266.47, "bid": 265.77, "ask": 266.39, "change_pct": 2.48, "mark": 266.2900085449219, "volume": 4885955.009372, "high": 268.20, "low": 251.61, "ivp52": 0.896}
+  },
+  "positions": {
+    "SOXX": {"quantity": 15, "average_price": 525.34639333, "market_price": 515.1300049, "unrealized_pnl": -153.2458265},
+    "FOTO": {"quantity": 160, "average_price": 19.64937, "market_price": 18.63500025, "unrealized_pnl": -162.29916}
+  },
+  "calculation_metadata": {
+    "bars": "IBKR completed 15m collected for SOXX and SMH; full-universe bars unavailable",
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "orders_created": false
+  }
+}
