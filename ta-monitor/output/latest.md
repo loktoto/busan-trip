@@ -1,7 +1,7 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-27T12:09:22+08:00 / 2026-07-27T00:09:22-04:00**
-- Session: **US OVERNIGHT; RTH CLOSED**
+- As of: **2026-07-27T15:10:33+08:00 / 2026-07-27T03:10:33-04:00**
+- Session: **US_PREMARKET**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
 - Live-week / limitation: Engine failure after source collection: KeyError: 'price'
@@ -12,9 +12,9 @@
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
 |IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|FAILED_AFTER_ATTEMPT|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|PARTIAL_SUCCESS|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-27T12:12:05.045561+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-27T15:12:20.644170+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
