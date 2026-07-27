@@ -1,20 +1,20 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-27T07:21:17+08:00 / 2026-07-26T19:21:17-04:00**
-- Session: **US_CLOSED_WEEKEND**
+- As of: **2026-07-27T10:18:47+08:00 / 2026-07-26T22:18:47-04:00**
+- Session: **US OVERNIGHT / SUNDAY EVENING; RTH CLOSED**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'price'
 - Stale-last normalization: **none**
 
 ## Source Status
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|partial|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|failed|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|degraded|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|success|2026-07-27T07:23:00.793772+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|Alpaca|FAILED_AFTER_ATTEMPT|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|FAILED_AFTER_ATTEMPT|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-27T10:18:43.995014+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'HUT'
+- Engine failure after source collection: KeyError: 'price'
 
 ## Boss Action
 
