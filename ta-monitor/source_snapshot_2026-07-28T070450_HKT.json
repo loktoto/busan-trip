@@ -1,0 +1,35 @@
+{
+  "as_of_hkt": "2026-07-28T07:04:50+08:00",
+  "as_of_et": "2026-07-27T19:04:50-04:00",
+  "session": "US_AFTER_HOURS",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS",
+    "alpaca": "FAILED_NO_RUNTIME_CONNECTOR",
+    "binance": "FAILED_NO_RUNTIME_CONNECTOR",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"last": 510.66, "mark": 510.75, "bid": 510.73, "ask": 513.25, "change_pct": -3.10, "high": 534.30, "low": 500.00, "hv30_annual": 0.6910633635, "ivp52": 0.94},
+    "SMH": {"last": 545.00, "mark": 545.00, "bid": 545.00, "ask": 546.00, "change_pct": -2.88, "high": 567.62, "low": 535.31, "hv30_annual": 0.5828754175, "ivp52": 0.912},
+    "MU": {"last": 877.29, "mark": 877.2999878, "bid": 876.71, "ask": 877.70, "change_pct": -4.74, "high": 935.00, "low": 854.79, "hv30_annual": 1.138075218, "ivp52": 0.836},
+    "SNDK": {"last": 1236.64, "mark": 1235.3891602, "bid": 1235.71, "ask": 1237.69, "change_pct": -13.92, "high": 1462.99, "low": 1222.01, "hv30_annual": 1.289813289, "ivp52": 0.98},
+    "AMD": {"last": 490.00, "mark": 489.2099915, "bid": 489.30, "ask": 490.00, "change_pct": -6.12, "high": 528.00, "low": 476.93, "hv30_annual": 0.8244854272, "ivp52": 0.948},
+    "INTC": {"last": 90.36, "mark": 90.3899994, "bid": 90.30, "ask": 90.59, "change_pct": -2.12, "high": 94.98, "low": 86.94, "hv30_annual": 0.9531245017, "ivp52": 0.86},
+    "ARM": {"last": 264.50, "mark": 262.0100098, "bid": 261.12, "ask": 262.98, "change_pct": 1.73, "high": 268.20, "low": 251.61, "hv30_annual": 1.0339559083, "ivp52": 0.896}
+  },
+  "positions": {
+    "FOTO": {"quantity": 160, "average_price": 19.64937, "market_price": 18.2814007, "unrealized_pnl": -218.875088},
+    "SOXX": {"quantity": 15, "average_price": 525.34639333, "market_price": 510.75, "unrealized_pnl": -218.9459}
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "long_fixed_scores": "WITHHELD_NO_COMPLETE_FRESH_BARS",
+    "short_fixed_scores": "PROVISIONAL_ONLY_NO_BORROW_OR_COMPLETED_BAR_REFRESH",
+    "pass2_triggered": false,
+    "orders_created": false
+  }
+}
