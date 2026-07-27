@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-27T23:43:39+08:00",
-  "as_of_et": "2026-07-27T11:43:39-04:00",
+  "as_of_hkt": "2026-07-27T23:58:27+08:00",
+  "as_of_et": "2026-07-27T11:58:27-04:00",
   "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -11,11 +11,8 @@
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
       "positions": "success",
-      "orders": "success",
-      "bulk_contract_search": "failed_after_retry",
-      "core_short_exact_contracts": "success",
-      "core_short_snapshots": "success",
-      "borrow_shortability": "N/A_not_exposed_by_available_endpoint"
+      "short_core_contracts": "success",
+      "short_core_fresh_snapshots": "success"
     },
     "Alpaca": {
       "status": "FAILED",
@@ -24,32 +21,26 @@
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
       "clock": "success",
-      "snapshot_sip": "failed_entitlement",
       "snapshot_feed": "delayed_sip",
-      "snapshot_status": "success_42_symbols",
-      "core_short_bars_feed": "iex",
-      "weekly_daily_1h_15m": "success_core_short_except_amd_weekly",
-      "long_universe_uniform_bars": "degraded_global_limit"
+      "bars_feed": "iex",
+      "sip_snapshot": "failed",
+      "delayed_sip_snapshot": "success"
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "not_requested_in_this_manual_run",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "btc_eth_1h": "success",
-      "funding": "success",
-      "open_interest_1h": "success"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-27T23:44:44.109584+08:00",
+      "timestamp": "2026-07-27T23:59:05.920376+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
       "policy": "success",
-      "config": "success",
-      "branch": "main"
+      "config": "success"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
