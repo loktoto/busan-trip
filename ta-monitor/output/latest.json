@@ -1,62 +1,36 @@
 {
-  "as_of_hkt": "2026-07-27T17:08:23+08:00",
-  "as_of_et": "2026-07-27T05:08:23-04:00",
+  "as_of_hkt": "2026-07-27T19:12:00+08:00",
+  "as_of_et": "2026-07-27T07:12:00-04:00",
   "session": "US_PREMARKET",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "partial_success",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "bulk_search": "failed_after_retry",
-      "fresh_snapshot_symbols": [
-        "ONDS",
-        "IREN",
-        "HUT",
-        "APLD",
-        "FOTO",
-        "SOXX"
-      ],
-      "history_symbols": [
-        "ONDS"
-      ]
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
-      "status": "failed_after_attempt",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "clock": "unavailable",
-      "snapshot": "unavailable",
-      "bars": "unavailable",
-      "retries": [
-        "SIP unavailable",
-        "delayed_sip unavailable",
-        "IEX unavailable"
-      ]
+      "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "failed_after_attempt",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "btc": "unavailable",
-      "eth": "HTTP 451",
-      "funding": "unavailable",
-      "open_interest": "unavailable"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
-      "status": "success",
-      "timestamp": "2026-07-27T17:10:42.669923+08:00",
+      "status": "SUCCESS",
+      "timestamp": "2026-07-27T19:12:39.840240+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable",
-      "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1",
-      "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"
+      "impact": "Fresh market calculation unavailable"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'price'",
