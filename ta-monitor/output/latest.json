@@ -1,36 +1,57 @@
 {
-  "as_of_hkt": "2026-07-27T15:10:33+08:00",
-  "as_of_et": "2026-07-27T03:10:33-04:00",
+  "as_of_hkt": "2026-07-27T17:08:23+08:00",
+  "as_of_et": "2026-07-27T05:08:23-04:00",
   "session": "US_PREMARKET",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "detail": "Fresh snapshots collected for ONDS, IREN, HUT, APLD, FOTO, SOXX; positions collected; ONDS 1H history collected"
+      "bulk_search": "failed_after_retry",
+      "fresh_snapshot_symbols": [
+        "ONDS",
+        "IREN",
+        "HUT",
+        "APLD",
+        "FOTO",
+        "SOXX"
+      ],
+      "history_symbols": [
+        "ONDS"
+      ]
     },
     "Alpaca": {
-      "status": "FAILED",
+      "status": "failed_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "detail": "No callable Alpaca market-clock/snapshot/bars connector in runtime; SIP/delayed_sip/IEX fallback unavailable"
+      "clock": "unavailable",
+      "snapshot": "unavailable",
+      "bars": "unavailable",
+      "retries": [
+        "SIP unavailable",
+        "delayed_sip unavailable",
+        "IEX unavailable"
+      ]
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "failed_after_attempt",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "detail": "BTC/ETH futures premium-index and open-interest requests did not return reliable payload; ETH request returned HTTP 451"
+      "btc": "unavailable",
+      "eth": "HTTP 451",
+      "funding": "unavailable",
+      "open_interest": "unavailable"
     },
     "GitHub": {
-      "status": "SUCCESS",
-      "timestamp": "2026-07-27T15:12:20.644170+08:00",
+      "status": "success",
+      "timestamp": "2026-07-27T17:10:42.669923+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
