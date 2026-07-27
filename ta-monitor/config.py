@@ -7,6 +7,29 @@ PHOTONICS = ["FOTO", "LITE", "COHR", "APH", "FN", "AAOI", "AXTI"]
 MINERS = ["HUT", "IREN", "WULF", "MARA"]
 MEMORY = ["MU", "SNDK"]
 
+# Short-side coverage is a separate board. It does not replace or dilute the 21-name long board.
+# User-facing "Intel" is represented by its listed ticker INTC.
+SHORT_CORE = ["SOXX", "SMH", "MU", "SNDK", "AMD", "INTC", "ARM"]
+
+# Liquid semiconductor names to screen dynamically for excessive valuation plus deteriorating price/fundamental evidence.
+# Inclusion here means SCREEN ONLY; it does not assert that the name is currently overvalued or shortable.
+HIGH_MULTIPLE_SEMI_SCREEN = [
+    "NVDA", "AVGO", "MRVL", "ALAB", "CRDO", "MPWR", "MCHP", "ADI", "ON", "NXPI",
+    "QCOM", "AMAT", "LRCX", "KLAC", "ASML", "TSM",
+]
+
+SHORT_SCREEN_RULES = {
+    "min_price": 5.0,
+    "max_spread_pct": 0.75,
+    "min_rr_to_tp2": 2.0,
+    "earnings_blackout_sessions": 5,
+    "pass2_threshold": 7.0,
+    "valuation_percentile_threshold": 80,
+    "minimum_short_confirmations": 3,
+    "require_borrow_check_when_available": True,
+    "require_rth_validation_for_overnight_signal": True,
+}
+
 EVENTS = {
     "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
     "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
