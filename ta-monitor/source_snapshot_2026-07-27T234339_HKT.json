@@ -1,0 +1,90 @@
+{
+  "as_of_hkt": "2026-07-27T23:43:39+08:00",
+  "as_of_et": "2026-07-27T11:43:39-04:00",
+  "session": "US_RTH",
+  "monitoring_only": true,
+  "order_authority": "NONE",
+  "source_status": {
+    "github": {"policy": "success", "config": "success", "branch": "main"},
+    "alpaca": {
+      "clock": "success",
+      "snapshot_sip": "failed_entitlement",
+      "snapshot_feed": "delayed_sip",
+      "snapshot_status": "success_42_symbols",
+      "core_short_bars_feed": "iex",
+      "weekly_daily_1h_15m": "success_core_short_except_amd_weekly",
+      "long_universe_uniform_bars": "degraded_global_limit"
+    },
+    "ibkr": {
+      "positions": "success",
+      "orders": "success",
+      "bulk_contract_search": "failed_after_retry",
+      "core_short_exact_contracts": "success",
+      "core_short_snapshots": "success",
+      "borrow_shortability": "N/A_not_exposed_by_available_endpoint"
+    },
+    "binance": {
+      "btc_eth_1h": "success",
+      "funding": "success",
+      "open_interest_1h": "success"
+    }
+  },
+  "quotes": {
+    "long_board": {
+      "HUT": {"last": 103.55, "source": "alpaca_delayed_sip"},
+      "IREN": {"last": 35.47, "source": "alpaca_delayed_sip"},
+      "NBIS": {"last": 184.4401, "source": "alpaca_delayed_sip"},
+      "WULF": {"last": 17.8359, "source": "alpaca_delayed_sip"},
+      "MARA": {"last": 11.615, "source": "alpaca_delayed_sip"},
+      "APLD": {"last": 26.26, "source": "alpaca_delayed_sip"},
+      "ORCL": {"last": 120.79, "source": "alpaca_delayed_sip"},
+      "CRWV": {"last": 70.5958, "source": "alpaca_delayed_sip"},
+      "CRCL": {"last": 63.495, "source": "alpaca_delayed_sip"},
+      "RKLB": {"last": 64.89, "source": "alpaca_delayed_sip"},
+      "AAOI": {"last": 94.0849, "source": "alpaca_delayed_sip"},
+      "ONDS": {"last": 7.7923, "source": "alpaca_delayed_sip"},
+      "AXTI": {"last": 46.615, "source": "alpaca_delayed_sip"},
+      "MXL": {"last": 63.39, "source": "alpaca_delayed_sip"},
+      "FOTO": {"last": 18.235, "source": "alpaca_delayed_sip"},
+      "LITE": {"last": 704.72, "source": "alpaca_delayed_sip"},
+      "COHR": {"last": 258.44, "source": "alpaca_delayed_sip"},
+      "APH": {"last": 147.31, "source": "alpaca_delayed_sip"},
+      "FN": {"last": 458.5275, "source": "alpaca_delayed_sip"},
+      "MU": {"last": 867.86, "source": "ibkr"},
+      "SNDK": {"last": 1267.78, "source": "ibkr"}
+    },
+    "short_board": {
+      "SOXX": {"last": 501.26, "bid": 500.94, "ask": 501.27, "change_pct": -4.89, "day_low": 500.0, "ivp_52w": 0.884, "hv_30d": 0.6911, "source": "ibkr"},
+      "SMH": {"last": 535.79, "bid": 535.88, "ask": 536.08, "change_pct": -4.53, "day_low": 535.31, "ivp_52w": 0.992, "hv_30d": 0.5829, "source": "ibkr"},
+      "MU": {"last": 867.86, "bid": 867.41, "ask": 868.27, "change_pct": -5.76, "day_low": 854.79, "ivp_52w": 0.816, "hv_30d": 1.1381, "source": "ibkr"},
+      "SNDK": {"last": 1267.78, "bid": 1266.31, "ask": 1267.13, "change_pct": -11.75, "day_low": 1226.9, "ivp_52w": 0.988, "hv_30d": 1.2898, "source": "ibkr"},
+      "AMD": {"last": 479.62, "bid": 479.12, "ask": 479.63, "change_pct": -8.11, "day_low": 476.93, "ivp_52w": 0.952, "hv_30d": 0.8245, "source": "ibkr"},
+      "INTC": {"last": 89.01, "bid": 88.97, "ask": 89.0, "change_pct": -3.59, "day_low": 86.94, "ivp_52w": 0.86, "hv_30d": 0.9531, "source": "ibkr"},
+      "ARM": {"last": 252.16, "bid": 251.76, "ask": 252.8, "change_pct": -3.02, "day_low": 251.61, "ivp_52w": 0.916, "hv_30d": 1.034, "source": "ibkr"}
+    }
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "timing": "after_close", "label": "FY2026 Q4/full-year results"},
+    "SNDK": {"date": "2026-08-05", "timing": "after_close", "label": "FY2026 Q4/full-year results"}
+  },
+  "crypto_context": {
+    "BTCUSDT": {"mark": 64559.4, "last_completed_1h_close": 64663.4, "prior_1h_close": 65189.4, "funding_rate": 0.00005939, "open_interest_direction_1h": "down"},
+    "ETHUSDT": {"mark": 1931.1966, "last_completed_1h_close": 1931.28, "prior_1h_close": 1960.13, "funding_rate": 0.00001845, "open_interest_direction_1h": "down"}
+  },
+  "calculation_metadata": {
+    "excluded_incomplete_current_week_day_hour_15m": true,
+    "short_scores": {
+      "SOXX": {"raw": 6.8, "state": "SHORT_BREAKDOWN_PENDING", "action": "wait_failed_reclaim"},
+      "SMH": {"raw": 6.8, "state": "SHORT_BREAKDOWN_PENDING", "action": "same_sleeve_as_SOXX"},
+      "INTC": {"raw": 6.7, "state": "SHORT_BREAKDOWN_PENDING", "action": "wait_failed_reclaim"},
+      "ARM": {"raw": 6.6, "state": "SHORT_BREAKDOWN_PENDING", "action": "wait_failed_reclaim"},
+      "MU": {"raw": 6.5, "state": "SHORT_WATCH", "action": "do_not_chase"},
+      "AMD": {"raw": 6.3, "state": "SHORT_BREAKDOWN_PENDING", "action": "do_not_chase"},
+      "SNDK": {"raw": 5.2, "state": "SHORT_SQUEEZE_RISK", "action": "no_new_short"}
+    },
+    "validated_7_plus": [],
+    "pass_2_required": false,
+    "dynamic_high_multiple_additions": [],
+    "dynamic_screen_reason": "same-source valuation basis unavailable; valuation alone prohibited"
+  }
+}
