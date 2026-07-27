@@ -1,0 +1,47 @@
+{
+  "as_of_hkt": "2026-07-27T23:58:27+08:00",
+  "as_of_et": "2026-07-27T11:58:27-04:00",
+  "session": "US_RTH",
+  "monitoring_only": true,
+  "source_status": {
+    "github": {"policy": "success", "config": "success"},
+    "alpaca": {"clock": "success", "snapshot_feed": "delayed_sip", "bars_feed": "iex", "sip_snapshot": "failed", "delayed_sip_snapshot": "success"},
+    "ibkr": {"positions": "success", "short_core_contracts": "success", "short_core_fresh_snapshots": "success"},
+    "binance": {"status": "not_requested_in_this_manual_run"}
+  },
+  "positions_summary": {
+    "SOXX": {"quantity": 15, "average_price": 525.34639333, "market_price": 503.0},
+    "FOTO": {"quantity": 160, "average_price": 19.64937, "market_price": 18.12000085}
+  },
+  "quotes": {
+    "long_board_alpaca_delayed_sip": {
+      "HUT": 101.87, "IREN": 35.09, "NBIS": 182.81, "WULF": 17.70, "MARA": 11.5799,
+      "APLD": 26.0639, "ORCL": 119.6079, "CRWV": 70.2079, "CRCL": 63.185, "RKLB": 64.605,
+      "AAOI": 94.61, "ONDS": 7.78, "AXTI": 46.64, "MXL": 63.0599, "FOTO": 18.0401,
+      "LITE": 702.54, "COHR": 257.92, "APH": 147.13, "FN": 458.8, "MU": 872.445, "SNDK": 1273.525,
+      "SOXX": 503.01
+    },
+    "short_core_ibkr_fresh": {
+      "SOXX": {"last": 503.49, "bid": 503.49, "ask": 503.79, "change_pct": -4.46, "low": 500.0, "high": 534.3, "historical_vol_annual": 0.6910633635, "iv_percentile_52w": 0.928},
+      "SMH": {"last": 538.37, "bid": 538.43, "ask": 538.65, "change_pct": -4.07, "low": 535.31, "high": 567.62, "historical_vol_annual": 0.5828754175, "iv_percentile_52w": 0.992},
+      "MU": {"last": 875.69, "bid": 875.25, "ask": 876.03, "change_pct": -4.91, "low": 854.79, "high": 935.0, "historical_vol_annual": 1.138075218, "iv_percentile_52w": 0.836},
+      "SNDK": {"last": 1278.2, "bid": 1276.79, "ask": 1278.16, "change_pct": -11.02, "low": 1226.9, "high": 1462.99, "historical_vol_annual": 1.289813289, "iv_percentile_52w": 0.98},
+      "AMD": {"last": 479.78, "bid": 479.4, "ask": 479.94, "change_pct": -8.08, "low": 476.93, "high": 528.0, "historical_vol_annual": 0.8244854272, "iv_percentile_52w": 0.948},
+      "INTC": {"last": 88.93, "bid": 88.93, "ask": 88.95, "change_pct": -3.67, "low": 86.94, "high": 94.98, "historical_vol_annual": 0.9531245017, "iv_percentile_52w": 0.86},
+      "ARM": {"last": 254.01, "bid": 253.83, "ask": 254.36, "change_pct": -2.31, "low": 251.61, "high": 266.4, "historical_vol_annual": 1.033955908, "iv_percentile_52w": 0.932}
+    }
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "timing": "after_close"},
+    "SNDK": {"date": "2026-08-05", "timing": "after_close"}
+  },
+  "calculation_metadata": {
+    "completed_interval_rule": "current week/day/hour/15m excluded",
+    "long_score_status": "provisional_for_full_board; complete 1H/15m validation pulled for ORCL, CRCL, RKLB, ONDS",
+    "short_score_status": "weekly_daily_1H_15m assessed for fixed short core",
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "borrow_shortability": "N/A - connector did not expose reliable borrow/locate fields",
+    "high_multiple_screen": "TA deterioration screened; valuation classification unavailable in this run"
+  }
+}
