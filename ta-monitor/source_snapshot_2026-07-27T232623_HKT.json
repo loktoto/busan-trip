@@ -1,0 +1,37 @@
+{
+  "as_of_hkt": "2026-07-27T23:26:23+08:00",
+  "as_of_et": "2026-07-27T11:26:23-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "ibkr": {"status": "partial", "bulk_search_attempts": 2, "bulk_search_result": "empty", "successful_symbols": ["HUT", "IREN", "APLD", "ONDS", "FOTO", "SOXX"], "quote_mode": "fresh snapshot; some delayed history"},
+    "alpaca": {"status": "failed", "reason": "No callable Alpaca connector in runtime; SIP/delayed_sip/IEX clock/snapshot/bar modules unavailable"},
+    "binance": {"status": "failed", "reason": "Official futures endpoint attempt failed; ETH returned HTTP 451 and BTC/OI payloads unavailable"}
+  },
+  "quotes": {
+    "HUT": {"last": 103.05, "bid": 103.36, "ask": 103.98, "mark": 102.91000366210938, "change_pct": -6.31, "volume": 1789656.292339, "high": 112.60, "low": 100.88, "open": 111.80, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.9520000219345093, "last_is_close": false},
+    "IREN": {"last": 35.32, "bid": 35.56, "ask": 35.60, "mark": 35.314998626708984, "prior_close": 37.07, "change_pct": -4.72, "volume": 14653443.380034, "high": 38.4992, "low": 35.0706, "open": 37.60, "historical_vol_annual": 0.975882196184601, "iv_percentile_52w": 0.9679999947547913, "last_is_close": false},
+    "APLD": {"last": 26.19, "bid": 26.30, "ask": 26.32, "mark": 26.239999771118164, "prior_close": 27.19, "change_pct": -3.68, "volume": 7100304.433627, "high": 28.19, "low": 25.89, "open": 28.06, "historical_vol_annual": 0.9593409589878252, "iv_percentile_52w": 0.800000011920929, "last_is_close": false},
+    "ONDS": {"last": 7.76, "bid": 7.84, "ask": 7.85, "mark": 7.760000228881836, "prior_close": 7.80, "change_pct": -0.51, "volume": 28656565.485368, "high": 8.19, "low": 7.685, "open": 7.90, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3919999897480011, "last_is_close": false},
+    "FOTO": {"last": 18.17, "bid": 18.09, "ask": 18.13, "mark": 18.110000610351562, "prior_close": 19.21, "change_pct": -5.41, "volume": 156062.106137, "high": 19.70, "low": 17.97, "open": 19.70, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.05882352963089943, "last_is_close": false},
+    "SOXX": {"last": 503.38, "bid": 503.22, "ask": 503.64, "mark": 503.4949951171875, "change_pct": -4.48, "volume": 7729857.086776, "high": 534.30, "low": 500.00, "open": 532.28, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 0.9200000166893005, "last_is_close": false},
+    "NBIS": null, "WULF": null, "MARA": null, "ORCL": null, "CRWV": null, "CRCL": null, "RKLB": null, "AAOI": null, "AXTI": null, "MXL": null, "LITE": null, "COHR": null, "APH": null, "FN": null, "MU": null, "SNDK": null
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 160.0, "average_price": 19.64937, "market_price": 18.12999915, "unrealized_pnl": -243.099336},
+    "SOXX": {"quantity": 15.0, "average_price": 525.34639333, "market_price": 503.8200073, "unrealized_pnl": -322.8957905}
+  },
+  "calculation_metadata": {
+    "policy": "ta-monitor/production_policy.md",
+    "config": "ta-monitor/config.py",
+    "completed_bar_rule": "Current week/day/hour/15m excluded",
+    "onds_last_completed_1h_close": 7.935,
+    "onds_last_completed_15m_close": 7.935,
+    "full_universe_scoring": "withheld_due_to_missing_uniform_series",
+    "pass2": "not_triggered_no_reliable_raw_score_gte_7"
+  }
+}
