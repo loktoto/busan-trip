@@ -1,0 +1,38 @@
+{
+  "as_of_hkt": "2026-07-27T17:08:23+08:00",
+  "as_of_et": "2026-07-27T05:08:23-04:00",
+  "session": "US_PREMARKET",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "failed_after_attempt", "clock": "unavailable", "snapshot": "unavailable", "bars": "unavailable", "retries": ["SIP unavailable", "delayed_sip unavailable", "IEX unavailable"]},
+    "ibkr": {"status": "partial_success", "bulk_search": "failed_after_retry", "fresh_snapshot_symbols": ["ONDS", "IREN", "HUT", "APLD", "FOTO", "SOXX"], "history_symbols": ["ONDS"]},
+    "binance": {"status": "failed_after_attempt", "btc": "unavailable", "eth": "HTTP 451", "funding": "unavailable", "open_interest": "unavailable"}
+  },
+  "quotes": {
+    "ONDS": {"last": 8.07, "last_is_close": false, "bid": 8.07, "ask": 8.08, "volume": 234256.66297, "prior_close": 7.80, "change_pct": 3.46, "mark": 8.079999923706055, "historical_vol_annual": 0.8374453754341952, "iv_percentile_52w": 0.3479999899864197},
+    "IREN": {"last": 38.70, "last_is_close": false, "bid": 38.68, "ask": 38.76, "volume": 274839.109115, "prior_close": 37.07, "change_pct": 4.40, "mark": 38.689998626708984, "historical_vol_annual": 0.975882196184601, "iv_percentile_52w": 0.9480000138282776},
+    "HUT": {"last": 114.14, "last_is_close": false, "bid": 113.60, "ask": 115.00, "volume": 7042.041937, "prior_close": 109.99, "change_pct": 3.77, "mark": 114.00, "historical_vol_annual": 1.1122061199379907, "iv_percentile_52w": 0.8519999980926514},
+    "APLD": {"last": 28.39, "last_is_close": false, "bid": 28.40, "ask": 28.43, "volume": 68728.302097, "change_pct": 4.41, "mark": 28.40999984741211, "historical_vol_annual": 0.9593409589878252, "iv_percentile_52w": 0.7279999852180481},
+    "FOTO": {"last": 19.84, "last_is_close": false, "bid": 19.63, "ask": 20.18, "volume": 1653.0, "prior_close": 19.21, "change_pct": 3.28, "mark": 19.84000015258789, "historical_vol_annual": 0.6359296102259118, "iv_percentile_52w": 0.6176470518112183},
+    "SOXX": {"last": 542.00, "last_is_close": false, "bid": 542.96, "ask": 543.30, "volume": 61292.601163, "change_pct": 2.84, "mark": 543.0999755859375, "historical_vol_annual": 0.6910633634966623, "iv_percentile_52w": 0.984000027179718}
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "mark": 19.84000015, "unrealized_pnl": -35.054582},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "mark": 543.0999756, "unrealized_pnl": 186.4518828}
+  },
+  "calculation_metadata": {
+    "completed_bar_exclusion": ["current_week", "current_day", "current_hour", "current_15m"],
+    "onds_last_completed_1h_close": 8.08,
+    "onds_last_completed_15m_close": 8.08,
+    "onds_trigger": 7.85,
+    "onds_tactical_stop": 7.47,
+    "onds_structural_stop": 7.22,
+    "onds_tp2": 8.775,
+    "formal_full_universe_scoring": "withheld_due_to_incomplete_uniform_series",
+    "pass2": "not_triggered"
+  }
+}
