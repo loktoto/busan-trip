@@ -14,7 +14,7 @@
 |IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
 |Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
 |Binance|FAILED|N/A|N/A|Crypto/miner context only|Engine failure after source collection: AttributeError: 'NoneType' object has no attribute 'get'|
-|GitHub|SUCCESS|2026-07-27T23:32:53.450861+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|GitHub|SUCCESS|2026-07-27T23:33:38.046355+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
