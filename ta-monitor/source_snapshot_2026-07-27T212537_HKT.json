@@ -1,0 +1,34 @@
+{
+  "as_of_hkt": "2026-07-27T21:25:37+08:00",
+  "as_of_et": "2026-07-27T09:25:37-04:00",
+  "session": "US_PREMARKET",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "FAILED_AFTER_ATTEMPT", "feed": null, "reason": "No callable Alpaca connector in runtime; SIP/delayed_sip/IEX snapshots and uniform bars unavailable"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "bulk_search_attempts": 2, "bulk_search_result": "empty", "fresh_symbols": ["ONDS", "IREN", "FOTO", "SOXX"], "positions": "SUCCESS", "bars": {"ONDS_1H": "SUCCESS", "ONDS_15M": "SUCCESS"}},
+    "binance": {"status": "DEGRADED", "reason": "No direct connector; public web search did not return sufficiently fresh BTC/ETH 1H, funding and OI payloads for this run"}
+  },
+  "quotes": {
+    "ONDS": {"source": "IBKR", "last": 7.90, "last_is_close": false, "bid": 7.90, "ask": 7.92, "volume": 1146458.600775, "change": 0.10, "change_pct": 1.28, "mark": 7.9000000954, "prior_close": 7.80, "historical_vol_30d_annual": 0.8374453754, "iv_percentile_52w": 0.34799999, "last_completed_1h_close": 8.03, "last_completed_15m_close": 8.00},
+    "IREN": {"source": "IBKR", "last": 37.74, "last_is_close": false, "bid": 37.70, "ask": 37.74, "volume": 824576.404065, "change": 0.67, "change_pct": 1.81, "mark": 37.7253990173, "historical_vol_30d_annual": 0.9758821962, "iv_percentile_52w": 0.9480000138},
+    "FOTO": {"source": "IBKR", "last": 19.70, "last_is_close": false, "bid": 19.30, "ask": 19.70, "volume": 5828, "change": 0.49, "change_pct": 2.55, "mark": 19.7000007629, "prior_close": 19.21, "historical_vol_30d_annual": 0.6359296102, "iv_percentile_52w": 0.6176470518},
+    "SOXX": {"source": "IBKR", "last": 535.55, "last_is_close": false, "bid": 535.06, "ask": 536.69, "volume": 312178.594717, "change": 8.54, "change_pct": 1.62, "mark": 535.5499877930, "historical_vol_30d_annual": 0.6910633635, "iv_percentile_52w": 0.9840000272}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "market_price": 19.70000075, "unrealized_pnl": -51.85451},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "market_price": 536.0, "unrealized_pnl": 94.1522}
+  },
+  "calculation_metadata": {
+    "policy": "ta-monitor/production_policy.md",
+    "config": "ta-monitor/config.py",
+    "excluded_incomplete": ["current_week", "current_day", "current_hour", "current_15m"],
+    "full_universe_fixed_scoring": "WITHHELD_DATA_GAPS",
+    "pass2": "NOT_TRIGGERED_NO_RELIABLE_RAW_SCORE_GTE_7",
+    "orders": "NONE"
+  }
+}
