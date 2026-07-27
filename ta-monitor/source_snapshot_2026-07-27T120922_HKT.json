@@ -1,0 +1,40 @@
+{
+  "as_of_hkt": "2026-07-27T12:09:22+08:00",
+  "as_of_et": "2026-07-27T00:09:22-04:00",
+  "session": "US OVERNIGHT; RTH CLOSED",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "4a4d14787b9543753b95e6e30d93ccd285079be1", "config_sha": "9a450461c4e5328ca1fd11e7ae1ed53ea6e69efa"},
+    "alpaca": {"status": "FAILED_AFTER_ATTEMPT", "detail": "No callable Alpaca connector in this runtime; market clock, SIP, delayed_sip, IEX and uniform bars unavailable"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "detail": "Fresh overnight snapshots obtained for HUT, IREN, ONDS, APLD, FOTO and SOXX; ONDS 1H and 15m completed history obtained; positions obtained"},
+    "binance": {"status": "PARTIAL_SUCCESS", "detail": "ETHUSDT premium index/funding obtained from official endpoint; BTC and open-interest endpoints unavailable in this run"}
+  },
+  "quotes": {
+    "HUT": {"source": "IBKR", "last": 113.10, "last_is_close": false, "change_pct": 2.83, "volume": 5723, "plprice": 113.10, "historical_vol_annual": 1.1122061, "iv_percentile_52w": 0.8326693, "bid": 112.75, "ask": 113.49},
+    "IREN": {"source": "IBKR", "last": 38.15, "last_is_close": false, "change_pct": 2.91, "volume": 164241, "plprice": 38.15, "historical_vol_annual": 0.9758822, "iv_percentile_52w": 0.9163347, "bid": 38.13, "ask": 38.23},
+    "ONDS": {"source": "IBKR", "last": 7.98, "last_is_close": false, "change_pct": 2.31, "volume": 106976, "plprice": 7.98, "historical_vol_annual": 0.8374454, "iv_percentile_52w": 0.3466136, "bid": 7.96, "ask": 7.99},
+    "APLD": {"source": "IBKR", "last": 28.16, "last_is_close": false, "change_pct": 3.57, "volume": 54650, "plprice": 28.16, "historical_vol_annual": 0.9593410, "iv_percentile_52w": 0.7011952, "bid": 28.15, "ask": 28.28},
+    "FOTO": {"source": "IBKR", "last": 19.21, "last_is_close": true, "volume": 29, "plprice": 19.41, "historical_vol_annual": 0.6359296, "iv_percentile_52w": 0.1515152, "bid": 19.41, "ask": 19.70},
+    "SOXX": {"source": "IBKR", "last": 537.76, "last_is_close": false, "change_pct": 2.04, "volume": 64809, "plprice": 537.76, "historical_vol_annual": 0.6910634, "iv_percentile_52w": 1.0, "bid": 537.09, "ask": 538.44}
+  },
+  "crypto_context": {
+    "ETHUSDT": {"source": "Binance official futures endpoint", "mark_price": 1946.48993798, "index_price": 1947.22813953, "funding_rate": 0.0001, "open_interest": null},
+    "BTCUSDT": {"source": "Binance", "status": "N/A — reliable payload not obtained"}
+  },
+  "events": {
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 120, "average_price": 20.13212167, "market_price": 19.41, "unrealized_pnl": -86.654618},
+    "SOXX": {"quantity": 13, "average_price": 528.75752308, "market_price": 537.76000975, "unrealized_pnl": 117.03232675}
+  },
+  "calculation_metadata": {
+    "completed_bar_rule": "Current week/day/hour/15m excluded",
+    "onds_last_completed_1h_close": 7.8303,
+    "onds_last_completed_15m_close": 7.8303,
+    "uniform_full_universe_series": false,
+    "formal_fixed_scores_withheld": true,
+    "pass2_candidates": [],
+    "notes": "ONDS overnight last is above trigger but completed 1H and 15m closes remain below 7.85. No orders created or transmitted."
+  }
+}
