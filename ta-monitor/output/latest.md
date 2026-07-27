@@ -1,20 +1,20 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-27T19:12:00+08:00 / 2026-07-27T07:12:00-04:00**
+- As of: **2026-07-27T21:25:37+08:00 / 2026-07-27T09:25:37-04:00**
 - Session: **US_PREMARKET**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'price'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
 - Stale-last normalization: **none**
 
 ## Source Status
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-27T19:12:39.840240+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|Alpaca|FAILED_AFTER_ATTEMPT|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|DEGRADED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-27T21:27:32.991994+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'price'
+- Engine failure after source collection: KeyError: 'HUT'
 
 ## Boss Action
 
