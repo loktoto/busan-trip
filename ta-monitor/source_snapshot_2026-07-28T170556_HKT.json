@@ -1,0 +1,50 @@
+{
+  "as_of_hkt": "2026-07-28T17:05:56+08:00",
+  "as_of_et": "2026-07-28T05:05:56-04:00",
+  "session": "US_PREMARKET",
+  "source_status": {
+    "github": "SUCCESS: production_policy.md, burry_relative_value_policy.md, config.py fetched from main",
+    "alpaca": "FAILED: connector unavailable; SIP/delayed_sip/IEX not established",
+    "ibkr": "PARTIAL SUCCESS: positions, 12 core/Burry quotes, SOXX daily/1H/15m and SMH 1H bars",
+    "binance": "FAILED: connector unavailable",
+    "borrow_ssr_locate": "N/A — 未取得可靠資料",
+    "option_execution": "N/A — 未取得可靠資料"
+  },
+  "positions": {
+    "FOTO": {"quantity": 160, "average_price": 19.64937062, "market_price": 18.1399994, "unrealized_pnl": -241.499396},
+    "SOXX": {"quantity": 15, "average_price": 525.34638667, "market_price": 502.23999025, "unrealized_pnl": -346.59594625},
+    "QQQM": {"quantity": 32.5589, "average_price": 296.12285734, "market_price": 278.95999145, "unrealized_pnl": -558.80403438}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 502.0, "mark": 502.9700012, "bid": 501.55, "ask": 503.7, "change_pct": -2.76, "hv30": 0.6957971, "ivp52": 0.9840637},
+    "SMH": {"last": 539.0, "mark": 536.0, "bid": 536.03, "ask": 537.3, "change_pct": -1.74, "hv30": 0.5866059, "ivp52": 0.9681275},
+    "MU": {"last": 861.11, "mark": 860.7633057, "bid": 860.47, "ask": 861.0, "change_pct": -4.34, "hv30": 1.1430582, "ivp52": 0.8486056},
+    "SNDK": {"last": 1218.78, "mark": 1220.1700439, "bid": 1219.0, "ask": 1221.02, "change_pct": -4.65, "hv30": 1.3097834, "ivp52": 0.9601594},
+    "AMD": {"last": 480.33, "mark": 479.0, "bid": 479.47, "ask": 480.0, "change_pct": -2.95, "hv30": 0.8356516, "ivp52": 0.9482072},
+    "INTC": {"last": 88.61, "mark": 88.6100006, "bid": 88.53, "ask": 88.7, "change_pct": -3.34, "hv30": 0.9431886, "ivp52": 0.8605578},
+    "ARM": {"last": 258.14, "mark": 257.5599976, "bid": 258.0, "ask": 258.93, "change_pct": -3.08, "hv30": 1.0293904, "ivp52": 0.9203187}
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 502.0, "reference_entry": 535.83},
+    "MU": {"last": 861.11, "reference_entry": 933.86},
+    "NVDA": {"last": 194.4, "mark": 194.3999939, "bid": 194.36, "ask": 194.46, "change_pct": -1.07, "hv30": 0.3829503, "ivp52": 0.7808765, "reference_entry": 210.28},
+    "CAT": {"last": 857.06, "mark": 856.6500244, "bid": 854.53, "ask": 859.85, "change_pct": -1.86, "hv30": 0.4949497, "ivp52": 0.9880478, "reference_entry": 893.49},
+    "TSLA": {"last": 306.3, "mark": 306.2999878, "bid": 306.17, "ask": 306.36, "change_pct": -0.94, "hv30": 0.5278448, "ivp52": 0.6015936, "legacy_reference": 313.03},
+    "PLTR": {"last": 131.89, "mark": 131.8899994, "bid": 131.61, "ask": 131.9, "change_pct": 0.27, "hv30": 0.5723189, "ivp52": 0.9282869, "legacy_reference": 122.92},
+    "QQQ": {"last": 677.71, "mark": 677.789978, "bid": 677.72, "ask": 677.8, "change_pct": -0.65, "hv30": 0.2661329, "ivp52": 0.9083666, "legacy_reference": 684.23}
+  },
+  "completed_bar_metadata": {
+    "SOXX_last_completed_daily": {"date": "2026-07-27", "open": 532.64, "high": 534.31, "low": 500.0, "close": 516.23, "volume": 10279272},
+    "SOXX_last_completed_1h_close": 516.12,
+    "SOXX_last_completed_15m_close": 516.12,
+    "SMH_last_completed_1h_close": 548.31
+  },
+  "events": {"SNDK": "2026-08-05 after close", "APLD": "2026-07-27 after close", "MXL": "2026-07-23 after close"},
+  "calculation_metadata": {
+    "long_scores": "WITHHELD: full 21-name completed multi-timeframe dataset unavailable",
+    "short_scores": "WATCH-ONLY: premarket requires RTH validation; borrow and executable 2R incomplete",
+    "pass2_candidates": [],
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT"
+  }
+}
