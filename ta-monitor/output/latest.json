@@ -1,7 +1,7 @@
 {
-  "as_of_hkt": "2026-07-29T03:05:54+08:00",
-  "as_of_et": "2026-07-28T15:05:54-04:00",
-  "session": "US_RTH",
+  "as_of_hkt": "2026-07-29T04:05:47+08:00",
+  "as_of_et": "2026-07-28T16:05:47-04:00",
+  "session": "US AFTER-HOURS / RTH JUST CLOSED",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
@@ -10,9 +10,15 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "quotes": "core short 7/7 plus Burry 5/7",
-      "cat_15m": "SUCCESS",
-      "positions": "SUCCESS"
+      "positions": true,
+      "fresh_quotes": [
+        "SOXX",
+        "SMH",
+        "CAT"
+      ],
+      "completed_bars": [
+        "CAT_15M"
+      ]
     },
     "Alpaca": {
       "status": "RUNTIME_UNAVAILABLE",
@@ -20,26 +26,19 @@
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "attempted": true,
-      "available_namespace": false,
-      "coverage": {
-        "weekly": "0/21",
-        "daily": "0/21",
-        "1h": "0/21",
-        "15m": "0/21"
-      }
+      "attempt": "connector discovery returned no Alpaca namespace",
+      "api_payload": false
     },
     "Binance": {
       "status": "RUNTIME_UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "attempted": true
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-29T03:09:24.096329+08:00",
+      "timestamp": "2026-07-29T04:07:33.708552+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
