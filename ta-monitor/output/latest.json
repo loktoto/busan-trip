@@ -1,7 +1,7 @@
 {
-  "as_of_hkt": "2026-07-28T19:05:36+08:00",
-  "as_of_et": "2026-07-28T07:05:36-04:00",
-  "session": "US PREMARKET",
+  "as_of_hkt": "2026-07-28T20:05:25+08:00",
+  "as_of_et": "2026-07-28T08:05:25-04:00",
+  "session": "US_PREMARKET",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
@@ -10,32 +10,29 @@
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "positions": true,
       "fresh_quotes": [
         "SOXX",
         "SMH",
-        "CAT"
+        "CAT",
+        "MU",
+        "NVDA",
+        "QQQ"
       ],
-      "bars": false
+      "positions_checked": true,
+      "completed_bars": "not_collected_at_full_universe_scale"
     },
     "Alpaca": {
-      "status": "unavailable_in_runtime",
+      "status": "unavailable_in_this_runtime",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "retries": [
-        "connector namespace discovery failed"
-      ],
-      "coverage": {
-        "weekly": "N/A",
-        "daily": "N/A",
-        "1h": "N/A",
-        "15m": "N/A"
-      }
+      "sip": "not_called",
+      "delayed_sip": "not_called",
+      "iex": "not_called"
     },
     "Binance": {
-      "status": "unavailable_in_runtime",
+      "status": "unavailable_in_this_runtime",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
@@ -43,7 +40,7 @@
     },
     "GitHub": {
       "status": "success",
-      "timestamp": "2026-07-28T19:07:53.036533+08:00",
+      "timestamp": "2026-07-28T20:09:03.446473+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
