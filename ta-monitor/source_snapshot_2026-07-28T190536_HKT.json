@@ -1,0 +1,42 @@
+{
+  "as_of_hkt": "2026-07-28T19:05:36+08:00",
+  "as_of_et": "2026-07-28T07:05:36-04:00",
+  "session": "US PREMARKET",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "alpaca": {"status": "unavailable_in_runtime", "retries": ["connector namespace discovery failed"], "coverage": {"weekly": "N/A", "daily": "N/A", "1h": "N/A", "15m": "N/A"}},
+    "ibkr": {"status": "partial_success", "positions": true, "fresh_quotes": ["SOXX", "SMH", "CAT"], "bars": false},
+    "binance": {"status": "unavailable_in_runtime"}
+  },
+  "long_quotes": {},
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 496.94, "bid": 495.01, "ask": 496.00, "mark": 495.69000244140625, "change_pct": -3.74, "hv30_annual": 0.695797141742419, "iv_percentile_52w": 0.9840637445449829},
+    "SMH": {"last": 530.37, "bid": 530.50, "ask": 531.00, "mark": 530.6676025390625, "change_pct": -3.31, "hv30_annual": 0.5866059268342589, "iv_percentile_52w": 0.9681274890899658},
+    "MU": {"status": "N/A — 未取得可靠資料"},
+    "SNDK": {"status": "N/A — 未取得可靠資料"},
+    "AMD": {"status": "N/A — 未取得可靠資料"},
+    "INTC": {"status": "N/A — 未取得可靠資料"},
+    "ARM": {"status": "N/A — 未取得可靠資料"}
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 496.94, "decision": "WAIT"},
+    "MU": {"status": "N/A — 未取得可靠資料"},
+    "NVDA": {"status": "N/A — 未取得可靠資料"},
+    "CAT": {"last": 850.0, "bid": 848.0, "ask": 850.0, "mark": 850.0, "change_pct": -2.67, "hv30_annual": 0.4949496933153106, "iv_percentile_52w": 0.9880478382110596, "decision": "WAIT FOR FAILED RECLAIM"},
+    "TSLA": {"status": "N/A — 未取得可靠資料"},
+    "PLTR": {"status": "N/A — 未取得可靠資料"},
+    "QQQ": {"status": "N/A — 未取得可靠資料"}
+  },
+  "position_overlap": {
+    "SOXX": {"position": 15.0, "average_price": 525.34638667, "account_mark": 495.69000245},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "account_mark": 277.98999025},
+    "FOTO": {"position": 160.0, "average_price": 19.64937062, "account_mark": 18.0}
+  },
+  "calculation_metadata": {
+    "completed_bars_available": false,
+    "scores_withheld": true,
+    "pass2_candidates": [],
+    "orders_created": false,
+    "notes": ["No stale close treated as live", "No action issued without completed-bar and R/R validation", "Private account quantities retained only in audit because user explicitly requested optional positions; no credentials or orders included"]
+  }
+}
