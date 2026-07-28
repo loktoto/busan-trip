@@ -1,0 +1,49 @@
+{
+  "as_of_hkt": "2026-07-29T03:05:54+08:00",
+  "as_of_et": "2026-07-28T15:05:54-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "alpaca": {"status": "RUNTIME_UNAVAILABLE", "attempted": true, "available_namespace": false, "coverage": {"weekly": "0/21", "daily": "0/21", "1h": "0/21", "15m": "0/21"}},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "quotes": "core short 7/7 plus Burry 5/7", "cat_15m": "SUCCESS", "positions": "SUCCESS"},
+    "binance": {"status": "RUNTIME_UNAVAILABLE", "attempted": true},
+    "borrow_ssr_locate": {"status": "N/A — 未取得可靠資料"}
+  },
+  "long_quotes": {
+    "FOTO": {"mark": 17.22, "state": "STOP HIT", "liquidity": "THIN LIQUIDITY"},
+    "MU": {"last": 827.87, "mark": 827.55, "change_pct": -8.03},
+    "SNDK": {"last": 1115.57, "mark": 1115.15, "change_pct": -12.73}
+  },
+  "short_quotes": {
+    "SOXX": {"last": 494.20, "mark": 494.01, "bid": 493.94, "ask": 494.16, "change_pct": -4.27, "low": 480.50, "high": 498.29, "ivp52": 0.9841},
+    "SMH": {"last": 532.32, "mark": 532.34, "bid": 532.29, "ask": 532.42, "change_pct": -2.96, "low": 518.25, "high": 535.94, "ivp52": 0.9124},
+    "MU": {"last": 827.87, "mark": 827.55, "change_pct": -8.03, "low": 789.09, "high": 848.36, "ivp52": 0.7809},
+    "SNDK": {"last": 1115.57, "mark": 1115.15, "change_pct": -12.73, "low": 1050.72, "high": 1188.00, "ivp52": 0.9841},
+    "AMD": {"last": 459.29, "mark": 459.00, "change_pct": -7.20, "low": 442.27, "high": 472.75, "ivp52": 0.9402},
+    "INTC": {"last": 86.94, "mark": 86.92, "change_pct": -5.16, "low": 83.10, "high": 88.28, "ivp52": 0.8606},
+    "ARM": {"last": 245.74, "mark": 245.66, "change_pct": -7.73, "low": 240.38, "high": 253.61, "ivp52": 0.9641}
+  },
+  "burry_quotes": {
+    "SOXX": {"last": 494.20, "decision": "WAIT"},
+    "MU": {"last": 827.87, "decision": "AVOID NOW"},
+    "NVDA": {"last": 197.41, "change_pct": 0.46, "decision": "WAIT"},
+    "CAT": {"last": 837.32, "mark": 838.00, "bid": 837.77, "ask": 838.23, "change_pct": -4.12, "low": 824.00, "high": 855.82, "ivp52": 0.9841, "decision": "WAIT FOR FAILED RECLAIM"},
+    "TSLA": {"last": 305.78, "change_pct": -1.11, "decision": "WAIT"},
+    "PLTR": {"last": 123.47, "change_pct": -6.13, "decision": "AVOID NOW"},
+    "QQQ": {"last": 677.12, "change_pct": -0.73, "decision": "WAIT"}
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"},
+    "CAT": {"status": "N/A — current event verification unavailable in configured connectors"}
+  },
+  "position_overlap": {"SOXX_long": true, "QQQM_long": true, "FOTO_long": true},
+  "calculation_metadata": {
+    "completed_interval_exclusions": ["current week", "current day", "current hour", "current 15m"],
+    "cat_latest_completed_15m_close": 833.94,
+    "cat_current_incomplete_15m_excluded": true,
+    "pass2_candidates": [],
+    "orders_created": false,
+    "raw_licensed_history_committed": false,
+    "private_account_details_committed": false
+  }
+}
