@@ -1,0 +1,48 @@
+{
+  "as_of_hkt": "2026-07-29T07:05:51+08:00",
+  "as_of_et": "2026-07-28T19:05:51-04:00",
+  "session": "US_AFTER_HOURS",
+  "monitoring_only": true,
+  "orders_created": false,
+  "source_status": {
+    "github": {"status": "SUCCESS", "files": ["ta-monitor/production_policy.md", "ta-monitor/burry_relative_value_policy.md", "ta-monitor/config.py"]},
+    "alpaca": {"status": "RUNTIME_UNAVAILABLE", "clock": null, "snapshot_feed": null, "reason": "No Alpaca connector/API tool exposed in this run"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "positions": "SUCCESS", "fresh_quotes": ["SOXX", "SMH", "CAT"]},
+    "binance": {"status": "RUNTIME_UNAVAILABLE", "reason": "No Binance connector/API tool exposed in this run"}
+  },
+  "alpaca_completeness": {
+    "requested_symbols": ["HUT","IREN","NBIS","WULF","MARA","APLD","ORCL","CRWV","CRCL","RKLB","AAOI","ONDS","AXTI","MXL","FOTO","LITE","COHR","APH","FN","MU","SNDK","SOXX","SMH","AMD","INTC","ARM","NVDA","AVGO","MRVL","ALAB","CRDO","MPWR","MCHP","ADI","ON","NXPI","QCOM","AMAT","LRCX","KLAC","ASML","TSM","CAT","TSLA","PLTR","QQQ"],
+    "chunking_used": false,
+    "requested_limit": null,
+    "returned_record_count": 0,
+    "weekly_coverage": "0/21 long board",
+    "daily_coverage": "0/21 long board",
+    "hourly_coverage": "0/21 long board",
+    "fifteen_minute_coverage": "0/21 long board",
+    "individual_retries": [],
+    "fallback_feed": null,
+    "truncation_detection": "NOT_APPLICABLE_NO_API_PAYLOAD",
+    "final_coverage_ratio": 0.0
+  },
+  "quotes": {
+    "SOXX": {"last": 481.50, "bid": 481.00, "ask": 483.06, "mark": 481.50, "change_pct": -6.73, "prior_close": 516.23, "open": 495.91, "low": 480.50, "high": 498.48, "volume": 14750990.143125, "historical_vol_annual": 0.6957971417, "iv_percentile_52w": 0.9362549782, "timestamp_epoch": 1785279993, "is_close": false},
+    "SMH": {"last": 519.71, "bid": 519.50, "ask": 521.00, "mark": 520.989990234375, "change_pct": -5.26, "open": 530.60, "low": 518.25, "high": 535.94, "volume": 18377714.205894, "historical_vol_annual": 0.5866059268, "iv_percentile_52w": 0.9083665609, "timestamp_epoch": 1785279989, "is_close": false},
+    "CAT": {"last": 837.60, "bid": 837.60, "ask": 844.00, "mark": 837.5999755859375, "change_pct": -4.09, "open": 855.82, "low": 824.00, "high": 855.82, "volume": 3810868.825033, "historical_vol_annual": 0.4949496933, "iv_percentile_52w": 0.9840637445, "timestamp_epoch": 1785279766, "is_close": false}
+  },
+  "positions_overlap": {
+    "SOXX": {"quantity": 15.0, "average_price": 525.34638667, "account_market_price": 481.230011, "unrealized_pnl": -661.745635},
+    "QQQM": {"quantity": 32.5589, "average_price": 296.12285734, "account_market_price": 276.6799927, "unrealized_pnl": -633.03828568},
+    "FOTO": {"quantity": 180.0, "average_price": 19.33900889, "account_market_price": 17.20129965, "unrealized_pnl": -384.787663}
+  },
+  "borrow_option_event": {
+    "borrow_shortability_ssr_locate": "N/A — 未取得可靠資料",
+    "option_chain_skew_expiry_liquidity": "N/A — 未取得可靠資料",
+    "CAT_event": "N/A — 未取得可靠資料 in this run"
+  },
+  "calculation_metadata": {
+    "completed_bar_scoring": "WITHHELD — required weekly/daily/1H/15m series unavailable",
+    "pass2_candidates": [],
+    "soxx_smh_single_sleeve": true,
+    "burry_disclosure_status": "USER-SUPPLIED HISTORICAL CONTEXT — NOT REVERIFIED THIS RUN"
+  }
+}
