@@ -1,51 +1,36 @@
 {
-  "as_of_hkt": "2026-07-28T21:05:23+08:00",
-  "as_of_et": "2026-07-28T09:05:23-04:00",
-  "session": "PREMARKET",
+  "as_of_hkt": "2026-07-28T22:09:00+08:00",
+  "as_of_et": "2026-07-28T10:09:00-04:00",
+  "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "positions": "SUCCESS",
-      "fresh_quotes": [
-        "SOXX",
-        "SMH",
-        "CAT"
-      ],
-      "completed_bars": "NOT_COLLECTED_AT_FULL_UNIVERSE_SCALE"
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
-      "status": "FAILED_RUNTIME_DISCOVERY",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "attempted": true,
-      "detail": "Alpaca namespace not exposed in this automation runtime; SIP/delayed_sip/IEX calls unavailable"
+      "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "FAILED_RUNTIME_DISCOVERY",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "attempted": true
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-28T21:09:05.657988+08:00",
+      "timestamp": "2026-07-28T22:09:48.410078+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable",
-      "files": [
-        "ta-monitor/production_policy.md",
-        "ta-monitor/burry_relative_value_policy.md",
-        "ta-monitor/config.py"
-      ]
+      "impact": "Fresh market calculation unavailable"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'quotes'",
