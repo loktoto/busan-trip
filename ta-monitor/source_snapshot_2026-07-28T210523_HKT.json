@@ -1,0 +1,52 @@
+{
+  "as_of_hkt": "2026-07-28T21:05:23+08:00",
+  "as_of_et": "2026-07-28T09:05:23-04:00",
+  "session": "PREMARKET",
+  "monitoring_only": true,
+  "orders_created": false,
+  "source_status": {
+    "github": {"status": "SUCCESS", "files": ["ta-monitor/production_policy.md", "ta-monitor/burry_relative_value_policy.md", "ta-monitor/config.py"]},
+    "alpaca": {"status": "FAILED_RUNTIME_DISCOVERY", "attempted": true, "detail": "Alpaca namespace not exposed in this automation runtime; SIP/delayed_sip/IEX calls unavailable"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "positions": "SUCCESS", "fresh_quotes": ["SOXX", "SMH", "CAT"], "completed_bars": "NOT_COLLECTED_AT_FULL_UNIVERSE_SCALE"},
+    "binance": {"status": "FAILED_RUNTIME_DISCOVERY", "attempted": true},
+    "borrow_ssr_locate": {"status": "N/A"}
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested": 21, "retrieved": 0, "status": "RUNTIME_MODULE_FAILURE"},
+    "daily": {"requested": 21, "retrieved": 0, "status": "RUNTIME_MODULE_FAILURE"},
+    "one_hour": {"requested": 21, "retrieved": 0, "status": "RUNTIME_MODULE_FAILURE"},
+    "fifteen_minute": {"requested": 21, "retrieved": 0, "status": "RUNTIME_MODULE_FAILURE"},
+    "chunking_used": false,
+    "individual_retries": 0,
+    "truncation_detected": false,
+    "note": "No API response was available to paginate; do not classify as limit truncation."
+  },
+  "long_quotes": {
+    "HUT": null, "IREN": null, "NBIS": null, "WULF": null, "MARA": null, "APLD": null, "ORCL": null, "CRWV": null, "CRCL": null, "RKLB": null, "AAOI": null, "ONDS": null, "AXTI": null, "MXL": null,
+    "FOTO": {"source": "IBKR_ACCOUNT_MARK", "mark": 17.7900009, "position_present": true, "state": "STOP_HIT_THIN_LIQUIDITY"},
+    "LITE": null, "COHR": null, "APH": null, "FN": null, "MU": null, "SNDK": null
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"source": "IBKR", "last": 495.99, "mark": 497.70001220703125, "bid": 497.0, "ask": 497.7, "change_pct": -3.92, "hv30_annual": 0.695797141742419, "iv_percentile_52w": 0.9840637445449829, "position_overlap": "15 shares long"},
+    "SMH": {"source": "IBKR", "last": 532.99, "mark": 533.3599853515625, "bid": 533.36, "ask": 534.0, "change_pct": -2.84, "hv30_annual": 0.5866059268342589, "iv_percentile_52w": 0.9681274890899658},
+    "MU": null, "SNDK": null, "AMD": null, "INTC": null, "ARM": null
+  },
+  "burry_board_quotes": {
+    "SOXX": {"source": "IBKR", "last": 495.99, "decision": "WAIT"},
+    "MU": null,
+    "NVDA": null,
+    "CAT": {"source": "IBKR", "last": 849.0, "mark": 847.9000244140625, "bid": 848.0, "ask": 850.43, "change_pct": -2.78, "hv30_annual": 0.4949496933153106, "iv_percentile_52w": 0.9880478382110596, "decision": "WAIT_FOR_FAILED_RECLAIM"},
+    "TSLA": null, "PLTR": null, "QQQ": null
+  },
+  "events": {
+    "APLD": "2026-07-27 FY2026 Q4/full-year results after close",
+    "SNDK": "2026-08-05 FY2026 Q4/full-year results after close"
+  },
+  "calculation_metadata": {
+    "long_scores": "WITHHELD_FULL_UNIVERSE_BARS_UNAVAILABLE",
+    "short_scores": "PARTIAL_WATCH_ONLY",
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "no_action_reason": "Premarket downside extension, proximity to support, incomplete completed-bar validation, and unavailable borrow/event checks"
+  }
+}
