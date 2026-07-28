@@ -1,0 +1,43 @@
+{
+  "as_of_hkt": "2026-07-29T00:09:07+08:00",
+  "as_of_et": "2026-07-28T12:09:07-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "alpaca": {"status": "RUNTIME_UNAVAILABLE", "reason": "connector namespace not exposed in this run", "coverage": {"weekly": "0/21", "daily": "0/21", "1h": "0/21", "15m": "0/21"}},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "positions": true, "quotes": ["SOXX", "SMH", "CAT"], "bars": {"CAT_15m": true}},
+    "binance": {"status": "RUNTIME_UNAVAILABLE"},
+    "borrow_ssr_locate": {"status": "N/A"}
+  },
+  "positions_overlap": {
+    "SOXX": {"position": 15.0, "average_price": 525.34638667, "account_mark": 495.19000245},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "account_mark": 279.17001345},
+    "FOTO": {"position": 180.0, "average_price": 19.33900889, "account_mark": 17.19000055}
+  },
+  "long_quotes": {
+    "HUT": null, "IREN": null, "NBIS": null, "WULF": null, "MARA": null, "APLD": null, "ORCL": null, "CRWV": null, "CRCL": null, "RKLB": null, "AAOI": null, "ONDS": null, "AXTI": null, "MXL": null,
+    "FOTO": {"authority": "IBKR_ACCOUNT_MARK", "price": 17.19000055, "state": "STOP_HIT_THIN_LIQUIDITY"},
+    "LITE": null, "COHR": null, "APH": null, "FN": null, "MU": null, "SNDK": null
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"authority": "IBKR", "last": 494.52, "mark": 494.42999267578125, "bid": 494.26, "ask": 494.53, "change_pct": -4.21, "day_low": 480.5, "day_high": 498.29, "iv_percentile_52w": 0.9880478382, "state": "POST_COVER_EXTENDED"},
+    "SMH": {"authority": "IBKR", "last": 531.94, "mark": 532.0599975585938, "bid": 531.88, "ask": 532.15, "change_pct": -3.03, "day_low": 518.25, "day_high": 535.94, "iv_percentile_52w": 0.9123505950, "state": "POST_COVER_EXTENDED"},
+    "MU": null, "SNDK": null, "AMD": null, "INTC": null, "ARM": null
+  },
+  "burry_board_quotes": {
+    "CAT": {"authority": "IBKR", "last": 838.22, "mark": 838.239990234375, "bid": 837.83, "ask": 838.75, "change_pct": -4.01, "day_low": 824.0, "day_high": 855.82, "iv_percentile_52w": 0.9840637445, "state": "FAILED_SHORT_BREAKDOWN", "decision": "WAIT_FOR_NEW_BREAKDOWN_OR_FAILED_RECLAIM"},
+    "SOXX": {"authority": "IBKR", "last": 494.52, "decision": "WAIT"},
+    "MU": null, "NVDA": null, "TSLA": null, "PLTR": null, "QQQ": null
+  },
+  "events": {"SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}},
+  "calculation_metadata": {
+    "completed_interval_governance": true,
+    "cat_latest_completed_15m_close": 840.0,
+    "cat_latest_completed_15m_high": 840.0,
+    "cat_latest_completed_15m_low": 835.36,
+    "cat_breakdown_below_824_confirmed": false,
+    "pass2_candidates": [],
+    "orders_created": false,
+    "licensed_raw_history_committed": false
+  }
+}
