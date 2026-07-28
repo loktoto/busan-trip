@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-28T12:04:40+08:00",
-  "as_of_et": "2026-07-28T00:04:40-04:00",
+  "as_of_hkt": "2026-07-28T14:06:45+08:00",
+  "as_of_et": "2026-07-28T02:06:45-04:00",
   "session": "US_OVERNIGHT",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -27,7 +27,7 @@
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-28T12:17:55.064947+08:00",
+      "timestamp": "2026-07-28T14:11:29.192949+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
