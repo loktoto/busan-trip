@@ -1,0 +1,43 @@
+{
+  "as_of_hkt": "2026-07-28T10:04:31+08:00",
+  "as_of_et": "2026-07-27T22:04:31-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "ibkr_short_core_quotes": "SUCCESS",
+    "ibkr_long_full_collection": "DATA_GAP",
+    "alpaca": "FAILED_AFTER_ATTEMPT_NO_AVAILABLE_PLUGIN",
+    "binance": "FAILED_AFTER_ATTEMPT_HTTP_451_OR_UNAVAILABLE",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "short_core": {
+      "SOXX": {"last": 504.00, "bid": 504.00, "ask": 504.31, "mark": 504.00, "change_pct": -2.37, "volume": 38257, "hv30_annual": 0.69106336, "ivp52": 0.944, "open": 532.28, "low": 500.00, "high": 534.30},
+      "SMH": {"last": 539.00, "bid": 538.00, "ask": 539.17, "mark": 539.00, "change_pct": -1.74, "volume": 8079, "hv30_annual": 0.58287542, "ivp52": 0.912, "open": 566.12, "low": 535.31, "high": 567.62},
+      "MU": {"last": 864.62, "bid": 864.14, "ask": 864.62, "mark": 864.62, "change_pct": -3.95, "volume": 223750, "hv30_annual": 1.13807522, "ivp52": 0.828, "open": 933.71, "low": 854.79, "high": 935.00},
+      "SNDK": {"last": 1216.82, "bid": 1216.40, "ask": 1217.75, "mark": 1216.82, "change_pct": -4.80, "volume": 131649, "hv30_annual": 1.28981329, "ivp52": 0.980, "open": 1456.01, "low": 1222.01, "high": 1462.99},
+      "AMD": {"last": 480.85, "bid": 480.05, "ask": 481.23, "mark": 480.85, "change_pct": -2.85, "volume": 51325, "hv30_annual": 0.82448543, "ivp52": 0.944, "open": 526.42, "low": 476.93, "high": 528.00},
+      "INTC": {"last": 88.70, "bid": 88.65, "ask": 88.71, "mark": 88.70, "change_pct": -3.24, "volume": 301382, "hv30_annual": 0.95312450, "ivp52": 0.860, "open": 92.32, "low": 86.94, "high": 94.98},
+      "ARM": {"last": 258.80, "bid": 257.16, "ask": 258.66, "mark": 258.66, "change_pct": -2.83, "volume": 17152, "hv30_annual": 1.03395591, "ivp52": 0.892, "open": 262.02, "low": 251.61, "high": 268.20}
+    },
+    "long_overlap": {
+      "FOTO": {"position": 160, "account_mark": 18.25, "average_price": 19.64937022},
+      "MU": {"last": 864.62},
+      "SNDK": {"last": 1216.82},
+      "SOXX": {"position": 15, "account_mark": 504.019989, "average_price": 525.34639088}
+    }
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
+    "config_sha": "996a72dd3d4207869ca9a6ca8eee04eaeb480737",
+    "completed_bar_rule": "exclude current week/day/hour/15m",
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "orders_created": false,
+    "licensed_raw_history_committed": false
+  }
+}
