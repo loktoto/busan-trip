@@ -1,0 +1,63 @@
+{
+  "as_of_hkt": "2026-07-29T02:11:09+08:00",
+  "as_of_et": "2026-07-28T14:11:09-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": "success",
+    "alpaca": "runtime_unavailable_no_namespace",
+    "ibkr_quotes": "success_core_short_and_burry",
+    "ibkr_bars": "partial_cat_15m",
+    "ibkr_positions": "success",
+    "binance": "runtime_unavailable_no_namespace",
+    "borrow_ssr_locate": "unavailable",
+    "option_chain_execution": "partial_underlying_iv_and_aggregate_volume_only"
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested": 21, "retrieved": 0, "status": "runtime_unavailable"},
+    "daily": {"requested": 21, "retrieved": 0, "status": "runtime_unavailable"},
+    "one_hour": {"requested": 21, "retrieved": 0, "status": "runtime_unavailable"},
+    "fifteen_minute": {"requested": 21, "retrieved": 0, "status": "runtime_unavailable"},
+    "chunking_used": false,
+    "individual_retries": 0,
+    "fallback_feed": null,
+    "truncation_detected": false
+  },
+  "long_board": {
+    "universe": ["HUT","IREN","NBIS","WULF","MARA","APLD","ORCL","CRWV","CRCL","RKLB","AAOI","ONDS","AXTI","MXL","FOTO","LITE","COHR","APH","FN","MU","SNDK"],
+    "formal_scores_available": false,
+    "position_risk": {
+      "FOTO": {"position": 180, "mark": 17.0701008, "average_price": 19.33900889, "state": "STOP_HIT_THIN_LIQUIDITY"},
+      "SOXX": {"position": 15, "mark": 491.20230105, "average_price": 525.34638667},
+      "QQQM": {"position": 32.5589, "mark": 278.3999939, "average_price": 296.12285734}
+    }
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 491.03, "bid": 490.94, "ask": 491.21, "change_pct": -4.88, "low": 480.5, "high": 498.29, "hv30_annual": 0.6957971417, "ivp52": 0.9880478382},
+    "SMH": {"last": 529.02, "bid": 528.73, "ask": 528.9, "change_pct": -3.56, "low": 518.25, "high": 535.94, "hv30_annual": 0.5866059268, "ivp52": 0.9043824673},
+    "MU": {"last": 818.06, "bid": 817.63, "ask": 818.37, "change_pct": -9.12, "low": 789.09, "high": 848.36, "hv30_annual": 1.143058226, "ivp52": 0.7848605514},
+    "SNDK": {"last": 1077.1, "bid": 1077.0, "ask": 1077.94, "change_pct": -15.74, "low": 1050.72, "high": 1188.0, "hv30_annual": 1.30978342, "ivp52": 0.9681274891},
+    "AMD": {"last": 457.08, "bid": 457.05, "ask": 457.14, "change_pct": -7.65, "low": 442.27, "high": 472.75, "hv30_annual": 0.835651556, "ivp52": 0.9402390718},
+    "INTC": {"last": 86.36, "bid": 86.34, "ask": 86.38, "change_pct": -5.79, "low": 83.1, "high": 88.28, "hv30_annual": 0.9431886472, "ivp52": 0.8605577946},
+    "ARM": {"last": 244.01, "bid": 243.93, "ask": 244.2, "change_pct": -8.38, "low": 240.38, "high": 253.61, "hv30_annual": 1.0293904, "ivp52": 0.8884462118}
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 491.03, "state": "HEDGE_WATCH_EXTENDED"},
+    "MU": {"last": 818.06, "state": "POST_COVER_EXTENDED"},
+    "NVDA": {"last": 196.91, "bid": 196.87, "ask": 196.9, "change_pct": 0.2, "low": 192.74, "high": 198.7, "ivp52": 0.7768924236},
+    "CAT": {"last": 832.87, "bid": 833.19, "ask": 833.59, "change_pct": -4.63, "low": 824.0, "high": 855.82, "hv30_annual": 0.4949496933, "ivp52": 0.9840637445, "latest_completed_15m_close": 831.6, "state": "SHORT_BREAKDOWN_PENDING"},
+    "TSLA": {"last": 306.14, "bid": 306.09, "ask": 306.15, "change_pct": -1.0, "low": 300.69, "high": 311.16, "ivp52": 0.4223107696},
+    "PLTR": {"last": 123.56, "bid": 123.57, "ask": 123.6, "change_pct": -6.06, "low": 117.89, "high": 127.19, "ivp52": 0.9203187227},
+    "QQQ": {"last": 675.99, "bid": 676.03, "ask": 676.07, "change_pct": -0.9, "low": 667.88, "high": 679.4, "ivp52": 0.8804780841}
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"},
+    "CAT": {"status": "event_check_unavailable_this_run"}
+  },
+  "calculation_metadata": {
+    "completed_current_intervals_excluded": true,
+    "scores_ge_7": [],
+    "pass2_required": false,
+    "orders_created": false,
+    "notes": ["No raw licensed history committed", "CAT 15m series used for classification only", "Borrow/SSR/locate unavailable; no formal short alert"]
+  }
+}
