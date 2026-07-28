@@ -1,0 +1,65 @@
+{
+  "as_of_hkt": "2026-07-29T01:07:06+08:00",
+  "as_of_et": "2026-07-28T13:07:06-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": "success",
+    "alpaca": "runtime_unavailable_no_namespace",
+    "ibkr_positions": "success",
+    "ibkr_quotes": "partial_success",
+    "ibkr_bars": "partial_success_cat_only",
+    "binance": "runtime_unavailable_no_namespace",
+    "borrow_ssr_locate": "unavailable"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 48,
+    "chunking_used": false,
+    "requested_limit": null,
+    "returned_record_count": 0,
+    "per_symbol_bar_counts": {},
+    "individual_retries": [],
+    "fallback_feed": null,
+    "truncation_detection": "not_applicable_runtime_unavailable",
+    "final_coverage_ratio": {"weekly":"0/21","daily":"0/21","1h":"0/21","15m":"0/21"}
+  },
+  "positions_overlap": {
+    "SOXX": {"position": 15, "average_price": 525.34638667, "market_price": 494.35998535},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 279.14001465},
+    "FOTO": {"position": 180, "average_price": 19.33900889, "market_price": 17.26000025}
+  },
+  "long_quotes": {
+    "MU": {"last":821.03,"bid":820.88,"ask":821.20,"change_pct":-8.79,"low":789.09,"high":848.36},
+    "SNDK": {"last":1096.05,"bid":1095.00,"ask":1096.46,"change_pct":-14.25,"low":1050.72,"high":1188.00},
+    "FOTO": {"last":null,"mark":17.26000025,"state":"thin_liquidity_position_mark_only"}
+  },
+  "short_quotes": {
+    "SOXX": {"last":494.70,"bid":494.62,"ask":494.86,"change_pct":-4.17,"low":480.50,"high":498.29,"hv30_annual":0.6957971417,"ivp52":0.9681274891},
+    "SMH": {"last":532.35,"bid":532.20,"ask":532.38,"change_pct":-2.95,"low":518.25,"high":535.94,"hv30_annual":0.5866059268,"ivp52":0.9083665609},
+    "MU": {"last":821.03,"bid":820.88,"ask":821.20,"change_pct":-8.79,"low":789.09,"high":848.36,"hv30_annual":1.143058226,"ivp52":0.7768924236},
+    "SNDK": {"last":1096.05,"bid":1095.00,"ask":1096.46,"change_pct":-14.25,"low":1050.72,"high":1188.00,"hv30_annual":1.30978342,"ivp52":0.9601593614},
+    "AMD": {"last":458.96,"bid":458.70,"ask":459.18,"change_pct":-7.27,"low":442.27,"high":472.75,"hv30_annual":0.8356515560,"ivp52":0.9402390718},
+    "INTC": {"last":86.80,"bid":86.80,"ask":86.83,"change_pct":-5.31,"low":83.10,"high":88.28,"hv30_annual":0.9431886472,"ivp52":0.8764940500},
+    "ARM": {"last":246.72,"bid":246.00,"ask":246.56,"change_pct":-7.36,"low":240.38,"high":253.61,"hv30_annual":1.0293904,"ivp52":0.9442231059}
+  },
+  "burry_quotes": {
+    "CAT": {"last":839.14,"bid":839.07,"ask":840.03,"change_pct":-3.91,"low":824.00,"high":855.82,"hv30_annual":0.4949496933,"ivp52":0.9840637445,"completed_15m_close":840.04,"completed_1h_close":840.04},
+    "SOXX": {"last":494.70,"bid":494.62,"ask":494.86,"change_pct":-4.17},
+    "MU": {"last":821.03,"bid":820.88,"ask":821.20,"change_pct":-8.79},
+    "NVDA": {"last":197.30,"bid":197.32,"ask":197.35,"change_pct":0.40,"low":192.74,"high":198.70,"hv30_annual":0.3829502780,"ivp52":0.7569721341},
+    "TSLA": null,
+    "PLTR": null,
+    "QQQ": null
+  },
+  "events": {
+    "SNDK": {"date":"2026-08-05","label":"FY2026 Q4/full-year results after close"},
+    "CAT": {"status":"N/A — 未取得可靠資料"}
+  },
+  "borrow": {"status":"N/A — 未取得可靠資料"},
+  "calculation_metadata": {
+    "completed_interval_rule": "current day/hour/15m excluded",
+    "cat_current_interval_excluded": "2026-07-28T17:00:00Z 15m bar excluded",
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
