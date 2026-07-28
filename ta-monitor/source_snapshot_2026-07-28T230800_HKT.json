@@ -1,0 +1,58 @@
+{
+  "as_of_hkt": "2026-07-28T23:08:00+08:00",
+  "as_of_et": "2026-07-28T11:08:00-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "alpaca": {"status": "runtime_unavailable", "clock": "not_callable", "snapshot": "not_callable", "bars": "not_callable"},
+    "ibkr": {"status": "partial_success", "quote_authority": true, "positions_checked": true, "cat_daily_and_15m_bars": true},
+    "binance": {"status": "runtime_unavailable"},
+    "borrow_ssr_locate": {"status": "unavailable"}
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested_symbols": 21, "coverage": "0/21", "reason": "connector unavailable before API call"},
+    "daily": {"requested_symbols": 21, "coverage": "0/21", "reason": "connector unavailable before API call"},
+    "one_hour": {"requested_symbols": 21, "coverage": "0/21", "reason": "connector unavailable before API call"},
+    "fifteen_min": {"requested_symbols": 21, "coverage": "0/21", "reason": "connector unavailable before API call"},
+    "chunking_used": false,
+    "truncation_detection": "not_applicable_no_payload",
+    "individual_retries": 0,
+    "fallback_feed": null
+  },
+  "long_quotes": {
+    "FOTO": {"mark": 16.86, "state": "STOP_HIT_THIN_LIQUIDITY"},
+    "MU": {"last": 815.24, "bid": 815.10, "ask": 815.73, "change_pct": -9.44},
+    "SNDK": {"last": 1089.41, "bid": 1088.86, "ask": 1089.97, "change_pct": -14.77}
+  },
+  "short_quotes": {
+    "SOXX": {"last": 487.97, "bid": 487.77, "ask": 488.06, "change_pct": -5.47, "low": 480.50, "ivp52": 1.0},
+    "SMH": {"last": 527.08, "bid": 527.09, "ask": 527.31, "change_pct": -3.91, "low": 518.25, "ivp52": 0.9044},
+    "MU": {"last": 815.24, "change_pct": -9.44, "low": 789.09, "ivp52": 0.7769},
+    "SNDK": {"last": 1089.41, "change_pct": -14.77, "low": 1050.72, "ivp52": 0.9841},
+    "AMD": {"last": 453.09, "change_pct": -8.46, "low": 442.27, "ivp52": 0.9482},
+    "INTC": {"last": 85.76, "change_pct": -6.45, "low": 83.10, "ivp52": 0.8805},
+    "ARM": {"last": 244.46, "change_pct": -8.21, "low": 240.38, "ivp52": 0.9442}
+  },
+  "burry_quotes": {
+    "SOXX": {"last": 487.97, "existing_long_overlap": true},
+    "MU": {"last": 815.24},
+    "NVDA": {"last": 196.38, "change_pct": -0.07, "low": 192.74, "ivp52": 0.7809},
+    "CAT": {"last": 829.12, "bid": 828.00, "ask": 828.55, "change_pct": -5.06, "low": 824.00, "ivp52": 0.9960},
+    "TSLA": {"last": 304.28, "change_pct": -1.60, "low": 300.69, "ivp52": 0.3586},
+    "PLTR": {"last": 121.52, "change_pct": -7.61, "low": 117.89, "ivp52": 0.9761},
+    "QQQ": {"last": 672.32, "change_pct": -1.44, "low": 667.88, "ivp52": 0.8884, "existing_long_overlap": true}
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"},
+    "CAT": {"status": "event_data_not_refreshed_this_run"}
+  },
+  "calculation_metadata": {
+    "completed_interval_rule": "current daily/hour/15m excluded",
+    "cat_completed_15m_last": {"timestamp_utc": "2026-07-28T15:00:00Z", "close": 827.63},
+    "cat_previous_daily_low": 839.58,
+    "cat_current_daily_low_live": 824.09,
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
