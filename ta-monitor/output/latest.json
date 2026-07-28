@@ -1,44 +1,36 @@
 {
-  "as_of_hkt": "2026-07-28T11:06:53+08:00",
-  "as_of_et": "2026-07-27T23:06:53-04:00",
+  "as_of_hkt": "2026-07-28T12:04:40+08:00",
+  "as_of_et": "2026-07-28T00:04:40-04:00",
   "session": "US_OVERNIGHT",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "quote_authority": true,
-      "positions": true,
-      "short_core_quotes": "7/7",
-      "full_long_bars": false
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
-      "status": "FAILED_AFTER_ATTEMPT",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "reason": "No available connector/plugin in runtime; SIP, delayed_sip and IEX unavailable"
+      "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "FAILED_AFTER_ATTEMPT",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "reason": "No available connector/plugin in runtime"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-28T11:08:58.941111+08:00",
+      "timestamp": "2026-07-28T12:06:14.325624+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable",
-      "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
-      "config_sha": "996a72dd3d4207869ca9a6ca8eee04eaeb480737"
+      "impact": "Fresh market calculation unavailable"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
