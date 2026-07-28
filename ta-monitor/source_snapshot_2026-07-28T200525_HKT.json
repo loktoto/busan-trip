@@ -1,0 +1,46 @@
+{
+  "as_of_hkt": "2026-07-28T20:05:25+08:00",
+  "as_of_et": "2026-07-28T08:05:25-04:00",
+  "session": "US_PREMARKET",
+  "source_status": {
+    "github": {"status": "success", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "ibkr": {"status": "partial_success", "fresh_quotes": ["SOXX", "SMH", "CAT", "MU", "NVDA", "QQQ"], "positions_checked": true, "completed_bars": "not_collected_at_full_universe_scale"},
+    "alpaca": {"status": "unavailable_in_this_runtime", "sip": "not_called", "delayed_sip": "not_called", "iex": "not_called"},
+    "binance": {"status": "unavailable_in_this_runtime"},
+    "borrow_ssr_locate": {"status": "unavailable"}
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested": 0, "coverage": "N/A"},
+    "daily": {"requested": 0, "coverage": "N/A"},
+    "one_hour": {"requested": 0, "coverage": "N/A"},
+    "fifteen_minute": {"requested": 0, "coverage": "N/A"},
+    "reason": "connector not exposed in this runtime; no stale bars reused"
+  },
+  "long_quotes": {
+    "HUT": null, "IREN": null, "NBIS": null, "WULF": null, "MARA": null, "APLD": null, "ORCL": null, "CRWV": null, "CRCL": null, "RKLB": null, "AAOI": null, "ONDS": null, "AXTI": null, "MXL": null, "FOTO": {"position_overlap": true, "account_mark": 17.87}, "LITE": null, "COHR": null, "APH": null, "FN": null, "MU": {"last": 841.0, "mark": 841.5, "bid": 841.0, "ask": 841.79, "change_pct": -6.58, "hv30_annual": 1.143058225976315, "ivp52": 0.8486055731773376}, "SNDK": null
+  },
+  "short_quotes": {
+    "SOXX": {"last": 496.66, "mark": 497.4100036621094, "bid": 497.06, "ask": 498.32, "prior_close": 516.23, "change_pct": -3.79, "hv30_annual": 0.695797141742419, "ivp52": 0.9840637445449829, "position_overlap": true},
+    "SMH": {"last": 533.0, "mark": 532.6400146484375, "bid": 532.36, "ask": 533.24, "change_pct": -2.83, "hv30_annual": 0.5866059268342589, "ivp52": 0.9681274890899658},
+    "MU": {"last": 841.0, "mark": 841.5, "bid": 841.0, "ask": 841.79, "change_pct": -6.58, "hv30_annual": 1.143058225976315, "ivp52": 0.8486055731773376},
+    "SNDK": null, "AMD": null, "INTC": null, "ARM": null
+  },
+  "burry_quotes": {
+    "SOXX": {"last": 496.66, "mark": 497.4100036621094, "position_overlap": true},
+    "MU": {"last": 841.0, "mark": 841.5},
+    "NVDA": {"last": 195.83, "mark": 195.75, "bid": 195.71, "ask": 195.78, "change_pct": -0.35, "hv30_annual": 0.38295027796558656, "ivp52": 0.7808765172958374},
+    "CAT": {"last": 844.0, "mark": 850.0, "bid": 851.55, "ask": 853.85, "change_pct": -3.35, "hv30_annual": 0.4949496933153106, "ivp52": 0.9880478382110596},
+    "TSLA": null,
+    "PLTR": null,
+    "QQQ": {"last": 676.92, "mark": 676.9099731445312, "bid": 676.8, "ask": 676.89, "change_pct": -0.76, "hv30_annual": 0.2661329494784139, "ivp52": 0.9083665609359741, "qqqm_overlap": true}
+  },
+  "events": {"SNDK": "2026-08-05 after close", "CAT": "event date not independently refreshed in this run"},
+  "calculation_metadata": {
+    "report_mode": "DIRECT_PARTIAL_DEGRADED",
+    "no_orders": true,
+    "completed_bar_policy_applied": true,
+    "stale_data_reused": false,
+    "pass2_candidates": [],
+    "reason_no_pass2": "no reliable raw score reached 7.0 with complete trigger and R/R data"
+  }
+}
