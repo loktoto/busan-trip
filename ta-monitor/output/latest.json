@@ -1,35 +1,41 @@
 {
-  "as_of_hkt": "2026-07-29T05:04:13+08:00",
-  "as_of_et": "2026-07-28T17:04:13-04:00",
+  "as_of_hkt": "2026-07-29T06:05:07+08:00",
+  "as_of_et": "2026-07-28T18:05:07-04:00",
   "session": "US_AFTER_HOURS",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "FAILED",
+      "status": "PARTIAL_SUCCESS",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "quotes": "core semiconductor 7/7 plus CAT",
+      "positions": "SUCCESS",
+      "cat_15m": "SUCCESS"
     },
     "Alpaca": {
-      "status": "FAILED",
+      "status": "RUNTIME_UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "attempt": "connector discovery",
+      "payload": false
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "RUNTIME_UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "payload": false
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-29T05:09:08.082555+08:00",
+      "timestamp": "2026-07-29T06:08:35.537912+08:00",
       "quality": "policy/engine only",
-      "purpose": "Model and audit",
+      "purpose": "policy/config/audit only",
       "impact": "Fresh market calculation unavailable"
     }
   },
