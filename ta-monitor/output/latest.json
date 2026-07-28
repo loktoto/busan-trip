@@ -1,39 +1,49 @@
 {
-  "as_of_hkt": "2026-07-28T23:08:00+08:00",
-  "as_of_et": "2026-07-28T11:08:00-04:00",
+  "as_of_hkt": "2026-07-29T00:09:07+08:00",
+  "as_of_et": "2026-07-28T12:09:07-04:00",
   "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "partial_success",
+      "status": "PARTIAL_SUCCESS",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "quote_authority": true,
-      "positions_checked": true,
-      "cat_daily_and_15m_bars": true
+      "positions": true,
+      "quotes": [
+        "SOXX",
+        "SMH",
+        "CAT"
+      ],
+      "bars": {
+        "CAT_15m": true
+      }
     },
     "Alpaca": {
-      "status": "runtime_unavailable",
+      "status": "RUNTIME_UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
       "impact": "Source not supplied by collector",
-      "clock": "not_callable",
-      "snapshot": "not_callable",
-      "bars": "not_callable"
+      "reason": "connector namespace not exposed in this run",
+      "coverage": {
+        "weekly": "0/21",
+        "daily": "0/21",
+        "1h": "0/21",
+        "15m": "0/21"
+      }
     },
     "Binance": {
-      "status": "runtime_unavailable",
+      "status": "RUNTIME_UNAVAILABLE",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector"
     },
     "GitHub": {
-      "status": "success",
-      "timestamp": "2026-07-28T23:09:00.619848+08:00",
+      "status": "SUCCESS",
+      "timestamp": "2026-07-29T00:10:04.245338+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable",
