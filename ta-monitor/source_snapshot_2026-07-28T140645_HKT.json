@@ -1,0 +1,40 @@
+{
+  "as_of_hkt": "2026-07-28T14:06:45+08:00",
+  "as_of_et": "2026-07-28T02:06:45-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": "success: production_policy.md, burry_relative_value_policy.md, config.py",
+    "alpaca": "failed: no callable Alpaca connector in this runtime; SIP/delayed_sip/IEX unavailable",
+    "ibkr": "partial success: positions and 12 fresh primary-contract snapshots",
+    "binance": "failed after attempt: official futures endpoint inaccessible; ETH returned HTTP 451",
+    "borrow_ssr_locate": "N/A — 未取得可靠資料",
+    "bars": "N/A — 未取得完整一致 weekly/daily/1H/15m series"
+  },
+  "quotes": {
+    "SOXX": {"last": 498.49, "bid": 498.09, "ask": 499.00, "change_pct": -3.44, "volume": 75865, "hv30_annual": 0.695797, "ivp52": 0.944223},
+    "SMH": {"last": 533.80, "bid": 533.20, "ask": 533.80, "change_pct": -2.69, "volume": 26410, "hv30_annual": 0.586606, "ivp52": 0.908367},
+    "MU": {"last": 851.00, "bid": 850.75, "ask": 851.54, "change_pct": -5.47, "volume": 521202, "hv30_annual": 1.143058, "ivp52": 0.824701},
+    "SNDK": {"last": 1204.25, "bid": 1203.35, "ask": 1205.00, "change_pct": -5.79, "volume": 261247, "hv30_annual": 1.309783, "ivp52": 0.980080},
+    "AMD": {"last": 476.50, "bid": 476.00, "ask": 476.90, "change_pct": -3.73, "volume": 115561, "hv30_annual": 0.835652, "ivp52": 0.940239},
+    "INTC": {"last": 87.14, "bid": 87.04, "ask": 87.17, "change_pct": -4.94, "volume": 810755, "hv30_annual": 0.943189, "ivp52": 0.860558},
+    "ARM": {"last": 256.30, "bid": 255.30, "ask": 256.30, "change_pct": -3.77, "volume": 31354, "hv30_annual": 1.029390, "ivp52": 0.888446},
+    "NVDA": {"last": 193.07, "bid": 193.05, "ask": 193.10, "change_pct": -1.75, "volume": 601880, "hv30_annual": 0.382950, "ivp52": 0.517928},
+    "CAT": {"last": 863.19, "bid": 851.00, "ask": 868.00, "change_pct": -1.16, "volume": 1875, "hv30_annual": 0.494950, "ivp52": 0.988048},
+    "TSLA": {"last": 303.25, "bid": 303.24, "ask": 303.39, "change_pct": -1.93, "volume": 246650, "hv30_annual": 0.527845, "ivp52": 0.414343},
+    "PLTR": {"last": 131.51, "bid": 131.32, "ask": 131.53, "change_pct": -0.02, "volume": 110425, "hv30_annual": 0.572319, "ivp52": 0.908367},
+    "QQQ": {"last": 674.13, "bid": 674.04, "ask": 674.13, "change_pct": -1.17, "volume": 344130, "hv30_annual": 0.266133, "ivp52": 0.880478}
+  },
+  "positions_summary": {
+    "SOXX": {"position": 15, "average_price": 525.34638667, "account_mark": 498.0, "unrealized_pnl": -410.1958},
+    "FOTO": {"position": 160, "average_price": 19.64937062, "account_mark": 18.01000025, "unrealized_pnl": -262.29926},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "account_mark": 277.60998535, "unrealized_pnl": -602.758748}
+  },
+  "calculation_metadata": {
+    "completed_bar_policy_applied": true,
+    "raw_scores_ge_7": [],
+    "pass2_required": false,
+    "high_multiple_dynamic_qualifiers": [],
+    "orders_created": false,
+    "notes": "No action issued because complete same-source completed weekly/daily/1H/15m series and borrow/event validation were unavailable. Overnight signals require RTH validation."
+  }
+}
