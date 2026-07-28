@@ -1,0 +1,72 @@
+{
+  "as_of_hkt": "2026-07-29T06:05:07+08:00",
+  "as_of_et": "2026-07-28T18:05:07-04:00",
+  "session": "US_AFTER_HOURS",
+  "monitoring_only": true,
+  "orders_created": false,
+  "policy": {
+    "production_policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
+    "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90",
+    "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"
+  },
+  "source_status": {
+    "github": {"status": "SUCCESS", "purpose": "policy/config/audit only"},
+    "alpaca": {"status": "RUNTIME_UNAVAILABLE", "attempt": "connector discovery", "payload": false},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "quotes": "core semiconductor 7/7 plus CAT", "positions": "SUCCESS", "cat_15m": "SUCCESS"},
+    "binance": {"status": "RUNTIME_UNAVAILABLE", "payload": false},
+    "borrow_ssr_locate": {"status": "N/A — 未取得可靠資料"}
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "daily": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "one_hour": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "fifteen_minute": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "chunking_used": false,
+    "truncation_detection": "not applicable — no API payload",
+    "individual_retries": 0,
+    "fallback_feed": null
+  },
+  "positions_summary": {
+    "FOTO": {"quantity": 180, "market_price": 17.2369995, "average_price": 19.33900889, "state": "STOP HIT / THIN LIQUIDITY"},
+    "SOXX": {"quantity": 15, "market_price": 493.1000061, "average_price": 525.34638667, "overlap": "existing long"},
+    "QQQM": {"quantity": 32.5589, "market_price": 279.0, "average_price": 296.12285734, "overlap": "QQQ hedge overlap"}
+  },
+  "long_quotes": {
+    "HUT": null, "IREN": null, "NBIS": null, "WULF": null, "MARA": null, "APLD": null,
+    "ORCL": null, "CRWV": null, "CRCL": null, "RKLB": null, "AAOI": null, "ONDS": null,
+    "AXTI": null, "MXL": null,
+    "FOTO": {"price": 17.2369995, "source": "IBKR account mark", "state": "STOP HIT / THIN LIQUIDITY"},
+    "LITE": null, "COHR": null, "APH": null, "FN": null,
+    "MU": {"last": 832.04, "mark": 832.72998046875, "change_pct": -7.57, "source": "IBKR"},
+    "SNDK": {"last": 1129.0, "mark": 1128.300048828125, "change_pct": -11.67, "source": "IBKR"}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 491.38, "mark": 493.1000061035156, "bid": 492.6, "ask": 493.88, "change_pct": -4.81, "low": 480.5, "high": 498.48, "hv30_annual": 0.695797141742419, "ivp52": 0.9362549781799316},
+    "SMH": {"last": 529.61, "mark": 529.25, "bid": 529.35, "ask": 530.2, "change_pct": -3.45, "low": 518.25, "high": 535.94, "hv30_annual": 0.5866059268342589, "ivp52": 0.9083665609359741},
+    "MU": {"last": 832.04, "mark": 832.72998046875, "bid": 832.29, "ask": 832.68, "change_pct": -7.57, "low": 789.09, "high": 848.36, "hv30_annual": 1.143058225976315, "ivp52": 0.7848605513572693},
+    "SNDK": {"last": 1129.0, "mark": 1128.300048828125, "bid": 1128.3, "ask": 1129.88, "change_pct": -11.67, "low": 1050.72, "high": 1188.0, "hv30_annual": 1.3097834197446234, "ivp52": 0.9681274890899658},
+    "AMD": {"last": 458.5, "mark": 458.5, "bid": 458.2, "ask": 458.5, "change_pct": -7.36, "low": 442.27, "high": 472.75, "hv30_annual": 0.8356515560452934, "ivp52": 0.9402390718460083},
+    "INTC": {"last": 86.85, "mark": 86.8499984741211, "bid": 86.85, "ask": 86.9, "change_pct": -5.26, "low": 83.1, "high": 88.28, "hv30_annual": 0.9431886472337758, "ivp52": 0.8605577945709229},
+    "ARM": {"last": 247.49, "mark": 247.47850036621094, "bid": 247.0, "ask": 247.48, "change_pct": -7.07, "low": 240.38, "high": 253.61, "hv30_annual": 1.0293903998498335, "ivp52": 0.9482071995735168}
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 491.38, "state": "HEDGE WATCH / EXTENDED"},
+    "MU": {"last": 832.04, "state": "POST-COVER EXTENDED"},
+    "NVDA": null,
+    "CAT": {"last": 840.12, "mark": 843.2000122070312, "bid": 841.0, "ask": 844.0, "change_pct": -3.8, "low": 824.0, "high": 855.82, "ivp52": 0.9840637445449829, "state": "EVENT BLOCKED / FAILED SHORT BREAKDOWN"},
+    "TSLA": null, "PLTR": null, "QQQ": null
+  },
+  "events": {
+    "CAT": {"date": "2026-08-04", "status": "inside 5-session earnings blackout", "source": "official Caterpillar investor relations"},
+    "SNDK": {"date": "2026-08-05", "status": "event blocked per config"}
+  },
+  "calculation_metadata": {
+    "completed_interval_rule": "current week/day/hour/15m excluded",
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "validated_7_plus": [],
+    "cat_completed_15m_last_close": 841.11,
+    "cat_structure": "early breakdown below 839.58 recovered; no continuation below 824; event blackout",
+    "report_mode": "DIRECT PARTIAL DEGRADED"
+  }
+}
