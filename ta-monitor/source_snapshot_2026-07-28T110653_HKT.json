@@ -1,0 +1,41 @@
+{
+  "as_of_hkt": "2026-07-28T11:06:53+08:00",
+  "as_of_et": "2026-07-27T23:06:53-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "config_sha": "996a72dd3d4207869ca9a6ca8eee04eaeb480737"},
+    "alpaca": {"status": "FAILED_AFTER_ATTEMPT", "reason": "No available connector/plugin in runtime; SIP, delayed_sip and IEX unavailable"},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "quote_authority": true, "positions": true, "short_core_quotes": "7/7", "full_long_bars": false},
+    "binance": {"status": "FAILED_AFTER_ATTEMPT", "reason": "No available connector/plugin in runtime"},
+    "borrow_shortability": {"status": "N/A", "reason": "No reliable borrow/fee/SSR/locate fields returned"}
+  },
+  "quotes": {
+    "SOXX": {"last": 502.80, "mark": 502.79998779296875, "bid": 502.00, "ask": 503.11, "change_pct": -2.60, "volume": 48017, "high": 534.30, "low": 500.00, "historical_vol_annual": 0.6910633635, "iv_percentile_52w": 0.944},
+    "SMH": {"last": 537.10, "mark": 537.02001953125, "bid": 536.00, "ask": 537.02, "change_pct": -2.09, "volume": 13428, "high": 567.62, "low": 535.31, "historical_vol_annual": 0.5828754175, "iv_percentile_52w": 0.912},
+    "MU": {"last": 862.62, "mark": 862.530029296875, "bid": 862.00, "ask": 862.53, "change_pct": -4.17, "volume": 308615, "high": 935.00, "low": 854.79, "historical_vol_annual": 1.1380752180, "iv_percentile_52w": 0.828},
+    "SNDK": {"last": 1222.00, "mark": 1222.00, "bid": 1218.90, "ask": 1222.11, "change_pct": -4.40, "volume": 158692, "high": 1462.99, "low": 1222.01, "historical_vol_annual": 1.2898132888, "iv_percentile_52w": 0.98},
+    "AMD": {"last": 480.05, "mark": 480.04998779296875, "bid": 479.78, "ask": 480.55, "change_pct": -3.01, "volume": 68380, "high": 528.00, "low": 476.93, "historical_vol_annual": 0.8244854272, "iv_percentile_52w": 0.944},
+    "INTC": {"last": 88.09, "mark": 88.08999633789062, "bid": 88.00, "ask": 88.14, "change_pct": -3.91, "volume": 405476, "high": 94.98, "low": 86.94, "historical_vol_annual": 0.9531245017, "iv_percentile_52w": 0.86},
+    "ARM": {"last": 256.84, "mark": 256.8399963378906, "bid": 256.70, "ask": 257.16, "change_pct": -3.56, "volume": 21070, "high": 268.20, "low": 251.61, "historical_vol_annual": 1.0339559083, "iv_percentile_52w": 0.892}
+  },
+  "events": {
+    "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
+    "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "positions": {
+    "FOTO": {"quantity": 160, "market_price": 18.20000075, "average_price": 19.64937022, "unrealized_pnl": -231.8991145},
+    "SOXX": {"quantity": 15, "market_price": 502.7999878, "average_price": 525.34639088, "unrealized_pnl": -338.19604625}
+  },
+  "calculation_metadata": {
+    "current_intervals_excluded": true,
+    "completed_week_soxx_close": 527.01,
+    "completed_soxx_1h_last_close": 516.12,
+    "completed_soxx_15m_last_close": 516.12,
+    "completed_smh_1h_last_close": 548.31,
+    "completed_smh_15m_last_close": 548.31,
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "notes": "No actionable long or short trigger; overnight signals require RTH validation; SOXX and SMH treated as one sleeve."
+  }
+}
