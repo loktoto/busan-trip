@@ -1,0 +1,37 @@
+{
+  "as_of_hkt": "2026-07-28T08:04:38+08:00",
+  "as_of_et": "2026-07-27T20:04:38-04:00",
+  "session": "US_AFTER_HOURS",
+  "source_status": {
+    "github": "success",
+    "ibkr_positions": "success",
+    "ibkr_short_core_quotes": "success_7_of_7",
+    "ibkr_completed_bars": "success_soxx_smh_15m_only",
+    "alpaca": "failed_after_attempt_no_available_plugin",
+    "binance": "failed_after_attempt_no_available_plugin",
+    "borrow_ssr_locate": "unavailable"
+  },
+  "quotes": {
+    "SOXX": {"last": 513.00, "mark": 513.06, "bid": 513.06, "ask": 515.11, "change_pct": -0.63, "day_high": 534.30, "day_low": 500.00, "hv30_annual": 0.691063, "ivp52": 0.94},
+    "SMH": {"last": 545.28, "mark": 546.25, "bid": 546.25, "ask": 548.00, "change_pct": -0.60, "day_high": 567.62, "day_low": 535.31, "hv30_annual": 0.582875, "ivp52": 0.912},
+    "MU": {"last": 887.90, "mark": 887.90, "bid": 886.00, "ask": 887.95, "change_pct": -1.37, "day_high": 935.00, "day_low": 854.79, "hv30_annual": 1.138075, "ivp52": 0.836},
+    "SNDK": {"last": 1255.12, "mark": 1253.00, "bid": 1250.58, "ask": 1253.00, "change_pct": -1.81, "day_high": 1462.99, "day_low": 1222.01, "hv30_annual": 1.289813, "ivp52": 0.98},
+    "AMD": {"last": 491.00, "mark": 491.00, "bid": 490.38, "ask": 493.00, "change_pct": -0.80, "day_high": 528.00, "day_low": 476.93, "hv30_annual": 0.824485, "ivp52": 0.948},
+    "INTC": {"last": 91.19, "mark": 91.14, "bid": 91.05, "ask": 91.19, "change_pct": -0.52, "day_high": 94.98, "day_low": 86.94, "hv30_annual": 0.953125, "ivp52": 0.86},
+    "ARM": {"last": 264.00, "mark": 264.15, "bid": 264.18, "ask": 265.36, "change_pct": -0.87, "day_high": 268.20, "day_low": 251.61, "hv30_annual": 1.033956, "ivp52": 0.896}
+  },
+  "positions": {
+    "SOXX": {"quantity": 15, "average_price": 525.34639088, "market_price": 512.0499878, "unrealized_pnl": -199.44604625},
+    "FOTO": {"quantity": 160, "average_price": 19.64937022, "market_price": 18.2814007, "unrealized_pnl": -218.8751225}
+  },
+  "events": {
+    "APLD": "2026-07-27 after close",
+    "SNDK": "2026-08-05 after close"
+  },
+  "calculation_metadata": {
+    "long_fixed_scores": "withheld_due_to_missing_full_completed_bar_dataset",
+    "short_fixed_scores": "withheld_due_to_missing_borrow_and_full_completed_bar_dataset",
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
