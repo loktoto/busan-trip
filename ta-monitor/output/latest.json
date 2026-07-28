@@ -1,41 +1,25 @@
 {
-  "as_of_hkt": "2026-07-29T00:09:07+08:00",
-  "as_of_et": "2026-07-28T12:09:07-04:00",
+  "as_of_hkt": "2026-07-29T01:07:06+08:00",
+  "as_of_et": "2026-07-28T13:07:06-04:00",
   "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "positions": true,
-      "quotes": [
-        "SOXX",
-        "SMH",
-        "CAT"
-      ],
-      "bars": {
-        "CAT_15m": true
-      }
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
-      "status": "RUNTIME_UNAVAILABLE",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "reason": "connector namespace not exposed in this run",
-      "coverage": {
-        "weekly": "0/21",
-        "daily": "0/21",
-        "1h": "0/21",
-        "15m": "0/21"
-      }
+      "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "RUNTIME_UNAVAILABLE",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
@@ -43,13 +27,10 @@
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-29T00:10:04.245338+08:00",
+      "timestamp": "2026-07-29T01:10:33.040494+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable",
-      "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
-      "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90",
-      "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"
+      "impact": "Fresh market calculation unavailable"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'quotes'",
