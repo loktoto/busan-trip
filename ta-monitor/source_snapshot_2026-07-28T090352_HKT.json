@@ -1,0 +1,24 @@
+{
+  "as_of_hkt": "2026-07-28T09:03:52+08:00",
+  "as_of_et": "2026-07-27T21:03:52-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS_CORE_SHORT_AND_POSITIONS",
+    "alpaca": "FAILED_PLUGIN_NOT_AVAILABLE_AFTER_SEARCH",
+    "binance": "FAILED_PLUGIN_NOT_AVAILABLE_AFTER_SEARCH",
+    "borrow_ssr_locate": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"last": 507.50, "bid": 507.17, "ask": 508.00, "mark": 507.50, "change_pct": -1.69, "ivp52": 0.944, "hv30_annual": 0.6911},
+    "SMH": {"last": 542.04, "bid": 541.35, "ask": 543.00, "mark": 542.04, "change_pct": -1.19, "ivp52": 0.912, "hv30_annual": 0.5829},
+    "MU": {"last": 869.00, "bid": 868.69, "ask": 869.65, "mark": 869.00, "change_pct": -3.47, "ivp52": 0.828, "hv30_annual": 1.1381},
+    "SNDK": {"last": 1232.34, "bid": 1229.24, "ask": 1232.10, "mark": 1232.10, "change_pct": -3.59, "ivp52": 0.980, "hv30_annual": 1.2898},
+    "AMD": {"last": 490.70, "bid": 482.40, "ask": 484.00, "mark": 482.96, "change_pct": -0.86, "ivp52": 0.944, "hv30_annual": 0.8245, "quote_conflict": "last outside current bid/ask"},
+    "INTC": {"last": 89.49, "bid": 89.46, "ask": 89.50, "mark": 89.49, "change_pct": -2.38, "ivp52": 0.860, "hv30_annual": 0.9531},
+    "ARM": {"last": 260.00, "bid": 258.61, "ask": 259.43, "mark": 259.47, "change_pct": -2.38, "ivp52": 0.892, "hv30_annual": 1.0340}
+  },
+  "events": {"SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}},
+  "positions_summary": {"SOXX": {"quantity": 15, "average_price": 525.34639088, "market_price": 507.50, "unrealized_pnl": -267.69586325}, "FOTO": {"quantity": 160, "average_price": 19.64937022, "market_price": 18.29999925, "unrealized_pnl": -215.8993545}},
+  "calculation_metadata": {"long_scores_withheld": true, "short_scores_provisional": true, "pass2_triggered": false, "reason": "No candidate reached reliable 7.0 because completed multi-timeframe bars and borrow/SSR/locate were unavailable; overnight signals require RTH validation."}
+}
