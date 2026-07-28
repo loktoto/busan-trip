@@ -30,6 +30,73 @@ SHORT_SCREEN_RULES = {
     "require_rth_validation_for_overnight_signal": True,
 }
 
+# Burry disclosure / relative-value board. This is an independent research and hedge board.
+# It must never overwrite the core long or semiconductor-short scores, and it is not an instruction to copy trades.
+BURRY_NEW_SHORT_DISCLOSURE = ["SOXX", "MU", "NVDA", "CAT"]
+BURRY_LEGACY_SHORT_CONTEXT = ["TSLA", "PLTR", "QQQ"]
+BURRY_BOARD_UNIVERSE = BURRY_NEW_SHORT_DISCLOSURE + BURRY_LEGACY_SHORT_CONTEXT
+
+# User-supplied historical reference only. These values are never live market data and must be labelled as such.
+BURRY_DISCLOSURE_CONTEXT = {
+    "reference_date": "2026-07-24",
+    "source_type": "self-disclosed trade update / research context; not a complete Form 13F short-position record",
+    "portfolio_style": "relative-value long/short; do not infer naked-short sizing, full hedges, borrow cost or stop rules",
+    "reference_entry_prices": {
+        "MU": 933.86,
+        "NVDA": 210.28,
+        "CAT": 893.49,
+        "SOXX": 535.83,
+    },
+    "legacy_reference_prices": {
+        "TSLA": 313.03,
+        "PLTR": 122.92,
+        "QQQ": 684.23,
+    },
+    "reference_scores_only": {
+        "copy_naked_short": 3.0,
+        "soxx_portfolio_hedge": 6.5,
+    },
+}
+
+BURRY_HEDGE_RULES = {
+    "preferred_single_hedge": "SOXX",
+    "never_copy_all_naked_shorts": True,
+    "do_not_chase_open_or_large_red_candle": True,
+    "prefer_reduce_leveraged_long_before_adding_naked_short": True,
+    "max_portfolio_loss_pct": 0.50,
+    "initial_fraction_of_planned_hedge": 1.0 / 3.0,
+    "treat_soxx_and_smh_as_one_sleeve": True,
+    "defined_risk_options_preferred_for_single_name_when_practical": True,
+    "option_iv_and_spread_must_be_refreshed": True,
+    "require_dynamic_borrow_event_squeeze_checks": True,
+}
+
+# Historical reference zones from the 2026-07-24 research note. Rebuild dynamically every run.
+# A current completed-bar setup may revise or retire any of these levels.
+BURRY_REFERENCE_ZONES = {
+    "SOXX": {
+        "preferred_rebound_zone": [545.0, 555.0],
+        "breakdown_reference": 520.0,
+        "cover_reference": [500.0, 505.0],
+        "invalidation_reference": 560.0,
+        "role": "preferred portfolio hedge, not an automatic naked short",
+    },
+    "CAT": {
+        "preferred_rebound_zone": [900.0, 920.0],
+        "invalidation_reference": 930.0,
+        "role": "small tactical short watch only",
+    },
+    "MU": {
+        "preferred_rebound_zone": [960.0, 1000.0],
+        "role": "cyclical thesis watch; do not chase a large red candle",
+    },
+    "NVDA": {
+        "preferred_rebound_zone": [212.0, 215.0],
+        "breakdown_reference": 200.0,
+        "role": "lowest-priority naked short; defined-risk structure preferred",
+    },
+}
+
 EVENTS = {
     "MXL": {"date": "2026-07-23", "label": "Q2 2026 results after close"},
     "APLD": {"date": "2026-07-27", "label": "FY2026 Q4/full-year results after close"},
