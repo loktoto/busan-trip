@@ -1,0 +1,62 @@
+{
+  "as_of_hkt": "2026-07-29T05:04:13+08:00",
+  "as_of_et": "2026-07-28T17:04:13-04:00",
+  "session": "US_AFTER_HOURS",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "ibkr_core_quotes": "SUCCESS_7_OF_7",
+    "ibkr_cat_bars": "SUCCESS",
+    "alpaca": "RUNTIME_UNAVAILABLE_NO_PAYLOAD",
+    "binance": "RUNTIME_UNAVAILABLE_NO_PAYLOAD",
+    "borrow_ssr_locate": "N/A_UNAVAILABLE",
+    "options_chain_execution": "PARTIAL_UNDERLYING_METRICS_ONLY"
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested_symbols": 21, "coverage": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "daily": {"requested_symbols": 21, "coverage": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "one_hour": {"requested_symbols": 21, "coverage": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "fifteen_min": {"requested_symbols": 21, "coverage": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "chunking_used": false,
+    "individual_retries": 0,
+    "truncation_detection": "NOT_APPLICABLE_NO_API_PAYLOAD"
+  },
+  "long_quotes": {},
+  "short_quotes": {
+    "SOXX": {"last": 490.67, "mark": 490.1819, "bid": 489.51, "ask": 491.19, "change_pct": -4.95, "low": 480.50, "high": 498.48, "hv30_annual": 0.6958, "ivp52": 0.9363},
+    "SMH": {"last": 529.05, "mark": 528.3500, "bid": 528.25, "ask": 529.11, "change_pct": -3.55, "low": 518.25, "high": 535.94, "hv30_annual": 0.5866, "ivp52": 0.9084},
+    "MU": {"last": 830.06, "mark": 829.8478, "bid": 829.27, "ask": 830.79, "change_pct": -7.79, "low": 789.09, "high": 848.36, "hv30_annual": 1.1431, "ivp52": 0.7849},
+    "SNDK": {"last": 1123.88, "mark": 1123.7400, "bid": 1122.01, "ask": 1124.00, "change_pct": -12.08, "low": 1050.72, "high": 1188.00, "hv30_annual": 1.3098, "ivp52": 0.9681},
+    "AMD": {"last": 457.00, "mark": 457.00, "bid": 456.80, "ask": 457.20, "change_pct": -7.67, "low": 442.27, "high": 472.75, "hv30_annual": 0.8357, "ivp52": 0.9402},
+    "INTC": {"last": 86.92, "mark": 86.92, "bid": 86.91, "ask": 87.00, "change_pct": -5.18, "low": 83.10, "high": 88.28, "hv30_annual": 0.9432, "ivp52": 0.8606},
+    "ARM": {"last": 245.15, "mark": 246.56, "bid": 246.00, "ask": 246.98, "change_pct": -7.95, "low": 240.38, "high": 253.61, "hv30_annual": 1.0294, "ivp52": 0.9482}
+  },
+  "burry_quotes": {
+    "SOXX": {"last": 490.67, "state": "HEDGE_WATCH_EXTENDED"},
+    "MU": {"last": 830.06, "state": "POST_COVER_EXTENDED"},
+    "CAT": {"last": 840.12, "mark": 843.00, "bid": 840.00, "ask": 844.00, "change_pct": -3.80, "low": 824.00, "high": 855.82, "hv30_annual": 0.4949, "ivp52": 0.9841, "state": "FAILED_SHORT_BREAKDOWN"},
+    "NVDA": {"status": "N/A_UNAVAILABLE_THIS_RUN"},
+    "TSLA": {"status": "N/A_UNAVAILABLE_THIS_RUN"},
+    "PLTR": {"status": "N/A_UNAVAILABLE_THIS_RUN"},
+    "QQQ": {"status": "N/A_UNAVAILABLE_THIS_RUN"}
+  },
+  "events": {
+    "SNDK": "2026-08-05 after close",
+    "CAT": "N/A_CURRENT_EVENT_CHECK_UNAVAILABLE"
+  },
+  "position_overlap": {
+    "SOXX_LONG": true,
+    "QQQM_LONG": true,
+    "FOTO_LONG": true
+  },
+  "calculation_metadata": {
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "scores_ge_7": [],
+    "cat_last_completed_15m_close": 841.11,
+    "cat_day_low": 824.00,
+    "cat_prior_support_reference": 839.58,
+    "cat_breakdown_continuation_confirmed": false,
+    "orders_created": false
+  }
+}
