@@ -1,0 +1,59 @@
+{
+  "as_of_hkt": "2026-07-29T04:05:47+08:00",
+  "as_of_et": "2026-07-28T16:05:47-04:00",
+  "session": "US AFTER-HOURS / RTH JUST CLOSED",
+  "source_status": {
+    "github": {"status": "SUCCESS", "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635", "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90", "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"},
+    "alpaca": {"status": "RUNTIME_UNAVAILABLE", "attempt": "connector discovery returned no Alpaca namespace", "api_payload": false},
+    "ibkr": {"status": "PARTIAL_SUCCESS", "positions": true, "fresh_quotes": ["SOXX", "SMH", "CAT"], "completed_bars": ["CAT_15M"]},
+    "binance": {"status": "RUNTIME_UNAVAILABLE"},
+    "borrow_ssr_locate": {"status": "N/A — 未取得可靠資料"}
+  },
+  "alpaca_completeness": {
+    "weekly": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "daily": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "one_hour": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "fifteen_minute": {"requested": 21, "retrieved": 0, "status": "RUNTIME_UNAVAILABLE"},
+    "chunking_used": false,
+    "individual_retries": [],
+    "fallback_feed": null,
+    "truncation_detected": false,
+    "final_coverage_ratio": 0.0
+  },
+  "long_quotes": {
+    "FOTO": {"source": "IBKR account position", "market_price": 17.29999925, "position": 180.0, "average_price": 19.33900889, "unrealized_pnl": -367.021735, "state": "STOP HIT / THIN LIQUIDITY"}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"source": "IBKR", "last": 490.24, "mark": 492.0, "bid": 491.06, "ask": 493.06, "change_pct": -5.03, "open": 495.91, "high": 498.48, "low": 480.5, "hv30_annual": 0.695797141742419, "ivp52": 0.9362549781799316},
+    "SMH": {"source": "IBKR", "last": 529.4, "mark": 529.5999755859375, "bid": 528.25, "ask": 530.8, "change_pct": -3.49, "open": 530.6, "high": 535.94, "low": 518.25, "hv30_annual": 0.5866059268342589, "ivp52": 0.9083665609359741},
+    "MU": null,
+    "SNDK": null,
+    "AMD": null,
+    "INTC": null,
+    "ARM": null
+  },
+  "burry_board_quotes": {
+    "SOXX": {"source": "IBKR", "last": 490.24, "state": "HEDGE WATCH / EXTENDED"},
+    "CAT": {"source": "IBKR", "last": 840.79, "mark": 841.3900146484375, "bid": 837.98, "ask": 842.42, "change_pct": -3.72, "open": 855.82, "high": 855.82, "low": 824.0, "hv30_annual": 0.4949496933153106, "ivp52": 0.9840637445449829, "last_completed_15m_close": 840.79, "state": "FAILED SHORT BREAKDOWN"},
+    "MU": null,
+    "NVDA": null,
+    "TSLA": null,
+    "PLTR": null,
+    "QQQ": null
+  },
+  "positions_overlap": {
+    "SOXX": {"position": 15.0, "average_price": 525.34638667, "market_price": 491.4500122, "unrealized_pnl": -508.445617},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 278.4500122, "unrealized_pnl": -575.40839778},
+    "FOTO": {"position": 180.0, "average_price": 19.33900889, "market_price": 17.29999925, "unrealized_pnl": -367.021735}
+  },
+  "events": {"SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}},
+  "calculation_metadata": {
+    "current_incomplete_intervals_excluded": true,
+    "cat_completed_15m_final_close": 840.79,
+    "cat_breakdown_below_824_confirmed": false,
+    "cat_failed_breakdown": true,
+    "long_scores_withheld_due_to_missing_full_multitimeframe_series": true,
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
