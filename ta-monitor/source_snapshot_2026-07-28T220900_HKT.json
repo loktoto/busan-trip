@@ -1,0 +1,57 @@
+{
+  "as_of_hkt": "2026-07-28T22:09:00+08:00",
+  "as_of_et": "2026-07-28T10:09:00-04:00",
+  "session": "US_RTH",
+  "source_status": {
+    "github": "success",
+    "alpaca": "runtime connector not exposed; clock/snapshot/bars unavailable",
+    "ibkr_quotes": "partial success: core semiconductor board, CAT and portfolio overlap",
+    "ibkr_bars": "partial success: CAT 1H and 15m; full-universe bars unavailable",
+    "binance": "runtime connector not exposed",
+    "borrow_ssr_locate": "unavailable",
+    "options": "underlying IV percentile and aggregate option volume available; chain skew/liquidity unavailable"
+  },
+  "alpaca_completeness": {
+    "weekly": {"coverage": "0/21", "reason": "runtime connector not exposed"},
+    "daily": {"coverage": "0/21", "reason": "runtime connector not exposed"},
+    "one_hour": {"coverage": "0/21", "reason": "runtime connector not exposed"},
+    "fifteen_minute": {"coverage": "0/21", "reason": "runtime connector not exposed"},
+    "chunking_used": false,
+    "individual_retries": 0,
+    "truncation_detection": "not applicable because no Alpaca payload was available"
+  },
+  "long_quotes": {
+    "FOTO": {"mark": 16.9225, "position_overlap": true},
+    "MU": {"last": 818.0, "bid": 817.48, "ask": 817.75, "change_pct": -9.13},
+    "SNDK": {"last": 1093.9, "bid": 1093.59, "ask": 1095.75, "change_pct": -14.42}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 490.56, "bid": 490.43, "ask": 490.8, "change_pct": -4.97, "low": 483.8, "high": 497.88, "hv30_annual": 0.695797, "ivp52": 0.996016, "position_overlap": true},
+    "SMH": {"last": 526.88, "bid": 526.81, "ask": 527.12, "change_pct": -3.95, "low": 521.43, "high": 533.24, "hv30_annual": 0.586606, "ivp52": 0.988048},
+    "MU": {"last": 818.0, "bid": 817.48, "ask": 817.75, "change_pct": -9.13, "low": 805.39, "high": 848.36, "hv30_annual": 1.143058, "ivp52": 0.780877},
+    "SNDK": {"last": 1093.9, "bid": 1093.59, "ask": 1095.75, "change_pct": -14.42, "low": 1085.89, "high": 1188.0, "hv30_annual": 1.309783, "ivp52": 0.984064},
+    "AMD": {"last": 455.73, "bid": 455.58, "ask": 455.94, "change_pct": -7.92, "low": 450.1, "high": 472.75, "hv30_annual": 0.835652, "ivp52": 0.948207},
+    "INTC": {"last": 85.13, "bid": 85.12, "ask": 85.14, "change_pct": -7.13, "low": 84.49, "high": 87.9, "hv30_annual": 0.943189, "ivp52": 0.880478},
+    "ARM": {"last": 244.07, "bid": 243.6, "ask": 244.02, "change_pct": -8.36, "low": 241.39, "high": 253.61, "hv30_annual": 1.02939, "ivp52": 0.948207}
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 490.56, "decision": "WAIT_DO_NOT_CHASE"},
+    "MU": {"last": 818.0, "decision": "AVOID_EXTENDED"},
+    "CAT": {"last": 835.89, "bid": 835.06, "ask": 836.9, "change_pct": -4.28, "low": 828.47, "high": 855.82, "hv30_annual": 0.49495, "ivp52": 0.996016, "decision": "BREAKDOWN_WATCH_NO_ENTRY"},
+    "NVDA": {"status": "N/A — fresh IBKR quote not collected in this run"},
+    "TSLA": {"status": "N/A — fresh IBKR quote not collected in this run"},
+    "PLTR": {"status": "N/A — fresh IBKR quote not collected in this run"},
+    "QQQ": {"status": "N/A — fresh IBKR quote not collected in this run", "position_overlap": true}
+  },
+  "events": {
+    "SNDK": "2026-08-05 after close",
+    "CAT": "event/earnings verification unavailable in this run"
+  },
+  "calculation_metadata": {
+    "completed_bar_rule": "current week/day/hour/15m excluded",
+    "cat_completed_structure": "first RTH 30m/1H segment closed below prior 839.58 support; subsequent 15m confirmation unavailable because the latest returned bar was still forming",
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "reason_no_action": "all candidates were extended, lacked complete multi-timeframe confirmation, borrow/event checks or >=2R to target 2"
+  }
+}
