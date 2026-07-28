@@ -1,0 +1,48 @@
+{
+  "as_of_hkt": "2026-07-28T15:04:18+08:00",
+  "as_of_et": "2026-07-28T03:04:18-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": "success",
+    "ibkr_positions": "success",
+    "ibkr_core_and_burry_quotes": "success",
+    "ibkr_completed_bars": "failed_after_attempt_not_completed",
+    "alpaca": "unavailable_in_runtime",
+    "binance": "unavailable_in_runtime",
+    "borrow_ssr_locate": "not_available",
+    "options_execution": "not_available"
+  },
+  "positions_summary": {
+    "SOXX": {"quantity": 15.0, "average_price": 525.34638667, "account_mark": 501.769989},
+    "FOTO": {"quantity": 160.0, "average_price": 19.64937062, "account_mark": 18.2800007},
+    "QQQM": {"quantity": 32.5589, "average_price": 296.12285734, "account_mark": 278.41000365}
+  },
+  "short_quotes": {
+    "SOXX": {"last": 502.31, "bid": 501.0, "ask": 502.52, "change_pct": -2.70, "hv30_annual": 0.6957971417, "ivp52": 0.9442231059},
+    "SMH": {"last": 536.01, "bid": 535.6, "ask": 536.4, "change_pct": -2.29, "hv30_annual": 0.5866059268, "ivp52": 0.9083665609},
+    "MU": {"last": 855.96, "bid": 855.23, "ask": 856.30, "change_pct": -4.91, "hv30_annual": 1.1430582260, "ivp52": 0.8247011900},
+    "SNDK": {"last": 1212.52, "bid": 1209.58, "ask": 1212.66, "change_pct": -5.14, "hv30_annual": 1.3097834197, "ivp52": 0.9800797105},
+    "AMD": {"last": 478.56, "bid": 477.28, "ask": 478.17, "change_pct": -3.31, "hv30_annual": 0.8356515560, "ivp52": 0.9402390718},
+    "INTC": {"last": 87.75, "bid": 87.67, "ask": 87.82, "change_pct": -4.28, "hv30_annual": 0.9431886472, "ivp52": 0.8605577946},
+    "ARM": {"last": 257.0, "bid": 256.58, "ask": 257.67, "change_pct": -3.50, "hv30_annual": 1.0293903998, "ivp52": 0.8884462118}
+  },
+  "burry_quotes": {
+    "SOXX": {"last": 502.31, "reference_entry": 535.83},
+    "MU": {"last": 855.96, "reference_entry": 933.86},
+    "NVDA": {"last": 194.0, "bid": 193.9, "ask": 193.98, "change_pct": -1.28, "reference_entry": 210.28},
+    "CAT": {"last": 862.0, "bid": 851.34, "ask": 865.7, "change_pct": -1.29, "reference_entry": 893.49},
+    "TSLA": {"last": 304.8, "bid": 304.35, "ask": 304.5, "change_pct": -1.43, "legacy_reference": 313.03},
+    "PLTR": {"last": 131.78, "bid": 131.7, "ask": 131.95, "change_pct": 0.19, "legacy_reference": 122.92},
+    "QQQ": {"last": 676.22, "bid": 676.33, "ask": 676.4, "change_pct": -0.86, "legacy_reference": 684.23}
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"}
+  },
+  "calculation_metadata": {
+    "completed_intervals_excluded": true,
+    "formal_scores_withheld": true,
+    "reason": "No internally consistent completed weekly/daily/1H/15m series; no borrow/SSR/locate; no option execution metrics",
+    "pass2_triggered": false,
+    "orders_created": false
+  }
+}
