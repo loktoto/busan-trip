@@ -1,7 +1,7 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-29T04:05:47+08:00 / 2026-07-28T16:05:47-04:00**
-- Session: **US AFTER-HOURS / RTH JUST CLOSED**
+- As of: **2026-07-29T05:04:13+08:00 / 2026-07-28T17:04:13-04:00**
+- Session: **US_AFTER_HOURS**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
 - Live-week / limitation: Engine failure after source collection: KeyError: 'quotes'
@@ -11,10 +11,10 @@
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|PARTIAL_SUCCESS|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
-|Alpaca|RUNTIME_UNAVAILABLE|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|RUNTIME_UNAVAILABLE|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-29T04:07:33.708552+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
+|Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-29T05:09:08.082555+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE

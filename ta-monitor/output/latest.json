@@ -1,36 +1,25 @@
 {
-  "as_of_hkt": "2026-07-29T04:05:47+08:00",
-  "as_of_et": "2026-07-28T16:05:47-04:00",
-  "session": "US AFTER-HOURS / RTH JUST CLOSED",
+  "as_of_hkt": "2026-07-29T05:04:13+08:00",
+  "as_of_et": "2026-07-28T17:04:13-04:00",
+  "session": "US_AFTER_HOURS",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL_SUCCESS",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "positions": true,
-      "fresh_quotes": [
-        "SOXX",
-        "SMH",
-        "CAT"
-      ],
-      "completed_bars": [
-        "CAT_15M"
-      ]
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
-      "status": "RUNTIME_UNAVAILABLE",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector",
-      "attempt": "connector discovery returned no Alpaca namespace",
-      "api_payload": false
+      "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "RUNTIME_UNAVAILABLE",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
@@ -38,13 +27,10 @@
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-29T04:07:33.708552+08:00",
+      "timestamp": "2026-07-29T05:09:08.082555+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable",
-      "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
-      "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90",
-      "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"
+      "impact": "Fresh market calculation unavailable"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'quotes'",
