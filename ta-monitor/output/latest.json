@@ -1,36 +1,45 @@
 {
-  "as_of_hkt": "2026-07-28T22:09:00+08:00",
-  "as_of_et": "2026-07-28T10:09:00-04:00",
+  "as_of_hkt": "2026-07-28T23:08:00+08:00",
+  "as_of_et": "2026-07-28T11:08:00-04:00",
   "session": "US_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "FAILED",
+      "status": "partial_success",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "quote_authority": true,
+      "positions_checked": true,
+      "cat_daily_and_15m_bars": true
     },
     "Alpaca": {
-      "status": "FAILED",
+      "status": "runtime_unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "clock": "not_callable",
+      "snapshot": "not_callable",
+      "bars": "not_callable"
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "runtime_unavailable",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector"
     },
     "GitHub": {
-      "status": "SUCCESS",
-      "timestamp": "2026-07-28T22:09:48.410078+08:00",
+      "status": "success",
+      "timestamp": "2026-07-28T23:09:00.619848+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
-      "impact": "Fresh market calculation unavailable"
+      "impact": "Fresh market calculation unavailable",
+      "policy_sha": "99b9a26051cd1a05e8bba88e7df4d07278192635",
+      "burry_policy_sha": "aac42d7adbaf941b4c2ddafbef40a25f64230d90",
+      "config_sha": "b9ea4dfccf4f8f6ab73bb9ba7ed00b345feb9b4a"
     }
   },
   "bar_limitations": "Engine failure after source collection: KeyError: 'quotes'",
