@@ -1,0 +1,37 @@
+{
+  "as_of_hkt": "2026-07-29T16:05:26+08:00",
+  "as_of_et": "2026-07-29T04:05:26-04:00",
+  "session": "OVERNIGHT / CASH MARKET CLOSED",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success_46_of_46",
+    "alpaca_completed_bars": "not_completed_this_run",
+    "ibkr_positions": "success",
+    "ibkr_quote_enrichment": "not_completed_this_run",
+    "binance": "not_completed_this_run"
+  },
+  "long_quotes_delayed_sip": {
+    "HUT":100.0,"IREN":34.05,"NBIS":169.89,"WULF":17.18,"MARA":11.4094,"APLD":26.58,"ORCL":120.0845,"CRWV":67.5,"CRCL":64.17,"RKLB":63.8,"AAOI":89.41,"ONDS":7.8401,"AXTI":43.3,"MXL":58.0681,"FOTO":17.37,"LITE":660.0,"COHR":246.15,"APH":143.49,"FN":445.0,"MU":830.75,"SNDK":1118.616
+  },
+  "semiconductor_short_quotes_delayed_sip": {
+    "SOXX":494.22,"SMH":531.1,"MU":830.75,"SNDK":1118.616,"AMD":460.4,"INTC":87.53,"ARM":247.8399
+  },
+  "burry_board_quotes_delayed_sip": {
+    "SOXX":494.22,"MU":830.75,"NVDA":197.63,"CAT":844.7114,"TSLA":306.83,"PLTR":124.1643,"QQQ":679.88
+  },
+  "positions_overlap": {
+    "SOXX":{"quantity":15,"ibkr_mark":485.08999635,"average_price":525.34638667},
+    "QQQM":{"quantity":32.5589,"ibkr_mark":278.01000975,"average_price":296.12285734},
+    "FOTO":{"quantity":0,"ibkr_mark":17.29999925}
+  },
+  "alpaca_completeness": {
+    "snapshot":{"requested_symbols":46,"returned_symbols":46,"feed":"delayed_sip"},
+    "weekly":{"requested_symbols":46,"certified_symbols":0,"status":"not_completed_this_run"},
+    "daily":{"requested_symbols":46,"certified_symbols":0,"status":"not_completed_this_run"},
+    "one_hour":{"requested_symbols":46,"certified_symbols":0,"status":"not_completed_this_run"},
+    "fifteen_minute":{"requested_symbols":46,"certified_symbols":0,"status":"not_completed_this_run"}
+  },
+  "orders_created_or_transmitted": false
+}
