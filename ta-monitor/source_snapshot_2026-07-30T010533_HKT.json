@@ -7,6 +7,7 @@
     "alpaca_clock": "SUCCESS",
     "alpaca_snapshot_sip": "FAILED_PREMIUM_FEED_REQUIRED",
     "alpaca_snapshot_delayed_sip": "SUCCESS_78_OF_78",
+    "alpaca_crm_intraday_iex": "SUCCESS_112_BARS",
     "ibkr_enrichment": "SUCCESS_CRM_SOXX_CAT",
     "ibkr_positions": "SUCCESS",
     "crypto_snapshot": "SUCCESS_ALPACA",
@@ -20,7 +21,7 @@
     "CAT": {"source":"IBKR","last":785.13,"bid":784.8,"ask":785.5,"day_high":822.79,"day_low":776.0,"change_pct":-6.63,"ivp_52w":0.9960}
   },
   "model_trade_tracking": {
-    "CRM": {"entry":185.80,"stop":184.40,"tp1":188.80,"tp2":191.50,"status":"OPEN_NEAR_TP1","ordering_note":"IBKR day high 189.37 shows TP1 touched after model entry; stop-hit ordering not fully certified without completed intraday bars"}
+    "CRM": {"entry":185.80,"stop":184.40,"tp1":188.80,"tp2":191.50,"status":"PARTIAL_SUCCESS_TP1_HIT","tp1_first_hit_et":"2026-07-29T11:59:00-04:00","post_signal_min":186.355,"ordering_note":"IEX 1-minute bars from 11:14 ET onward show no stop touch before TP1; TP1 first crossed during 11:59 ET bar. TP2 not hit as of this audit."}
   },
   "positions_overlap": {
     "SOXX_long_shares":16,
@@ -37,7 +38,7 @@
     "1h":{"coverage":"0/78_certified","reason":"not completed this run"},
     "15m":{"coverage":"0/78_certified","reason":"not completed this run"},
     "chunking_used":false,
-    "individual_retries":[],
+    "individual_retries":[{"ticker":"CRM","timeframe":"1Min","delayed_sip":"unsupported","fallback_feed":"IEX","records":112}],
     "truncation_detected":false
   },
   "calculation_metadata": {
