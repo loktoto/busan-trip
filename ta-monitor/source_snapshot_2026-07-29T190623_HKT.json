@@ -1,0 +1,47 @@
+{
+  "as_of_hkt": "2026-07-29T19:06:23+08:00",
+  "as_of_et": "2026-07-29T07:06:23-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success_78_of_78",
+    "ibkr_positions": "success",
+    "ibkr_soxx_quote": "success",
+    "historical_bars": "not_completed",
+    "binance": "not_completed",
+    "borrow_ssr_locate": "not_available",
+    "options": "not_refreshed"
+  },
+  "completeness": {
+    "snapshot_requested": 78,
+    "snapshot_returned": 78,
+    "snapshot_feed": "delayed_sip",
+    "weekly_certified": 0,
+    "daily_certified": 0,
+    "hourly_certified": 0,
+    "fifteen_minute_certified": 0,
+    "chunking_used": false,
+    "individual_retries": [],
+    "truncation_detected": false
+  },
+  "key_quotes": {
+    "SOXX": {"alpaca_last": 487.0, "ibkr_last": 488.9, "ibkr_mark": 488.3399963378906},
+    "CAT": {"alpaca_last": 808.02, "alpaca_bid": 805.0, "alpaca_ask": 810.0},
+    "QQQ": {"alpaca_last": 676.07},
+    "NVDA": {"alpaca_last": 196.81},
+    "MU": {"alpaca_last": 814.22}
+  },
+  "positions": {
+    "SOXX": {"quantity": 15.0, "average_price": 525.34638667, "market_price": 488.0},
+    "QQQM": {"quantity": 32.5589, "average_price": 296.12285734, "market_price": 278.66000365},
+    "FOTO": {"quantity": 0.0}
+  },
+  "calculation_metadata": {
+    "formal_scores_calculated": false,
+    "reason": "completed weekly/daily/1H/15m coverage not certified",
+    "pass2_candidates": [],
+    "orders_created": false
+  }
+}
