@@ -1,0 +1,30 @@
+{
+  "as_of_hkt": "2026-07-29T21:05:42+08:00",
+  "as_of_et": "2026-07-29T09:05:42-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_entitlement",
+    "alpaca_delayed_sip_snapshot": "success_78_of_78",
+    "weekly_bars": "not_completed",
+    "daily_bars": "not_completed",
+    "hourly_bars": "not_completed",
+    "fifteen_minute_bars": "not_completed",
+    "ibkr_enrichment": "not_completed",
+    "binance_context": "not_completed"
+  },
+  "snapshot_metadata": {
+    "requested_symbols": 78,
+    "returned_symbols": 78,
+    "feed": "delayed_sip",
+    "latest_common_window": "approximately 2026-07-29T12:50Z",
+    "truncation_detected": false
+  },
+  "calculation_metadata": {
+    "formal_scores_available": false,
+    "reason": "required completed weekly/daily/1H/15m coverage not certified",
+    "pass2_candidates": 0,
+    "orders_created": false
+  }
+}
