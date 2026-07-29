@@ -1,0 +1,40 @@
+{
+  "as_of_hkt": "2026-07-29T23:06:32+08:00",
+  "as_of_et": "2026-07-29T11:06:32-04:00",
+  "session": "RTH",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot": {"feed": "delayed_sip", "requested": 78, "returned": 78, "freshness": "approximately 15 minutes delayed"},
+    "alpaca_history": "not completed in bounded run",
+    "ibkr": {"SOXX": "success", "CAT": "success", "positions": "success"},
+    "crypto": {"source": "Alpaca US crypto", "BTC_USD": 64018.05, "ETH_USD": 1894.31},
+    "borrow_ssr_locate": "unavailable",
+    "option_chain": "not refreshed"
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_records": 78, "coverage_ratio": 1.0, "feed_fallback": "delayed_sip", "truncation_detected": false},
+    "weekly": {"required_bars_per_symbol": 60, "coverage": "0/78 certified", "individual_retries": "not completed"},
+    "daily": {"required_bars_per_symbol": 252, "coverage": "0/78 certified", "individual_retries": "not completed"},
+    "one_hour": {"required_bars_per_symbol": 80, "coverage": "0/78 certified", "individual_retries": "not completed"},
+    "fifteen_minute": {"required_bars_per_symbol": 100, "coverage": "0/78 certified", "individual_retries": "not completed"}
+  },
+  "critical_quotes": {
+    "SOXX": {"source": "IBKR", "last": 477.03, "bid": 476.85, "ask": 477.11, "open": 488.27, "high": 496.06, "low": 470.44, "change_pct": -2.94, "ivp_52w": 0.9880},
+    "CAT": {"source": "IBKR", "last": 791.41, "bid": 790.67, "ask": 791.80, "open": 810.23, "high": 822.79, "low": 790.61, "change_pct": -5.88, "ivp_52w": 0.9960},
+    "CRM": {"source": "Alpaca delayed_sip", "last": 185.00, "day_high": 185.95, "prior_high": 184.54},
+    "NOW": {"source": "Alpaca delayed_sip", "last": 113.645, "day_high": 114.42, "prior_high": 112.28},
+    "XLE": {"source": "Alpaca delayed_sip", "last": 58.995, "day_high": 59.30, "prior_high": 58.79}
+  },
+  "position_overlap": {
+    "SOXX": {"position": 16, "average_price": 522.5128125, "market_price": 477.3049927, "unrealized_pnl": -723.3251168},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 275.17001345, "unrealized_pnl": -682.20154908},
+    "FOTO": {"position": 180, "average_price": 16.800604, "market_price": 16.4300003, "unrealized_pnl": -66.70866565}
+  },
+  "calculation_metadata": {
+    "formal_multi_timeframe_scores": "withheld due incomplete historical-bar certification",
+    "pass2_candidates": [],
+    "dominant_rejection_codes": ["DATA", "TRIGGER", "RR", "EXTENSION", "EVENT"]
+  }
+}
