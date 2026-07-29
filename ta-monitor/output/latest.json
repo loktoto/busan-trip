@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-30T04:05:00+08:00",
-  "as_of_et": "2026-07-29T16:05:00-04:00",
+  "as_of_hkt": "2026-07-30T06:05:00+08:00",
+  "as_of_et": "2026-07-29T18:05:00-04:00",
   "session": "AFTER_HOURS",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -23,14 +23,11 @@
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "BTCUSDT_mark_funding": "SUCCESS",
-      "ETHUSDT_mark_funding": "SUCCESS",
-      "open_interest": "NOT_REQUESTED"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-30T04:08:05.470249+08:00",
+      "timestamp": "2026-07-30T06:06:02.466944+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
