@@ -1,0 +1,39 @@
+{
+  "as_of_hkt": "2026-07-30T02:05:51+08:00",
+  "as_of_et": "2026-07-29T14:05:51-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success_46_of_46",
+    "dynamic_snapshot": "success_6_of_6",
+    "ibkr_crm": "success",
+    "weekly_bars": "not_completed",
+    "daily_bars": "not_completed",
+    "hourly_bars": "not_completed",
+    "fifteen_minute_bars": "not_completed",
+    "borrow_ssr_locate": "unavailable",
+    "option_chain": "unavailable",
+    "binance_context": "not_completed"
+  },
+  "quotes": {
+    "CRM": {"source":"IBKR","last":188.8,"bid":188.66,"ask":188.92,"day_high":189.44,"day_low":182.01,"change_pct":4.02},
+    "SOXX": {"source":"Alpaca delayed_sip","last":475.36,"bid":475.21,"ask":475.4,"day_high":496.06,"day_low":465.65},
+    "CAT": {"source":"Alpaca delayed_sip","last":784.93,"bid":784.67,"ask":784.93,"day_high":822.795,"day_low":776.0},
+    "QQQ": {"source":"Alpaca delayed_sip","last":670.68,"bid":670.66,"ask":670.72,"day_high":677.46,"day_low":663.28}
+  },
+  "completeness": {
+    "snapshot_requested":46,
+    "snapshot_returned":46,
+    "snapshot_feed":"delayed_sip",
+    "weekly_coverage":"0/46 certified",
+    "daily_coverage":"0/46 certified",
+    "hourly_coverage":"0/46 certified",
+    "fifteen_minute_coverage":"0/46 certified"
+  },
+  "model_tracking": {
+    "CRM": {"entry":185.8,"stop":184.4,"tp1":188.8,"tp2":191.5,"status":"TP1_HIT_NOT_TP2"}
+  },
+  "orders_transmitted": false
+}
