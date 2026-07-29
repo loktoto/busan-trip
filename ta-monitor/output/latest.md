@@ -1,10 +1,10 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-29T23:06:32+08:00 / 2026-07-29T11:06:32-04:00**
+- As of: **2026-07-30T01:05:33+08:00 / 2026-07-29T13:05:33-04:00**
 - Session: **RTH**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'quotes'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
 - Stale-last normalization: **none**
 
 ## Source Status
@@ -14,7 +14,7 @@
 |IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
 |Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
 |Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-29T23:06:48.568454+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|GitHub|SUCCESS|2026-07-30T01:07:53.237460+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'quotes'
+- Engine failure after source collection: KeyError: 'HUT'
 
 ## Boss Action
 
