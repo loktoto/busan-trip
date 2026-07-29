@@ -1,0 +1,49 @@
+{
+  "as_of_hkt": "2026-07-30T01:05:33+08:00",
+  "as_of_et": "2026-07-29T13:05:33-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot_sip": "FAILED_PREMIUM_FEED_REQUIRED",
+    "alpaca_snapshot_delayed_sip": "SUCCESS_78_OF_78",
+    "ibkr_enrichment": "SUCCESS_CRM_SOXX_CAT",
+    "ibkr_positions": "SUCCESS",
+    "crypto_snapshot": "SUCCESS_ALPACA",
+    "binance_funding_oi": "N/A_NOT_RETRIEVED",
+    "borrow_ssr_locate": "N/A_NOT_AVAILABLE",
+    "options_chain": "N/A_NOT_RETRIEVED"
+  },
+  "quotes": {
+    "CRM": {"source":"IBKR","last":188.61,"bid":188.43,"ask":188.57,"day_high":189.37,"day_low":182.01,"change_pct":3.92},
+    "SOXX": {"source":"IBKR","last":472.42,"bid":472.48,"ask":472.68,"day_high":496.06,"day_low":465.65,"change_pct":-3.87,"ivp_52w":0.9761},
+    "CAT": {"source":"IBKR","last":785.13,"bid":784.8,"ask":785.5,"day_high":822.79,"day_low":776.0,"change_pct":-6.63,"ivp_52w":0.9960}
+  },
+  "model_trade_tracking": {
+    "CRM": {"entry":185.80,"stop":184.40,"tp1":188.80,"tp2":191.50,"status":"OPEN_NEAR_TP1","ordering_note":"IBKR day high 189.37 shows TP1 touched after model entry; stop-hit ordering not fully certified without completed intraday bars"}
+  },
+  "positions_overlap": {
+    "SOXX_long_shares":16,
+    "SOXX_avg_price":522.5128125,
+    "DRAM_long_shares":100,
+    "QQQM_long_shares":32.5589
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols":78,
+    "snapshot_returned_symbols":78,
+    "snapshot_feed":"delayed_sip",
+    "weekly":{"coverage":"0/78_certified","reason":"not completed this run"},
+    "daily":{"coverage":"0/78_certified","reason":"not completed this run"},
+    "1h":{"coverage":"0/78_certified","reason":"not completed this run"},
+    "15m":{"coverage":"0/78_certified","reason":"not completed this run"},
+    "chunking_used":false,
+    "individual_retries":[],
+    "truncation_detected":false
+  },
+  "calculation_metadata": {
+    "full_multitimeframe_scores_certified":false,
+    "pass2_triggered":false,
+    "reason":"required completed weekly/daily/1H/15m histories were not fully collected in this bounded run",
+    "orders_transmitted":false
+  }
+}
