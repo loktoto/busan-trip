@@ -1,0 +1,54 @@
+{
+  "as_of_hkt": "2026-07-29T10:05:55+08:00",
+  "as_of_et": "2026-07-28T22:05:55-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL_SUCCESS",
+    "alpaca": "RUNTIME_UNAVAILABLE",
+    "binance": "RUNTIME_UNAVAILABLE"
+  },
+  "long_quotes": {
+    "FOTO": {"position_mark": 17.31, "position": 180, "average_price": 19.339}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 482.70, "bid": 481.91, "ask": 482.99, "mark": 482.70, "change_pct": -1.78, "open": 495.91, "low": 480.50, "high": 498.48, "volume": 80229, "historical_vol_annual": 0.695797, "iv_percentile_52w": 0.936255},
+    "SMH": null,
+    "MU": null,
+    "SNDK": null,
+    "AMD": null,
+    "INTC": null,
+    "ARM": null
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 482.70},
+    "CAT": {"last": 836.64, "bid": 833.25, "ask": 846.33, "mark": 836.64, "change_pct": -0.50, "prior_close": 840.85, "open": 855.82, "low": 824.00, "high": 855.82, "volume": 533, "historical_vol_annual": 0.494950, "iv_percentile_52w": 0.984064},
+    "MU": null,
+    "NVDA": null,
+    "TSLA": null,
+    "PLTR": null,
+    "QQQ": null
+  },
+  "positions_overlap": {
+    "SOXX": {"position": 15, "average_price": 525.34638667, "market_price": 481.91000365},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 277.10998535},
+    "FOTO": {"position": 180, "average_price": 19.33900898, "market_price": 17.30999945}
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 44,
+    "chunking_used": false,
+    "requested_limit": null,
+    "returned_record_count": 0,
+    "per_symbol_bar_counts": {},
+    "individual_retries": [],
+    "fallback_feed": null,
+    "truncation_detection": "NOT_APPLICABLE_RUNTIME_UNAVAILABLE",
+    "coverage": {"weekly": "0/44", "daily": "0/44", "1h": "0/44", "15m": "0/44"}
+  },
+  "calculation_metadata": {
+    "completed_intervals_only": true,
+    "pass2_candidates": [],
+    "orders_created": false,
+    "degradation": "Full Alpaca and Binance collectors unavailable; IBKR partial quotes only"
+  }
+}
