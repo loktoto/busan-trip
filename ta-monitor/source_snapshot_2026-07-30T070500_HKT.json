@@ -1,0 +1,55 @@
+{
+  "as_of_hkt": "2026-07-30T07:05:00+08:00",
+  "as_of_et": "2026-07-29T19:05:00-04:00",
+  "session": "AFTER_HOURS",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": "SUCCESS_DELAYED_SIP_78_OF_78",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "historical_weekly_daily_1h_15m": "DATA_UNAVAILABLE_THIS_RUN",
+    "borrow_ssr_locate": "DATA_UNAVAILABLE",
+    "options_iv_skew_liquidity": "DATA_UNAVAILABLE",
+    "binance": "DATA_UNAVAILABLE_THIS_RUN"
+  },
+  "completeness": {
+    "snapshot_requested": 78,
+    "snapshot_returned": 78,
+    "snapshot_feed": "delayed_sip",
+    "weekly_certified": "0/78",
+    "daily_certified": "0/78",
+    "hourly_certified": "0/78",
+    "fifteen_minute_certified": "0/78",
+    "chunking_used": false,
+    "truncation_detected": false
+  },
+  "key_quotes": {
+    "SOXX": {"ibkr_last": 464.0, "bid": 463.6, "ask": 465.0, "rth_close": 465.0, "rth_low": 464.08, "change_pct": -5.59, "ivp_52w": 1.0},
+    "CAT": {"ibkr_last": 783.0, "bid": 782.0, "ask": 783.0, "rth_close": 782.71, "rth_low": 776.0, "change_pct": -6.88, "ivp_52w": 0.9841},
+    "QQQ": {"after_hours_reference": 664.189, "rth_close": 661.73},
+    "SPY": {"after_hours_reference": 731.71, "rth_close": 729.46},
+    "MU": {"after_hours_reference": 729.78, "rth_close": 739.0},
+    "NVDA": {"after_hours_reference": 191.218, "rth_close": 190.01},
+    "TSLA": {"after_hours_reference": 297.05, "rth_close": 298.32},
+    "PLTR": {"after_hours_reference": 122.34, "rth_close": 123.0},
+    "CRM": {"after_hours_reference": 189.39, "rth_close": 188.38, "rth_high": 190.18}
+  },
+  "position_overlap": {
+    "SOXX_long_shares": 16,
+    "SOXX_average": 522.5128125,
+    "DRAM_long_shares": 100,
+    "QQQM_long_shares": 32.5589,
+    "additional_semiconductor_memory_exposure": ["000660", "00935", "2644", "7709", "7747"]
+  },
+  "calculation_metadata": {
+    "new_long_action": "NONE_VALIDATED",
+    "new_short_action": "NONE_VALIDATED",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT",
+    "cat_decision": "WAIT_FOR_FAILED_RECLAIM",
+    "pass2_required": false,
+    "reason": "No certified raw score >= 7.0 because completed multi-timeframe collector and borrow/event checks were unavailable"
+  }
+}
