@@ -1,0 +1,42 @@
+{
+  "as_of_hkt": "2026-07-30T06:05:00+08:00",
+  "as_of_et": "2026-07-29T18:05:00-04:00",
+  "session": "AFTER_HOURS",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": "SUCCESS delayed_sip 78/78",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "binance_btc_eth_1h": "SUCCESS",
+    "weekly_daily_1h_15m_completeness": "NOT_COMPLETED",
+    "borrow_ssr_locate": "UNAVAILABLE",
+    "options_iv_skew_liquidity": "UNAVAILABLE"
+  },
+  "quotes": {
+    "SOXX": {"ibkr_last": 459.81, "ibkr_mark": 461.90, "bid": 461.00, "ask": 461.99, "change_pct": -6.44, "ivp_52w": 1.0},
+    "CAT": {"ibkr_last": 779.94, "ibkr_mark": 782.48, "bid": 777.00, "ask": 782.70, "change_pct": -7.24, "ivp_52w": 0.9841},
+    "CRM": {"alpaca_ah_last": 185.25, "rth_close": 188.38, "rth_high": 190.18},
+    "SPY": {"alpaca_ah_last": 726.86},
+    "QQQ": {"alpaca_ah_last": 656.60}
+  },
+  "calculation_metadata": {
+    "new_actionable_trigger": false,
+    "crm_model_result": "PARTIAL_SUCCESS_CLOSED",
+    "cat_decision": "WAIT_FOR_FAILED_RECLAIM",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT",
+    "pass2_triggered": false
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 78,
+    "snapshot_returned_records": 78,
+    "snapshot_feed": "delayed_sip",
+    "weekly_certified": 0,
+    "daily_certified": 0,
+    "hourly_certified": 0,
+    "fifteen_minute_certified": 0,
+    "individual_retries": [],
+    "truncation_detected": false
+  }
+}
