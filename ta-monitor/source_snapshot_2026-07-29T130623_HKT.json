@@ -1,0 +1,55 @@
+{
+  "as_of_hkt": "2026-07-29T13:06:23+08:00",
+  "as_of_et": "2026-07-29T01:06:23-04:00",
+  "session": "US_OVERNIGHT_CLOSED",
+  "source_status": {
+    "github": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_sip": "FAILED_PREMIUM_FEED_REQUIRED",
+    "alpaca_snapshot": "SUCCESS_DELAYED_SIP_46_OF_46_LAST_AROUND_2026-07-28T20:00:00-04:00",
+    "alpaca_historical_bars": "NOT_COMPLETED_THIS_RUN",
+    "ibkr_positions": "SUCCESS",
+    "ibkr_quote_enrichment": "NOT_COMPLETED_THIS_RUN",
+    "binance": "SUCCESS_MARK_AND_FUNDING_ONLY",
+    "borrow_ssr_locate": "DATA_UNAVAILABLE",
+    "option_chain": "DATA_UNAVAILABLE"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 46,
+    "snapshot_returned_symbols": 46,
+    "snapshot_feed": "delayed_sip",
+    "weekly": {"requested_symbols": 46, "chunking_used": false, "requested_limit": null, "returned_record_count": 0, "per_symbol_counts": {}, "individual_retries": [], "fallback_feed": null, "truncation_detection": "NOT_RUN", "final_coverage_ratio": 0},
+    "daily": {"requested_symbols": 46, "chunking_used": false, "requested_limit": null, "returned_record_count": 0, "per_symbol_counts": {}, "individual_retries": [], "fallback_feed": null, "truncation_detection": "NOT_RUN", "final_coverage_ratio": 0},
+    "one_hour": {"requested_symbols": 46, "chunking_used": false, "requested_limit": null, "returned_record_count": 0, "per_symbol_counts": {}, "individual_retries": [], "fallback_feed": null, "truncation_detection": "NOT_RUN", "final_coverage_ratio": 0},
+    "fifteen_minute": {"requested_symbols": 46, "chunking_used": false, "requested_limit": null, "returned_record_count": 0, "per_symbol_counts": {}, "individual_retries": [], "fallback_feed": null, "truncation_detection": "NOT_RUN", "final_coverage_ratio": 0}
+  },
+  "key_quotes_delayed_sip": {
+    "SOXX": {"last": 494.22, "bid": 494.15, "ask": 495.00, "rth_close": 491.46, "rth_low": 480.50, "rth_high": 498.48},
+    "SMH": {"last": 531.10, "bid": 531.00, "ask": 532.00, "rth_close": 529.60, "rth_low": 518.25, "rth_high": 535.94},
+    "MU": {"last": 830.75, "bid": 830.25, "ask": 830.75, "rth_close": 820.53, "rth_low": 789.09, "rth_high": 848.36},
+    "SNDK": {"last": 1118.616, "bid": 1118.47, "ask": 1122.00, "rth_close": 1096.10, "rth_low": 1050.72, "rth_high": 1188.00},
+    "AMD": {"last": 460.40, "bid": 459.60, "ask": 460.48, "rth_close": 454.62, "rth_low": 442.27, "rth_high": 472.75},
+    "INTC": {"last": 87.53, "bid": 87.55, "ask": 87.59, "rth_close": 86.30, "rth_low": 83.10, "rth_high": 88.2799},
+    "ARM": {"last": 247.8399, "bid": 246.01, "ask": 247.00, "rth_close": 244.74, "rth_low": 240.38, "rth_high": 253.61},
+    "NVDA": {"last": 197.63, "bid": 197.63, "ask": 197.65, "rth_close": 197.01, "rth_low": 192.74, "rth_high": 198.70},
+    "CAT": {"last": 844.7114, "bid": 840.00, "ask": 845.00, "rth_close": 840.85, "rth_low": 824.00, "rth_high": 855.82},
+    "TSLA": {"last": 306.83, "bid": 306.83, "ask": 306.86, "rth_close": 307.44, "rth_low": 300.69, "rth_high": 311.16},
+    "PLTR": {"last": 124.1643, "bid": 123.90, "ask": 124.21, "rth_close": 123.53, "rth_low": 117.89, "rth_high": 127.19},
+    "QQQ": {"last": 679.88, "bid": 679.87, "ask": 679.97, "rth_close": 675.49, "rth_low": 667.88, "rth_high": 679.40}
+  },
+  "position_overlap": {
+    "SOXX": {"quantity": 15.0, "ibkr_mark": 479.89001465, "average_price": 525.34638667, "unrealized_pnl_usd": -681.84558025},
+    "QQQM": {"quantity": 32.5589, "ibkr_mark": 276.82998655, "average_price": 296.12285734, "unrealized_pnl_usd": -628.15465092},
+    "FOTO": {"quantity": 0.0, "ibkr_mark": 16.79999925, "average_price": 0.0, "unrealized_pnl_usd": 0.00002055}
+  },
+  "crypto_context": {
+    "BTCUSDT": {"mark": 63914.0, "last_funding_rate": 0.0001},
+    "ETHUSDT": {"mark": 1905.46, "last_funding_rate": 0.00002968}
+  },
+  "calculation_metadata": {
+    "formal_scores_withheld": true,
+    "reason": "Completed weekly/daily/1H/15m per-symbol completeness contract not completed in this run",
+    "pass2_triggered": false,
+    "orders_created": false
+  }
+}
