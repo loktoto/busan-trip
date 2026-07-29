@@ -1,0 +1,53 @@
+{
+  "as_of_hkt": "2026-07-29T17:05:30+08:00",
+  "as_of_et": "2026-07-29T05:05:30-04:00",
+  "session": "premarket",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_entitlement",
+    "alpaca_delayed_sip_snapshot": "78/78 success",
+    "alpaca_weekly_bars": "not completed",
+    "alpaca_daily_bars": "not completed",
+    "alpaca_1h_bars": "not completed",
+    "alpaca_15m_bars": "not completed",
+    "ibkr_enrichment": "not completed",
+    "binance_context": "not completed",
+    "borrow_ssr_locate": "not available",
+    "options": "not refreshed"
+  },
+  "coverage": {
+    "snapshot_requested": 78,
+    "snapshot_returned": 78,
+    "weekly_certified": 0,
+    "daily_certified": 0,
+    "hourly_certified": 0,
+    "fifteen_minute_certified": 0,
+    "chunking_used": false,
+    "snapshot_feed": "delayed_sip",
+    "truncation_detected": false
+  },
+  "calculation_metadata": {
+    "formal_scores_withheld": true,
+    "reason": "completed multi-timeframe bars and PASS 2 data were not completed in this run",
+    "orders_created": false
+  },
+  "selected_quotes": {
+    "ORCL": 120.55,
+    "CRCL": 64.5455,
+    "ONDS": 7.81,
+    "SOXX": 484.0,
+    "SMH": 523.0,
+    "MU": 812.49,
+    "SNDK": 1075.0,
+    "AMD": 451.98,
+    "INTC": 86.35,
+    "ARM": 240.0,
+    "CAT": 819.73,
+    "NVDA": 196.51,
+    "TSLA": 305.9731,
+    "PLTR": 124.9,
+    "QQQ": 676.04,
+    "SPY": 742.82
+  }
+}
