@@ -1,0 +1,57 @@
+{
+  "as_of_hkt": "2026-07-29T11:05:00+08:00",
+  "as_of_et": "2026-07-28T23:05:00-04:00",
+  "session": "US_OVERNIGHT",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": "delayed_sip SUCCESS; SIP unavailable",
+    "alpaca_bars": "IEX retrieval SUCCESS; per-symbol completeness certification unavailable",
+    "ibkr_positions": "SUCCESS",
+    "ibkr_quotes": "NOT COMPLETED",
+    "binance": "NOT COMPLETED",
+    "borrow_options_events": "N/A"
+  },
+  "long_quotes": {},
+  "semiconductor_short_quotes": {
+    "SOXX": 494.22,
+    "SMH": 531.10,
+    "MU": 830.75,
+    "SNDK": 1118.616,
+    "AMD": 460.40,
+    "INTC": 87.53,
+    "ARM": 247.8399
+  },
+  "burry_board_quotes": {
+    "SOXX": 494.22,
+    "MU": 830.75,
+    "NVDA": 197.63,
+    "CAT": 844.7114,
+    "TSLA": 306.83,
+    "PLTR": 124.1643,
+    "QQQ": 679.88
+  },
+  "events": {},
+  "positions_overlap": {
+    "SOXX_long_shares": 15.0,
+    "QQQM_long_shares": 32.5589,
+    "FOTO_long_shares": 180.0
+  },
+  "alpaca_completeness": {
+    "requested_symbols_per_timeframe": 31,
+    "chunking_used": false,
+    "requested_limit": 10000,
+    "expected_minimum_total": {"weekly":1860,"daily":7812,"1H":2480,"15m":3100},
+    "returned_record_count": "not exposed by connector response",
+    "per_symbol_bar_counts": "UNVERIFIED",
+    "individual_retries": "not completed because deficient symbols could not be identified from compact response",
+    "fallback_feed": "IEX",
+    "truncation_detection": "NO CONFIRMED TRUNCATION; CERTIFICATION INCOMPLETE",
+    "final_coverage_ratio": "UNVERIFIED"
+  },
+  "calculation_metadata": {
+    "formal_scores_withheld": true,
+    "pass2_triggered": false,
+    "reason": "mandatory per-symbol historical-bar completeness and IBKR/borrow/event validation incomplete"
+  }
+}
