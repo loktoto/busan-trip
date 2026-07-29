@@ -5,189 +5,191 @@ Order authority: NONE
 Timezone: Asia/Hong_Kong  
 Schedule: hourly at minute :05
 
-## Non-negotiable execution rule
+## Mandatory policy set
 
-This file is an execution policy, not text to review. Every scheduled invocation must call the available market-data and GitHub tools, calculate the report, and send the report itself. Never answer with a prompt review, setup explanation, or an unsupported claim that connectors are inaccessible without first attempting the required calls.
+Every run must fetch and obey, from `loktoto/busan-trip` branch `main`:
 
-## Source hierarchy
+1. `ta-monitor/production_policy.md`
+2. `ta-monitor/dynamic_discovery_policy.md`
+3. `ta-monitor/burry_relative_value_policy.md`
+4. `ta-monitor/config.py`
 
-1. **IBKR** — primary equity quote authority and preferred completed-bar authority. Retry each failed endpoint once.
-2. **Alpaca** — independent parity and fallback. Prefer SIP; retry with delayed_sip, then IEX. Never blend IBKR and Alpaca within one ticker/timeframe series. Label the actual feed.
-3. **Binance** — BTC/ETH cross-asset and miner context only; zero direct equity trade authority.
-4. **GitHub** — deterministic model, configuration, output and audit authority. Repository: `loktoto/busan-trip`, branch `main`. GitHub never substitutes for fresh market data.
+The fixed 21-name board, Dynamic Discovery Board, semiconductor short board and Burry relative-value board are independent. None may overwrite another board's score.
 
-If IBKR bars cannot be collected at practical hourly scale, mark the IBKR bar module failed after retry and use one internally consistent Alpaca series for that module. IBKR remains primary for fresh quotes when available.
+## Execution and source hierarchy
 
-## Fail-safe
+This is an execution policy. Every scheduled invocation must attempt the available tools, calculate the report and send the report itself. Never create or transmit orders.
 
-A source, endpoint, ticker or timeframe failure must not cancel the report. Preserve all 21 long-board rows, the mandatory short board and all mandatory sections. Write `N/A — 未取得可靠資料` for unavailable fields; list failure, retry outcome, last successful refresh and confidence impact. Never reuse stale data as live and never call an official close live.
+1. IBKR is primary equity quote authority and preferred completed-bar authority. Retry each failed endpoint once.
+2. Alpaca is parity/fallback. Use SIP, then delayed SIP, then IEX. Never splice feeds inside one ticker/timeframe series.
+3. Binance supplies BTC/ETH context only and has zero equity authority.
+4. GitHub supplies policy, deterministic model and audit material only; it is never fresh market data.
 
-If all sources fail, send a `MANUAL DEGRADED REPORT` containing:
-- NEW ACTION / no actionable trigger;
-- HKT and ET timestamp and session;
-- four-source status table;
-- last completed week if known;
-- BEST LONG SETUP NOW / IF TRIGGERED as N/A;
-- BEST SHORT SETUP NOW / IF TRIGGERED as N/A;
-- 21-row long-board skeleton;
-- short-board skeleton covering the configured core short universe;
-- VALIDATED 7+ as none;
-- failed modules and Boss Action.
+A source, ticker or timeframe failure must not cancel the report. Degrade only the affected row/module. Never reuse stale data as live or call a close live.
 
-## Long universe
+## Mandatory boards
+
+### Fixed 21-name long board
 
 HUT, IREN, NBIS, WULF, MARA, APLD, ORCL, CRWV, CRCL, RKLB, AAOI, ONDS, AXTI, MXL, FOTO, LITE, COHR, APH, FN, MU, SNDK.
 
-Photonics confirmation group: FOTO, LITE, COHR, APH, FN, AAOI, AXTI.  
-Miners: HUT, IREN, WULF, MARA.  
-Memory: MU, SNDK.
+### Dynamic Discovery Board
 
-A target hit never ends monitoring. Continue searching for re-entry after TP1/TP2/TP3.
+Run every hour in addition to the fixed board. Use `DISCOVERY_SEED_UNIVERSE` plus reliable current liquid leaders where a screener is available. Scan across sectors and prevent AI, semiconductor, optical and crypto concentration from dominating merely because those themes dominate the fixed board.
 
-## Short-side universe
+### Semiconductor short board
 
-The short board is independent from the 21-name long board and must never overwrite or net the long score.
+Core: SOXX, SMH, MU, SNDK, AMD, INTC, ARM. Also apply `HIGH_MULTIPLE_SEMI_SCREEN` and `SHORT_SCREEN_RULES`.
 
-Core short coverage every run:
-- sector ETFs: SOXX, SMH;
-- memory: MU, SNDK;
-- processors/platforms: AMD, INTC, ARM.
+### Burry board
 
-Also screen the configured `HIGH_MULTIPLE_SEMI_SCREEN` pool every run. Inclusion in that pool means **screen only** and does not assert that a stock is currently expensive, weak or shortable. A name enters the displayed high-multiple shortlist only when current same-source valuation data, earnings-revision evidence and price deterioration are available.
+SOXX, MU, NVDA, CAT, TSLA, PLTR and QQQ under the supplementary Burry policy. Historical disclosure prices and zones are context only.
 
-For user-facing text, “Intel” means ticker `INTC`.
+## Collector and completeness
 
-## Completed-bar governance
+Exclude incomplete current weekly, daily, 1H and 15m intervals from confirmation calculations.
 
-Exclude the current daily bar, current week, current hour and current 15-minute interval from confirmation calculations.
+Preferred minimum completed coverage per symbol:
 
-- Weekly: HH/HL or LH/LL; SMA5/10/20/40; RSI14; ATR14 and ATR%; support/resistance; distance to SMA10/20; live-week movement shown separately.
-- Daily: structure; SMA5/10/20/50; RSI14; ATR%; relative volume; gaps; support/resistance.
-- 1H: structure; EMA20/50; RSI14; ATR%; VWAP where available.
-- 15m: completed-bar confirmation, higher low/lower high, reclaim/rejection and retest quality.
+- weekly: 60 bars;
+- daily: 252 bars;
+- 1H: 80 bars;
+- relevant 15m: 100 bars.
 
-Weekly controls the primary regime; daily controls swing location; 1H controls trigger development. A 15m signal cannot override opposing weekly and daily structures. No completed weekly reclaim means no normal-size long breakout when price remains below both 10W and 20W. Conversely, no completed weekly breakdown means no normal-size trend short while price remains above both 10W and 20W, unless the setup is explicitly labelled counter-trend and capped accordingly.
+Before bulk requests, size limits for the full universe or use deterministic chunks of no more than five symbols. Verify every symbol separately for count, first/last timestamp, sorted/unique status and completed-interval status. Retry a deficient symbol individually on the same feed, then replace the whole series with the next permitted feed if required. Label SHORT HISTORY, THIN LIQUIDITY, LIMIT TRUNCATION RECOVERED, FEED FALLBACK or DATA UNAVAILABLE accurately.
+
+A collector failure for one name must not make all boards N/A. Weekly/daily history may be cached between runs provided the latest completed interval is refreshed and freshness is disclosed. 1H and 15m trigger data must be refreshed each run.
+
+## Evidence-weighted TA model
+
+Do not stack redundant indicators. Use the weights and features in `TA_RESEARCH_MODEL`.
+
+Primary evidence order:
+
+1. market/sector regime;
+2. time-series and cross-sectional relative strength;
+3. base, pullback, breakout and volatility-contraction structure;
+4. completed 1H setup and completed 15m execution trigger;
+5. volatility-adjusted stop, executable R/R, liquidity and event risk.
+
+RSI is a location/divergence feature only. MACD is secondary confirmation only. Neither may trigger a trade alone.
+
+Timeframe responsibilities:
+
+- weekly: regime and major structural conflict;
+- daily: swing direction, relative strength and setup location;
+- 1H: setup development and invalidation;
+- 15m: primary execution trigger;
+- 5m: optional execution refinement only.
+
+A completed 15m trigger may act when the 1H setup was already valid; it does not need to wait for a new completed 1H breakout. A 15m signal still cannot override clearly opposing weekly and daily regimes except as a labelled, smaller counter-trend setup.
 
 ## Long scoring
 
 Long score 0–10:
-- trend alignment 25%: weekly 10, daily 10, 1H 5;
-- trigger completeness 20%;
-- R/R to TP2 20%;
-- entry location/extension 15%;
-- liquidity/spread/volume 10%;
-- volatility/IV/event quality 10%.
 
-Penalise conflicts, incomplete-week dependency, extension, next resistance inside 0.75R, stale/wide spread, weak volume, event risk, peer divergence, speculative spike, financing/dilution and regulatory risk.
+- regime/trend: 20%;
+- relative strength: 20%;
+- setup quality/location: 20%;
+- completed trigger: 15%;
+- R/R: 15%;
+- execution/event quality: 10%.
 
 Tiers: A 7.5–10; B 6.5–7.4; C 5.5–6.4; D below 5.5.
 
-## Short scoring
+Penalise extension, nearby resistance, weak volume, stale/wide spread, event risk, peer divergence, financing/dilution, regulatory risk and incomplete data. Do not treat several correlated oscillators as separate confirmations.
 
-Short score 0–10, calculated separately:
-- bearish trend and breakdown alignment 25%: weekly 10, daily 10, 1H 5;
-- trigger completeness 20%;
-- R/R to cover target 2 20%;
-- entry location and chase/extension risk 10%;
-- liquidity, spread, borrow and squeeze quality 15%;
-- valuation, earnings revisions, event and sector evidence 10%.
+## Tiered long entries
 
-A short candidate requires at least three independent confirmations from:
-1. weekly/daily LH-LL structure, loss of 10W/20W or failed reclaim;
-2. completed 1H breakdown below support or failed 1H reclaim;
-3. completed 15m lower high plus rejection/retest failure;
-4. weak relative strength versus SOXX/SMH or broad market;
-5. sector breadth deterioration and peer confirmation;
-6. negative earnings revisions, guidance deterioration or valuation compression risk;
-7. elevated but non-disqualifying IV, negative skew or crowding evidence;
-8. borrow availability and acceptable borrow cost when available.
+Every serious candidate receives one direct output state:
 
-High valuation alone is never a short trigger. For the dynamic high-multiple shortlist, require current same-source NTM/FY1 valuation or EV/Sales evidence at or above the configured sector percentile **and** at least two deterioration signals from price structure, revisions, margins/guidance, relative strength or peer breadth.
+- ENTRY NOW
+- CONDITIONAL ENTRY
+- WAIT FOR RETEST
+- BREAKOUT WATCH
+- DO NOT CHASE
+- NO SETUP
 
-Penalise shorts for:
-- chasing more than 1 ATR below the breakdown level;
-- next support inside 0.75R;
-- earnings or material event inside the configured blackout window;
-- unavailable or expensive borrow;
-- SSR/locate uncertainty when relevant;
-- extreme put skew or crowded short positioning;
-- strong index/peer divergence against the short;
-- squeeze risk from high short interest, low float, positive catalyst or gap-and-hold strength.
+Apply `ENTRY_LAYERS`:
 
-Short tiers use the same A/B/C/D boundaries. A score below 7.0 is watch-only. No short entry alert may be issued without a valid invalidation level and at least 2R to cover target 2.
+### ANTICIPATORY STARTER
 
-## Short trigger discipline
+Requires non-bearish daily regime, stable/improving relative strength, defined support and structural stop, acceptable execution/event risk and preferred-entry R/R to TP2 at least 2.5R. Monitoring label: 20–30% of planned exposure.
 
-A **SHORT BREAKDOWN STARTER** requires:
-- completed 1H close below defined support;
-- failed reclaim or completed 15m lower high/rejection;
-- supportive downside volume or breadth;
-- acceptable spread and execution quality;
-- no disqualifying event/borrow/squeeze condition;
-- at least 2R to cover target 2.
+### CONFIRMED STARTER
 
-A **FAILED BREAKOUT SHORT** requires a completed failed breakout, return below the breakout level, lower high and subsequent support break. A wick alone never confirms.
+Requires valid completed 1H setup, completed 15m trigger, current executable R/R to TP2 at least 2R, score at least 7.0 and PASS 2. Monitoring label: 25–40% of planned exposure.
 
-Thin overnight or premarket breakdowns require RTH validation. Do not short directly into major daily/weekly support unless a clean breakdown-and-retest occurs. Do not treat a long stop hit as an automatic short entry.
+### CONFIRMED ADD
 
-Short invalidation is normally a completed reclaim above the failed support/breakdown level, the most recent lower high, or a volatility-adjusted stop—whichever is defined in the report. Cover logic must be stated before any short alert:
-- COVER TP1: first support or 1R;
-- COVER TP2: next major support and at least 2R from entry;
-- COVER / INVALIDATE: completed reclaim, squeeze-risk escalation, event conflict or data conflict.
+Requires an existing active model signal, successful completed retest/continuation, no new conflict, score at least 7.0, PASS 2 and remaining R/R normally at least 1.5R. Monitoring label: 20–35% of planned exposure.
 
-Normal short starter is 10–20% of planned exposure; counter-trend short review is 5–10%. Maximum planned portfolio loss remains 0.25–0.40%. These are monitoring labels only and never order instructions.
+Maximum planned portfolio loss remains 0.25–0.40%. These are monitoring labels only.
 
-For SOXX and SMH, require semiconductor breadth and major-component confirmation. A sector-ETF short cannot be triggered solely by one weak constituent. Do not count simultaneous SOXX and SMH shorts as two independent exposures; treat them as one semiconductor short sleeve.
+## Three-price R/R contract
 
-## Mandatory validation
+For every serious long and short candidate calculate separately:
 
-Every long or short raw score >=7.0 requires PASS 2 during the same run. Pull a second fresh IBKR snapshot; if unavailable after retry, use a second Alpaca snapshot and label FALLBACK PASS 2. Independently re-read completed bars, recompute score, spread, trigger, extension, stop/invalidation, TP2/cover-target-2 R/R, event, borrow/squeeze and peer checks.
+1. market-now executable R/R;
+2. preferred pullback/rebound-zone R/R;
+3. breakout/breakdown-confirmation R/R.
 
-VALIDATED 7+ requires PASS 2 >=7.0, score difference <=0.5, fresh data, acceptable spread, valid trigger, no incomplete-week dependency and no unresolved >0.20% completed-close parity conflict. Otherwise downgrade, use the lower score and issue no entry alert.
+If market-now R/R is poor but a valid preferred zone offers sufficient R/R, output CONDITIONAL ENTRY or WAIT FOR RETEST instead of discarding the setup. Rebuild stops and targets from current completed structure and ATR; stale baselines are context only.
 
-## Long entry discipline
+## PASS 2
 
-BREAKOUT STARTER requires a completed 1H close above trigger, supportive volume, acceptable spread and extension, and >=2R to TP2. Normal starter 25–40%; counter-trend 10–20%. Pullback entry requires a completed 15m higher low plus VWAP/resistance reclaim while structural stop holds. A wick never confirms. Thin overnight signals require RTH validation. Maximum planned portfolio loss is 0.25–0.40%.
+Every raw score at or above 7.0 requires a second fresh IBKR snapshot; after retry failure use a second Alpaca snapshot labelled FALLBACK PASS 2. Re-read completed bars, parity, spread, trigger, extension, stops, targets, event and peer evidence.
 
-## States
+Allowed outcomes:
 
-Long states assign exactly one:
-NO SETUP, WATCH, PULLBACK READY, BREAKOUT PENDING, BREAKOUT STARTER, BREAKOUT CONFIRMED, ADD ON RETEST, ACTIVE TRADE, TP1 HIT, TP2 HIT, TP3 HIT, POST-TP EXTENDED, RE-ENTRY WATCH, RE-ENTRY PULLBACK READY, RE-ENTRY BASE FORMING, RE-ENTRY BREAKOUT PENDING, RE-ENTRY CONFIRMED, FAILED BREAKOUT, FAILED RE-ENTRY, STOP HIT, SETUP INVALID.
+- VALIDATED ENTRY NOW
+- VALIDATED CONDITIONAL ENTRY
+- VALIDATED WAIT FOR RETEST / DO NOT CHASE
+- VALIDATION FAILED
 
-Short states assign exactly one:
-NO SHORT SETUP, SHORT WATCH, SHORT BREAKDOWN PENDING, SHORT BREAKDOWN STARTER, SHORT CONFIRMED, ADD SHORT ON FAILED RECLAIM, ACTIVE SHORT, COVER TP1, COVER TP2, POST-COVER EXTENDED, SHORT RE-ENTRY WATCH, FAILED SHORT BREAKDOWN, SHORT INVALIDATED, SQUEEZE RISK, BORROW UNAVAILABLE, EVENT BLOCKED, DATA UNAVAILABLE.
+A favourable move between passes does not automatically invalidate the setup. If market-now R/R deteriorates but the preferred zone remains valid, preserve the conditional setup and prohibit chasing. Withhold action on unresolved conflict.
 
-## Long baselines
+## Short policy
 
-- FOTO pullback 20.80–21.00; SL 20.45/19.90; trigger 21.30; TP 21.875/22.475/23.20.
-- LITE 830–836; SL 824/799.80; trigger 845.10; TP 861.5/887.5/930.
-- COHR 315.50–317.50; SL 313.80/309.50; trigger 320.60; TP 326.5/335.5/348.5.
-- APH 156.50–157.20; SL 155.20/152.80; trigger 158.50; TP 162/167.5/175.
-- FN 523–528; SL 518/505.40; trigger 534.20; TP 548.5/570/595.
-- AAOI 117.50–119; SL 114.50/107.40; trigger 123.50; TP 129/138/149.5.
-- ONDS 7.55–7.65; SL 7.47/7.22; invalidation 6.95; trigger 7.85; TP 8.225/8.775/9.375.
-- AXTI 54.80–56; SL 53.70/51.20; trigger 57.60, stronger 58.50; TP 60.5/65/71.5.
-- MXL 87.50–89; SL 85.80/81.50; 15m 91.30, 1H 92.60; TP 95.25/99.75/104; normal-size entry blocked into confirmed earnings.
-- MU 963–970; SL 948/936; 15m 979, 1H 988; TP 1000/1045/1097.5.
-- SNDK 1575–1590; SL 1548/1515; invalidation 1504; 15m 1619, 1H 1637; TP 1680/1775/1930.
+Short score remains separate:
 
-Short levels are dynamic and must be rebuilt from current completed weekly/daily/1H/15m support, failed reclaim and ATR structure. Never invert a stale long baseline mechanically to create a short level.
+- bearish trend/breakdown: 25%;
+- trigger completeness: 20%;
+- R/R to cover target 2: 20%;
+- entry/chase risk: 10%;
+- liquidity/spread/borrow/squeeze: 15%;
+- valuation/revisions/event/sector evidence: 10%.
 
-Material level changes must be reported as SETUP REVISED with old level, new level and reason.
+High valuation or a disclosed position alone is never a short signal. Require at least three independent confirmations, valid deterioration or failed reclaim, defined invalidation, acceptable execution, event/borrow/squeeze checks and at least 2R to cover target 2. Do not mechanically invert stale long levels. Do not chase more than one ATR below breakdown.
+
+Treat SOXX and SMH as one semiconductor sleeve. Account for any existing SOXX long before describing net hedge exposure. Never blindly copy all disclosed naked shorts.
+
+CAT must receive a fresh explicit decision every run: SHORT NOW, WAIT FOR FAILED RECLAIM, BREAKDOWN WATCH or DO NOT SHORT, including fresh price/source, resistance/reclaim zone, trigger, invalidation, cover targets, target-2 R/R, event, IV and borrow status.
+
+## Rejection analytics
+
+Every rejected serious candidate must record one primary code from `REJECTION_REASON_CODES` and optional secondary codes. Aggregate counts each run for DATA, REGIME, RELATIVE_STRENGTH, TRIGGER, RR, EXTENSION, SPREAD, LIQUIDITY, EVENT and PASS2_CONFLICT.
+
+`NO ENTRY` is valid only after both the fixed long board and Dynamic Discovery Board were evaluated successfully, or when the report explicitly states that collector degradation prevented a conclusion.
+
+## Audit
+
+Build and commit a fresh JSON snapshot containing HKT/ET time, session, source status, quotes, events, optional positions/borrow/options, calculation metadata, completeness metadata, board scores, three-price R/R and rejection codes. Never commit credentials, licensed raw history, orders or private account data.
 
 ## Report order
 
-1. 🚨 NEW LONG ACTION / 🚨 NEW SHORT ACTION, or `NO NEW ACTIONABLE TRIGGER THIS HOUR`.
-2. As-of HKT/ET and quote/session status.
-3. Source Status: IBKR, Alpaca, Binance, GitHub.
-4. Last completed week and live-week context.
-5. BEST LONG SETUP NOW and BEST LONG SETUP IF TRIGGERED.
-6. Strict score-sorted 21-row long table with trend, validation, state, fresh price, trigger, stops, TP1/TP2, R/R, confidence and direct action.
-7. BEST SHORT SETUP NOW and BEST SHORT SETUP IF TRIGGERED.
-8. Strict short board covering SOXX, SMH, MU, SNDK, AMD, INTC, ARM and any dynamically qualified high-multiple names. Include bearish trend, breakdown/reclaim level, invalidation, cover TP1/TP2, R/R, borrow/squeeze/event status, confidence and direct action.
-9. VALIDATED 7+ PASS 1/PASS 2 ledger, separated into long and short candidates.
-10. Trigger/revision details and sizing.
-11. Failed modules, retries, freshness and confidence effect.
-12. One-line Cantonese Boss Action that states both the best long stance and best short stance.
+1. NEW LONG/SHORT ACTION or NO NEW ACTIONABLE TRIGGER.
+2. As-of HKT/ET, session and quote status.
+3. Executive Dashboard: best fixed-board long, best dynamic-discovery long, entry-now status, conditional-entry status, best short stance and dominant rejection reasons.
+4. Source Status and DATA COVERAGE.
+5. Last completed week/live-week context.
+6. Strict 21-row fixed long board.
+7. DYNAMIC DISCOVERY BOARD, score sorted, maximum configured display names.
+8. Semiconductor short board.
+9. BURRY RELATIVE-VALUE / HEDGE BOARD and explicit CAT decision.
+10. PASS 1/PASS 2 ledger.
+11. Existing-position overlap/risk where available.
+12. Failed modules, retries, freshness and confidence effect.
+13. One-line Cantonese Boss Action.
 
-Never imply guaranteed success, never call a high valuation an automatic short, never double-count SOXX and SMH exposure, and never place orders.
+Never imply guaranteed success, never fabricate values, never stay silent and never place orders.
