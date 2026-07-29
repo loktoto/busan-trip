@@ -1,0 +1,59 @@
+{
+  "as_of_hkt": "2026-07-29T14:06:58+08:00",
+  "as_of_et": "2026-07-29T02:06:58-04:00",
+  "session": "US_OVERNIGHT_CLOSED",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot_sip": "FAILED_ENTITLEMENT",
+    "alpaca_snapshot_delayed_sip": "SUCCESS_46_OF_46",
+    "alpaca_weekly": "RETRIEVED_IEX_COVERAGE_NOT_CERTIFIED",
+    "alpaca_daily": "NOT_COMPLETED",
+    "alpaca_1h": "NOT_COMPLETED",
+    "alpaca_15m": "NOT_COMPLETED",
+    "ibkr_positions": "SUCCESS",
+    "ibkr_quotes": "NOT_COMPLETED",
+    "binance": "NOT_COMPLETED",
+    "borrow_ssr_locate": "DATA_UNAVAILABLE",
+    "options": "DATA_UNAVAILABLE"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 46,
+    "snapshot_feed": "delayed_sip",
+    "snapshot_coverage": "46/46",
+    "weekly_feed": "iex",
+    "weekly_requested_limit": 10000,
+    "weekly_per_symbol_counts": "NOT_EXPOSED_FOR_CERTIFICATION",
+    "daily_coverage": "0/46 certified",
+    "hourly_coverage": "0/46 certified",
+    "fifteen_minute_coverage": "0/46 certified",
+    "individual_retries": [],
+    "truncation_detection": "UNRESOLVED",
+    "fallback_feed": "delayed_sip snapshots; IEX weekly"
+  },
+  "positions_overlap": {
+    "SOXX": {"quantity": 15, "ibkr_mark": 478.5, "average_price": 525.34638667},
+    "QQQM": {"quantity": 32.5589, "ibkr_mark": 276.48999025, "average_price": 296.12285734},
+    "FOTO": {"quantity": 0, "ibkr_mark": 17.0400009}
+  },
+  "key_quotes_delayed_sip": {
+    "SOXX": 494.22,
+    "SMH": 531.1,
+    "MU": 830.75,
+    "SNDK": 1118.616,
+    "AMD": 460.4,
+    "INTC": 87.53,
+    "ARM": 247.8399,
+    "NVDA": 197.63,
+    "CAT": 844.7114,
+    "TSLA": 306.83,
+    "PLTR": 124.1643,
+    "QQQ": 679.88
+  },
+  "calculation_metadata": {
+    "formal_scores_withheld": true,
+    "reason": "Daily, 1H and 15m completeness contract not completed; no fresh IBKR quote pass; borrow/event/option checks unavailable",
+    "pass_2_triggered": false,
+    "orders_created": false
+  }
+}
