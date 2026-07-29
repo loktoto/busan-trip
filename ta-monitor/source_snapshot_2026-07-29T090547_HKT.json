@@ -1,0 +1,62 @@
+{
+  "as_of_hkt": "2026-07-29T09:05:47+08:00",
+  "as_of_et": "2026-07-28T21:05:47-04:00",
+  "session": "US overnight / after-hours ended",
+  "source_status": {
+    "github": "SUCCESS",
+    "ibkr": "PARTIAL SUCCESS",
+    "alpaca": "RUNTIME UNAVAILABLE — no connector exposed",
+    "binance": "RUNTIME UNAVAILABLE — no connector exposed"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 44,
+    "chunking_used": false,
+    "requested_limit": null,
+    "returned_record_count": 0,
+    "per_symbol_bar_counts": {},
+    "individual_retries": [],
+    "fallback_feed": null,
+    "truncation_detection": "NOT APPLICABLE — no API payload",
+    "final_coverage_ratio": {
+      "weekly": "0/44",
+      "daily": "0/44",
+      "1h": "0/44",
+      "15m": "0/44"
+    }
+  },
+  "positions": {
+    "SOXX": {"position": 15, "average_price": 525.34638667, "market_price": 491.89001465, "unrealized_pnl": -501.84558025},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 279.14001465, "unrealized_pnl": -552.94267701},
+    "FOTO": {"position": 180, "average_price": 19.33900898, "market_price": 17.34000015, "unrealized_pnl": -359.82159025}
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": {"last": 491.99, "bid": 490.2, "ask": 491.89, "mark": 491.8900146484375, "change_pct": 0.11, "high": 498.48, "low": 480.5, "ivp52": 0.9362549781799316, "hv_annual": 0.695797141742419, "timestamp": 1785286965},
+    "SMH": {"last": 531.0, "bid": 529.0, "ask": 530.54, "mark": 530.5499877929688, "change_pct": 0.26, "high": 535.94, "low": 518.25, "ivp52": 0.9083665609359741, "hv_annual": 0.5866059268342589, "timestamp": 1785286653},
+    "MU": {"last": 827.19, "bid": 827.05, "ask": 828.0, "mark": 827.1900024414062, "change_pct": 0.81, "high": 848.36, "low": 789.09, "ivp52": 0.7848605513572693, "hv_annual": 1.143058225976315, "timestamp": 1785287165},
+    "SNDK": null,
+    "AMD": null,
+    "INTC": null,
+    "ARM": null
+  },
+  "burry_board_quotes": {
+    "SOXX": {"last": 491.99},
+    "MU": {"last": 827.19},
+    "NVDA": null,
+    "CAT": {"last": 846.33, "bid": 839.93, "ask": 851.75, "mark": 846.3300170898438, "change_pct": 0.65, "high": 855.82, "low": 824.0, "ivp52": 0.9840637445449829, "hv_annual": 0.4949496933153106, "timestamp": 1785284908},
+    "TSLA": null,
+    "PLTR": null,
+    "QQQ": null
+  },
+  "events": {
+    "SNDK": {"date": "2026-08-05", "label": "FY2026 Q4/full-year results after close"},
+    "CAT": "N/A — not independently refreshed this run"
+  },
+  "borrow": "N/A — 未取得可靠資料",
+  "options": "N/A — chain IV/skew/liquidity not refreshed",
+  "calculation_metadata": {
+    "pass2_threshold": 7.0,
+    "pass2_candidates": [],
+    "orders_created": false,
+    "notes": "No stale GitHub output or historical disclosure price used as live market data."
+  }
+}
