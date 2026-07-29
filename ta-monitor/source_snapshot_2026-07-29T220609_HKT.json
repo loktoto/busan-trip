@@ -1,0 +1,57 @@
+{
+  "as_of_hkt": "2026-07-29T22:06:09+08:00",
+  "as_of_et": "2026-07-29T10:06:09-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot": "78/78 delayed_sip fallback after SIP entitlement failure",
+    "alpaca_weekly": "0/78 certified",
+    "alpaca_daily": "0/78 certified",
+    "alpaca_1h": "5/78 certified via IEX fallback",
+    "alpaca_15m": "5/78 certified via IEX fallback",
+    "ibkr": "SOXX, CAT and positions refreshed",
+    "binance": "BTCUSDT and ETHUSDT mark/funding refreshed"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 78,
+    "snapshot_returned_symbols": 78,
+    "snapshot_feed": "delayed_sip",
+    "historical_chunking_used": true,
+    "historical_chunk_size": 5,
+    "one_hour_counts": {"APH": 97, "CRM": 99, "NOW": 101, "AAPL": 116, "XLV": 98},
+    "fifteen_minute_counts": {"APH": 184, "CRM": 188, "NOW": 199, "AAPL": 225, "XLV": 184},
+    "historical_feed": "IEX",
+    "fallback_reason": "delayed_sip invalid for historical bars",
+    "limit_truncation_detected": false,
+    "individual_retries": [],
+    "final_coverage_ratio": {"snapshot": "78/78", "weekly": "0/78", "daily": "0/78", "1h": "5/78", "15m": "5/78"}
+  },
+  "selected_quotes": {
+    "SOXX": {"ibkr_last": 480.94, "bid": 480.50, "ask": 480.83, "high": 496.06, "low": 477.95, "change_pct": -2.14, "ivp_52w": 0.9880},
+    "CAT": {"ibkr_last": 805.71, "bid": 805.00, "ask": 806.26, "high": 822.79, "low": 804.96, "change_pct": -4.18, "ivp_52w": 0.9880},
+    "CRM": {"alpaca_delayed_last": 185.33, "last_completed_15m_close": 185.63},
+    "NOW": {"alpaca_delayed_last": 113.53, "last_completed_15m_close": 113.42},
+    "AAPL": {"alpaca_delayed_last": 343.65, "last_completed_15m_close": 342.79},
+    "APH": {"alpaca_delayed_last": 156.88, "last_completed_15m_close": 153.635},
+    "XLV": {"alpaca_delayed_last": 167.76, "last_completed_15m_close": 167.59}
+  },
+  "positions_overlap": {
+    "SOXX_long_shares": 15.0,
+    "SOXX_average_price": 525.34638667,
+    "QQQM_long_shares": 32.5589,
+    "FOTO_shares": 0.0
+  },
+  "crypto_context": {
+    "BTCUSDT_mark": 64473.40,
+    "BTCUSDT_funding": 0.00002323,
+    "ETHUSDT_mark": 1904.35,
+    "ETHUSDT_funding": 0.00005322
+  },
+  "calculation_metadata": {
+    "pass2_triggered": false,
+    "orders_created": false,
+    "licensed_raw_history_committed": false,
+    "private_account_detail_committed": false
+  }
+}
