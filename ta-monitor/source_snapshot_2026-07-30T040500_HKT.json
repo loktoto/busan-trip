@@ -1,0 +1,43 @@
+{
+  "as_of_hkt": "2026-07-30T04:05:00+08:00",
+  "as_of_et": "2026-07-29T16:05:00-04:00",
+  "session": "AFTER_HOURS",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": {"feed": "delayed_sip", "requested": 78, "returned": 78, "snapshot_timestamp_utc": "2026-07-29T19:50:52Z"},
+    "ibkr_primary": {"CRM": "SUCCESS", "SOXX": "SUCCESS", "CAT": "SUCCESS", "positions": "SUCCESS"},
+    "binance": {"BTCUSDT_mark_funding": "SUCCESS", "ETHUSDT_mark_funding": "SUCCESS", "open_interest": "NOT_REQUESTED"},
+    "borrow_ssr_locate": "DATA_UNAVAILABLE",
+    "option_chain_skew": "DATA_UNAVAILABLE"
+  },
+  "quotes": {
+    "CRM": {"source": "IBKR", "last": 187.5, "mark": 187.39999389648438, "bid": 187.4, "ask": 188.16, "high": 190.18, "low": 182.01, "change_pct": 3.31},
+    "SOXX": {"source": "IBKR", "last": 465.22, "mark": 465.6600036621094, "bid": 464.06, "ask": 466.06, "high": 496.06, "low": 464.08, "change_pct": -5.34, "ivp_52w": 1.0},
+    "CAT": {"source": "IBKR", "last": 782.0, "mark": 781.3900146484375, "bid": 780.69, "ask": 785.04, "high": 822.79, "low": 776.0, "change_pct": -7.0, "ivp_52w": 0.9840637445449829}
+  },
+  "positions_overlap": {
+    "SOXX": {"position": 16.0, "average_price": 522.5128125, "market_price": 464.51000975, "unrealized_pnl": -928.044844},
+    "DRAM": {"position": 100.0, "average_price": 51.13578147, "market_price": 44.5299988, "unrealized_pnl": -660.57826725},
+    "QQQM": {"position": 32.5589, "average_price": 296.12285734, "market_price": 272.3500061, "unrealized_pnl": -774.01788639}
+  },
+  "crypto_context": {
+    "BTCUSDT": {"mark": 63539.59149275, "funding": 0.00009072},
+    "ETHUSDT": {"mark": 1888.02, "funding": 0.00003899}
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_records": 78, "coverage_ratio": 1.0, "feed": "delayed_sip", "truncation_detected": false},
+    "weekly": {"requested_symbols": 78, "certified_symbols": 0, "status": "NOT_COMPLETED_THIS_RUN"},
+    "daily": {"requested_symbols": 78, "certified_symbols": 0, "status": "NOT_COMPLETED_THIS_RUN"},
+    "one_hour": {"requested_symbols": 78, "certified_symbols": 0, "status": "NOT_COMPLETED_THIS_RUN"},
+    "fifteen_minute": {"requested_symbols": 78, "certified_symbols": 0, "status": "NOT_COMPLETED_THIS_RUN"}
+  },
+  "model_tracking": {
+    "CRM": {"entry": 185.8, "stop": 184.4, "tp1": 188.8, "tp2": 191.5, "status": "PARTIAL_SUCCESS", "tp1_hit": true, "tp2_hit": false}
+  },
+  "calculation_metadata": {
+    "new_long_scores": "PROVISIONAL_ONLY_DUE_TO_INCOMPLETE_HISTORY",
+    "new_short_scores": "PROVISIONAL_ONLY_DUE_TO_INCOMPLETE_HISTORY_AND_BORROW_DATA",
+    "pass2_triggered": false
+  }
+}
