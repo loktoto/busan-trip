@@ -1,0 +1,45 @@
+{
+  "as_of_hkt": "2026-07-31T03:04:37+08:00",
+  "as_of_et": "2026-07-30T15:04:37-04:00",
+  "session": "RTH",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip_snapshot": "failed_premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success_46_of_46",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "binance": "success",
+    "borrow_ssr_locate": "unavailable",
+    "options_execution": "unavailable"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 46,
+    "snapshot_returned_symbols": 46,
+    "feed": "delayed_sip",
+    "snapshot_timestamp_latest_et": "2026-07-30T14:50:31-04:00",
+    "weekly_certified": "0/46 refreshed this run",
+    "daily_certified": "0/46 refreshed this run",
+    "one_hour_certified": "0/46 refreshed this run",
+    "fifteen_minute_certified": "0/46 refreshed this run",
+    "chunking_used": false,
+    "individual_retries": [],
+    "truncation_detected": false,
+    "thin_liquidity": ["FOTO"]
+  },
+  "ibkr_quotes": {
+    "SOXX": {"last": 503.35, "bid": 503.30, "ask": 503.44, "change_pct": 8.25, "high": 509.98, "low": 488.01, "hv_annual": 0.70011, "iv_annual": 0.57389, "ivp_52w": 0.85657},
+    "CAT": {"last": 807.37, "bid": 807.75, "ask": 807.94, "change_pct": 3.15, "high": 822.76, "low": 801.68, "hv_annual": 0.51449, "iv_annual": 0.52325, "ivp_52w": 0.96414}
+  },
+  "binance": {
+    "BTCUSDT": {"mark": 64752.40, "funding": 0.00004145},
+    "ETHUSDT": {"mark": 1918.25970543, "funding": 0.00002077}
+  },
+  "calculation_metadata": {
+    "all_scores_provisional": true,
+    "pass2_triggered": false,
+    "reason": "no certified raw score >= 7.0; multi-timeframe history not refreshed",
+    "orders_created": false
+  }
+}
