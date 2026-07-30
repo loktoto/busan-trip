@@ -1,0 +1,37 @@
+{
+  "as_of_hkt": "2026-07-30T17:05:00+08:00",
+  "as_of_et": "2026-07-30T05:05:00-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": {"feed": "delayed_sip", "requested": 78, "returned": 78, "timestamp_utc": "2026-07-30T08:49:44Z"},
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "binance_btc_eth": "SUCCESS",
+    "positions": "NOT_REFRESHED",
+    "borrow_options_events": "DATA_UNAVAILABLE"
+  },
+  "quotes": {
+    "SOXX": {"alpaca_trade": 468.5, "alpaca_bid": 468.0, "alpaca_ask": 469.0, "ibkr_last": 467.11, "ibkr_bid": 467.0, "ibkr_ask": 469.06, "ibkr_mark": 468.1300048828125},
+    "CAT": {"alpaca_trade": 786.53, "alpaca_bid": 785.27, "alpaca_ask": 788.0, "ibkr_last": 783.45, "ibkr_bid": 782.45, "ibkr_ask": 787.34, "ibkr_mark": 785.27001953125},
+    "QQQ": {"trade": 665.41, "bid": 665.33, "ask": 665.42},
+    "MU": {"trade": 726.535, "bid": 726.5, "ask": 726.99},
+    "NVDA": {"trade": 191.5608, "bid": 191.56, "ask": 191.7}
+  },
+  "completeness": {
+    "weekly": {"requested_symbols": 78, "final_coverage_ratio": 0.0, "status": "DATA_UNAVAILABLE"},
+    "daily": {"requested_symbols": 78, "final_coverage_ratio": 0.0, "status": "FULL_252_BAR_VALIDATION_NOT_COMPLETED"},
+    "one_hour": {"requested_symbols": 78, "final_coverage_ratio": 0.0, "status": "DATA_UNAVAILABLE"},
+    "fifteen_minute": {"requested_symbols": 78, "final_coverage_ratio": 0.0, "status": "DATA_UNAVAILABLE"},
+    "snapshot": {"requested_symbols": 78, "returned_symbols": 78, "final_coverage_ratio": 1.0, "chunking_used": false, "requested_limit": null, "returned_record_count": 78, "individual_retries": [], "fallback_feed": "delayed_sip", "truncation_detection": "NONE"}
+  },
+  "calculation_metadata": {
+    "pass2_triggered": false,
+    "validated_long_now": 0,
+    "validated_short_now": 0,
+    "validated_hedge_now": 0,
+    "dominant_rejections": ["DATA", "TRIGGER", "RR", "EVENT", "BORROW"]
+  },
+  "orders_or_private_account_data": false
+}
