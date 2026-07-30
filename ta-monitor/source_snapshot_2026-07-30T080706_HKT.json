@@ -1,0 +1,51 @@
+{
+  "as_of_hkt": "2026-07-30T08:07:06+08:00",
+  "as_of_et": "2026-07-29T20:07:06-04:00",
+  "session": "OVERNIGHT / MARKET CLOSED",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_sip": "FAILED_PREMIUM_REQUIRED",
+    "alpaca_delayed_sip_snapshot": "SUCCESS_78_OF_78",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "binance": "NOT_COMPLETED",
+    "historical_bars": "NOT_COMPLETED"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 78,
+    "snapshot_returned_records": 78,
+    "snapshot_feed": "delayed_sip",
+    "snapshot_timestamp_range_utc": ["2026-07-29T22:52:48Z", "2026-07-29T23:53:12Z"],
+    "weekly": {"coverage": "0/78 certified", "reason": "collector not completed"},
+    "daily": {"coverage": "0/78 certified", "reason": "collector not completed"},
+    "1h": {"coverage": "0/78 certified", "reason": "collector not completed"},
+    "15m": {"coverage": "0/78 certified", "reason": "collector not completed"}
+  },
+  "quotes": {
+    "SOXX": {"ibkr_last": 467.11, "ibkr_bid": 469.46, "ibkr_ask": 471.90, "rth_close_alpaca": 465.00, "rth_low": 464.08, "ivp_52w": 1.0},
+    "CAT": {"ibkr_last": 783.00, "ibkr_bid": 779.17, "ibkr_ask": 808.55, "rth_close_alpaca": 782.71, "rth_low": 776.00, "ivp_52w": 0.9840637445},
+    "SPY": {"latest_trade_delayed_sip": 732.15, "rth_close": 729.46},
+    "QQQ": {"latest_trade_delayed_sip": 665.97, "rth_close": 661.73},
+    "MU": {"latest_trade_delayed_sip": 733.00, "rth_close": 739.00},
+    "NVDA": {"latest_trade_delayed_sip": 191.01, "rth_close": 190.01},
+    "TSLA": {"latest_trade_delayed_sip": 296.85, "rth_close": 298.32},
+    "PLTR": {"latest_trade_delayed_sip": 122.80, "rth_close": 123.00}
+  },
+  "positions_overlap": {
+    "SOXX_shares_long": 16,
+    "SOXX_avg_cost": 522.51281002,
+    "DRAM_shares_long": 100,
+    "DRAM_short_puts": 1,
+    "QQQM_shares_long": 32.5589,
+    "other_semiconductor_memory_exposure": ["000660", "00935", "2644", "7709", "7747"]
+  },
+  "calculation_metadata": {
+    "validated_entry_now": [],
+    "validated_short_now": [],
+    "pass2_triggered": false,
+    "reason": "No certified raw score >=7 because weekly/daily/1H/15m collector was not completed",
+    "orders_created": false
+  }
+}
