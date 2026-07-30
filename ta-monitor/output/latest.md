@@ -1,10 +1,10 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-30T20:05:16+08:00 / 2026-07-30T08:05:16-04:00**
+- As of: **2026-07-30T21:06:02+08:00 / 2026-07-30T09:06:02-04:00**
 - Session: **PREMARKET**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'quotes'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
 - Stale-last normalization: **none**
 
 ## Source Status
@@ -14,7 +14,7 @@
 |IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
 |Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
 |Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-30T20:07:53.482481+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|GitHub|SUCCESS|2026-07-30T21:08:49.306659+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -41,7 +41,7 @@
 |17|COHR|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|N/A|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
 |18|APH|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|N/A|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
 |19|FN|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|N/A|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
-|20|MU|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|N/A|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
+|20|MU|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|787.76|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
 |21|SNDK|0.00|D|DATA GAP|DATA GAP|DATA GAP|NO SETUP|N/A|N/A|N/A/N/A|N/A/N/A|N/A|N/A|DATA DEGRADED|No entry — N/A — 未取得可靠資料|
 
 ## VALIDATED 7+ — PASS 1 / PASS 2
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'quotes'
+- Engine failure after source collection: KeyError: 'HUT'
 
 ## Boss Action
 
