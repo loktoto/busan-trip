@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-30T23:05:52+08:00",
-  "as_of_et": "2026-07-30T11:05:52-04:00",
+  "as_of_hkt": "2026-07-31T00:05:00+08:00",
+  "as_of_et": "2026-07-30T12:05:00-04:00",
   "session": "RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -9,7 +9,9 @@
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector"
+      "impact": "Source not supplied by collector",
+      "SOXX": "success",
+      "CAT": "success"
     },
     "Alpaca": {
       "status": "FAILED",
@@ -27,7 +29,7 @@
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-30T23:09:05.597748+08:00",
+      "timestamp": "2026-07-31T00:06:12.278171+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
