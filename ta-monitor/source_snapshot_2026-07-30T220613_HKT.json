@@ -1,0 +1,48 @@
+{
+  "as_of_hkt": "2026-07-30T22:06:13+08:00",
+  "as_of_et": "2026-07-30T10:06:13-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "premium_feed_required",
+    "alpaca_delayed_sip": "success_78_of_78",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "ibkr_positions": "success",
+    "binance": "success",
+    "weekly_bars": "data_unavailable_this_run",
+    "daily_252_bars": "data_unavailable_this_run",
+    "hourly_80_bars": "data_unavailable_this_run",
+    "fifteen_min_100_bars": "data_unavailable_this_run"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 78,
+    "snapshot_records": 78,
+    "snapshot_feed": "delayed_sip",
+    "snapshot_timestamp_latest_utc": "2026-07-30T13:52:13Z",
+    "chunking_used": false,
+    "historical_chunking_used": false,
+    "historical_individual_retries": [],
+    "historical_fallback_feed": null,
+    "truncation_detection": "snapshot_not_truncated; historical_not_collected",
+    "final_coverage_ratio": {
+      "snapshot": "78/78",
+      "weekly": "0/78",
+      "daily": "0/78",
+      "1h": "0/78",
+      "15m": "0/78"
+    }
+  },
+  "key_quotes": {
+    "SOXX": {"ibkr_last": 501.18, "bid": 501.02, "ask": 501.30, "mark": 501.02, "high": 504.58, "low": 488.01, "change_pct": 7.78, "hv_annual": 0.7001, "iv_annual": 0.6446, "ivp_52w": 0.9801},
+    "CAT": {"ibkr_last": 811.21, "bid": 810.48, "ask": 811.55, "mark": 811.21, "high": 818.00, "low": 804.65, "change_pct": 3.64, "hv_annual": 0.5145, "iv_annual": 0.5344, "ivp_52w": 0.9761},
+    "QQQ": {"alpaca_last": 679.39},
+    "SPY": {"alpaca_last": 737.61},
+    "MU": {"alpaca_last": 825.935},
+    "NVDA": {"alpaca_last": 193.985}
+  },
+  "position_overlap": {"SOXX_shares": 16, "QQQM_shares": 32.5589, "DRAM_shares": 100, "DRAM_short_puts": 1},
+  "crypto_context": {"BTCUSDT_mark": 64796.90, "BTCUSDT_funding": 0.0001, "ETHUSDT_mark": 1921.93, "ETHUSDT_funding": 0.00004982},
+  "calculation_metadata": {"scores": "provisional_due_missing_completed_multitimeframe_history", "pass2": "not_triggered", "orders": "none"}
+}
