@@ -1,7 +1,7 @@
 {
-  "as_of_hkt": "2026-07-30T10:07:02+08:00",
-  "as_of_et": "2026-07-29T22:07:02-04:00",
-  "session": "OVERNIGHT_CLOSED",
+  "as_of_hkt": "2026-07-30T11:05:47+08:00",
+  "as_of_et": "2026-07-29T23:05:47-04:00",
+  "session": "OVERNIGHT / US market closed",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
@@ -27,7 +27,7 @@
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-30T10:08:51.972176+08:00",
+      "timestamp": "2026-07-30T11:07:47.646283+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
