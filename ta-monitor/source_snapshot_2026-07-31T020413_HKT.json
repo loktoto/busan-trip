@@ -1,0 +1,52 @@
+{
+  "as_of_hkt": "2026-07-31T02:04:13+08:00",
+  "as_of_et": "2026-07-30T14:04:13-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_required",
+    "alpaca_delayed_sip_snapshot": "success_46_of_46",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "binance": "success",
+    "borrow_ssr_locate": "not_available",
+    "events_options": "not_refreshed"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 46,
+    "snapshot_returned_symbols": 46,
+    "feed": "delayed_sip",
+    "latest_timestamp_utc_approx": "2026-07-30T17:49:21Z",
+    "weekly_refreshed": "0/46",
+    "daily_history_refreshed": "0/46",
+    "one_hour_refreshed": "0/46",
+    "fifteen_minute_refreshed": "2/46_via_ibkr_soxx_cat",
+    "chunking_used": false,
+    "truncation_detected": false,
+    "individual_retries": [],
+    "fallback_feed": "delayed_sip"
+  },
+  "key_quotes": {
+    "SOXX": {"source": "IBKR", "last": 503.80, "bid": 503.80, "ask": 503.92, "change_pct": 8.34, "high": 509.98, "low": 488.01, "iv_annual": 0.5436},
+    "CAT": {"source": "IBKR", "last": 804.86, "bid": 804.64, "ask": 805.54, "change_pct": 2.83, "high": 822.76, "low": 801.68, "iv_annual": 0.5226},
+    "QQQ": {"source": "Alpaca delayed_sip", "last": 682.64},
+    "MU": {"source": "Alpaca delayed_sip", "last": 871.62},
+    "NVDA": {"source": "Alpaca delayed_sip", "last": 193.93},
+    "ARM": {"source": "Alpaca delayed_sip", "last": 239.42},
+    "ORCL": {"source": "Alpaca delayed_sip", "last": 126.44},
+    "RKLB": {"source": "Alpaca delayed_sip", "last": 63.96},
+    "ONDS": {"source": "Alpaca delayed_sip", "last": 7.455}
+  },
+  "crypto": {
+    "BTCUSDT": {"mark": 64829.4963, "funding": 0.00004985},
+    "ETHUSDT": {"mark": 1920.8522, "funding": 0.00001304}
+  },
+  "calculation_metadata": {
+    "long_scores_provisional": true,
+    "short_scores_provisional": true,
+    "pass2_triggered": false,
+    "reason": "no raw score >= 7.0; full multi-timeframe history not refreshed",
+    "orders_created": false
+  }
+}
