@@ -1,0 +1,26 @@
+{
+  "as_of_hkt": "2026-07-31T07:06:30+08:00",
+  "as_of_et": "2026-07-30T19:06:30-04:00",
+  "session": "AFTER_HOURS",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot": {"feed": "delayed_sip", "requested": 46, "returned": 46, "sip_attempt": "premium_feed_required"},
+    "ibkr": {"SOXX": "success", "CAT": "success", "positions": "success"},
+    "binance": {"BTCUSDT": "success", "ETHUSDT": "success"}
+  },
+  "quotes": {
+    "SOXX": {"source": "IBKR", "last": 518.0, "mark": 516.77001953125, "bid": 516.52, "ask": 516.94, "rth_high": 509.98, "rth_low": 488.01, "change_pct": 11.4, "hv_annual": 0.7001102455, "iv_annual": 0.6269935837, "ivp_52w": 0.9322709441},
+    "CAT": {"source": "IBKR", "last": 813.06, "mark": 818.0, "bid": 817.0, "ask": 818.02, "rth_high": 822.76, "rth_low": 801.68, "change_pct": 3.88, "hv_annual": 0.5144927999, "iv_annual": 0.5210000108, "ivp_52w": 0.9601593614}
+  },
+  "positions_overlap": {"SOXX_long_shares": 16.0, "QQQM_long_shares": 32.5589, "DRAM_long_shares": 100.0, "DRAM_short_put_contracts": 1},
+  "crypto": {"BTCUSDT": {"mark": 64900.0, "funding": 0.00009399}, "ETHUSDT": {"mark": 1926.97, "funding": 0.00005017}},
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 46, "returned_records": 46, "coverage_ratio": 1.0, "feed": "delayed_sip", "truncation_detected": false},
+    "weekly": {"requested_symbols": 46, "coverage": 0, "status": "not_refreshed_this_run"},
+    "daily": {"requested_symbols": 46, "coverage": 0, "status": "not_refreshed_this_run"},
+    "one_hour": {"requested_symbols": 46, "coverage": 0, "status": "not_refreshed_this_run"},
+    "fifteen_minute": {"requested_symbols": 46, "coverage": 0, "status": "not_refreshed_this_run"}
+  },
+  "calculation_metadata": {"orders_created": false, "pass2_triggered": false, "reason": "no raw score >= 7.0; complete multi-timeframe collector not refreshed"}
+}
