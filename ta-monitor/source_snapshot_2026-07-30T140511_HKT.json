@@ -1,0 +1,52 @@
+{
+  "as_of_hkt": "2026-07-30T14:05:11+08:00",
+  "as_of_et": "2026-07-30T02:05:11-04:00",
+  "session": "OVERNIGHT_MARKET_CLOSED",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_required",
+    "alpaca_snapshot": "success_delayed_sip_78_of_78_last_extended_2026-07-29T20:00:00-04:00",
+    "alpaca_weekly": "not_completed",
+    "alpaca_daily_252": "not_completed",
+    "alpaca_1h_80": "not_completed",
+    "alpaca_15m_100": "not_completed",
+    "ibkr_soxx": "failed_502_after_retry",
+    "ibkr_cat": "failed_502_after_retry",
+    "ibkr_positions": "failed_502_after_retry",
+    "binance": "success"
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_symbols": 78, "feed": "delayed_sip", "coverage_ratio": 1.0, "truncation_detected": false},
+    "weekly": {"requested_symbols": 78, "certified_symbols": 0, "chunking_used": false, "individual_retries": [], "status": "DATA_UNAVAILABLE_NOT_COMPLETED"},
+    "daily": {"requested_symbols": 78, "certified_symbols": 0, "chunking_used": false, "individual_retries": [], "status": "DATA_UNAVAILABLE_NOT_COMPLETED"},
+    "one_hour": {"requested_symbols": 78, "certified_symbols": 0, "chunking_used": false, "individual_retries": [], "status": "DATA_UNAVAILABLE_NOT_COMPLETED"},
+    "fifteen_minute": {"requested_symbols": 78, "certified_symbols": 0, "chunking_used": false, "individual_retries": [], "status": "DATA_UNAVAILABLE_NOT_COMPLETED"}
+  },
+  "long_quotes": {
+    "HUT":90.4583,"IREN":29.9197,"NBIS":151.0,"WULF":15.69,"MARA":10.19,"APLD":23.32,"ORCL":118.23,"CRWV":62.0746,"CRCL":61.81,"RKLB":58.81,"AAOI":76.5,"ONDS":6.87,"AXTI":37.7,"MXL":57.2,"FOTO":16.15,"LITE":599.752,"COHR":221.99,"APH":151.01,"FN":414.49,"MU":734.0,"SNDK":1008.45
+  },
+  "semiconductor_short_quotes": {
+    "SOXX":466.49,"SMH":506.35,"MU":734.0,"SNDK":1008.45,"AMD":427.409,"INTC":81.1793,"ARM":212.0,"NVDA":191.2446,"AVGO":372.91,"MRVL":163.2748,"ALAB":253.0695,"CRDO":175.6,"MPWR":1260.64,"MCHP":71.37,"ADI":353.28,"ON":79.55,"NXPI":240.98,"QCOM":148.4,"AMAT":451.0,"LRCX":269.0,"KLAC":171.89,"ASML":1567.4619,"TSM":374.75
+  },
+  "burry_board_quotes": {"SOXX":466.49,"MU":734.0,"NVDA":191.2446,"CAT":784.8289,"TSLA":296.64,"PLTR":122.595,"QQQ":666.07},
+  "dynamic_quotes": {"WMT":114.42,"COST":973.4999,"V":369.85,"MA":564.5,"XLP":87.36,"NFLX":73.1394,"GOOGL":335.8,"AAPL":340.15,"NOW":117.0,"CRM":189.2789},
+  "events": {"MXL":"2026-07-23 results","APLD":"2026-07-27 results","SNDK":"2026-08-05 results after close"},
+  "borrow": null,
+  "positions": null,
+  "options": null,
+  "binance": {
+    "BTCUSDT": {"mark":64013.51182609,"funding":0.00008946,"open_interest":104791.505},
+    "ETHUSDT": {"mark":1905.08,"funding":0.00005814,"open_interest":2289603.881}
+  },
+  "calculation_metadata": {
+    "scores": "provisional_due_to_missing_completed_multitimeframe_history",
+    "pass2_candidates": [],
+    "validated_entry_now": [],
+    "validated_short_now": [],
+    "cat_decision": "WAIT_FOR_FAILED_RECLAIM",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT"
+  }
+}
