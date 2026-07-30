@@ -1,0 +1,36 @@
+{
+  "as_of_hkt": "2026-07-30T22:56:14+08:00",
+  "as_of_et": "2026-07-30T10:56:14-04:00",
+  "session": "RTH",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy_config": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot": {"sip": "failed_subscription", "delayed_sip": "success_78_of_78", "latest_approx_et": "10:29"},
+    "alpaca_historical": {"feed": "sip", "candidate_symbols_certified": 10, "full_universe": 78, "latest_15m_refresh": "failed_after_retry_sip_delay_window"},
+    "ibkr": {"SOXX_quote_and_15m": "success", "CAT_quote_and_15m": "success", "positions_overlap": "success_not_committed"},
+    "binance": "success",
+    "borrow_ssr_locate": "not_available",
+    "option_execution": "not_refreshed"
+  },
+  "long_quotes": {"HUT":100.58,"IREN":34.71,"NBIS":179.07,"WULF":16.99,"MARA":11.54,"APLD":26.67,"ORCL":126.25,"CRWV":69.56,"CRCL":62.63,"RKLB":63.65,"AAOI":85.27,"ONDS":7.15,"AXTI":42.88,"MXL":61.39,"FOTO":17.65,"LITE":672.33,"COHR":238.81,"APH":156.97,"FN":453.17,"MU":815.51,"SNDK":1174.515},
+  "semiconductor_short_quotes": {"SOXX":499.86,"SMH":539.94,"MU":815.51,"SNDK":1174.515,"AMD":483.13,"INTC":91.17,"ARM":237.99,"NVDA":195.10,"AVGO":385.55,"MRVL":183.26,"ALAB":290.84,"CRDO":200.10,"MPWR":1333.08,"MCHP":77.03,"ADI":367.93,"ON":84.37,"NXPI":248.70,"QCOM":150.25,"AMAT":507.12,"LRCX":311.29,"KLAC":186.14,"ASML":1678.97,"TSM":402.53},
+  "burry_board_quotes": {"SOXX":499.86,"MU":815.51,"NVDA":195.10,"CAT":806.95,"TSLA":310.61,"PLTR":123.46,"QQQ":681.92},
+  "ibkr_enrichment": {
+    "SOXX": {"last":499.86,"bid":499.75,"ask":500.01,"mark":500.0,"change_pct":7.5,"volume":6649071.10,"open":492.6,"low":488.01,"high":509.98,"historical_vol":0.70011,"underlying_iv":0.63286,"ivp_13w":0.80952,"ivp_26w":0.90476,"ivp_52w":0.95219,"last_completed_15m":{"open":508.44,"high":509.85,"low":505.23,"close":505.77},"developing_15m":{"open":505.64,"high":506.79,"low":499.61,"last":500.5}},
+    "CAT": {"last":806.95,"bid":806.07,"ask":807.14,"mark":806.96,"change_pct":3.1,"volume":1294027.92,"open":810.47,"low":804.65,"high":822.76,"historical_vol":0.51449,"underlying_iv":0.52418,"ivp_13w":0.85714,"ivp_26w":0.92857,"ivp_52w":0.96414,"last_completed_15m":{"open":821.66,"high":822.76,"low":813.59,"close":813.86},"developing_15m":{"open":814.0,"high":814.1,"low":806.95,"last":806.95}}
+  },
+  "events": {"status":"not_refreshed"},
+  "position_overlap": {"existing_soxx_long":true,"existing_qqq_or_qqqm_long":true,"existing_memory_semiconductor_exposure":true},
+  "alpaca_completeness": {
+    "snapshot":{"requested":78,"returned":78,"feed":"delayed_sip","coverage_ratio":1.0,"truncation":false},
+    "weekly":{"certified":10,"requested_full_universe":78,"minimum_completed":60,"chunk_size":5,"feed":"sip"},
+    "daily":{"certified":10,"requested_full_universe":78,"minimum_completed":252,"chunk_size":5,"feed":"sip"},
+    "one_hour":{"certified":10,"requested_full_universe":78,"minimum_completed":80,"chunk_size":5,"feed":"sip","individual_retries":[{"symbol":"SOXX","result":"LIMIT TRUNCATION RECOVERED"}]},
+    "fifteen_min":{"certified":10,"requested_full_universe":78,"minimum_completed":100,"chunk_size":5,"feed":"sip","latest_refresh_retries":2,"latest_refresh_result":"SIP DELAY WINDOW; IBKR used for SOXX/CAT current structure"},
+    "certified_symbols":["ORCL","RKLB","CRCL","AMZN","SOXX","CAT","ARM","QCOM","MU","NVDA"],
+    "bounded_not_collected":68
+  },
+  "crypto_context":{"BTCUSDT":{"mark":64791.8,"funding":0.0001,"open_interest":106644.118},"ETHUSDT":{"mark":1919.34,"funding":0.00003243,"open_interest":2322495.383}},
+  "calculation_metadata":{"pass2_threshold":7.0,"highest_long":{"symbol":"ORCL","score":6.6},"highest_short":{"symbol":"CAT","score":6.7},"pass2_triggered":false,"copy_naked_shorts":3.0,"soxx_hedge":5.8,"validated_long_now":[],"validated_short_now":[],"validated_hedge_now":[]}
+}
