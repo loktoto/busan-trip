@@ -1,6 +1,6 @@
 {
-  "as_of_hkt": "2026-07-31T00:05:00+08:00",
-  "as_of_et": "2026-07-30T12:05:00-04:00",
+  "as_of_hkt": "2026-07-31T01:05:08+08:00",
+  "as_of_et": "2026-07-30T13:05:08-04:00",
   "session": "RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
@@ -9,33 +9,31 @@
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "SOXX": "success",
-      "CAT": "success"
+      "impact": "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
     },
     "Alpaca": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "US-equity parity/fallback",
-      "impact": "Source not supplied by collector"
+      "impact": "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
     },
     "Binance": {
       "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector"
+      "impact": "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-31T00:06:12.278171+08:00",
+      "timestamp": "2026-07-31T01:09:06.296055+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
     }
   },
-  "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
+  "bar_limitations": "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'",
   "quote_adjustments": [],
   "photonics_1h_up": null,
   "miners_1h_up": null,
@@ -66,7 +64,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -89,7 +87,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -112,7 +110,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -135,7 +133,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -158,7 +156,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -181,7 +179,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -204,7 +202,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -227,7 +225,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -250,7 +248,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -273,7 +271,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -296,7 +294,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -319,7 +317,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -342,7 +340,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -365,7 +363,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -388,7 +386,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -411,7 +409,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -434,7 +432,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -457,7 +455,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -480,7 +478,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -503,7 +501,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     },
     {
@@ -526,11 +524,11 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
       ]
     }
   ],
   "failed_modules": [
-    "Engine failure after source collection: KeyError: 'HUT'"
+    "Engine failure after source collection: AttributeError: 'int' object has no attribute 'get'"
   ]
 }
