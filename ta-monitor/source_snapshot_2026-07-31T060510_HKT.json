@@ -1,0 +1,40 @@
+{
+  "as_of_hkt": "2026-07-31T06:05:10+08:00",
+  "as_of_et": "2026-07-30T18:05:10-04:00",
+  "session": "AFTER_HOURS",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_required",
+    "alpaca_delayed_sip": "success_46_of_46",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "binance": "success",
+    "borrow_ssr_locate": "unavailable",
+    "events_options": "not_refreshed"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 46,
+    "snapshot_returned_symbols": 46,
+    "snapshot_feed": "delayed_sip",
+    "weekly_coverage": "0/46 refreshed",
+    "daily_coverage": "46/46 latest daily snapshot only; not 252-bar certified",
+    "hourly_coverage": "0/46 refreshed",
+    "fifteen_minute_coverage": "0/46 refreshed",
+    "chunking_used": false,
+    "individual_retries": [],
+    "truncation_detected": false
+  },
+  "ibkr": {
+    "SOXX": {"last": 516.35, "bid": 515.74, "ask": 516.70, "mark": 516.25, "change_pct": 11.04, "rth_high": 509.98, "rth_low": 488.01, "hv_annual": 0.7001102455, "iv_annual": 0.6269935837, "ivp_52w": 0.9322709441},
+    "CAT": {"last": 812.88, "bid": 810.05, "ask": 813.60, "mark": 812.00, "change_pct": 3.85, "rth_high": 822.76, "rth_low": 801.68, "hv_annual": 0.5144927999, "iv_annual": 0.5210000108, "ivp_52w": 0.9601593614}
+  },
+  "burry_board_prices": {"SOXX": 516.35, "MU": 903.80, "NVDA": 196.10, "CAT": 812.88, "TSLA": 308.93, "PLTR": 123.25, "QQQ": 686.98},
+  "calculation_metadata": {
+    "long_scores_provisional": true,
+    "short_scores_provisional": true,
+    "pass2_triggered": false,
+    "orders_created": false,
+    "notes": "After-hours snapshot only. No completed 1H/15m refresh; no validated entry."
+  }
+}
