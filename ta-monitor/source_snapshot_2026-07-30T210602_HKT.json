@@ -1,0 +1,55 @@
+{
+  "as_of_hkt": "2026-07-30T21:06:02+08:00",
+  "as_of_et": "2026-07-30T09:06:02-04:00",
+  "session": "PREMARKET",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot_feed": "delayed_sip",
+    "alpaca_snapshot_coverage": "78/78",
+    "alpaca_sip": "FAILED_PREMIUM_REQUIRED",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "binance_btc_eth": "SUCCESS",
+    "weekly_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "daily_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "hourly_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "fifteen_minute_history": "DATA_UNAVAILABLE_THIS_RUN"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 78,
+    "returned_symbols": 78,
+    "chunking_used": false,
+    "snapshot_limit": null,
+    "truncation_detected": false,
+    "final_coverage_ratio": 1.0,
+    "historical_individual_retries": "not_completed_this_run"
+  },
+  "quotes": {
+    "SPY": {"price": 734.24, "source": "alpaca_delayed_sip", "timestamp_utc": "2026-07-30T12:51:47Z"},
+    "QQQ": {"price": 672.61, "source": "alpaca_delayed_sip", "timestamp_utc": "2026-07-30T12:51:52Z"},
+    "SOXX": {"price": 488.96, "mark": 489.23, "bid": 488.33, "ask": 489.60, "source": "IBKR"},
+    "CAT": {"price": 812.00, "mark": 812.00, "bid": 806.40, "ask": 815.00, "source": "IBKR"},
+    "MU": {"price": 787.76, "source": "alpaca_delayed_sip"},
+    "NVDA": {"price": 194.11, "source": "alpaca_delayed_sip"}
+  },
+  "positions_overlap": {
+    "SOXX_shares": 16,
+    "QQQM_shares": 32.5589,
+    "DRAM_shares": 100,
+    "DRAM_put_position": -1
+  },
+  "crypto_context": {
+    "BTCUSDT_mark": 64905.38526087,
+    "BTCUSDT_funding": 0.0001,
+    "ETHUSDT_mark": 1926.53,
+    "ETHUSDT_funding": 0.00007071
+  },
+  "calculation_metadata": {
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "orders_created": false,
+    "scores_provisional_due_to_missing_completed_multitimeframe_history": true
+  }
+}
