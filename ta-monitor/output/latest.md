@@ -1,6 +1,6 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-31T04:06:24+08:00 / 2026-07-30T16:06:24-04:00**
+- As of: **2026-07-31T05:06:04+08:00 / 2026-07-30T17:06:04-04:00**
 - Session: **AFTER_HOURS**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
@@ -14,7 +14,7 @@
 |IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
 |Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
 |Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-31T04:07:29.179826+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|GitHub|SUCCESS|2026-07-31T05:07:41.075945+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
