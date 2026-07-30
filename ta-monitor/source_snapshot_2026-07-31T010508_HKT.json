@@ -1,0 +1,45 @@
+{
+  "as_of_hkt": "2026-07-31T01:05:08+08:00",
+  "as_of_et": "2026-07-30T13:05:08-04:00",
+  "session": "RTH",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_sip_snapshot": "FAILED_PREMIUM",
+    "alpaca_delayed_sip_snapshot": "SUCCESS_46_OF_46",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "binance": "SUCCESS",
+    "borrow_ssr_locate": "N/A",
+    "event_options": "N/A"
+  },
+  "quotes": {
+    "SOXX": {"source":"IBKR","last":505.13,"bid":505.01,"ask":505.15,"high":509.98,"low":488.01,"change_pct":8.63,"hv_annual":0.7001,"iv_annual":0.6077,"ivp_52w":0.9004},
+    "CAT": {"source":"IBKR","last":808.08,"bid":808.08,"ask":808.80,"high":822.76,"low":801.68,"change_pct":3.24,"hv_annual":0.5145,"iv_annual":0.5251,"ivp_52w":0.9641},
+    "alpaca_snapshot_symbols": 46,
+    "alpaca_snapshot_records": 46,
+    "alpaca_feed": "delayed_sip",
+    "alpaca_latest_approx_et": "12:50"
+  },
+  "completeness": {
+    "snapshot": {"requested":46,"returned":46,"ratio":1.0,"truncation":false},
+    "weekly": {"requested":46,"certified":0,"reason":"not refreshed in bounded run"},
+    "daily": {"requested":46,"certified":0,"reason":"not refreshed in bounded run"},
+    "one_hour": {"requested":46,"certified":0,"reason":"not refreshed in bounded run"},
+    "fifteen_minute": {"requested":46,"certified":2,"symbols":["SOXX","CAT"],"source":"IBKR"}
+  },
+  "decisions": {
+    "best_long":"ORCL_WAIT_FOR_RETEST",
+    "best_short":"ARM_BREAKDOWN_WATCH",
+    "cat":"WAIT_FOR_FAILED_RECLAIM",
+    "soxx":"WAIT_FOR_FAILED_RECLAIM",
+    "copy_naked_shorts":"AVOID",
+    "soxx_hedge":"WAIT",
+    "pass2_triggered":false
+  },
+  "crypto": {
+    "BTCUSDT":{"mark":64809.80176812,"funding":0.00006826},
+    "ETHUSDT":{"mark":1919.07,"funding":0.00001394}
+  },
+  "orders_created": false
+}
