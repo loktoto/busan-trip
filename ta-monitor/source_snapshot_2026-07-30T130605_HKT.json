@@ -1,0 +1,33 @@
+{
+  "as_of_hkt": "2026-07-30T13:06:05+08:00",
+  "as_of_et": "2026-07-30T01:06:05-04:00",
+  "session": "OVERNIGHT_CLOSED",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip": "failed_premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success_78_of_78_last_extended_2026-07-29T20:00:00-04:00",
+    "alpaca_weekly": "not_completed",
+    "alpaca_daily_252": "not_completed",
+    "alpaca_1h": "not_completed",
+    "alpaca_15m": "not_completed",
+    "ibkr_soxx_contract": "failed_twice_502",
+    "ibkr_cat_contract": "failed_twice_502",
+    "ibkr_positions": "failed_twice_502",
+    "binance": "success"
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_records": 78, "feed": "delayed_sip", "coverage_ratio": 1.0, "truncation_detected": false},
+    "weekly": {"requested_symbols": 78, "certified_symbols": 0, "individual_retries": 0},
+    "daily": {"requested_symbols": 78, "certified_symbols": 0, "individual_retries": 0},
+    "one_hour": {"requested_symbols": 78, "certified_symbols": 0, "individual_retries": 0},
+    "fifteen_minute": {"requested_symbols": 78, "certified_symbols": 0, "individual_retries": 0}
+  },
+  "long_quotes": {"HUT":90.4583,"IREN":29.9197,"NBIS":151.0,"WULF":15.69,"MARA":10.19,"APLD":23.32,"ORCL":118.23,"CRWV":62.0746,"CRCL":61.81,"RKLB":58.81,"AAOI":76.5,"ONDS":6.87,"AXTI":37.7,"MXL":57.2,"FOTO":16.15,"LITE":599.752,"COHR":221.99,"APH":151.01,"FN":414.49,"MU":734.0,"SNDK":1008.45},
+  "semiconductor_short_quotes": {"SOXX":466.49,"SMH":506.35,"MU":734.0,"SNDK":1008.45,"AMD":427.409,"INTC":81.1793,"ARM":212.0,"NVDA":191.2446,"AVGO":372.91,"MRVL":163.2748,"ALAB":253.0695,"CRDO":175.6,"MPWR":1260.64,"MCHP":71.37,"ADI":353.28,"ON":79.55,"NXPI":240.98,"QCOM":148.4,"AMAT":451.0,"LRCX":269.0,"KLAC":171.89,"ASML":1567.4619,"TSM":374.75},
+  "burry_board_quotes": {"SOXX":466.49,"MU":734.0,"NVDA":191.2446,"CAT":784.8289,"TSLA":296.64,"PLTR":122.595,"QQQ":666.07},
+  "events": {"SNDK":{"date":"2026-08-05","label":"FY2026 Q4/full-year results after close"}},
+  "crypto_context": {"BTCUSDT":{"mark":63991.87252899,"funding":0.00009515,"open_interest":104667.919},"ETHUSDT":{"mark":1901.51914729,"funding":0.00007619,"open_interest":2290365.727}},
+  "calculation_metadata": {"scores": "provisional_due_to_missing_completed_multi_timeframe_bars", "pass2_triggered": false, "orders_created": false}
+}
