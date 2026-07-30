@@ -1,0 +1,43 @@
+{
+  "as_of_hkt": "2026-07-30T12:05:12+08:00",
+  "as_of_et": "2026-07-30T00:05:12-04:00",
+  "session": "OVERNIGHT_CLOSED",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_sip": "FAILED_PREMIUM_FEED",
+    "alpaca_snapshot": "SUCCESS_DELAYED_SIP_78_OF_78",
+    "ibkr": "FAILED_AFTER_ONE_RETRY_502",
+    "binance": "SUCCESS_MARK_FUNDING_OI",
+    "options_borrow_ssr": "DATA_UNAVAILABLE"
+  },
+  "quotes": {
+    "long_board": {"HUT":90.4583,"IREN":29.9197,"NBIS":151.0,"WULF":15.69,"MARA":10.19,"APLD":23.32,"ORCL":118.23,"CRWV":62.0746,"CRCL":61.81,"RKLB":58.81,"AAOI":76.5,"ONDS":6.87,"AXTI":37.7,"MXL":57.2,"FOTO":16.15,"LITE":599.752,"COHR":221.99,"APH":151.01,"FN":414.49,"MU":734.0,"SNDK":1008.45},
+    "semiconductor_short": {"SOXX":466.49,"SMH":506.35,"MU":734.0,"SNDK":1008.45,"AMD":427.409,"INTC":81.1793,"ARM":212.0,"NVDA":191.2446,"AVGO":372.91,"MRVL":163.2748,"ALAB":253.0695,"CRDO":175.6,"MPWR":1260.64,"MCHP":71.37,"ADI":353.28,"ON":79.55,"NXPI":240.98,"QCOM":148.4,"AMAT":451.0,"LRCX":269.0,"KLAC":171.89,"ASML":1567.4619,"TSM":374.75},
+    "burry_board": {"SOXX":466.49,"MU":734.0,"NVDA":191.2446,"CAT":784.8289,"TSLA":296.64,"PLTR":122.595,"QQQ":666.07}
+  },
+  "crypto": {
+    "BTCUSDT": {"mark":64123.9,"funding":0.0001,"open_interest":104767.510},
+    "ETHUSDT": {"mark":1907.76747287,"funding":0.00007038,"open_interest":2292231.687}
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols":78,"returned_records":78,"feed":"delayed_sip","truncation_detected":false,"coverage_ratio":1.0},
+    "weekly": {"requested_symbols":78,"certified_symbols":0,"status":"DATA_UNAVAILABLE_NOT_COMPLETED_THIS_RUN"},
+    "daily": {"requested_symbols":78,"certified_symbols":0,"status":"SNAPSHOT_DAILY_ONLY_NOT_252_BAR_CERTIFIED"},
+    "one_hour": {"requested_symbols":78,"certified_symbols":0,"status":"DATA_UNAVAILABLE_NOT_COMPLETED_THIS_RUN"},
+    "fifteen_minute": {"requested_symbols":78,"certified_symbols":0,"status":"DATA_UNAVAILABLE_NOT_COMPLETED_THIS_RUN"},
+    "chunking_used": false,
+    "individual_retries": [],
+    "fallback_feed": "delayed_sip"
+  },
+  "calculation_metadata": {
+    "validated_entry_now": [],
+    "validated_short_now": [],
+    "pass2_candidates": [],
+    "dominant_rejections": ["DATA","TRIGGER","RR","EXTENSION","SPREAD","EVENT"],
+    "cat_decision": "WAIT_FOR_FAILED_RECLAIM",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT"
+  },
+  "orders_created": false
+}
