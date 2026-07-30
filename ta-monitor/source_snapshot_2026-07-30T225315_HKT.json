@@ -1,0 +1,69 @@
+{
+  "as_of_hkt": "2026-07-30T22:53:15+08:00",
+  "as_of_et": "2026-07-30T10:53:15-04:00",
+  "session": "RTH",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "github_burry_policy": "success",
+    "github_config": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot_sip": "failed_subscription",
+    "alpaca_snapshot_delayed_sip": "success_78_of_78",
+    "alpaca_historical_feed": "sip",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "ibkr_positions_overlap_only": "success_not_committed",
+    "binance": "success",
+    "borrow_ssr_locate": "not_available",
+    "option_execution": "not_refreshed"
+  },
+  "long_quotes": {
+    "HUT": 100.58, "IREN": 34.71, "NBIS": 179.07, "WULF": 16.99, "MARA": 11.54,
+    "APLD": 26.67, "ORCL": 126.25, "CRWV": 69.56, "CRCL": 62.63, "RKLB": 63.65,
+    "AAOI": 85.27, "ONDS": 7.15, "AXTI": 42.88, "MXL": 61.39, "FOTO": 17.65,
+    "LITE": 672.33, "COHR": 238.81, "APH": 156.97, "FN": 453.17, "MU": 815.51,
+    "SNDK": 1174.515
+  },
+  "semiconductor_short_quotes": {
+    "SOXX": 505.35, "SMH": 539.94, "MU": 815.51, "SNDK": 1174.515, "AMD": 483.13,
+    "INTC": 91.17, "ARM": 237.99, "NVDA": 195.10, "AVGO": 385.55, "MRVL": 183.26,
+    "ALAB": 290.84, "CRDO": 200.10, "MPWR": 1333.08, "MCHP": 77.03, "ADI": 367.93,
+    "ON": 84.37, "NXPI": 248.70, "QCOM": 150.25, "AMAT": 507.12, "LRCX": 311.29,
+    "KLAC": 186.14, "ASML": 1678.97, "TSM": 402.53
+  },
+  "burry_board_quotes": {
+    "SOXX": 505.35, "MU": 815.51, "NVDA": 195.10, "CAT": 813.73,
+    "TSLA": 310.61, "PLTR": 123.46, "QQQ": 681.92
+  },
+  "ibkr_enrichment": {
+    "SOXX": {"last": 505.35, "bid": 505.06, "ask": 505.25, "mark": 505.0799866, "change_pct": 8.68, "volume": 6149282.96, "open": 492.60, "low": 488.01, "high": 509.98, "historical_vol": 0.70011, "underlying_iv": 0.56652, "ivp_13w": 0.4127, "ivp_26w": 0.7063, "ivp_52w": 0.8526},
+    "CAT": {"last": 813.73, "bid": 813.15, "ask": 813.59, "mark": 813.2399902, "change_pct": 3.96, "volume": 1205707.40, "open": 810.47, "low": 804.65, "high": 822.76, "historical_vol": 0.51449, "underlying_iv": 0.52478, "ivp_13w": 0.8571, "ivp_26w": 0.9286, "ivp_52w": 0.9641}
+  },
+  "events": {"status": "not_refreshed"},
+  "position_overlap": {"existing_soxx_long": true, "existing_qqq_or_qqqm_long": true, "existing_memory_semiconductor_exposure": true},
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_symbols": 78, "feed": "delayed_sip", "timestamp_approx_et": "2026-07-30T10:29:00-04:00", "truncation_detected": false, "coverage_ratio": 1.0},
+    "weekly": {"requested_symbols": 10, "chunk_size": 5, "requested_limit_per_chunk": 500, "completed_minimum": 60, "certified_symbols": 10, "full_universe_ratio": 0.128205, "feed": "sip", "individual_retries": [], "truncation_detected": false},
+    "daily": {"requested_symbols": 10, "chunk_size": 5, "requested_limit_per_chunk": 2000, "completed_minimum": 252, "certified_symbols": 10, "full_universe_ratio": 0.128205, "feed": "sip", "individual_retries": [], "truncation_detected": false},
+    "one_hour": {"requested_symbols": 10, "chunk_size": 5, "requested_limit_per_chunk": 1000, "completed_minimum": 80, "certified_symbols": 10, "full_universe_ratio": 0.128205, "feed": "sip", "individual_retries": [{"symbol": "SOXX", "reason": "shared_limit_truncation", "result": "limit_truncation_recovered_same_feed"}], "truncation_detected": true},
+    "fifteen_min": {"requested_symbols": 10, "chunk_size": 5, "requested_limit_per_chunk": 2000, "completed_minimum": 100, "certified_symbols": 10, "full_universe_ratio": 0.128205, "feed": "sip", "individual_retries": [], "truncation_detected": false},
+    "certified_symbols": ["ORCL", "RKLB", "CRCL", "AMZN", "SOXX", "CAT", "ARM", "QCOM", "MU", "NVDA"],
+    "not_collected_bounded_run": 68
+  },
+  "crypto_context": {
+    "BTCUSDT": {"mark": 64791.8, "funding": 0.0001, "open_interest": 106644.118},
+    "ETHUSDT": {"mark": 1919.34, "funding": 0.00003243, "open_interest": 2322495.383}
+  },
+  "calculation_metadata": {
+    "pass2_threshold": 7.0,
+    "highest_long_score": {"symbol": "ORCL", "score": 6.6},
+    "highest_short_score": {"symbol": "CAT", "score": 6.7},
+    "pass2_triggered": false,
+    "copy_naked_shorts_score": 3.0,
+    "soxx_hedge_score": 5.8,
+    "validated_long_now": [],
+    "validated_short_now": [],
+    "validated_hedge_now": []
+  }
+}
