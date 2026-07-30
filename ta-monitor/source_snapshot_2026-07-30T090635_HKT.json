@@ -1,0 +1,72 @@
+{
+  "as_of_hkt": "2026-07-30T09:06:35+08:00",
+  "as_of_et": "2026-07-29T21:06:35-04:00",
+  "session": "OVERNIGHT_CLOSED",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_sip": "FAILED_PREMIUM_REQUIRED",
+    "alpaca_delayed_sip_snapshot": "SUCCESS_78_OF_78",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "ibkr_positions": "SUCCESS",
+    "binance_btc_eth_mark_funding": "SUCCESS",
+    "weekly_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "daily_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "hourly_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "fifteen_minute_history": "DATA_UNAVAILABLE_THIS_RUN",
+    "borrow_ssr_locate": "DATA_UNAVAILABLE_THIS_RUN",
+    "options_skew_liquidity": "DATA_UNAVAILABLE_THIS_RUN"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 78,
+    "snapshot_returned_records": 78,
+    "feed": "delayed_sip",
+    "truncation_detected": false,
+    "weekly_coverage": "0/78 certified",
+    "daily_coverage": "0/78 certified",
+    "hourly_coverage": "0/78 certified",
+    "fifteen_minute_coverage": "0/78 certified",
+    "individual_retries": [],
+    "fallback_feed": "delayed_sip"
+  },
+  "key_quotes": {
+    "SPY": {"rth_close": 729.46, "extended_trade": 729.46, "extended_bid": 732.29, "extended_ask": 732.40, "source": "Alpaca delayed_sip"},
+    "QQQ": {"rth_close": 661.73, "extended_trade": 666.07, "extended_bid": 666.01, "extended_ask": 666.12, "source": "Alpaca delayed_sip"},
+    "SOXX": {"ibkr_last": 467.11, "ibkr_bid": 472.96, "ibkr_ask": 474.70, "ibkr_mark": 473.65, "rth_low": 464.08, "rth_high": 496.06, "ivp_52w": 1.0},
+    "CAT": {"ibkr_last": 790.62, "ibkr_bid": 782.40, "ibkr_ask": 791.71, "ibkr_mark": 790.62, "rth_low": 776.0, "rth_high": 822.79, "ivp_52w": 0.9840637445}
+  },
+  "burry_board": {
+    "SOXX": 467.11,
+    "MU": 734.00,
+    "NVDA": 191.2446,
+    "CAT": 790.62,
+    "TSLA": 296.64,
+    "PLTR": 122.595,
+    "QQQ": 666.07
+  },
+  "positions_overlap": {
+    "SOXX_shares": 16,
+    "SOXX_avg_price": 522.51281002,
+    "DRAM_shares": 100,
+    "DRAM_short_put_contracts": 1,
+    "QQQM_shares": 32.5589,
+    "other_semiconductor_memory_exposure": ["000660", "00935", "2644", "7709", "7747"]
+  },
+  "crypto_context": {
+    "BTCUSDT_mark": 63849.63417391,
+    "BTCUSDT_last_funding": 0.00009332,
+    "ETHUSDT_mark": 1905.06334884,
+    "ETHUSDT_last_funding": 0.00003585
+  },
+  "calculation_metadata": {
+    "scores": "provisional_due_to_missing_completed_multitimeframe_history",
+    "pass2_triggered": false,
+    "new_long_action": "NONE",
+    "new_short_action": "NONE",
+    "cat_decision": "WAIT_FOR_FAILED_RECLAIM",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT"
+  }
+}
