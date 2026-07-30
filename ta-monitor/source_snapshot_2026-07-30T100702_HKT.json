@@ -1,0 +1,56 @@
+{
+  "as_of_hkt": "2026-07-30T10:07:02+08:00",
+  "as_of_et": "2026-07-29T22:07:02-04:00",
+  "session": "OVERNIGHT_CLOSED",
+  "order_authority": "NONE",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot_feed": "delayed_sip",
+    "alpaca_snapshot_coverage": "78/78",
+    "ibkr": "DATA UNAVAILABLE THIS RUN",
+    "binance": "SUCCESS",
+    "borrow_options": "DATA UNAVAILABLE"
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 78,
+    "snapshot_returned_symbols": 78,
+    "weekly_certified": "0/78",
+    "daily_certified": "0/78",
+    "hourly_certified": "0/78",
+    "fifteen_minute_certified": "0/78",
+    "individual_retries": [],
+    "fallback_feed": "delayed_sip",
+    "truncation_detected": false
+  },
+  "key_quotes": {
+    "SPY": {"extended_trade": 729.46, "extended_bid": 732.29, "extended_ask": 732.40, "rth_close": 729.46},
+    "QQQ": {"extended_trade": 666.07, "extended_bid": 666.01, "extended_ask": 666.12, "rth_close": 661.73},
+    "SOXX": {"extended_trade": 466.49, "extended_bid": 465.00, "extended_ask": 466.50, "rth_close": 465.00},
+    "CAT": {"extended_trade": 784.8289, "extended_bid": 783.00, "extended_ask": 784.99, "rth_close": 782.71},
+    "MU": {"extended_trade": 734.00, "rth_close": 739.00},
+    "NVDA": {"extended_trade": 191.2446, "rth_close": 190.01},
+    "TSLA": {"extended_trade": 296.64, "rth_close": 298.32},
+    "PLTR": {"extended_trade": 122.595, "rth_close": 123.00}
+  },
+  "crypto_context": {
+    "BTCUSDT_mark": 64287.71710870,
+    "BTCUSDT_funding": 0.00010000,
+    "ETHUSDT_mark": 1916.43000000,
+    "ETHUSDT_funding": 0.00004562
+  },
+  "decisions": {
+    "new_long": "NONE",
+    "new_short": "NONE",
+    "copy_naked_shorts": "AVOID",
+    "soxx_hedge": "WAIT",
+    "cat": "WAIT FOR FAILED RECLAIM"
+  },
+  "calculation_metadata": {
+    "scores": "provisional_due_to_missing_completed_multi_timeframe_history",
+    "pass2_triggered": false,
+    "licensed_raw_history_committed": false,
+    "orders_committed": false,
+    "private_account_data_committed": false
+  }
+}
