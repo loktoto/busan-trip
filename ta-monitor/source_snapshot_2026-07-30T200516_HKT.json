@@ -1,0 +1,56 @@
+{
+  "as_of_hkt": "2026-07-30T20:05:16+08:00",
+  "as_of_et": "2026-07-30T08:05:16-04:00",
+  "session": "PREMARKET",
+  "monitoring_only": true,
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_sip_snapshot": "premium_feed_required",
+    "alpaca_delayed_sip_snapshot": "success 78/78",
+    "ibkr_soxx": "success",
+    "ibkr_cat": "success",
+    "ibkr_positions": "success",
+    "binance": "success",
+    "weekly_bars": "not_certified",
+    "daily_bars": "not_certified",
+    "hourly_bars": "not_certified",
+    "fifteen_minute_bars": "not_certified",
+    "borrow_ssr_locate": "unavailable",
+    "options_execution": "unavailable"
+  },
+  "alpaca_completeness": {
+    "snapshot": {"requested_symbols": 78, "returned_records": 78, "feed": "delayed_sip", "truncation_detected": false, "coverage_ratio": 1.0},
+    "weekly": {"requested_symbols": 78, "certified_symbols": 0},
+    "daily": {"requested_symbols": 78, "certified_symbols": 0},
+    "one_hour": {"requested_symbols": 78, "certified_symbols": 0},
+    "fifteen_minute": {"requested_symbols": 78, "certified_symbols": 0}
+  },
+  "key_quotes": {
+    "SPY": 734.54,
+    "QQQ": 671.42,
+    "SOXX_alpaca": 480.00,
+    "SOXX_ibkr": 481.54,
+    "SMH": 519.00,
+    "MU": 764.942,
+    "NVDA": 193.64,
+    "CAT_alpaca": 808.13,
+    "CAT_ibkr": 806.00,
+    "TSLA": 303.6861,
+    "PLTR": 122.0805,
+    "BTCUSDT_mark": 64857.60281159,
+    "ETHUSDT_mark": 1924.26
+  },
+  "positions_overlap": {
+    "SOXX_shares": 16.0,
+    "QQQM_shares": 32.5589,
+    "DRAM_shares": 100.0,
+    "DRAM_short_puts": 1
+  },
+  "calculation_metadata": {
+    "scores_provisional": true,
+    "pass2_triggered": false,
+    "reason": "No certified multi-timeframe score reached 7.0; 1H and 15m bars not certified",
+    "orders_created": false
+  }
+}
