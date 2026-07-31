@@ -1,0 +1,42 @@
+{
+  "as_of_hkt": "2026-07-31T11:07:00+08:00",
+  "as_of_et": "2026-07-30T23:07:00-04:00",
+  "session": "OVERNIGHT",
+  "source_status": {
+    "github_policy": "OK",
+    "alpaca_snapshot": {"status":"OK_AFTER_RETRY","feed":"delayed_sip","sip_attempt":"FAILED"},
+    "alpaca_history": {"status":"DEGRADED","feed":"iex","reason":"delayed_sip unsupported for historical bars; shared limit truncation detected"},
+    "ibkr": {"status":"PARTIAL","cat_quote":"OK","positions":"OK","other_quotes":"NOT_COMPLETED"},
+    "binance": {"status":"OK","authority":"cross_asset_only"}
+  },
+  "long_quotes": {
+    "HUT":22.10,"IREN":61.41,"NBIS":113.81,"WULF":27.91,"MARA":9.03,"APLD":32.30,"ORCL":158.68,"CRWV":88.85,"CRCL":100.01,"RKLB":63.65,"AAOI":142.10,"ONDS":15.76,"AXTI":68.68,"MXL":73.82,"FOTO":null,"LITE":317.99,"COHR":179.58,"APH":136.81,"FN":158.03,"MU":850.88,"SNDK":529.57
+  },
+  "semiconductor_short_quotes": {
+    "SOXX":507.73,"SMH":635.31,"MU":850.88,"SNDK":529.57,"AMD":266.45,"INTC":49.60,"ARM":150.17,"NVDA":194.92,"AVGO":null,"MRVL":null,"ALAB":null,"CRDO":null,"MPWR":null,"MCHP":null,"ADI":null,"ON":null,"NXPI":null,"QCOM":null,"AMAT":null,"LRCX":null,"KLAC":null,"ASML":null,"TSM":null
+  },
+  "burry_board_quotes": {
+    "SOXX":507.73,"MU":850.88,"NVDA":194.92,"CAT":815.87,"TSLA":448.52,"PLTR":174.15,"QQQ":605.95
+  },
+  "ibkr_cat": {
+    "last":815.87,"bid":811.00,"ask":823.90,"prior_close":809.14,"change_pct":0.83,"open":810.47,"high":822.76,"low":801.68,"historical_vol_pct":51.449,"iv_pct":52.048,"iv_percentile_52w":0.9602,"timestamp_epoch":1785465870
+  },
+  "positions_overlap": {"SOXX_shares":16,"SOXX_market_price":513.52001955,"SOXX_market_value_usd":8216.3203128,"QQQM_shares":32.5589,"SPMO_shares":129.7623,"DRAM_shares":100},
+  "cross_asset": {
+    "BTCUSDT":{"mark":64238.41984258,"last_completed_1h_close":64271.90,"funding_rate":0.0001},
+    "ETHUSDT":{"mark":1900.82406202,"last_completed_1h_close":1903.14,"funding_rate":0.00001939}
+  },
+  "alpaca_completeness": {
+    "snapshot":{"requested_symbols":81,"feed":"delayed_sip","sip_retry_failed":true,"coverage_note":"FOTO unresolved; remaining requested symbols returned in bulk snapshot"},
+    "weekly":{"coverage":"0/requested","status":"NOT_RETRIEVED"},
+    "daily":{"requested_symbols":["SOXX","MU","NVDA","CAT","TSLA"],"chunking":"5 symbols","requested_limit":1500,"returned_records":1500,"per_symbol_counts":{"SOXX":344,"MU":344,"NVDA":344,"CAT":344,"TSLA":124},"truncation_detected":true,"individual_retries_completed":false,"final_reliable_symbols":["SOXX","MU","NVDA","CAT"]},
+    "1h":{"coverage":"0/requested","status":"NOT_RETRIEVED"},
+    "15m":{"coverage":"0/requested","status":"NOT_RETRIEVED"}
+  },
+  "calculation_metadata": {
+    "mode":"DIRECT_DEGRADED_RENDER",
+    "pass2":"WITHHELD because no candidate was authorized at raw score >=7 under incomplete multi-timeframe validation",
+    "orders":"NONE",
+    "licensed_raw_history_committed":false
+  }
+}
