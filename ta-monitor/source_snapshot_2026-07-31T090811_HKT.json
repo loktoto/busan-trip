@@ -1,0 +1,38 @@
+{
+  "as_of_hkt": "2026-07-31T09:08:11+08:00",
+  "as_of_et": "2026-07-30T21:08:11-04:00",
+  "session": "OVERNIGHT",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": "SUCCESS delayed_sip 46/46",
+    "ibkr_soxx": "SUCCESS",
+    "ibkr_cat": "SUCCESS",
+    "binance": "SUCCESS",
+    "weekly_bars": "NOT_REFRESHED",
+    "daily_bars": "SNAPSHOT_ONLY_NOT_252_CERTIFIED",
+    "1h_bars": "NOT_REFRESHED",
+    "15m_bars": "NOT_REFRESHED"
+  },
+  "fresh_quotes": {
+    "SOXX": {"source":"IBKR","last":523.5,"mark":523.5999755859375,"bid":523.6,"ask":524.6,"high":509.98,"low":488.01,"iv_annual":0.6247290546431902,"hv_annual":0.7001102455297166},
+    "CAT": {"source":"IBKR","last":819.5,"mark":819.5,"bid":819.4,"ask":825.57,"high":822.76,"low":801.68,"iv_annual":0.5205211160124528,"hv_annual":0.5144927999496204},
+    "BTCUSDT": {"source":"Binance","mark":64978.2,"funding":0.0001},
+    "ETHUSDT": {"source":"Binance","mark":1926.05827907,"funding":0.00004368}
+  },
+  "alpaca_completeness": {
+    "snapshot_requested_symbols": 46,
+    "snapshot_returned_records": 46,
+    "feed": "delayed_sip",
+    "truncation_detected": false,
+    "weekly_coverage": "0/46 refreshed",
+    "daily_coverage": "0/46 certified 252-bar",
+    "1h_coverage": "0/46 refreshed",
+    "15m_coverage": "0/46 refreshed"
+  },
+  "calculation_metadata": {
+    "scores": "provisional due to missing refreshed multi-timeframe bars",
+    "pass2_triggered": false,
+    "orders_created": false
+  }
+}
