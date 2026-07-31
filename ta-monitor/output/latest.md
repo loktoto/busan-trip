@@ -1,20 +1,20 @@
 # 🚨 DATA DEGRADED
 
-- As of: **2026-07-31T10:03:19+08:00 / 2026-07-30T22:03:19-04:00**
+- As of: **2026-07-31T11:07:00+08:00 / 2026-07-30T23:07:00-04:00**
 - Session: **OVERNIGHT**
 - Calculation source: **MANUAL DEGRADED REPORT**
 - Last completed weekly bar: **N/A**
-- Live-week / limitation: Engine failure after source collection: KeyError: 'HUT'
+- Live-week / limitation: Engine failure after source collection: KeyError: 'quotes'
 - Stale-last normalization: **none**
 
 ## Source Status
 
 |Source|Status|Timestamp / latest bar|Feed / quality|Purpose|Confidence impact|
 |---|---|---|---|---|---|
-|IBKR|FAILED|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
+|IBKR|PARTIAL|N/A|N/A|Primary equity quote/bar authority|Source not supplied by collector|
 |Alpaca|FAILED|N/A|N/A|US-equity parity/fallback|Source not supplied by collector|
-|Binance|FAILED|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
-|GitHub|SUCCESS|2026-07-31T11:09:45.990517+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
+|Binance|OK|N/A|N/A|Crypto/miner context only|Source not supplied by collector|
+|GitHub|SUCCESS|2026-07-31T11:12:27.058726+08:00|policy/engine only|Model and audit|Fresh market calculation unavailable|
 
 ## BEST SETUP NOW: NONE
 ## BEST SETUP IF TRIGGERED: NONE
@@ -50,7 +50,7 @@
 
 ## Failed modules / retries
 
-- Engine failure after source collection: KeyError: 'HUT'
+- Engine failure after source collection: KeyError: 'quotes'
 
 ## Boss Action
 

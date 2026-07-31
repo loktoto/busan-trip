@@ -1,18 +1,18 @@
 {
-  "as_of_hkt": "2026-07-31T10:03:19+08:00",
-  "as_of_et": "2026-07-30T22:03:19-04:00",
+  "as_of_hkt": "2026-07-31T11:07:00+08:00",
+  "as_of_et": "2026-07-30T23:07:00-04:00",
   "session": "OVERNIGHT",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "FAILED",
+      "status": "PARTIAL",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
       "impact": "Source not supplied by collector",
-      "SOXX": "success",
-      "CAT": "success",
-      "positions": "not_refreshed"
+      "cat_quote": "OK",
+      "positions": "OK",
+      "other_quotes": "NOT_COMPLETED"
     },
     "Alpaca": {
       "status": "FAILED",
@@ -22,23 +22,22 @@
       "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "FAILED",
+      "status": "OK",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
       "impact": "Source not supplied by collector",
-      "BTCUSDT": "success",
-      "ETHUSDT": "success"
+      "authority": "cross_asset_only"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-31T11:09:45.990517+08:00",
+      "timestamp": "2026-07-31T11:12:27.058726+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
     }
   },
-  "bar_limitations": "Engine failure after source collection: KeyError: 'HUT'",
+  "bar_limitations": "Engine failure after source collection: KeyError: 'quotes'",
   "quote_adjustments": [],
   "photonics_1h_up": null,
   "miners_1h_up": null,
@@ -69,7 +68,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -92,7 +91,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -115,7 +114,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -138,7 +137,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -161,7 +160,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -184,7 +183,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -207,7 +206,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -230,7 +229,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -253,7 +252,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -276,7 +275,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -299,7 +298,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -322,7 +321,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -345,7 +344,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -368,7 +367,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -391,7 +390,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -414,7 +413,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -437,7 +436,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -460,7 +459,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -483,7 +482,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -506,7 +505,7 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     },
     {
@@ -529,11 +528,11 @@
       "validation": "DATA DEGRADED",
       "action": "No entry — N/A — 未取得可靠資料",
       "errors": [
-        "Engine failure after source collection: KeyError: 'HUT'"
+        "Engine failure after source collection: KeyError: 'quotes'"
       ]
     }
   ],
   "failed_modules": [
-    "Engine failure after source collection: KeyError: 'HUT'"
+    "Engine failure after source collection: KeyError: 'quotes'"
   ]
 }
