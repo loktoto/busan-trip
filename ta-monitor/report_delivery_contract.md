@@ -43,6 +43,40 @@ Execute, where applicable:
 
 Every failed module must record attempts, last reliable freshness when known and confidence effect, then execution must continue.
 
+## Fixed-board research and catalyst escalation
+
+Every configured fixed-board symbol is a mandatory research target, not merely a display row. A fixed name must never be omitted, treated as newly discovered, or ranked from a quote alone.
+
+For every fixed-board symbol, attempt and record independently:
+
+- exact contract resolution;
+- fresh quote and spread;
+- prior completed daily bar and current-session gap;
+- relative performance versus its sector benchmark;
+- known earnings, company release, SEC filing or other material catalyst;
+- fresh 1H and completed 15m evidence when the market/session permits.
+
+Deep-dive escalation is mandatory before ranking when any fixed-board name has one or more of the following:
+
+- absolute current-session gap of at least 5%;
+- prior-session move of at least 8%;
+- current or prior-session volume materially above its recent norm;
+- a scheduled earnings event within five trading sessions;
+- a fresh official filing, earnings release, guidance change, supply agreement or material corporate event;
+- leadership in the strongest or weakest sector of the run.
+
+A deep-dive escalated fixed name must receive:
+
+1. IBKR snapshot;
+2. a second-source US parity check where permitted;
+3. 1H and 15m structure attempts;
+4. official catalyst verification;
+5. direct comparison with the strongest relevant peer or competing setup.
+
+When two fixed-board names compete for Best Trade Now, compare them on the same timestamp and fields: gap, spread percentage, liquidity/dollar volume, volatility, catalyst quality, event risk, sector confirmation, trigger quality, extension, market-now R/R and portfolio overlap. Do not switch the preferred name merely because the user mentions it; show what new evidence changed the ranking.
+
+If any mandatory field is unavailable, state the missing field and confidence penalty. Missing research must never be silently converted into `NO SETUP`.
+
 ## Minimum output contract
 
 Even when every IBKR, Alpaca, public fallback and GitHub module fails, return the complete report skeleton in the mandatory order. Preserve every mandatory US fixed-board row and every mandatory software-core row. Use `N/A — 未取得可靠資料`; never guess.
@@ -102,6 +136,9 @@ Internally verify before sending:
 - the output is the report itself, not meta commentary;
 - every mandatory section is present;
 - every mandatory row is present;
+- each fixed-board name was researched rather than merely displayed;
+- every gap >=5%, prior-session move >=8%, near-term event or fresh catalyst received deep-dive escalation;
+- competing fixed-board candidates were compared on the same timestamp and evidence fields;
 - session labels match exact time/calendar;
 - quote labels are not mixed;
 - failures are localised rather than cancelling the report;
