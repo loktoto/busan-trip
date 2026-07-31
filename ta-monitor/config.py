@@ -7,6 +7,22 @@ PHOTONICS = ["FOTO", "LITE", "COHR", "APH", "FN", "AAOI", "AXTI"]
 MINERS = ["HUT", "IREN", "WULF", "MARA"]
 MEMORY = ["MU", "SNDK"]
 
+DAY_TRADER_RULES = {
+    "formal_entry_session": "RTH",
+    "opening_range_wait_minutes": 15,
+    "entry_now_min_score": 6.5,
+    "pass2_threshold": 7.0,
+    "require_fresh_1h_setup": True,
+    "require_completed_15m_trigger": True,
+    "allow_5m_execution_refinement": True,
+    "weekly_daily_are_context_not_absolute_blockers": True,
+    "min_market_rr_to_tp2": 2.0,
+    "max_rth_spread_pct": 0.50,
+    "max_chase_distance_atr": 1.0,
+    "premarket_overnight_max_state": "CONDITIONAL ENTRY",
+    "after_hours_single_name_entry_allowed": False,
+}
+
 SHORT_CORE = ["SOXX", "SMH", "MU", "SNDK", "AMD", "INTC", "ARM"]
 HIGH_MULTIPLE_SEMI_SCREEN = [
     "NVDA", "AVGO", "MRVL", "ALAB", "CRDO", "MPWR", "MCHP", "ADI", "ON", "NXPI",
@@ -17,11 +33,52 @@ SHORT_SCREEN_RULES = {
     "max_spread_pct": 0.75,
     "min_rr_to_tp2": 2.0,
     "earnings_blackout_sessions": 5,
+    "entry_now_min_score": 6.5,
     "pass2_threshold": 7.0,
     "valuation_percentile_threshold": 80,
     "minimum_short_confirmations": 3,
     "require_borrow_check_when_available": True,
     "require_rth_validation_for_overnight_signal": True,
+    "max_chase_distance_atr": 1.0,
+}
+
+SOFTWARE_SHORT_CORE = [
+    "PLTR", "APP", "SNOW", "DDOG", "NET", "CRWD", "PANW", "NOW", "MDB", "CFLT",
+    "GTLB", "TEAM", "ZS", "HUBS", "OKTA",
+]
+SOFTWARE_SHORT_DYNAMIC_SEED = [
+    "CRM", "ORCL", "ADBE", "WDAY", "SHOP", "TWLO", "BILL", "PATH", "S", "ESTC",
+    "DOCN", "MNDY", "IOT", "PCOR", "DUOL",
+]
+SOFTWARE_BENCHMARKS = ["IGV", "SKYY", "QQQ"]
+SOFTWARE_VALUATION_FACTORS = [
+    "ntm_ev_sales_percentile",
+    "forward_pe_or_peg_percentile",
+    "forward_fcf_yield",
+    "growth_adjusted_sales_multiple",
+    "stock_based_comp_pct_revenue",
+    "revenue_billings_rpo_nrr_deceleration",
+    "estimate_revision_trend",
+]
+SOFTWARE_SHORT_RULES = {
+    "min_price": 10.0,
+    "min_avg_daily_dollar_volume": 50_000_000,
+    "max_rth_spread_pct": 0.50,
+    "max_extended_spread_pct": 0.90,
+    "valuation_percentile_threshold": 80,
+    "minimum_valuation_flags": 2,
+    "minimum_short_confirmations": 3,
+    "entry_now_min_score": 6.5,
+    "pass2_threshold": 7.0,
+    "min_rr_to_tp2": 2.0,
+    "earnings_blackout_sessions": 5,
+    "require_fresh_1h_deterioration": True,
+    "require_completed_15m_breakdown_or_failed_reclaim": True,
+    "require_relative_weakness_vs_benchmark": True,
+    "require_borrow_check_when_available": True,
+    "require_rth_validation_for_overnight_signal": True,
+    "max_chase_distance_atr": 1.0,
+    "max_dynamic_display_names": 10,
 }
 
 BURRY_NEW_SHORT_DISCLOSURE = ["SOXX", "MU", "NVDA", "CAT"]
@@ -93,6 +150,7 @@ DISCOVERY_RULES = {
     "require_completed_daily": True,
     "require_completed_1h": True,
     "use_15m_for_execution": True,
+    "entry_now_min_score": 6.5,
     "pass2_threshold": 7.0,
 }
 
@@ -109,10 +167,12 @@ TA_RESEARCH_MODEL = {
 }
 
 ENTRY_LAYERS = {
+    "RTH_DAY_TRADE_ENTRY_NOW": {"min_score": 6.5, "planned_exposure_fraction": [0.20, 0.35], "min_rr_to_tp2": 2.0, "requires": ["normal_rth", "fresh_1h_setup", "completed_15m_trigger", "defined_stop", "acceptable_execution"]},
     "ANTICIPATORY_STARTER": {"min_score": 6.5, "planned_exposure_fraction": [0.20, 0.30], "min_rr_to_tp2": 2.5, "requires": ["daily_regime_not_bearish", "defined_support", "structural_stop", "acceptable_execution"]},
     "CONFIRMED_STARTER": {"min_score": 7.0, "planned_exposure_fraction": [0.25, 0.40], "min_rr_to_tp2": 2.0, "requires": ["completed_15m_trigger", "1h_setup_valid", "pass2"]},
     "CONFIRMED_ADD": {"min_score": 7.0, "planned_exposure_fraction": [0.20, 0.35], "min_rr_to_tp2": 1.5, "requires": ["existing_model_signal", "successful_retest", "no_event_conflict", "pass2"]},
 }
 
 ENTRY_OUTPUT_STATES = ["ENTRY NOW", "CONDITIONAL ENTRY", "WAIT FOR RETEST", "BREAKOUT WATCH", "DO NOT CHASE", "NO SETUP"]
-REJECTION_REASON_CODES = ["DATA", "REGIME", "RELATIVE_STRENGTH", "TRIGGER", "RR", "EXTENSION", "SPREAD", "LIQUIDITY", "EVENT", "PASS2_CONFLICT"]
+SHORT_OUTPUT_STATES = ["SHORT NOW", "CONDITIONAL SHORT", "WAIT FOR FAILED RECLAIM", "BREAKDOWN WATCH", "DO NOT CHASE", "DO NOT SHORT", "DATA UNAVAILABLE"]
+REJECTION_REASON_CODES = ["DATA", "REGIME", "RELATIVE_STRENGTH", "TRIGGER", "RR", "EXTENSION", "SPREAD", "LIQUIDITY", "EVENT", "BORROW", "SQUEEZE", "VALUATION", "PASS2_CONFLICT"]
