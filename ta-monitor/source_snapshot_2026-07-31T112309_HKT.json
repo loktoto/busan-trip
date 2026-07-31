@@ -1,0 +1,16 @@
+{
+  "as_of_hkt":"2026-07-31T11:23:09+08:00",
+  "as_of_et":"2026-07-30T23:23:09-04:00",
+  "session":"OVERNIGHT_CLOSED_RTH",
+  "order_authority":"NONE",
+  "source_status":{"github":"OK","alpaca_clock":"OK","alpaca_overnight":"FAILED_SUBSCRIPTION","alpaca_delayed_sip":"OK_LAST_EXTENDED_QUOTES_2026-07-30_20:00_ET","ibkr_positions":"OK","ibkr_quotes":"NOT_COMPLETED","binance":"NOT_COMPLETED"},
+  "completeness":{"weekly":false,"daily_history":false,"hourly":false,"fifteen_minute":false,"snapshot_only":true,"actionability":"CONDITIONAL_ONLY"},
+  "fixed_long_quotes":{"HUT":109.88,"IREN":39.45,"NBIS":199.0986,"WULF":18.451,"MARA":11.95,"APLD":28.68,"ORCL":129.2,"CRWV":76.4,"CRCL":63.8201,"RKLB":66.99,"AAOI":95.78,"ONDS":7.59,"AXTI":58.16,"MXL":68.7638,"FOTO":17.87,"LITE":715.0,"COHR":260.75,"APH":161.0,"FN":439.33,"MU":903.0,"SNDK":1354.79},
+  "semi_short_quotes":{"SOXX":519.0,"SMH":550.9349,"MU":903.0,"SNDK":1354.79,"AMD":499.26,"INTC":95.16,"ARM":248.5507},
+  "software_core_quotes":{"PLTR":123.2484,"APP":401.8,"SNOW":302.65,"DDOG":274.23,"NET":283.9309,"CRWD":186.0,"PANW":326.25,"NOW":108.6991,"MDB":329.2985,"CFLT":null,"GTLB":33.53,"TEAM":97.5,"ZS":148.3,"HUBS":230.9,"OKTA":141.67},
+  "burry_quotes":{"SOXX":519.0,"MU":903.0,"NVDA":196.839,"CAT":817.68,"TSLA":309.0999,"PLTR":123.2484,"QQQ":688.28},
+  "positions_overlap":{"SOXX_long_shares":16,"QQQM_long_shares":32.5589,"DRAM_long_shares":100,"DRAM_short_puts":1,"semiconductor_overlap":"LONG"},
+  "board_decisions":{"new_action":"NO_NEW_ACTIONABLE_TRIGGER","copy_naked_shorts":"AVOID","soxx_hedge":"WAIT","cat":"DO_NOT_SHORT_OVERNIGHT_WAIT_FOR_RTH_FAILED_RECLAIM","software_short_now":"NONE","semi_short_now":"NONE"},
+  "rejection_codes":["SESSION","DATA","TRIGGER","RR","BORROW","VALUATION"],
+  "calculation_metadata":{"three_price_rr":"N/A_INSUFFICIENT_COMPLETED_1H_15M","scores":"WITHHELD_WHERE_REQUIRED_DATA_MISSING","licensed_raw_history_committed":false,"private_account_data_committed":false}
+}
