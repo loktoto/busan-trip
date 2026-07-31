@@ -1,18 +1,15 @@
 {
-  "as_of_hkt": "2026-07-31T11:07:00+08:00",
-  "as_of_et": "2026-07-30T23:07:00-04:00",
-  "session": "OVERNIGHT",
+  "as_of_hkt": "2026-07-31T11:23:09+08:00",
+  "as_of_et": "2026-07-30T23:23:09-04:00",
+  "session": "OVERNIGHT_CLOSED_RTH",
   "source": "MANUAL DEGRADED REPORT",
   "source_status": {
     "IBKR": {
-      "status": "PARTIAL",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Primary equity quote/bar authority",
-      "impact": "Source not supplied by collector",
-      "cat_quote": "OK",
-      "positions": "OK",
-      "other_quotes": "NOT_COMPLETED"
+      "impact": "Source not supplied by collector"
     },
     "Alpaca": {
       "status": "FAILED",
@@ -22,16 +19,15 @@
       "impact": "Source not supplied by collector"
     },
     "Binance": {
-      "status": "OK",
+      "status": "FAILED",
       "timestamp": null,
       "quality": "N/A",
       "purpose": "Crypto/miner context only",
-      "impact": "Source not supplied by collector",
-      "authority": "cross_asset_only"
+      "impact": "Source not supplied by collector"
     },
     "GitHub": {
       "status": "SUCCESS",
-      "timestamp": "2026-07-31T11:12:27.058726+08:00",
+      "timestamp": "2026-07-31T11:24:59.262273+08:00",
       "quality": "policy/engine only",
       "purpose": "Model and audit",
       "impact": "Fresh market calculation unavailable"
