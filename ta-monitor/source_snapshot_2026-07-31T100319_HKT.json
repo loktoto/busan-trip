@@ -1,0 +1,32 @@
+{
+  "as_of_hkt": "2026-07-31T10:03:19+08:00",
+  "as_of_et": "2026-07-30T22:03:19-04:00",
+  "session": "OVERNIGHT",
+  "source_status": {
+    "github_policy": "success",
+    "alpaca_clock": "success",
+    "alpaca_snapshot": {"feed": "delayed_sip", "requested": 46, "returned": 46, "sip_attempt": "premium_feed_required"},
+    "alpaca_bars": {"weekly": "data_unavailable", "daily": "data_unavailable", "one_hour": "data_unavailable", "fifteen_min": "data_unavailable", "reason": "delayed_sip historical feed rejected; no feed splicing"},
+    "ibkr": {"SOXX": "success", "CAT": "success", "positions": "not_refreshed"},
+    "binance": {"BTCUSDT": "success", "ETHUSDT": "success"}
+  },
+  "quotes": {
+    "SOXX": {"source": "IBKR", "last": 515.55, "bid": 515.2, "ask": 516.65, "mark": 515.55, "rth_high": 509.98, "rth_low": 488.01, "historical_vol_annual": 0.7001102455, "underlying_iv_annual": 0.6247290546, "iv_percentile_52w": 0.9282868505},
+    "CAT": {"source": "IBKR", "last": 819.0, "bid": 818.0, "ask": 826.91, "mark": 819.0, "rth_high": 822.76, "rth_low": 801.68, "historical_vol_annual": 0.5144927999, "underlying_iv_annual": 0.5204815780, "iv_percentile_52w": 0.9601593614}
+  },
+  "calculation_metadata": {
+    "scores_provisional": true,
+    "pass2_threshold": 7.0,
+    "pass2_triggered": false,
+    "licensed_raw_history_committed": false,
+    "orders_included": false,
+    "private_account_data_included": false
+  },
+  "completeness": {
+    "snapshot": {"requested_symbols": 46, "returned_symbols": 46, "coverage_ratio": 1.0, "chunking_used": false, "requested_limit": null, "truncation_detected": false},
+    "weekly": {"coverage": "0/46", "individual_retries": 0, "fallback_feed": null},
+    "daily": {"coverage": "0/46", "individual_retries": 0, "fallback_feed": null},
+    "one_hour": {"coverage": "0/46", "individual_retries": 0, "fallback_feed": null},
+    "fifteen_min": {"coverage": "0/46", "individual_retries": 0, "fallback_feed": null}
+  }
+}
