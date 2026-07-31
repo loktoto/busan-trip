@@ -1,0 +1,45 @@
+{
+  "as_of_hkt": "2026-07-31T08:08:15+08:00",
+  "as_of_et": "2026-07-30T20:08:15-04:00",
+  "session": "OVERNIGHT / POST-AFTER-HOURS",
+  "source_status": {
+    "github_policy": "SUCCESS",
+    "alpaca_clock": "SUCCESS",
+    "alpaca_snapshot": "SUCCESS delayed_sip 46/46",
+    "ibkr_soxx": "SUCCESS extended-hours",
+    "ibkr_cat": "SUCCESS extended-hours",
+    "ibkr_positions": "SUCCESS",
+    "binance": "SUCCESS",
+    "historical_weekly_daily_1h_15m": "NOT REFRESHED — DATA DEGRADED",
+    "borrow_ssr_locate": "N/A",
+    "events_options": "N/A"
+  },
+  "alpaca_completeness": {
+    "requested_symbols": 46,
+    "snapshot_returned": 46,
+    "snapshot_feed": "delayed_sip",
+    "weekly_coverage": "0/46 refreshed",
+    "daily_coverage": "0/46 certified 252-bar histories; snapshot daily bars 46/46",
+    "hourly_coverage": "0/46 refreshed",
+    "fifteen_minute_coverage": "0/46 refreshed",
+    "chunking_used": false,
+    "individual_retries": [],
+    "truncation_detection": "snapshot complete; historical collector not run"
+  },
+  "fresh_quotes": {
+    "SOXX": {"source":"IBKR","last":518.88,"mark":518.06,"bid":515.95,"ask":518.85,"rth_high":509.98,"rth_low":488.01,"iv_annual":0.62699,"hv_annual":0.70011,"ivp_52w":0.93227},
+    "CAT": {"source":"IBKR","last":813.06,"mark":817.68,"bid":810.44,"ask":820.87,"rth_high":822.76,"rth_low":801.68,"iv_annual":0.52100,"hv_annual":0.51449,"ivp_52w":0.96016},
+    "QQQ": {"source":"Alpaca delayed_sip","last":688.35,"bid":688.25,"ask":688.34,"rth_close":683.55},
+    "MU": {"source":"Alpaca delayed_sip","last":902.62,"bid":902.0,"ask":902.74,"rth_close":874.66},
+    "NVDA": {"source":"Alpaca delayed_sip","last":196.6,"bid":196.6,"ask":196.66,"rth_close":195.04}
+  },
+  "positions_overlap": {"SOXX_shares":16,"QQQM_shares":32.5589,"DRAM_shares":100,"DRAM_short_puts":1},
+  "calculation_metadata": {
+    "best_fixed_long": "RKLB — WAIT FOR RTH RETEST",
+    "best_short": "CAT — WAIT FOR FAILED RECLAIM",
+    "soxx_hedge": "AVOID NOW",
+    "copy_naked_shorts": "AVOID",
+    "pass2_required": false,
+    "reason": "No raw score >= 7.0; multi-timeframe history not refreshed"
+  }
+}
