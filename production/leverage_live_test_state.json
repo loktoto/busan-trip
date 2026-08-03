@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-08-03T11:22:00+08:00",
+  "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
+  "order_authority": "NONE",
+  "active_tests": [
+    {
+      "test_id": "SPY_SSO_20260731_01",
+      "underlying": "SPY",
+      "vehicle": "SSO",
+      "direction": "LONG",
+      "state": "PENDING_ENTRY",
+      "signal": {
+        "signal_date": "2026-07-31",
+        "decision": "ENTER_LEVERAGE",
+        "authority": "PRODUCTION_LIVE_TEST",
+        "source_layer": "VALIDATED_RESEARCH_SIGNAL",
+        "final_confidence": 6.3,
+        "validation_status": "PASSED",
+        "completed_close": 747.03,
+        "SMA50": 744.99,
+        "RV40": 0.1536,
+        "candidate_vehicle": "SSO_2X"
+      },
+      "activation": {
+        "eligible_session": "2026-08-03_US_RTH",
+        "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, SPY must be at or above 744.99, SSO must not be halted, and SSO bid-ask spread must be at or below 0.15 percent.",
+        "recorded_long_entry_price": "SSO_ask",
+        "exact_open_handling": "If the exact 09:30:00 ET quote is not observed, use the first observed qualifying RTH ask and label FIRST_OBSERVED_NOT_OFFICIAL_OPEN.",
+        "pending_reason": "The validated research signal occurred on the 2026-07-31 completed close. Current observations are Sunday overnight and cannot be recorded as the RTH entry."
+      },
+      "invalidation": {
+        "primary": "SPY completed RTH close below the then-current SMA50",
+        "risk": "RV40 above 0.20",
+        "pre_entry_cancel": "At the first fresh RTH observation SPY is below 744.99, SSO is halted, spread exceeds 0.15 percent, or reliable IBKR data are unavailable."
+      },
+      "entry": null,
+      "exit": null,
+      "performance": null,
+      "context_only_non_RTH": {
+        "SPY": {
+          "observed_at": "2026-08-03T10:53:35+08:00",
+          "last": 750.90,
+          "bid": 750.83,
+          "ask": 750.90,
+          "status": "SUNDAY_OVERNIGHT_CONTEXT_ONLY"
+        },
+        "SSO": {
+          "observed_at": "2026-08-03T10:18:23+08:00",
+          "last": 67.70,
+          "bid": 67.69,
+          "ask": 67.73,
+          "status": "SUNDAY_OVERNIGHT_CONTEXT_ONLY"
+        }
+      },
+      "data_policy": {
+        "market_data_primary": "IBKR",
+        "parity": "Alpaca when required by confidence policy",
+        "no_raw_licensed_data_committed": true,
+        "no_account_or_order_data_committed": true,
+        "simulated_or_observed_record_not_broker_execution": true
+      }
+    }
+  ],
+  "closed_tests": []
+}
