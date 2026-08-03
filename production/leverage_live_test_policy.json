@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "status": "PRODUCTION_LIVE_TEST",
+  "effective_at": "2026-08-03T11:22:00+08:00",
+  "scope": "prospective_live_test_of_validated_research_leverage_signals",
+  "order_authority": "NONE",
+  "broker_execution": "NEVER_CREATE_MODIFY_OR_TRANSMIT_ORDERS",
+  "purpose": "Use validated research signals as prospective live-test signals and build an auditable out-of-sample trade record from fresh market observations.",
+  "relationship_to_formal_production": {
+    "formal_SOXX_signal_unchanged": true,
+    "live_test_is_separate_from_formal_trade_authority": true,
+    "research_only_signals_may_be_activated_for_live_test": true,
+    "research_only_signals_do_not_become_broker_order_authority": true
+  },
+  "eligible_signals": {
+    "minimum_requirements": [
+      "explicit_research_entry_or_exit_decision",
+      "completed_US_RTH_bar_trigger_when_the_strategy_uses_daily_confirmation",
+      "final_confidence_greater_than_6.0",
+      "same_run_independent_validation_passed",
+      "actual_leveraged_product_available",
+      "fresh_IBKR_quote_and_spread_available_at_activation",
+      "no_unresolved_date_close_or_corporate_action_conflict"
+    ],
+    "initial_universe": {
+      "SPY": ["SSO", "UPRO", "SPXL"],
+      "QQQ": ["QLD", "TQQQ"],
+      "SOXX": ["USD", "SOXL"],
+      "single_stocks": ["AAPU", "MSFU", "NVDL", "AMZU", "GGLL", "METU", "TSLL", "TSMX"]
+    },
+    "default_vehicle_preference": "Use the lowest leverage product that satisfies the validated research signal unless the signal explicitly validates a higher leverage product."
+  },
+  "activation_and_pricing": {
+    "daily_signal_timing": "signal_on_completed_close_then_activate_at_next_US_RTH_session",
+    "never_use_overnight_premarket_afterhours_as_the_recorded_entry_for_a_daily_RTH_signal": true,
+    "entry_observation": "first_fresh_observed_qualifying_IBKR_RTH_quote",
+    "long_entry_price": "ask",
+    "long_exit_price": "bid",
+    "short_entry_price": "bid",
+    "short_exit_price": "ask",
+    "if_exact_open_quote_is_not_observed": "record_first_observed_qualifying_quote_and_label_it_FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
+    "spread_guardrail": {
+      "default_max_percent": 0.15,
+      "may_be_tighter_for_liquid_products": true,
+      "entry_blocked_when_spread_unavailable_or_above_limit": true
+    },
+    "halt_guardrail": "entry_blocked_when_halted_or_quote_integrity_is_uncertain"
+  },
+  "position_state_machine": [
+    "NO_SIGNAL",
+    "PENDING_ENTRY",
+    "OPEN",
+    "PENDING_EXIT",
+    "CLOSED",
+    "CANCELLED",
+    "DATA_CONFLICT"
+  ],
+  "exit_policy": {
+    "exit_when": [
+      "research_signal_changes_to_EXIT_OR_REVERT_TO_1X",
+      "documented_invalidation_condition_is_met",
+      "risk_or_data_conflict_requires_conservative_exit",
+      "strategy_specific_stop_or_take_profit_is_triggered_when_explicitly_defined"
+    ],
+    "no_implicit_fixed_take_profit": true,
+    "daily_invalidation_uses_completed_RTH_close_unless_the_recorded_strategy_explicitly_defines_an_intraday_rule": true
+  },
+  "performance_accounting": {
+    "currency": "USD",
+    "position_basis": "one_notional_dollar_unless_a_test_notional_is_explicitly_recorded",
+    "returns_use_actual_recorded_product_prices": true,
+    "never_multiply_underlying_return_to_infer_leveraged_product_return": true,
+    "include": [
+      "gross_return",
+      "estimated_spread_cost",
+      "configured_transaction_cost",
+      "net_return",
+      "maximum_adverse_excursion_when_observable",
+      "maximum_favourable_excursion_when_observable",
+      "holding_sessions",
+      "exit_reason"
+    ]
+  },
+  "github_audit_rules": {
+    "state_file": "production/leverage_live_test_state.json",
+    "ledger_file": "production/leverage_live_test_ledger.csv",
+    "append_or_update_only_from_fresh_observed_data": true,
+    "never_fabricate_execution": true,
+    "never_record_a_pending_signal_as_an_open_trade": true,
+    "never_commit_licensed_raw_IBKR_data": true,
+    "never_commit_account_positions_orders_executions_credentials_or_session_material": true,
+    "allowed_derived_fields": [
+      "timestamp",
+      "symbol",
+      "decision",
+      "signal_metrics",
+      "observed_bid_ask_last",
+      "recorded_entry_or_exit_price",
+      "spread_percent",
+      "state",
+      "return_metrics",
+      "validation_result",
+      "data_source_labels"
+    ]
+  },
+  "fail_safe": {
+    "retry_failed_IBKR_endpoint_once": true,
+    "do_not_open_a_live_test_position_without_reliable_fresh_IBKR_data": true,
+    "degraded_field_text": "N/A — IBKR未取得可靠資料",
+    "if_Alpaca_parity_required_and_unavailable": "cap_confidence_at_6.0_and_keep_or_revert_to_PENDING_ENTRY",
+    "one_failed_asset_must_not_block_other_live_tests": true
+  }
+}
