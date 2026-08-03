@@ -1,11 +1,39 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PRODUCTION_REPORTING_POLICY",
-  "effective_at": "2026-07-24T00:00:00+08:00",
+  "effective_at": "2026-08-03T11:22:00+08:00",
   "scope": "hourly_leverage_signal_board",
   "order_authority": "NONE",
   "production_signal_logic_unchanged": true,
   "production_manifest": "production/leverage_signal.json",
+  "live_test_layer": {
+    "enabled": true,
+    "policy": "production/leverage_live_test_policy.json",
+    "state": "production/leverage_live_test_state.json",
+    "ledger": "production/leverage_live_test_ledger.csv",
+    "status": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
+    "purpose": "Run validated research signals prospectively and record observed entries, exits and performance without broker order authority.",
+    "formal_SOXX_authority_unchanged": true,
+    "research_signal_may_activate_live_test": true,
+    "formal_promotion_not_required_for_live_test_activation": true,
+    "broker_execution_prohibited": true,
+    "mandatory_per_run_actions": [
+      "fetch_live_test_policy_state_and_ledger_when_GitHub_is_available",
+      "evaluate_each_PENDING_ENTRY_against_fresh_IBKR_RTH_data",
+      "record_OPEN_only_after_a_fresh_observed_qualifying_quote",
+      "evaluate_each_OPEN_position_for_exit_or_invalidation",
+      "update_state_and_ledger_only_from_reliable_observed_data",
+      "show_live_test_state_separately_from_formal_trade_authority",
+      "never_claim_a_GitHub_live_test_record_is_a_broker_execution"
+    ],
+    "price_accounting": {
+      "long_entry": "ask",
+      "long_exit": "bid",
+      "short_entry": "bid",
+      "short_exit": "ask",
+      "first_observed_quote_rule": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN when the exact RTH open quote was not captured"
+    }
+  },
   "mandatory_decision_summary": {
     "position": "FIRST_SECTION_IN_EVERY_REPORT",
     "coverage": {
@@ -34,6 +62,7 @@
       "leverage_decision",
       "candidate_leverage_vehicle_or_none",
       "trade_authority",
+      "live_test_state_or_none",
       "two_to_four_key_reasons",
       "contrary_evidence",
       "preliminary_confidence_0_to_10",
@@ -54,9 +83,20 @@
     ],
     "authority_labels": [
       "FORMAL_PRODUCTION",
+      "PRODUCTION_LIVE_TEST",
       "RESEARCH_ONLY",
       "NO_INDEPENDENT_TRADE_AUTHORITY",
       "DATA_UNAVAILABLE"
+    ],
+    "allowed_live_test_states": [
+      "NONE",
+      "NO_SIGNAL",
+      "PENDING_ENTRY",
+      "OPEN",
+      "PENDING_EXIT",
+      "CLOSED",
+      "CANCELLED",
+      "DATA_CONFLICT"
     ],
     "direct_answer_required": true,
     "boss_sentence_language": "Traditional_Chinese_Hong_Kong_Cantonese"
@@ -76,7 +116,7 @@
     ],
     "pass_rule": "directional_decision_and_authority_label_remain_materially_consistent_without_unresolved_data_conflict_or_decisive_contradiction",
     "failure_rule": "use_the_more_conservative_decision_and_the_lower_confidence",
-    "unavailable_rule": "cap_final_confidence_at_6.0_and_do_not_create_a_new_leverage_entry",
+    "unavailable_rule": "cap_final_confidence_at_6.0_and_do_not_create_a_new_leverage_entry_or_open_a_live_test_position",
     "required_validation_ledger_fields": [
       "asset",
       "pass_1",
@@ -89,21 +129,25 @@
   },
   "data_source_governance": {
     "IBKR": {
-      "role": "PRIMARY_MARKET_DATA_AND_FORMAL_SIGNAL_AUTHORITY",
+      "role": "PRIMARY_MARKET_DATA_FORMAL_SIGNAL_AND_LIVE_TEST_OBSERVATION_AUTHORITY",
       "rules": [
         "use_exact_contracts",
         "formal_signals_use_fully_completed_US_RTH_daily_bars_only",
+        "live_test_entries_and_exits_require_fresh_observed_IBKR_quotes",
         "retry_each_failed_endpoint_once",
         "never_label_stale_or_close_data_as_live"
       ]
     },
     "GitHub": {
-      "role": "DETERMINISTIC_MODEL_IDENTITY_RESEARCH_EVIDENCE_AND_AUDIT_LOG",
+      "role": "DETERMINISTIC_MODEL_IDENTITY_RESEARCH_EVIDENCE_LIVE_TEST_STATE_AND_AUDIT_LOG",
       "repository": "loktoto/busan-trip",
       "rules": [
         "verify_manifest_commit_and_hash",
-        "do_not_promote_research_only_assets_automatically",
-        "do_not_commit_licensed_raw_IBKR_or_account_data"
+        "do_not_promote_research_only_assets_to_formal_authority_automatically",
+        "validated_research_signals_may_be_activated_for_production_live_test_under_the_live_test_policy",
+        "do_not_commit_licensed_raw_IBKR_or_account_data",
+        "never_record_pending_as_open",
+        "never_claim_live_test_observation_is_broker_execution"
       ]
     },
     "Alpaca": {
@@ -141,14 +185,17 @@
       "earnings_and_event_risk_check",
       "daily_reset_path_dependence_assessment"
     ],
-    "earnings_blackout": "do_not_promote_a_new_leverage_entry_during_the_five_completed_sessions_before_a_reliably_known_earnings_date",
+    "live_test_activation_may_use_validated_research_signal": true,
+    "live_test_still_requires_event_spread_and_actual_product_checks": true,
+    "earnings_blackout": "do_not_open_a_new_single_stock_leverage_live_test_during_the_five_completed_sessions_before_a_reliably_known_earnings_date",
     "underlying_buy_does_not_imply_leverage_buy": true,
     "no_suitable_product_output": "UNDERLYING_MAY_BE_ACTIONABLE_BUT_DO_NOT_USE_LEVERAGE"
   },
   "reporting_fail_safe": {
-    "always_preserve_summary_and_validation_ledger": true,
+    "always_preserve_summary_validation_ledger_and_live_test_state": true,
     "degraded_field_text": "N/A — IBKR未取得可靠資料",
     "one_failed_source_must_not_break_other_assets": true,
-    "no_fabrication": true
+    "no_fabrication": true,
+    "do_not_open_live_test_when_required_data_is_unavailable": true
   }
 }
