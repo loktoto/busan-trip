@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-04T17:23:00+08:00",
+  "updated_at": "2026-08-05T00:03:30+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -9,7 +9,7 @@
       "underlying": "SPY",
       "vehicle": "SSO",
       "direction": "LONG",
-      "state": "PENDING_ENTRY",
+      "state": "OPEN",
       "signal": {
         "signal_date": "2026-07-31",
         "decision": "ENTER_LEVERAGE",
@@ -33,36 +33,37 @@
         "eligible_session": "2026-08-04_US_RTH",
         "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, SPY must be at or above the then-current SMA50, SSO must not be halted, and SSO bid-ask spread must be at or below 0.15 percent.",
         "recorded_long_entry_price": "SSO_ask",
-        "exact_open_handling": "If the exact 09:30:00 ET quote is not observed, use the first observed qualifying RTH ask and label FIRST_OBSERVED_NOT_OFFICIAL_OPEN.",
-        "roll_forward_reason": "No fresh qualifying IBKR RTH ask was observed during the original 2026-08-03 eligible session, so no retrospective entry was fabricated. The signal remained valid on the 2026-08-03 completed close and was rolled to the next RTH session."
+        "exact_open_handling": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
+        "status": "ACTIVATED"
       },
       "invalidation": {
         "primary": "SPY completed RTH close below the then-current SMA50",
         "risk": "RV40 above 0.20",
-        "pre_entry_cancel": "At the first fresh RTH observation SPY is below the then-current SMA50, SSO is halted, spread exceeds 0.15 percent, or reliable IBKR data are unavailable."
+        "exit_pricing": "Record long exit using the first fresh qualifying IBKR bid after a documented exit or invalidation trigger."
       },
-      "entry": null,
+      "entry": {
+        "timestamp_et": "2026-08-04T11:56:53-04:00",
+        "timestamp_hkt": "2026-08-04T23:56:53+08:00",
+        "price": 70.92,
+        "price_type": "SSO_ASK",
+        "observation_label": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
+        "vehicle_last": 70.88,
+        "vehicle_bid": 70.91,
+        "vehicle_ask": 70.92,
+        "spread_percent": 0.01410139,
+        "underlying_last": 768.63,
+        "underlying_bid": 768.61,
+        "underlying_ask": 768.64,
+        "underlying_SMA50": 745.3184,
+        "halted": false,
+        "source": "IBKR_FRESH_RTH_OBSERVATION",
+        "broker_execution": false
+      },
       "exit": null,
       "performance": null,
-      "context_only_non_RTH": {
-        "SPY": {
-          "observed_at": "2026-08-04T05:21:48-04:00",
-          "last": 758.20,
-          "bid": 758.20,
-          "ask": 758.26,
-          "status": "PREMARKET_CONTEXT_ONLY"
-        },
-        "SSO": {
-          "observed_at": "2026-08-04T05:08:24-04:00",
-          "last": 69.21,
-          "bid": 69.02,
-          "ask": 69.03,
-          "status": "PREMARKET_CONTEXT_ONLY"
-        }
-      },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca delayed_sip completed-close parity passed for SPY and SSO",
+        "parity": "Alpaca SIP completed-close parity passed for SPY and SSO on 2026-08-03",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
