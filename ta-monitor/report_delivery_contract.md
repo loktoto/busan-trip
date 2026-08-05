@@ -129,6 +129,14 @@ Before rendering a non-holiday run, make actual source attempts rather than infe
 
 The presence of a working IBKR account endpoint, Alpaca clock or GitHub read proves the connector class is available; failure of a different endpoint must be treated as a local module failure rather than global tool unavailability.
 
+## Adaptive entry and expanded discovery supplement
+
+Effective from the scheduled run at **2026-08-05 15:05 HKT** and every run thereafter, fetch and obey `ta-monitor/adaptive_entry_and_expanded_discovery_policy.md` in addition to the existing mandatory policy set.
+
+The supplement is binding for production reporting and model-state decisions. It introduces explicit anticipatory-starter, confirmed-starter and add states; Opportunity Quality and Execution Readiness diagnostics; broader sector-balanced Dynamic Discovery; a separate liquid-ETF track; sector-participation metrics; and false-start/no-chase controls.
+
+It does not reduce any existing requirement for normal `ENTRY NOW`, `SHORT NOW`, PASS 2, 2R market-now R/R, 2.5R anticipatory-starter preferred-entry R/R, fresh bars, spread, liquidity, event or borrow checks.
+
 ## Pre-send quality gate
 
 Internally verify before sending:
@@ -143,9 +151,11 @@ Internally verify before sending:
 - quote labels are not mixed;
 - failures are localised rather than cancelling the report;
 - `ENTRY NOW`/`SHORT NOW` has fresh 1H, completed 15m, stops, >=2R and execution checks;
+- every anticipatory starter has supportive sector evidence, defined support/stops and preferred-entry R/R >=2.5R;
+- every leading candidate shows the official score, Opportunity Quality, Execution Readiness, exact entry state and three-price R/R where data permits;
 - scores >=7.0 have PASS 2 or are downgraded;
 - CAT has an explicit current decision;
 - no routine GitHub journal entry is claimed without a lifecycle event;
-- the Boss Action is present.
+- the Boss Action distinguishes starter versus confirmed entry and is present.
 
 If any check fails, repair the report before sending. Do not replace it with an explanation.
