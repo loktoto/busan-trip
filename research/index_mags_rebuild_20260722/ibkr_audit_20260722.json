@@ -1,0 +1,24 @@
+{
+  "as_of": "2026-07-22",
+  "completed_close_cutoff": "2026-07-21",
+  "policy": "IBKR completed daily bars are used for recent close parity; intraday or delayed snapshots are not inserted into historical strategy observations.",
+  "contracts": {
+    "SPY": {"contract_id": 756733, "exchange": "ARCA", "security_type": "STK", "completed_close": 748.28, "bid": 746.51, "ask": 746.56, "avg_90d_usd_volume": 39041889364},
+    "QQQ": {"contract_id": 320227571, "exchange": "NASDAQ", "security_type": "STK", "completed_close": 708.97, "bid": 704.36, "ask": 704.43, "avg_90d_usd_volume": 30348655173},
+    "SOXX": {"contract_id": 12658194, "exchange": "NASDAQ", "security_type": "STK", "completed_close": 552.69, "bid": 540.93, "ask": 541.35, "avg_90d_usd_volume": 5358113725},
+    "SMH": {"contract_id": 229725622, "exchange": "NASDAQ", "security_type": "STK", "completed_close": 584.08, "bid": 573.08, "ask": 574.79, "avg_90d_usd_volume": 6380656471},
+    "MAGS": {"contract_id": 624756922, "exchange": "BATS", "security_type": "STK", "completed_close": 66.95, "bid": 66.54, "ask": 67.00, "avg_90d_usd_volume": 278966717},
+    "MGTN": {"contract_id": 825829844, "exchange": "CBOE", "security_type": "IND", "completed_close": 496.57}
+  },
+  "mgtn_recent_completed_closes": {
+    "2026-07-16": 497.73,
+    "2026-07-17": 489.78,
+    "2026-07-20": 492.35,
+    "2026-07-21": 496.57
+  },
+  "limitations": [
+    "Bid/ask and volume values are intraday snapshots and only calibrate execution-cost assumptions.",
+    "IBKR historical endpoint available through this integration does not provide the full 2005-2026 total-return history required for the complete backtest.",
+    "Long history is downloaded reproducibly in GitHub Actions and recent raw closes are independently checked against IBKR."
+  ]
+}

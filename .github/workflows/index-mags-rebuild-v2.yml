@@ -1,0 +1,130 @@
+name: Index MAGS research rebuild V2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/index_mags_rebuild_20260722/**
+      - .github/workflows/index-mags-rebuild-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: index-mags-rebuild-v2-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  repetitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        repetition: [a, b]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install research dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance tabulate
+      - name: Validate source payload and helper scripts
+        run: |
+          python -m py_compile research/index_mags_rebuild_20260722/run_rebuild.py
+          python -m py_compile research/index_mags_rebuild_20260722/correct_stress_alignment.py
+          python -m py_compile research/index_mags_rebuild_20260722/compare_repeats.py
+          python - <<'PY'
+          import base64, gzip, hashlib
+          from pathlib import Path
+          root = Path('research/index_mags_rebuild_20260722')
+          parts = sorted(root.glob('source_v2.part??'))
+          if len(parts) != 6:
+              raise RuntimeError(f'expected six source parts; found {parts}')
+          source = gzip.decompress(base64.b64decode(''.join(p.read_text().strip() for p in parts)))
+          digest = hashlib.sha256(source).hexdigest()
+          expected = '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66'
+          if digest != expected:
+              raise RuntimeError(f'source SHA mismatch: {digest} != {expected}')
+          compile(source.decode(), 'index_mags_rebuild_v2.py', 'exec')
+          print({'crc_compile_sha': 'PASS', 'source_sha256': digest, 'bytes': len(source), 'parts': len(parts)})
+          PY
+      - name: Run independent full rebuild
+        run: |
+          rm -rf research_outputs/index_mags_rebuild_20260722
+          mkdir -p research_outputs/index_mags_rebuild_20260722
+          PYTHONWARNINGS=ignore python research/index_mags_rebuild_20260722/run_rebuild.py \
+            > research_outputs/index_mags_rebuild_20260722/optimizer.log 2>&1
+          tail -n 300 research_outputs/index_mags_rebuild_20260722/optimizer.log
+      - name: Correct stress-cost alignment and recompute gates
+        run: python research/index_mags_rebuild_20260722/correct_stress_alignment.py
+      - name: Validate repetition output
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          import pandas as pd
+          root = Path('research_outputs/index_mags_rebuild_20260722')
+          required = [
+              'strategy_identity.csv', 'strategy_summary.csv', 'window_comparison.csv',
+              'walk_forward_choices.csv', 'ibkr_close_parity.csv', 'mgtn_recent_parity.csv',
+              'live_product_validation.json', 'run_manifest.json', 'input_manifest.json',
+              'stress_alignment_audit.csv', 'report.md', 'optimizer.log',
+          ]
+          missing = [name for name in required if not (root / name).exists()]
+          if missing:
+              raise RuntimeError(f'missing outputs: {missing}')
+          identity = pd.read_csv(root / 'strategy_identity.csv')
+          if identity.symbol.astype(str).tolist() != ['MAGS10','MAGS7','QQQ','SMH','SOXX','SPY']:
+              raise RuntimeError(identity.symbol.tolist())
+          summary = pd.read_csv(root / 'strategy_summary.csv')
+          if len(summary) != 24 or summary.groupby('symbol').size().ne(4).any():
+              raise RuntimeError(f'unexpected summary shape {summary.shape}')
+          baseline = summary[summary.strategy == 'Buy & Hold']
+          if baseline[['stress_2x_cagr_delta','stress_3x_cagr_delta']].abs().to_numpy().max() > 1e-12:
+              raise RuntimeError(f'Buy & Hold stress delta must be zero: {baseline[["symbol","stress_2x_cagr_delta","stress_3x_cagr_delta"]].to_dict("records")}')
+          parity = pd.read_csv(root / 'ibkr_close_parity.csv')
+          if (parity.absolute_pct_diff > 0.003).any():
+              raise RuntimeError(f'IBKR parity failure: {parity.to_dict("records")}')
+          manifest = json.loads((root / 'run_manifest.json').read_text())
+          if manifest.get('research_source_sha256') != '24cd75f4f5fcec1efb22557a4fc17ee41dca593524c477be485f3df711c36e66':
+              raise RuntimeError(f'unexpected research source: {manifest.get("research_source_sha256")}')
+          if manifest.get('stress_alignment_correction', {}).get('status') != 'PASS':
+              raise RuntimeError('stress alignment audit missing')
+          print(identity[['symbol','recommendation','latest_trend_rule','latest_pullback_rule','current_hybrid_exposure']].to_string(index=False))
+          print({'identity_sha256': manifest['identity_sha256'], 'research_source_sha256': manifest['research_source_sha256']})
+          PY
+      - name: Upload independent repetition
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-mags-rebuild-v2-${{ matrix.repetition }}
+          path: research_outputs/index_mags_rebuild_20260722
+          if-no-files-found: warn
+          retention-days: 30
+
+  compare:
+    needs: repetitions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install comparison dependencies
+        run: python -m pip install --quiet pandas numpy
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: index-mags-rebuild-v2-*
+          path: repetitions
+          merge-multiple: false
+      - name: Compare source, strategy identity and numerical results
+        run: python research/index_mags_rebuild_20260722/compare_repeats.py
+      - name: Upload canonical rebuilt report
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-mags-rebuild-v2-canonical
+          path: canonical
+          if-no-files-found: error
+          retention-days: 30
