@@ -1,0 +1,44 @@
+name: Market Bottom Stress Payload Inspection v1.7
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/inspect_stress_payloads_v17.py"
+      - ".github/workflows/market-bottom-stress-payload-inspection-v17.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/inspect_stress_payloads_v17.py"
+      - ".github/workflows/market-bottom-stress-payload-inspection-v17.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Inspect OFR payloads
+        shell: bash
+        run: |
+          set -o pipefail
+          python inspect_stress_payloads_v17.py \
+            --out stress-payload-inspection-v17.json 2>&1 | tee stress-payload-inspection-v17.log
+      - name: Archive payload inspection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-stress-payload-inspection-v17-${{ github.run_id }}
+          path: |
+            research/market-bottom/stress-payload-inspection-v17.json
+            research/market-bottom/stress-payload-inspection-v17.log
+          if-no-files-found: error
+          retention-days: 7

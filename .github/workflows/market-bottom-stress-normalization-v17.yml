@@ -1,0 +1,122 @@
+name: Market Bottom Stress Normalization v1.7
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/fetch_ofr_fsi.py"
+      - "research/market-bottom/fetch_ofr_series.py"
+      - "research/market-bottom/stress_normalization_v17.py"
+      - "research/market-bottom/validate_stress_normalization_v17.py"
+      - "research/market-bottom/tests/test_stress_normalization_v17.py"
+      - ".github/workflows/market-bottom-stress-normalization-v17.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/fetch_ofr_fsi.py"
+      - "research/market-bottom/fetch_ofr_series.py"
+      - "research/market-bottom/stress_normalization_v17.py"
+      - "research/market-bottom/validate_stress_normalization_v17.py"
+      - "research/market-bottom/tests/test_stress_normalization_v17.py"
+      - ".github/workflows/market-bottom-stress-normalization-v17.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+
+      - name: Compile and test stress engine
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q .
+          PYTHONPATH=. pytest -q tests/test_stress_normalization_v17.py --tb=short 2>&1 | tee stress-v17-pytest.log
+
+      - name: Fetch audited asset histories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf stress-v17-data stress-v17-series stress-v17-ofr stress-v17-output
+          mkdir -p stress-v17-data stress-v17-series stress-v17-ofr stress-v17-output
+          for symbol in SPY QQQ SOXX; do
+            python fetch_public_prices.py --symbol "$symbol" --out "stress-v17-data/${symbol}.csv"
+            python data_audit.py \
+              --csv "stress-v17-data/${symbol}.csv" \
+              --out "stress-v17-output/audit-${symbol}"
+          done
+
+      - name: Fetch official OFR FSI and funding series
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fetch_ofr_fsi.py --out stress-v17-ofr/FSI.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR-A --availability-lag-business-days 1 --out stress-v17-ofr/SOFR.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR_1Pctl-A --availability-lag-business-days 1 --out stress-v17-ofr/SOFR_1P.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR_99Pctl-A --availability-lag-business-days 1 --out stress-v17-ofr/SOFR_99P.csv
+          python fetch_ofr_series.py --mnemonic FNYR-BGCR-A --availability-lag-business-days 1 --out stress-v17-ofr/BGCR.csv
+          python fetch_ofr_series.py --mnemonic REPO-DVP_AR_OO-P --availability-lag-business-days 1 --out stress-v17-ofr/DVP_RATE.csv
+          python fetch_ofr_series.py --mnemonic REPO-DVP_OV_OO-P --availability-lag-business-days 1 --out stress-v17-ofr/DVP_VOLUME.csv
+          python fetch_ofr_series.py --mnemonic NYPD-PD_AFtD_TOT-A --availability-lag-business-days 2 --out stress-v17-ofr/FAILS_TOTAL.csv
+          python fetch_ofr_series.py --mnemonic NYPD-PD_AFtD_CORS-A --availability-lag-business-days 2 --out stress-v17-ofr/FAILS_CORP.csv
+
+      - name: Fetch volatility-stack series
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fetch_public_series.py --symbol '^VIX' --out stress-v17-series/VIX.csv
+          python fetch_public_series.py --symbol '^VIX3M' --out stress-v17-series/VIX3M.csv
+          python fetch_public_series.py --symbol '^VIX9D' --out stress-v17-series/VIX9D.csv
+          python fetch_public_series.py --symbol '^VVIX' --out stress-v17-series/VVIX.csv
+          python fetch_public_series.py --symbol '^VXN' --out stress-v17-series/VXN.csv
+          python fetch_public_series.py --symbol '^MOVE' --out stress-v17-series/MOVE.csv
+          python - <<'PY'
+          import pandas as pd
+          from pathlib import Path
+          for name in ('VIX','VIX3M','VIX9D','VVIX','VXN','MOVE'):
+              frame = pd.read_csv(Path(f'stress-v17-series/{name}.csv'))
+              assert list(frame.columns) == ['Date', 'Close']
+              assert len(frame) >= 260
+              assert (frame.Close > 0).all()
+          PY
+
+      - name: Run identical-sample stress normalisation validation
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python validate_stress_normalization_v17.py \
+            --data-dir stress-v17-data \
+            --ofr-dir stress-v17-ofr \
+            --series-dir stress-v17-series \
+            --config config.example.json \
+            --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+            --recent-start 2021-07-26 \
+            --out stress-v17-output 2>&1 | tee stress-v17.log
+
+      - name: Archive stress-normalisation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-stress-normalization-v17-${{ github.run_id }}
+          path: |
+            research/market-bottom/stress-v17-pytest.log
+            research/market-bottom/stress-v17.log
+            research/market-bottom/stress-v17-data/*.manifest.json
+            research/market-bottom/stress-v17-series/*.manifest.json
+            research/market-bottom/stress-v17-ofr/*.manifest.json
+            research/market-bottom/stress-v17-output/**
+          if-no-files-found: error
+          retention-days: 14

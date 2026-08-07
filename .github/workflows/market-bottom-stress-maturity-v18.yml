@@ -1,0 +1,107 @@
+name: Market Bottom Stress Maturity v1.8
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/stress_cycle_maturity_v18.py"
+      - "research/market-bottom/validate_stress_cycle_maturity_v18.py"
+      - "research/market-bottom/tests/test_stress_cycle_maturity_v18.py"
+      - ".github/workflows/market-bottom-stress-maturity-v18.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/stress_cycle_maturity_v18.py"
+      - "research/market-bottom/validate_stress_cycle_maturity_v18.py"
+      - "research/market-bottom/tests/test_stress_cycle_maturity_v18.py"
+      - ".github/workflows/market-bottom-stress-maturity-v18.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+
+      - name: Compile and test corrected maturity engine
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q .
+          PYTHONPATH=. pytest -q tests/test_stress_normalization_v17.py tests/test_stress_cycle_maturity_v18.py --tb=short 2>&1 | tee stress-v18-pytest.log
+
+      - name: Fetch audited asset histories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf stress-v18-data stress-v18-series stress-v18-ofr stress-v18-output
+          mkdir -p stress-v18-data stress-v18-series stress-v18-ofr stress-v18-output
+          for symbol in SPY QQQ SOXX; do
+            python fetch_public_prices.py --symbol "$symbol" --out "stress-v18-data/${symbol}.csv"
+            python data_audit.py --csv "stress-v18-data/${symbol}.csv" --out "stress-v18-output/audit-${symbol}"
+          done
+
+      - name: Fetch official OFR series with conservative lags
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fetch_ofr_fsi.py --out stress-v18-ofr/FSI.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR-A --availability-lag-business-days 1 --out stress-v18-ofr/SOFR.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR_1Pctl-A --availability-lag-business-days 1 --out stress-v18-ofr/SOFR_1P.csv
+          python fetch_ofr_series.py --mnemonic FNYR-SOFR_99Pctl-A --availability-lag-business-days 1 --out stress-v18-ofr/SOFR_99P.csv
+          python fetch_ofr_series.py --mnemonic FNYR-BGCR-A --availability-lag-business-days 1 --out stress-v18-ofr/BGCR.csv
+          python fetch_ofr_series.py --mnemonic REPO-DVP_AR_OO-P --availability-lag-business-days 1 --out stress-v18-ofr/DVP_RATE.csv
+          python fetch_ofr_series.py --mnemonic REPO-DVP_OV_OO-P --availability-lag-business-days 1 --out stress-v18-ofr/DVP_VOLUME.csv
+          python fetch_ofr_series.py --mnemonic NYPD-PD_AFtD_TOT-A --availability-lag-business-days 2 --out stress-v18-ofr/FAILS_TOTAL.csv
+          python fetch_ofr_series.py --mnemonic NYPD-PD_AFtD_CORS-A --availability-lag-business-days 2 --out stress-v18-ofr/FAILS_CORP.csv
+
+      - name: Fetch public volatility stack
+        shell: bash
+        run: |
+          set -euo pipefail
+          python fetch_public_series.py --symbol '^VIX' --out stress-v18-series/VIX.csv
+          python fetch_public_series.py --symbol '^VIX3M' --out stress-v18-series/VIX3M.csv
+          python fetch_public_series.py --symbol '^VIX9D' --out stress-v18-series/VIX9D.csv
+          python fetch_public_series.py --symbol '^VVIX' --out stress-v18-series/VVIX.csv
+          python fetch_public_series.py --symbol '^VXN' --out stress-v18-series/VXN.csv
+          python fetch_public_series.py --symbol '^MOVE' --out stress-v18-series/MOVE.csv
+
+      - name: Run corrected regime-mature validation
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python validate_stress_cycle_maturity_v18.py \
+            --data-dir stress-v18-data \
+            --ofr-dir stress-v18-ofr \
+            --series-dir stress-v18-series \
+            --config config.example.json \
+            --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+            --recent-start 2021-07-26 \
+            --out stress-v18-output 2>&1 | tee stress-v18.log
+
+      - name: Archive corrected stress-maturity evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-stress-maturity-v18-${{ github.run_id }}
+          path: |
+            research/market-bottom/stress-v18-pytest.log
+            research/market-bottom/stress-v18.log
+            research/market-bottom/stress-v18-data/*.manifest.json
+            research/market-bottom/stress-v18-series/*.manifest.json
+            research/market-bottom/stress-v18-ofr/*.manifest.json
+            research/market-bottom/stress-v18-output/**
+          if-no-files-found: error
+          retention-days: 14

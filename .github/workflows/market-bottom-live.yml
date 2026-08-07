@@ -1,0 +1,149 @@
+name: Market Bottom Live
+
+on:
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "runtime/market-bottom/latest-request.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-bottom-live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    if: github.event.repository.private == true
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r research/market-bottom/requirements.txt
+
+      - name: Enforce request-last trigger
+        shell: bash
+        run: |
+          set -euo pipefail
+          before="${{ github.event.before }}"
+          after="${{ github.sha }}"
+          if [ "$before" != "0000000000000000000000000000000000000000" ]; then
+            changed="$(git diff --name-only "$before" "$after")"
+            echo "$changed"
+            unexpected="$(printf '%s\n' "$changed" | grep -v '^runtime/market-bottom/latest-request.json$' || true)"
+            if [ -n "$unexpected" ]; then
+              echo "latest-request.json must be committed last and alone"
+              exit 1
+            fi
+          fi
+
+      - name: Validate compact request schema
+        run: |
+          python research/market-bottom/validate_runtime_request.py \
+            --request runtime/market-bottom/latest-request.json \
+            --schema research/market-bottom/live-request.schema.json
+
+      - name: Assemble strict IBKR input
+        run: |
+          mkdir -p runtime/market-bottom/generated
+          python research/market-bottom/prepare_live_input.py \
+            --request runtime/market-bottom/latest-request.json \
+            --repo-root . \
+            --out runtime/market-bottom/generated/latest-input.json
+
+      - name: Calculate v1.1 trading state with v1.5 taxonomy
+        shell: bash
+        run: |
+          previous=""
+          if [ -f runtime/market-bottom/latest-result.json ]; then
+            previous="--previous runtime/market-bottom/latest-result.json"
+          fi
+          PYTHONPATH=research/market-bottom python research/market-bottom/run_live_v15.py \
+            --input runtime/market-bottom/generated/latest-input.json \
+            --config research/market-bottom/config.example.json \
+            $previous \
+            --result runtime/market-bottom/generated/latest-result.json \
+            --report runtime/market-bottom/generated/latest-report.md
+
+      - name: Validate official result contract
+        run: |
+          python - <<'PY'
+          import json
+          from datetime import datetime
+          from pathlib import Path
+
+          request = json.loads(Path('runtime/market-bottom/latest-request.json').read_text())
+          result = json.loads(Path('runtime/market-bottom/generated/latest-result.json').read_text())
+          assert result['request_id'] == request['request_id']
+          assert result['source'] == 'IBKR'
+          assert result['official_eligible'] is True
+          assert result['engine_version'] == '1.5-reporting'
+          assert result['trading_engine_version'] == '1.1'
+          assert result['input_sha256']
+          assert result['model_commit'] and result['model_commit'] != 'LOCAL'
+          created = datetime.fromisoformat(request['created_at'].replace('Z', '+00:00'))
+          calculated = datetime.fromisoformat(result['calculated_at'].replace('Z', '+00:00'))
+          assert calculated > created
+          assert result['data_quality']['freshness_verified'] is True
+          assert result['data_quality']['ibkr_bars_verified'] is True
+          for symbol in ('SPY', 'QQQ', 'SOXX'):
+              asset = result['assets'][symbol]
+              assert asset['candidate_target_cumulative'] + 1e-12 >= asset['cumulative_model_deployment']
+              taxonomy = asset['bottom_taxonomy']
+              assert taxonomy['reporting_only'] is True
+              assert taxonomy['trade_authority'] == 'NONE'
+              assert taxonomy['leverage_authority'] == 'NONE_FROM_TAXONOMY'
+              assert taxonomy['participation_status']
+              assert taxonomy['local_swing_status']
+              assert taxonomy['cycle_bottom_status']
+          assert result['assets']['SMH']['candidate_tranche'] == 0.0
+          assert result['semiconductor_pair']['production_weight'] == 0.0
+          print(json.dumps({
+              'request_id': result['request_id'],
+              'model_commit': result['model_commit'],
+              'calculated_at': result['calculated_at'],
+              'engine_version': result['engine_version'],
+          }, sort_keys=True))
+          PY
+
+      - name: Archive immutable result metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-live-${{ github.run_id }}
+          path: |
+            runtime/market-bottom/latest-request.json
+            runtime/market-bottom/generated/latest-result.json
+            runtime/market-bottom/generated/latest-report.md
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Publish deterministic result
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp runtime/market-bottom/generated/latest-result.json runtime/market-bottom/latest-result.json
+          cp runtime/market-bottom/generated/latest-report.md runtime/market-bottom/latest-report.md
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add runtime/market-bottom/latest-result.json runtime/market-bottom/latest-report.md
+          if git diff --cached --quiet; then
+            echo "No runtime result changes"
+            exit 0
+          fi
+          git commit -m "runtime: publish market-bottom v1.5 taxonomy result [skip ci]"
+          git pull --rebase origin agent/market-bottom-strategy
+          git push origin HEAD:agent/market-bottom-strategy

@@ -1,0 +1,202 @@
+{
+  "schema_version": "3.0",
+  "report": "rebuilt-research-report-v30-2026-07-23.md",
+  "report_date": "2026-07-23",
+  "evidence_branch": "agent/market-bottom-strategy",
+  "validated_evidence_head_before_report": "493d0d6526c0fbc5c4de8def7fb1a931c36d4e24",
+  "report_commit": "15491927e01f62cdddf97b74b39687b2538072ab",
+  "repository_visibility": "PUBLIC",
+  "runtime_status": {
+    "latest_result_request_id": "bottom-20260722T010300Z-rthclose",
+    "latest_result_completed_bar": "2026-07-21",
+    "latest_ibkr_completed_bar": "2026-07-22",
+    "classification": "STALE_RUNTIME_RESULT_NOT_CURRENT_OFFICIAL_STATE"
+  },
+  "workflow_evidence": {
+    "core_research": {"run_id": 29934777840, "conclusion": "success"},
+    "recovery_v11": {"run_id": 29934779140, "conclusion": "success"},
+    "late_stage_v14": {"run_id": 29934779079, "conclusion": "success"},
+    "orthogonal_v16": {"run_id": 29934777691, "conclusion": "success"},
+    "stress_normalization_v17": {
+      "run_id": 29934777808,
+      "conclusion": "success",
+      "promotion_admissible": false,
+      "reason": "BREACH_AGE_ACCOUNTING_DEFECT"
+    },
+    "stress_maturity_v18": {"run_id": 29934778038, "conclusion": "success"},
+    "sector_internals_v19": {"run_id": 29934777958, "conclusion": "success"},
+    "leverage_mapping_v20": {"run_id": 29934779433, "conclusion": "success"}
+  },
+  "ibkr_completed_rth_2026_07_22": {
+    "SPY": {"open": 746.62, "high": 750.01, "low": 746.37, "close": 747.41},
+    "QQQ": {"open": 703.56, "high": 709.64, "low": 703.56, "close": 705.35},
+    "SOXX": {"open": 539.55, "high": 561.07, "low": 539.55, "close": 555.52},
+    "SMH": {"open": 572.86, "high": 592.00, "low": 572.80, "close": 586.91}
+  },
+  "ibkr_delayed_context_2026_07_23": {
+    "session": "US_PREMARKET_DELAYED_CONTEXT_ONLY",
+    "SPY": {"last": 746.04, "drawdown_from_52w_high": -0.01887191358644047, "historical_vol": 0.1688698397810574, "implied_vol": 0.13424891535026912, "iv_percentile_52w": 0.42629483342170715},
+    "QQQ": {"last": 703.10, "drawdown_from_52w_high": -0.060842881090817595, "historical_vol": 0.29267512663101386, "implied_vol": 0.2373936958577259, "iv_percentile_52w": 0.8406374454498291},
+    "SOXX": {"last": 554.22, "drawdown_from_52w_high": -0.1550880559705259, "historical_vol": 0.7493990050040632, "implied_vol": 0.6273874598084115, "iv_percentile_52w": 0.9521912336349487},
+    "SMH": {"last": 584.99, "drawdown_from_52w_high": -0.12925891204743634, "historical_vol": 0.6334388999416755, "implied_vol": 0.5615147841737834, "iv_percentile_52w": 0.9362549781799316},
+    "SSO": {"last": 67.00, "drawdown_from_52w_high": -0.044495188596296975, "historical_vol": 0.3195459060964481, "implied_vol": 0.26034048244616287, "iv_percentile_52w": 0.4023904502391815},
+    "QLD": {"last": 87.81, "drawdown_from_52w_high": -0.13222652553204451, "historical_vol": 0.5854407379568661, "implied_vol": 0.47185333798891727, "iv_percentile_52w": 0.8525896668434143},
+    "USD": {"last": 92.52, "drawdown_from_52w_high": -0.2058369098712447, "historical_vol": 1.1429899655924893, "implied_vol": 1.0602062419960332, "iv_percentile_52w": 0.9681274890899658}
+  },
+  "full_history_baseline_vs_recovery": {
+    "SPY": {"history_start": "1993-01-29", "history_end": "2026-07-21", "episodes": 37, "baseline_missed": 0.0, "baseline_weighted_distance": 0.0631, "baseline_additional_downside": -0.0590, "within_5pct": 0.8919, "v11_weighted_distance": 0.0632, "v11_additional_downside": -0.0590, "baseline_trades": 140, "v11_trades": 151, "decision": "NO_IMPROVEMENT"},
+    "QQQ": {"history_start": "1999-03-10", "history_end": "2026-07-21", "episodes": 26, "baseline_missed": 0.1923, "baseline_weighted_distance": 0.1140, "baseline_additional_downside": -0.0922, "within_5pct": 0.7308, "v11_weighted_distance": 0.1144, "v11_additional_downside": -0.0923, "baseline_trades": 78, "v11_trades": 86, "decision": "SLIGHTLY_WORSE"},
+    "SOXX": {"history_start": "2001-07-13", "history_end": "2026-07-21", "episodes": 16, "baseline_missed": 0.0, "baseline_weighted_distance": 0.1345, "baseline_additional_downside": -0.1116, "within_5pct": 0.6875, "v11_weighted_distance": 0.1388, "v11_additional_downside": -0.1123, "baseline_trades": 57, "v11_trades": 63, "decision": "WORSE"}
+  },
+  "recent_baseline_2021_07_26_to_2026_07_21": {
+    "SPY": {"episodes": 7, "missed": 0.0, "first_entry_distance": 0.06582458405695381, "weighted_distance": 0.054062162696913454, "additional_downside": -0.05276839310493101, "sessions_before_trough": 30.285714285714285, "forward_63d": 0.07744506581671508, "false_start_10pct": 0.2857142857142857},
+    "QQQ": {"episodes": 6, "missed": 0.0, "first_entry_distance": 0.12493249886828406, "weighted_distance": 0.09484157823661536, "additional_downside": -0.09479352489576265, "sessions_before_trough": 53.333333333333336, "forward_63d": 0.05619058521846062, "false_start_10pct": 0.3333333333333333},
+    "SOXX": {"episodes": 6, "missed": 0.0, "first_entry_distance": 0.18959457919624198, "weighted_distance": 0.1651701691406784, "additional_downside": -0.11417434494600075, "sessions_before_trough": 61.666666666666664, "forward_63d": 0.24580675292266427, "false_start_10pct": 0.3333333333333333}
+  },
+  "deep_regime_failure": {
+    "SPY": {
+      "lt15": {"episodes": 30, "deployment": 0.1917, "weighted_distance": 0.0205, "additional_downside": -0.0191, "within5": 1.0},
+      "15to25": {"episodes": 4, "deployment": 0.5650, "weighted_distance": 0.1328, "additional_downside": -0.1615, "within5": 0.5},
+      "ge25": {"episodes": 3, "deployment": 0.6000, "weighted_distance": 0.3977, "additional_downside": -0.3212, "within5": 0.3333}
+    },
+    "QQQ": {
+      "lt15": {"episodes": 19, "deployment": 0.0882, "weighted_distance": 0.0260, "additional_downside": -0.0206, "within5": 0.7368},
+      "15to25": {"episodes": 4, "deployment": 0.4081, "weighted_distance": 0.0845, "additional_downside": -0.1232, "within5": 1.0},
+      "ge25": {"episodes": 3, "deployment": 0.4833, "weighted_distance": 0.5671, "additional_downside": -0.3857, "within5": 0.3333}
+    },
+    "SOXX": {
+      "lt15": {"episodes": 6, "deployment": 0.0667, "weighted_distance": 0.0230, "additional_downside": 0.0022, "within5": 0.8333},
+      "15to25": {"episodes": 5, "deployment": 0.2350, "weighted_distance": 0.0498, "additional_downside": -0.0588, "within5": 1.0},
+      "ge25": {"episodes": 5, "deployment": 0.5750, "weighted_distance": 0.3667, "additional_downside": -0.3034, "within5": 0.2}
+    }
+  },
+  "catchup_decisions": {
+    "SPY": {"decision": "RESEARCH_ONLY", "production_authority": false},
+    "QQQ": {"decision": "REJECT", "full_history_distance": 0.1125, "forward_63d": -0.0514},
+    "SOXX": {"decision": "REJECT", "full_history_count_lt3": true, "missed_alert_distance": 0.3076, "missed_alert_additional_downside": -0.1784}
+  },
+  "late_stage_v14": {
+    "QQQ": {
+      "exhaustion": {"trades": 2, "missed": 0.6667, "distance": 0.2238, "downside": -0.1588, "forward_63d": -0.0739, "decision": "REJECT"},
+      "retest": {"trades": 2, "missed": 0.6667, "distance": 0.1170, "downside": -0.0800, "forward_63d": 0.2323, "decision": "RESEARCH_WATCH_UNDERPOWERED"},
+      "strong": {"trades": 2, "missed": 0.6667, "distance": 0.2281, "downside": -0.1626, "forward_63d": -0.0555, "decision": "REJECT"},
+      "dual": {"trades": 4, "missed": 0.3333, "distance": 0.1847, "downside": -0.0952, "forward_63d": 0.0613, "decision": "REJECT"}
+    },
+    "SOXX": {
+      "exhaustion": {"trades": 2, "missed": 0.6667, "distance": 0.4172, "downside": -0.1526, "forward_63d": 0.0022, "decision": "REJECT"},
+      "retest": {"trades": 1, "missed": 0.8333, "distance": 0.4505, "downside": -0.3106, "forward_63d": -0.1124, "decision": "REJECT"},
+      "strong": {"trades": 3, "missed": 0.5, "distance": 0.3294, "downside": -0.2016, "forward_63d": -0.0807, "decision": "REJECT"},
+      "dual": {"trades": 2, "missed": 0.6667, "distance": 0.3812, "downside": -0.1364, "forward_63d": 0.0297, "decision": "REJECT"}
+    }
+  },
+  "orthogonal_and_internal_decisions": {
+    "QQQ_BREADTH_CREDIT": {"trades": 1, "missed": 0.8333, "distance": 0.0711, "downside": -0.0664, "forward_63d": 0.0811, "decision": "INSUFFICIENT"},
+    "SOXX_EQUAL_WEIGHT_BREADTH": {"trades": 2, "missed": 0.6667, "distance": 0.5228, "downside": -0.3428, "forward_63d": -0.1468, "decision": "REJECT"},
+    "SOXX_MULTI_FACTOR": {"trades": 2, "missed": 0.6667, "distance": 0.4350, "downside": -0.3025, "forward_63d": -0.0920, "decision": "REJECT"},
+    "QQQ_INTERNAL": {"trades": 1, "missed": 0.8333, "distance": 0.0933, "downside": -0.0560, "forward_63d": 0.0462, "decision": "INSUFFICIENT"},
+    "SOXX_INTERNAL_BREADTH": {"trades": 2, "missed": 0.6667, "distance": 0.5227, "downside": -0.3428, "forward_63d": -0.1607, "decision": "REJECT"},
+    "SOXX_INTERNAL_DISPERSION": {"trades": 1, "missed": 0.8333, "distance": 0.4799, "downside": -0.3243, "forward_63d": -0.0811, "decision": "REJECT"}
+  },
+  "stress_v18": {
+    "SPY_FSI": {"trades": 2, "missed": 0.7143, "distance": 0.1930, "downside": -0.1603, "forward_63d": -0.0318, "decision": "REJECT"},
+    "QQQ_FSI": {"trades": 3, "missed": 0.5, "distance": 0.2239, "downside": -0.1059, "forward_63d": -0.0024, "decision": "REJECT"},
+    "QQQ_FUNDING": {"trades": 2, "missed": 0.6667, "distance": 0.2453, "downside": -0.1718, "forward_63d": -0.0765, "decision": "REJECT"},
+    "SOXX_FSI": {"trades": 2, "missed": 0.6667, "distance": 0.5227, "downside": -0.3427, "forward_63d": -0.1607, "decision": "REJECT"},
+    "SOXX_FUNDING": {"trades": 1, "missed": 0.8333, "distance": 0.5032, "downside": -0.3348, "forward_63d": -0.0836, "decision": "REJECT"}
+  },
+  "smh_soxx_pair": {
+    "full_history_episodes": 16,
+    "baseline_weighted_distance": 0.13448,
+    "best_apparent_weighted_distance": 0.13395,
+    "apparent_gain_percentage_points": 0.054,
+    "post_2024_baseline_weighted_distance": 0.09892,
+    "post_2024_veto_hard_weighted_distance": 0.10317,
+    "production_weight": 0.0,
+    "decision": "INFORMATIONAL_ONLY"
+  },
+  "leverage_mapping": {
+    "SPY_SSO": {"relationship": "SAME_BENCHMARK_FAMILY", "observations": 5050, "correlation": 0.9956, "beta": 1.9592, "gap_rmse": 0.00231, "trades": 16, "win_rate": 0.5625, "mean_return": 0.0219, "median_return": 0.0202, "worst_return": -0.0477, "mean_mae": -0.0220, "worst_mae": -0.0565, "mean_holding_days": 18.19, "promotion": false},
+    "QQQ_QLD": {"relationship": "SAME_BENCHMARK_FAMILY", "observations": 5050, "correlation": 0.9960, "beta": 1.9832, "gap_rmse": 0.00250, "trades": 17, "win_rate": 0.5882, "mean_return": 0.0344, "median_return": 0.0031, "worst_return": -0.0516, "mean_mae": -0.0319, "worst_mae": -0.0860, "mean_holding_days": 11.53, "promotion": false},
+    "SOXX_USD": {"relationship": "CROSS_INDEX_TACTICAL_PROXY", "observations": 4896, "correlation": 0.9584, "beta": 1.9120, "gap_rmse": 0.01148, "trades": 31, "win_rate": 0.4839, "mean_return": 0.0138, "median_return": -0.0119, "worst_return": -0.2324, "mean_mae": -0.0650, "worst_mae": -0.2863, "mean_holding_days": 10.84, "promotion": false}
+  },
+  "official_source_corrections": {
+    "OFR_FSI": {"lag_business_days": 2, "current_history_immutable_vintage": false, "documented_2026_correction": true},
+    "SOXX_benchmark": "NYSE Semiconductor Index",
+    "SSO_daily_target": "2x S&P 500",
+    "QLD_daily_target": "2x Nasdaq-100",
+    "USD_daily_target": "2x Dow Jones U.S. Semiconductors Index",
+    "SEMI_monthly_book_to_bill_current_publication": false,
+    "SEMI_book_to_bill_discontinued": 2017,
+    "VRP_method_requirement": "MODEL_FREE_OPTION_STRIP_PLUS_HIGH_FREQUENCY_REALIZED_VARIANCE",
+    "CBOE_public_histories": ["VIX", "VVIX", "VIX9D"],
+    "CBOE_authorized_history_required": ["COR1M", "COR3M", "DSPX", "VIXEQ"]
+  },
+  "current_semiconductor_context": {
+    "SIA_May_2026_sales_usd_bn": 120.6,
+    "SIA_month_over_month": 0.092,
+    "SIA_year_over_year": 1.041,
+    "SIA_monthly_data_semantics": "THREE_MONTH_MOVING_AVERAGE",
+    "SEMI_Q1_2026_equipment_billings_usd_bn": 36.55,
+    "SEMI_year_over_year": 0.14,
+    "SEMI_quarter_over_quarter": 0.01,
+    "WSTS_2026_forecast_usd_trn": 1.51,
+    "WSTS_2026_growth": 0.90,
+    "interpretation": "STRONG_HETEROGENEOUS_LAGGED_CONTEXT_NOT_DAILY_BOTTOM_TRIGGER"
+  },
+  "claim_classification": {
+    "retained": [
+      "COMPLETED_CLOSE_NEXT_OPEN_CAUSALITY",
+      "MISSED_EPISODES_INCLUDED",
+      "BOUNDED_STAGED_PARTICIPATION",
+      "SMH_INFORMATIONAL_ONLY",
+      "THREE_LAYER_TAXONOMY",
+      "SIMULATED_DEPLOYMENT_NOT_EXECUTION"
+    ],
+    "updated": [
+      "LATEST_COMPLETED_BAR_2026_07_22",
+      "ALL_CURRENT_HEAD_RESEARCH_WORKFLOWS_SUCCESS",
+      "CURRENT_VOLATILITY_CONTEXT",
+      "CURRENT_SEMICONDUCTOR_INDUSTRY_CONTEXT"
+    ],
+    "corrected": [
+      "NOT_PRECISE_BOTTOM_DETECTOR",
+      "RECOVERY_OVERLAY_NO_IMPROVEMENT",
+      "DEEP_BEAR_IS_PRINCIPAL_FAILURE",
+      "LONG_BEAR_CAP_TOO_LATE",
+      "RUNTIME_RESULT_STALE",
+      "REPOSITORY_PUBLIC",
+      "OFR_HISTORY_NOT_IMMUTABLE_VINTAGE",
+      "CURRENT_MEMBER_PANELS_SURVIVORSHIP_BIASED",
+      "SOXX_USD_CROSS_INDEX",
+      "USD_GAP_NOT_PURE_TRACKING_ERROR",
+      "MONTHLY_BOOK_TO_BILL_DISCONTINUED_2017",
+      "IV_MINUS_DAILY_HV_NOT_GENUINE_VRP"
+    ],
+    "new": [
+      "DEEP_BEAR_CAPITAL_RESERVATION_PRIORITY_ONE",
+      "MODEL_OVERDEPLOYS_IN_WORST_REGIME",
+      "AGGREGATE_SEMICONDUCTOR_STRENGTH_MASKS_SUBSECTOR_CYCLE_DISPERSION",
+      "AUTHORIZED_CORRELATION_DISPERSION_HISTORY_HIGH_VALUE",
+      "PR_SIZE_AND_MERGEABILITY_SEPARATE_GOVERNANCE_RISK"
+    ]
+  },
+  "production_decision": {
+    "position": "BOUNDED_STAGED_PARTICIPATION_PLUS_RECOVERY_TAXONOMY",
+    "precise_cycle_bottom_detector": false,
+    "new_threshold": false,
+    "new_tranche": false,
+    "new_catchup_QQQ_SOXX": false,
+    "new_SMH_gate": false,
+    "leverage_rule": false,
+    "orders_created_or_transmitted": false
+  },
+  "research_priority": [
+    "DEEP_BEAR_CAPITAL_RESERVATION",
+    "PIT_SEMICONDUCTOR_EARNINGS_INVENTORY_ORDER_BREADTH",
+    "AUTHORIZED_COR1M_COR3M_DSPX_HISTORY",
+    "GENUINE_DOWNSIDE_VARIANCE_RISK_PREMIUM",
+    "AUTHORIZED_BULK_OPTIONS_FLOW",
+    "LICENSED_SEMI_BILLINGS_WWSEMS_FAB_DATA",
+    "FORMAL_LONG_CYCLE_NONOVERLAPPING_OOS_VALIDATION"
+  ]
+}

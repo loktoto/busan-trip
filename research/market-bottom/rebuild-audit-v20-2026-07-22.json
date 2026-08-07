@@ -1,0 +1,227 @@
+{
+  "schema_version": "1.0",
+  "report_version": "2.0",
+  "report_date": "2026-07-22",
+  "branch": "agent/market-bottom-strategy",
+  "validated_head_sha": "542188223ff24ff4ded8db38475ddf31b6665e6c",
+  "validation_window": {
+    "start": "2021-07-26",
+    "end": "2026-07-21"
+  },
+  "source_hierarchy": [
+    "Interactive Brokers completed-RTH boundary and current delayed snapshots",
+    "GitHub Actions deterministic reruns at validated_head_sha",
+    "Official issuers/regulators/data providers",
+    "Audited public adjusted OHLCV for reproducibility",
+    "Research proxies explicitly blocked from production promotion"
+  ],
+  "workflow_evidence": {
+    "recovery_v12": {
+      "run_id": 29908981946,
+      "artifact_id": 8525068133,
+      "sha256": "b2e3ec51c64cbe8d149d2d4e42c91ec66a4f9fadeb25ad6e6ed797d7708bb86a"
+    },
+    "paired_smh_soxx": {
+      "run_id": 29908981946,
+      "artifact_id": 8525059585,
+      "sha256": "47a8227803b9c4da02b935d6baf9e01a5a288129b6292f801412a3013aed0fab"
+    },
+    "late_stage_v14": {
+      "run_id": 29908981897,
+      "artifact_id": 8525050245,
+      "sha256": "1ea5c6abb9d51014b247dc03b6e37bdfd472d4d30f458852b6a7a9c9d38bd202"
+    },
+    "orthogonal_v16": {
+      "run_id": 29908981959,
+      "artifact_id": 8525056954,
+      "sha256": "92bbc830941c6d379a9e3993cd1640f39b81140a00120174566bedc721e6c652"
+    },
+    "stress_v18": {
+      "run_id": 29908981967,
+      "artifact_id": 8525064247,
+      "sha256": "09e1ea79713e02bbbbf9507c0cf7892e23bf5aa090f4f9bd43ff78e4083f397f"
+    },
+    "sector_v19": {
+      "run_id": 29908981896,
+      "artifact_id": 8525066729,
+      "sha256": "4c1fe26bee7bb9c04b6d697615613edd8af67228f50f8c9c764d7aceba001beb"
+    },
+    "leverage_mapping_v20": {
+      "run_id": 29908982024,
+      "artifact_id": 8525047568,
+      "sha256": "7967e4dbe95d614eb9283efe89b9fdc75bcd14844aad4085b64828290e198c01"
+    }
+  },
+  "ibkr_completed_rth": {
+    "date": "2026-07-21",
+    "SPY": {
+      "open": 746.29,
+      "high": 749.04,
+      "low": 744.18,
+      "close": 748.28
+    },
+    "QQQ": {
+      "open": 706.59,
+      "high": 710.05,
+      "low": 702.8,
+      "close": 708.97
+    },
+    "SOXX": {
+      "open": 549.1,
+      "high": 555.16,
+      "low": 540.15,
+      "close": 552.69,
+      "split_actions": [
+        {
+          "date": "2024-03-07",
+          "ratio": 3.0
+        }
+      ]
+    },
+    "SMH": {
+      "close": 584.08
+    }
+  },
+  "ibkr_delayed_context_2026_07_22": {
+    "session": "US pre-market / delayed; context only",
+    "SPY": {
+      "last": 746.79,
+      "historical_vol": 0.1688698,
+      "iv_percentile": 0.4661
+    },
+    "QQQ": {
+      "last": 704.83,
+      "historical_vol": 0.292675,
+      "implied_vol": 0.236448,
+      "iv_percentile": 0.8406
+    },
+    "SOXX": {
+      "last": 542.3,
+      "historical_vol": 0.749399,
+      "implied_vol": 0.631205,
+      "iv_percentile": 0.9641
+    },
+    "SMH": {
+      "last": 572.75,
+      "historical_vol": 0.633439,
+      "implied_vol": 0.553826,
+      "iv_percentile": 0.9243
+    },
+    "SSO": {
+      "last": 67.15,
+      "historical_vol": 0.319546,
+      "implied_vol": 0.264043,
+      "iv_percentile": 0.4382
+    },
+    "QLD": {
+      "last": 87.86,
+      "historical_vol": 0.585441,
+      "implied_vol": 0.459069,
+      "iv_percentile": 0.8048
+    },
+    "USD": {
+      "last": 87.28,
+      "historical_vol": 1.14299,
+      "implied_vol": 1.068097,
+      "iv_percentile": 0.9721
+    }
+  },
+  "baseline_recent": {
+    "SPY": {
+      "episodes": 7,
+      "missed": 0.0,
+      "first": 0.06582458405695381,
+      "weighted": 0.054062162696913454,
+      "downside": -0.05276839310493101,
+      "days": 30.285714285714285,
+      "f63": 0.07744506581671508,
+      "false10": 0.2857142857142857
+    },
+    "QQQ": {
+      "episodes": 6,
+      "missed": 0.0,
+      "first": 0.12493249886828406,
+      "weighted": 0.09484157823661536,
+      "downside": -0.09479352489576265,
+      "days": 53.333333333333336,
+      "f63": 0.05619058521846062,
+      "false10": 0.3333333333333333
+    },
+    "SOXX": {
+      "episodes": 6,
+      "missed": 0.0,
+      "first": 0.18959457919624198,
+      "weighted": 0.1651701691406784,
+      "downside": -0.11417434494600075,
+      "days": 61.666666666666664,
+      "f63": 0.24580675292266427,
+      "false10": 0.3333333333333333
+    }
+  },
+  "asset_decisions": {
+    "SPY": {
+      "catchup_candidate_pass": true,
+      "recommendation": "RESEARCH_ONLY_CANDIDATE_NOT_PRODUCTION",
+      "failures": [],
+      "positive_findings": [
+        "FULL_HISTORY_CATCHUP_QUALITY_PASS",
+        "MISSED_ALERT_RESILIENCE_PASS"
+      ],
+      "baseline_monitor_diagnosis": {
+        "recent_mean_first_entry_distance": 0.06582458405695381,
+        "recent_mean_weighted_distance": 0.054062162696913454,
+        "recent_mean_sessions_before_trough": 30.285714285714285,
+        "asset_specific_precision_limit": 0.08,
+        "precision_gate_pass": true,
+        "interpretation": "STAGED_PARTICIPATION_ACCEPTABLE_BUT_NOT_EXACT_BOTTOM"
+      }
+    },
+    "QQQ": {
+      "catchup_candidate_pass": false,
+      "recommendation": "REJECT_CURRENT_POST_THRESHOLD_CATCHUP",
+      "failures": [
+        "CATCHUP_DISTANCE_TOO_HIGH_0.1125",
+        "NEGATIVE_63D_CATCHUP_RETURN_-0.0514"
+      ],
+      "positive_findings": [
+        "MISSED_ALERT_RESILIENCE_PASS"
+      ],
+      "baseline_monitor_diagnosis": {
+        "recent_mean_first_entry_distance": 0.12493249886828406,
+        "recent_mean_weighted_distance": 0.09484157823661536,
+        "recent_mean_sessions_before_trough": 53.333333333333336,
+        "asset_specific_precision_limit": 0.12,
+        "precision_gate_pass": false,
+        "interpretation": "ENTRIES_TOO_EARLY_FOR_CLOSE_TO_BOTTOM_CLAIM"
+      }
+    },
+    "SOXX": {
+      "catchup_candidate_pass": false,
+      "recommendation": "REJECT_CURRENT_POST_THRESHOLD_CATCHUP",
+      "failures": [
+        "FEWER_THAN_3_FULL_HISTORY_CATCHUPS",
+        "MISSED_ALERT_DISTANCE_TOO_HIGH_0.3076",
+        "MISSED_ALERT_DOWNSIDE_TOO_HIGH_-0.1784"
+      ],
+      "positive_findings": [],
+      "baseline_monitor_diagnosis": {
+        "recent_mean_first_entry_distance": 0.18959457919624198,
+        "recent_mean_weighted_distance": 0.1651701691406784,
+        "recent_mean_sessions_before_trough": 61.666666666666664,
+        "asset_specific_precision_limit": 0.15,
+        "precision_gate_pass": false,
+        "interpretation": "ENTRIES_TOO_EARLY_FOR_CLOSE_TO_BOTTOM_CLAIM"
+      }
+    }
+  },
+  "overall_decision": {
+    "production_position": "STAGED_DRAWDOWN_PARTICIPATION_PLUS_REPORTING_TAXONOMY",
+    "precise_cycle_bottom_detector": false,
+    "new_threshold_promoted": false,
+    "new_tranche_promoted": false,
+    "new_smh_rule_promoted": false,
+    "new_qqq_or_soxx_catchup_promoted": false,
+    "leverage_rule_promoted": false,
+    "orders_created_or_transmitted": false
+  }
+}

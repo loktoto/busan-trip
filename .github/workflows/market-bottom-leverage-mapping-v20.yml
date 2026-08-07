@@ -1,0 +1,73 @@
+name: Market Bottom Leverage Mapping v2.0
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/leverage_mapping_audit_v20.py"
+      - "research/market-bottom/product-benchmark-map-v20.json"
+      - "research/market-bottom/tests/test_leverage_mapping_audit_v20.py"
+      - ".github/workflows/market-bottom-leverage-mapping-v20.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/leverage_mapping_audit_v20.py"
+      - "research/market-bottom/product-benchmark-map-v20.json"
+      - "research/market-bottom/tests/test_leverage_mapping_audit_v20.py"
+      - ".github/workflows/market-bottom-leverage-mapping-v20.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+      - name: Compile and test mapping audit
+        shell: bash
+        run: |
+          set -o pipefail
+          python -m compileall -q .
+          PYTHONPATH=. pytest -q tests/test_leverage_mapping_audit_v20.py tests/test_leverage.py --tb=short 2>&1 | tee leverage-mapping-v20-pytest.log
+      - name: Fetch and audit actual product histories
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf leverage-mapping-v20-data leverage-mapping-v20-output
+          mkdir -p leverage-mapping-v20-data leverage-mapping-v20-output
+          for symbol in SPY QQQ SOXX SSO QLD USD; do
+            python fetch_public_prices.py --symbol "$symbol" --out "leverage-mapping-v20-data/${symbol}.csv"
+            python data_audit.py --csv "leverage-mapping-v20-data/${symbol}.csv" --out "leverage-mapping-v20-output/audit-${symbol}"
+          done
+      - name: Run actual-product mapping audit
+        shell: bash
+        run: |
+          set -o pipefail
+          PYTHONPATH=. python leverage_mapping_audit_v20.py \
+            --data-dir leverage-mapping-v20-data \
+            --config config.example.json \
+            --mapping product-benchmark-map-v20.json \
+            --out leverage-mapping-v20-output 2>&1 | tee leverage-mapping-v20.log
+      - name: Archive mapping evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-leverage-mapping-v20-${{ github.run_id }}
+          path: |
+            research/market-bottom/leverage-mapping-v20-pytest.log
+            research/market-bottom/leverage-mapping-v20.log
+            research/market-bottom/leverage-mapping-v20-data/*.manifest.json
+            research/market-bottom/leverage-mapping-v20-output/**
+          if-no-files-found: error
+          retention-days: 14

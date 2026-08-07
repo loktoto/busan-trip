@@ -1,0 +1,204 @@
+name: Market Bottom Research
+
+on:
+  pull_request:
+    paths:
+      - "research/market-bottom/**"
+      - ".github/workflows/market-bottom-research.yml"
+  push:
+    branches:
+      - "agent/market-bottom-strategy"
+    paths:
+      - "research/market-bottom/**"
+      - ".github/workflows/market-bottom-research.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: research/market-bottom
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: research/market-bottom/requirements.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements.txt
+      - name: Compile all research modules
+        run: python -m compileall -q .
+      - name: Run regression tests
+        shell: bash
+        run: |
+          set -o pipefail
+          pytest -q --tb=short 2>&1 | tee pytest.log
+      - name: Archive pytest diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-pytest-${{ github.run_id }}
+          path: research/market-bottom/pytest.log
+          if-no-files-found: error
+          retention-days: 7
+      - name: Run public SMH-SOXX paired reproducibility diagnostic
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf paired-diagnostic-data paired-diagnostic-output
+          mkdir -p paired-diagnostic-data paired-diagnostic-output
+          {
+            echo "Classification: PUBLIC REPRODUCIBILITY DIAGNOSTIC — NOT IBKR HOLDOUT"
+            python fetch_public_prices.py --symbol SMH --out paired-diagnostic-data/SMH.csv
+            smh_status=$?
+            python fetch_public_prices.py --symbol SOXX --out paired-diagnostic-data/SOXX.csv
+            soxx_status=$?
+            if [ "$smh_status" -ne 0 ] || [ "$soxx_status" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: public price fetch failed (SMH=$smh_status SOXX=$soxx_status)"
+              exit 0
+            fi
+            python data_audit.py --csv paired-diagnostic-data/SMH.csv --out paired-diagnostic-output/audit-SMH
+            audit_smh=$?
+            python data_audit.py --csv paired-diagnostic-data/SOXX.csv --out paired-diagnostic-output/audit-SOXX
+            audit_soxx=$?
+            if [ "$audit_smh" -ne 0 ] || [ "$audit_soxx" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: adjusted-price audit failed (SMH=$audit_smh SOXX=$audit_soxx)"
+              exit 0
+            fi
+            python paired_semiconductor.py \
+              --smh-csv paired-diagnostic-data/SMH.csv \
+              --soxx-csv paired-diagnostic-data/SOXX.csv \
+              --config config.example.json \
+              --out paired-diagnostic-output/full-history
+            full_status=$?
+            python paired_semiconductor.py \
+              --smh-csv paired-diagnostic-data/SMH.csv \
+              --soxx-csv paired-diagnostic-data/SOXX.csv \
+              --config config.example.json \
+              --signal-start 2024-01-01 \
+              --out paired-diagnostic-output/modern-2024
+            modern_status=$?
+            echo "paired diagnostic exit status: full=$full_status modern=$modern_status"
+          } 2>&1 | tee paired-diagnostic.log
+          exit 0
+      - name: Archive paired semiconductor diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: paired-semiconductor-${{ github.run_id }}
+          path: |
+            research/market-bottom/paired-diagnostic.log
+            research/market-bottom/paired-diagnostic-data/*.manifest.json
+            research/market-bottom/paired-diagnostic-output/**
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Backtest conservative vs dual-path v1.2 monitor
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf recovery-v12-data recovery-v12-output recovery-v12.log
+          mkdir -p recovery-v12-data recovery-v12-output
+          {
+            echo "Classification: PUBLIC ADJUSTED REPRODUCIBILITY + DERIVED IBKR AUDIT"
+            failed=0
+            for symbol in SPY QQQ SOXX; do
+              python fetch_public_prices.py --symbol "$symbol" --out "recovery-v12-data/${symbol}.csv" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more public adjusted histories failed"
+              exit 0
+            fi
+            for symbol in SPY QQQ SOXX; do
+              python data_audit.py \
+                --csv "recovery-v12-data/${symbol}.csv" \
+                --out "recovery-v12-output/audit-${symbol}" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more continuity audits failed"
+              exit 0
+            fi
+            python validate_recovery_v12.py \
+              --data-dir recovery-v12-data \
+              --config config.example.json \
+              --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+              --recent-start 2021-07-26 \
+              --out recovery-v12-output
+            status=$?
+            if [ "$status" -ne 0 ]; then
+              echo "dual-path v1.2 validator exit status: $status"
+              exit "$status"
+            fi
+            python recovery_v12_decision.py \
+              --result recovery-v12-output/result.json \
+              --out-json recovery-v12-output/asset-decision.json \
+              --out-md recovery-v12-output/asset-decision.md
+            status=$?
+            echo "dual-path v1.2 strict decision exit status: $status"
+            exit "$status"
+          } 2>&1 | tee recovery-v12.log
+          exit ${PIPESTATUS[0]}
+      - name: Archive dual-path v1.2 backtest
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-recovery-v12-${{ github.run_id }}
+          path: |
+            research/market-bottom/recovery-v12.log
+            research/market-bottom/recovery-v12-data/*.manifest.json
+            research/market-bottom/recovery-v12-output/**
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Validate QQQ and SOXX late-stage candidates v1.3
+        if: always()
+        shell: bash
+        run: |
+          set +e
+          rm -rf late-stage-v13-data late-stage-v13-output late-stage-v13.log
+          mkdir -p late-stage-v13-data late-stage-v13-output
+          {
+            echo "Classification: ASSET-SPECIFIC CAUSAL RESEARCH + DERIVED IBKR BOUNDARY"
+            failed=0
+            for symbol in QQQ SOXX; do
+              python fetch_public_prices.py --symbol "$symbol" --out "late-stage-v13-data/${symbol}.csv" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more public adjusted histories failed"
+              exit 0
+            fi
+            for symbol in QQQ SOXX; do
+              python data_audit.py \
+                --csv "late-stage-v13-data/${symbol}.csv" \
+                --out "late-stage-v13-output/audit-${symbol}" || failed=1
+            done
+            if [ "$failed" -ne 0 ]; then
+              echo "DATA_UNAVAILABLE: one or more continuity audits failed"
+              exit 0
+            fi
+            python validate_late_stage_v13.py \
+              --data-dir late-stage-v13-data \
+              --config config.example.json \
+              --ibkr-audit ibkr-five-year-audit-2026-07-22.json \
+              --recent-start 2021-07-26 \
+              --out late-stage-v13-output
+            status=$?
+            echo "late-stage v1.3 validator exit status: $status"
+            exit "$status"
+          } 2>&1 | tee late-stage-v13.log
+          exit ${PIPESTATUS[0]}
+      - name: Archive QQQ and SOXX late-stage validation
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-bottom-late-stage-v13-${{ github.run_id }}
+          path: |
+            research/market-bottom/late-stage-v13.log
+            research/market-bottom/late-stage-v13-data/*.manifest.json
+            research/market-bottom/late-stage-v13-output/**
+          if-no-files-found: warn
+          retention-days: 14

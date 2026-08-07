@@ -1,0 +1,115 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-07-22",
+  "supersedes": [
+    "recovery-v11 narrative",
+    "bottom-monitor-enhancement-v15-2026-07-22.md",
+    "alternative-indicator-results-2026-07-22.md"
+  ],
+  "claims": [
+    {
+      "id": "C01",
+      "prior_claim": "The v1.1 recovery overlay enhances bottom detection.",
+      "disposition": "CORRECTED",
+      "validated_statement": "The overlay adds trades and capital but does not improve episode hit rates; weighted distance is slightly worse for SPY, QQQ and SOXX.",
+      "confidence": "HIGH",
+      "evidence": "recovery-v11-validation artifact"
+    },
+    {
+      "id": "C02",
+      "prior_claim": "The monitor is a close-to-bottom detector.",
+      "disposition": "CORRECTED",
+      "validated_statement": "It is primarily a staged drawdown-participation model; QQQ and SOXX enter materially before the eventual trough in recent episodes.",
+      "confidence": "HIGH",
+      "evidence": "recent 2021-07-26 to 2026-07-21 episode metrics"
+    },
+    {
+      "id": "C03",
+      "prior_claim": "Aggregate results adequately describe model quality.",
+      "disposition": "CORRECTED",
+      "validated_statement": "Aggregate results conceal severe deterioration in episodes whose final drawdown exceeds 25%.",
+      "confidence": "HIGH",
+      "evidence": "v1.1 depth-bucket analysis"
+    },
+    {
+      "id": "C04",
+      "prior_claim": "Positive forward returns validate bottom timing.",
+      "disposition": "CORRECTED",
+      "validated_statement": "Forward returns are secondary economic outcomes and do not establish proximity to the eventual trough.",
+      "confidence": "HIGH",
+      "evidence": "metric-definition audit and episode path results"
+    },
+    {
+      "id": "C05",
+      "prior_claim": "Breadth reversal can confirm a final bottom.",
+      "disposition": "UPDATED",
+      "validated_statement": "Equal-weight and cross-sectional breadth describe rebound participation but failed as standalone bottom-completion triggers.",
+      "confidence": "HIGH",
+      "evidence": "v1.6 and v1.9 artifacts"
+    },
+    {
+      "id": "C06",
+      "prior_claim": "Financial/funding stress normalisation can confirm the equity trough.",
+      "disposition": "UPDATED",
+      "validated_statement": "Stress normalisation may occur during intermediate bear rallies; use it as context or a veto, not a standalone trigger.",
+      "confidence": "HIGH",
+      "evidence": "corrected v1.8 artifact"
+    },
+    {
+      "id": "C07",
+      "prior_claim": "v1.7 stress results are admissible.",
+      "disposition": "CORRECTED",
+      "validated_statement": "v1.7 is invalid for promotion because breach age reset repeatedly; only v1.8 is admissible.",
+      "confidence": "HIGH",
+      "evidence": "implementation audit and v1.8 tests"
+    },
+    {
+      "id": "C08",
+      "prior_claim": "Current-constituent semiconductor panels can support production.",
+      "disposition": "CORRECTED",
+      "validated_statement": "They are survivorship-biased research proxies and require historical point-in-time membership before promotion.",
+      "confidence": "HIGH",
+      "evidence": "v1.9 manifest and governance gate"
+    },
+    {
+      "id": "C09",
+      "prior_claim": "SMH should directly gate SOXX.",
+      "disposition": "RETAINED_REJECTION",
+      "validated_statement": "SMH remains informational only because paired rules did not show persistent incremental value.",
+      "confidence": "MEDIUM_HIGH",
+      "evidence": "paired SMH/SOXX study"
+    },
+    {
+      "id": "C10",
+      "prior_claim": "A local swing recovery can be called a cycle bottom.",
+      "disposition": "CORRECTED",
+      "validated_statement": "Participation, local recovery and cycle-bottom evidence must remain separate.",
+      "confidence": "HIGH",
+      "evidence": "v1.5 taxonomy and alternative-indicator failures"
+    },
+    {
+      "id": "C11",
+      "prior_claim": "Model-simulated deployment reflects actual user execution.",
+      "disposition": "CORRECTED",
+      "validated_statement": "Simulated deployment, actual confirmed position and current action are separate fields.",
+      "confidence": "HIGH",
+      "evidence": "governance audit"
+    },
+    {
+      "id": "C12",
+      "prior_claim": "SSO, QLD or USD can be activated from underlying rebound confirmation alone.",
+      "disposition": "REJECTED",
+      "validated_statement": "Daily-reset product-level path backtests and independently validated leverage gates are still required.",
+      "confidence": "HIGH",
+      "evidence": "official product objectives, SEC compounding risk and incomplete product validation"
+    },
+    {
+      "id": "C13",
+      "prior_claim": "The best next step is another price indicator.",
+      "disposition": "NEW",
+      "validated_statement": "The highest-priority experiment is deep-bear capital reservation followed by authorised point-in-time feature ablations.",
+      "confidence": "RESEARCH_PRIORITY",
+      "evidence": "depth-regime failure and proxy-family rejections"
+    }
+  ]
+}
