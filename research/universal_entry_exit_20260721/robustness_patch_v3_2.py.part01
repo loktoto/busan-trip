@@ -1,0 +1,136 @@
+def evaluate_asset(asset: dict[str,Any], data: dict[str,pd.DataFrame]) -> tuple[dict[str,Any],pd.DataFrame,pd.DataFrame]:
+    aligned = align_asset(asset,data)
+    if aligned is None:
+        return {"symbol":asset["symbol"],"status":"SKIPPED","reason":"missing or insufficient trade/signal history"},pd.DataFrame(),pd.DataFrame()
+    trade, signal = aligned
+    common = trade.index.intersection(signal.index).intersection(data["BIL"].index)
+    trade=trade.loc[common]; signal=signal.loc[common]
+    experimental = bool(asset.get("experimental",False) or len(common)<1000)
+    dev_end, holdout_start, blocks = split_dates(common,experimental)
+    cache=indicator_cache(signal)
+    entry_rules=generate_entry_rules(asset,signal,cache,data)
+    entry_rank=rank_entries(entry_rules,trade,dev_end,blocks,experimental)
+    selected_ids=entry_rank[entry_rank["pass"]].head(8).entry_id.tolist()
+    if not selected_ids: selected_ids=entry_rank.head(8).entry_id.tolist()
+    exits=generate_exit_rules(asset,signal,cache,data)
+    overlays=build_overlays(asset,common,signal,cache,data)
+    bench=open_returns(trade).iloc[:-1]
+    modes=["swing"] if asset["kind"] in ("LETF","INVERSE_VOL") else ["swing","add_on"]
+    base_rows=[]; state_cache={}
+    for entry_id in selected_ids:
+        erule, entry=entry_rules[int(entry_id)]
+        for exit_id,(xrule,xsignal,max_hold) in enumerate(exits):
+            for mode in modes:
+                state=managed_state(entry,xsignal,overlays["none"],trade,atr(trade,14),"none",max_hold)
+                ret,expo=strategy_returns(state,trade,data["BIL"],mode,float(asset["cost_bps"]))
+                sm=score_candidate(ret,bench,dev_end,blocks)
+                row={"entry_id":int(entry_id),"exit_id":exit_id,"entry_family":erule.family,"entry_params":json.dumps(erule.params),
+                     "exit_family":xrule.family,"exit_params":json.dumps(xrule.params),"mode":mode,"overlay":"none","stop":"none",
+                     "changes":int((expo.diff().abs()>0.01).sum()),"current_state":bool(state.iloc[-1]),**sm}
+                base_rows.append(row)
+                state_cache[(int(entry_id),exit_id,mode,"none","none")]=(state,ret,expo)
+    base=pd.DataFrame(base_rows)
+    min_changes=3 if experimental else 6
+    base["development_pass"]=(base.dev_excess>0)&(base.dev_sharpe_delta>=0)&(base.dev_dd_delta>=-0.03)&(base.block_excess_median>0)&(base.block_excess_worst>-0.03)&(base.changes>=min_changes)
+    base = quantize_columns(base, {
+        "dev_excess": 0.0005, "dev_sharpe_delta": 0.005, "dev_dd_delta": 0.0005,
+        "block_excess_median": 0.0005, "block_sharpe_median": 0.005, "block_dd_worst": 0.0005,
+    })
+    for col in ["dev_excess","dev_sharpe_delta","dev_dd_delta","block_excess_median","block_sharpe_median","block_dd_worst"]:
+        base[col+"_rank"]=base[col+"_q"].rank(pct=True, method="average")
+    base["development_score"]=(0.25*base.dev_excess_rank+0.20*base.dev_sharpe_delta_rank+0.10*base.dev_dd_delta_rank+0.25*base.block_excess_median_rank+0.10*base.block_sharpe_median_rank+0.10*base.block_dd_worst_rank).round(6)
+    stage3=[]
+    for mode in modes:
+        pool=base[(base["mode"]==mode)&base.development_pass].sort_values(["development_score","entry_id","exit_id"],ascending=[False,True,True]).head(4)
+        if pool.empty: pool=base[base["mode"]==mode].nlargest(4,"development_score")
+        for p in pool.itertuples():
+            erule,entry=entry_rules[int(p.entry_id)]
+            xrule,xsignal,max_hold=exits[int(p.exit_id)]
+            for overlay_name,stop in itertools.product(list(overlays),["none","hard8","hard12","atr3","atr4"]):
+                state=managed_state(entry,xsignal,overlays[overlay_name],trade,atr(trade,14),stop,max_hold)
+                ret,expo=strategy_returns(state,trade,data["BIL"],mode,float(asset["cost_bps"]))
+                sm=score_candidate(ret,bench,dev_end,blocks)
+                stress_ret,_=strategy_returns(state,trade,data["BIL"],mode,max(float(asset["cost_bps"])*2,float(asset["cost_bps"])+20))
+                stress=interval_metrics(stress_ret,bench,ret.index.min(),dev_end)
+                stage3.append({"entry_id":int(p.entry_id),"exit_id":int(p.exit_id),"entry_family":erule.family,"entry_params":json.dumps(erule.params),
+                               "exit_family":xrule.family,"exit_params":json.dumps(xrule.params),"mode":mode,"overlay":overlay_name,"stop":stop,
+                               "changes":int((expo.diff().abs()>0.01).sum()),"current_state":bool(state.iloc[-1]),"previous_state":bool(state.iloc[-2]),
+                               "stress_dev_excess":stress["excess"],**sm})
+                state_cache[(int(p.entry_id),int(p.exit_id),mode,overlay_name,stop)]=(state,ret,expo)
+    grid=pd.DataFrame(stage3)
+    grid["development_pass"]=(grid.dev_excess>0)&(grid.dev_sharpe_delta>=0)&(grid.dev_dd_delta>=-0.03)&(grid.block_excess_median>0)&(grid.block_excess_worst>-0.03)&(grid.stress_dev_excess>0)&(grid.changes>=min_changes)
+    grid = quantize_columns(grid, {
+        "dev_excess": 0.0005, "dev_sharpe_delta": 0.005, "dev_dd_delta": 0.0005,
+        "block_excess_median": 0.0005, "block_sharpe_median": 0.005, "block_dd_worst": 0.0005,
+        "stress_dev_excess": 0.0005,
+    })
+    for col in ["dev_excess","dev_sharpe_delta","dev_dd_delta","block_excess_median","block_sharpe_median","block_dd_worst","stress_dev_excess"]:
+        grid[col+"_rank"]=grid[col+"_q"].rank(pct=True, method="average")
+    grid["development_score"]=(0.20*grid.dev_excess_rank+0.15*grid.dev_sharpe_delta_rank+0.10*grid.dev_dd_delta_rank+0.20*grid.block_excess_median_rank+0.10*grid.block_sharpe_median_rank+0.10*grid.block_dd_worst_rank+0.15*grid.stress_dev_excess_rank).round(6)
+    eligible=grid[grid.development_pass].copy()
+    if eligible.empty:
+        eligible=grid.copy()
+    groups = eligible.groupby(["entry_id","exit_id","mode"], as_index=False).agg(
+        group_q25=("development_score", lambda x: float(x.quantile(0.25))),
+        group_median=("development_score", "median"),
+        group_pass_count=("development_pass", "sum"),
+    )
+    groups["group_q25_q"] = (groups.group_q25 / 0.005).round() * 0.005
+    groups["group_median_q"] = (groups.group_median / 0.005).round() * 0.005
+    chosen_group = groups.sort_values(
+        ["group_q25_q","group_median_q","group_pass_count","entry_id","exit_id","mode"],
+        ascending=[False,False,False,True,True,True],
+    ).iloc[0]
+    finalists = eligible[
+        (eligible.entry_id == chosen_group.entry_id)
+        & (eligible.exit_id == chosen_group.exit_id)
+        & (eligible["mode"] == chosen_group["mode"])
+    ].copy()
+    overlay_order = {"none":0,"regime_trend":1,"breadth":2,"credit":3,"realised_vol":4,"relative_strength":5}
+    stop_order = {"none":0,"hard12":1,"hard8":2,"atr4":3,"atr3":4}
+    finalists["overlay_complexity"] = finalists.overlay.map(overlay_order).fillna(99)
+    finalists["stop_complexity"] = finalists.stop.map(stop_order).fillna(99)
+    winner=finalists.sort_values(
+        ["development_score","overlay_complexity","stop_complexity","overlay","stop"],
+        ascending=[False,True,True,True,True],
+    ).iloc[0]
+    key=(int(winner["entry_id"]),int(winner["exit_id"]),winner["mode"],winner["overlay"],winner["stop"])
+    state,ret,expo=state_cache[key]
+    hold=interval_metrics(ret,bench,holdout_start,ret.index.max())
+    full=interval_metrics(ret,bench,ret.index.min(),ret.index.max())
+    stress_ret,_=strategy_returns(state,trade,data["BIL"],winner["mode"],max(float(asset["cost_bps"])*2,float(asset["cost_bps"])+20))
+    stress_full=interval_metrics(stress_ret,bench,ret.index.min(),ret.index.max())
+    boot=bootstrap_excess(ret.loc[holdout_start:],bench.loc[holdout_start:])
+    holdout_pass=bool(hold["excess"]>0 and hold["sharpe_delta"]>=-0.02 and hold["dd_delta"]>=-0.03)
+    strict=bool(winner["development_pass"] and holdout_pass and stress_full["excess"]>0 and boot["prob_positive"]>=0.65 and not experimental)
+    risk_control=bool(
+        (not strict) and (not experimental) and bool(winner["development_pass"])
+        and winner["mode"]=="swing" and int(winner["changes"])>=min_changes
+        and hold["sharpe_delta"]>0 and hold["dd_delta"]>0 and hold["cagr"]>0
+        and hold["excess"]>-0.10 and stress_full["excess"]>-0.05 and boot["prob_positive"]>=0.25
+    )
+    decision="PROMOTE_ALPHA" if strict else ("EXPERIMENTAL" if experimental else ("RISK_CONTROL_ONLY" if risk_control else "REJECT"))
+    action="HOLD" if state.iloc[-1] else "WAIT"
+    if state.iloc[-1] and not state.iloc[-2]: action="ENTER" if winner["mode"]=="swing" else "ADD"
+    elif (not state.iloc[-1]) and state.iloc[-2]: action="EXIT" if winner["mode"]=="swing" else "REDUCE"
+    overnight_gap = trade.Open / trade.Close.shift(1) - 1
+    last_gap = float(overnight_gap.iloc[-1]) if pd.notna(overnight_gap.iloc[-1]) else np.nan
+    recent_gap = float(overnight_gap.tail(20).abs().max()) if overnight_gap.tail(20).notna().any() else np.nan
+    event_check = bool(asset["kind"]=="STOCK" and action in ("ENTER","ADD"))
+    production_action = action if strict else "NO_ACTION"
+    if strict and event_check:
+        production_action = f"{action}_EVENT_CHECK"
+    summary={
+        "symbol":asset["symbol"],"kind":asset["kind"],"class":asset["class"],"signal_symbol":resolve_ticker(asset["signal"]),
+        "status":"OK","experimental":experimental,"sessions":len(common),"start":str(common.min().date()),"end":str(common.max().date()),
+        "development_end":str(dev_end.date()),"holdout_start":str(holdout_start.date()),"decision":decision,"production_action":production_action,
+        "diagnostic_action":action,"mode":winner["mode"],"entry_family":winner["entry_family"],"entry_params":winner["entry_params"],
+        "exit_family":winner["exit_family"],"exit_params":winner["exit_params"],"overlay":winner["overlay"],"stop":winner["stop"],
+        "current_state":bool(state.iloc[-1]),"changes":int(winner["changes"]),"development_pass":bool(winner["development_pass"]),"holdout_pass":holdout_pass,
+        "dev_excess":canonical(winner["dev_excess"]),"dev_sharpe_delta":canonical(winner["dev_sharpe_delta"]),"dev_dd_delta":canonical(winner["dev_dd_delta"]),
+        "holdout_excess":canonical(hold["excess"]),"holdout_sharpe_delta":canonical(hold["sharpe_delta"]),"holdout_dd_delta":canonical(hold["dd_delta"]),
+        "full_excess":canonical(full["excess"]),"full_sharpe_delta":canonical(full["sharpe_delta"]),"full_dd_delta":canonical(full["dd_delta"]),
+        "stress_full_excess":canonical(stress_full["excess"]),"bootstrap_prob_positive":canonical(boot["prob_positive"],4),
+        "last_close":float(trade.Close.iloc[-1]),"last_overnight_gap":canonical(last_gap),"recent_max_abs_gap_20":canonical(recent_gap),"event_calendar_required":event_check,
+    }
+    return summary,entry_rank,grid

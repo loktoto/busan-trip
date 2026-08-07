@@ -1,0 +1,41 @@
+def quantize_columns(frame: pd.DataFrame, specs: dict[str, float]) -> pd.DataFrame:
+    """Quantise ranking inputs so sub-basis-point provider revisions cannot reorder candidates."""
+    out = frame.copy()
+    for column, step in specs.items():
+        if column in out.columns:
+            values = pd.to_numeric(out[column], errors="coerce")
+            out[column + "_q"] = (values / step).round() * step
+    return out
+
+
+def rank_entries(rules, trade, dev_end, blocks, experimental: bool) -> pd.DataFrame:
+    rows = []
+    min_events = 3 if experimental else 6
+    for entry_id, (rule, signal) in enumerate(rules):
+        row: dict[str, Any] = {"entry_id": entry_id, "family": rule.family, "params": json.dumps(rule.params)}
+        vals = []
+        for h in [5,10,20,40]:
+            r = event_forward_returns(signal.loc[:dev_end], trade.loc[:dev_end], h)
+            row[f"n{h}"] = len(r)
+            row[f"median{h}"] = float(r.median()) if len(r) else np.nan
+            row[f"win{h}"] = float((r > 0).mean()) if len(r) else np.nan
+            vals.append(row[f"median{h}"])
+        block_positive = []
+        for start,end in blocks:
+            r = event_forward_returns(signal.loc[start:end], trade.loc[start:end], 20)
+            block_positive.append(float(r.median() > 0) if len(r) >= 2 else np.nan)
+        row["block_positive_share"] = float(np.nanmean(block_positive)) if np.isfinite(block_positive).any() else 0.0
+        row["pass"] = row["n20"] >= min_events and row["median10"] > 0 and row["median20"] > 0 and row["block_positive_share"] >= 2/3
+        rows.append(row)
+    frame = pd.DataFrame(rows)
+    frame = quantize_columns(frame, {
+        "median5": 0.0005, "median10": 0.0005, "median20": 0.0005, "median40": 0.0005,
+        "win20": 0.005, "block_positive_share": 0.01,
+    })
+    for col in ["median5","median10","median20","median40","win20","block_positive_share"]:
+        frame[col+"_rank"] = frame[col+"_q"].rank(pct=True, method="average")
+    frame["entry_score"] = (
+        0.10*frame.median5_rank + 0.20*frame.median10_rank + 0.30*frame.median20_rank
+        + 0.15*frame.median40_rank + 0.10*frame.win20_rank + 0.15*frame.block_positive_share_rank
+    ).round(6)
+    return frame.sort_values(["pass","entry_score","entry_id"], ascending=[False,False,True])

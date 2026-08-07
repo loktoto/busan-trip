@@ -1,0 +1,130 @@
+    blocks_needed = math.ceil(n / block)
+    starts = np.arange(max(1, n - block + 1))
+    for i in range(samples):
+        picked = rng.choice(starts, size=blocks_needed, replace=True)
+        draw = np.concatenate([excess[j : j + block] for j in picked])[:n]
+        means[i] = draw.mean() * DAYS
+    return {
+        "prob_positive_mean": float(np.mean(means > 0)),
+        "mean_ci_low": float(np.quantile(means, 0.025)),
+        "mean_ci_high": float(np.quantile(means, 0.975)),
+    }
+
+
+def rank_baselines(
+    spec: AssetSpec,
+    native: pd.DataFrame,
+    states: dict[int, pd.Series],
+    params: list[BaselineParams],
+    folds,
+) -> pd.DataFrame:
+    benchmark = open_to_open_return(native).iloc[:-1]
+    rows = []
+    for baseline_id, state in states.items():
+        leverage = state.shift(1).fillna(False).astype(bool)
+        stage1_max_leverage = max(item[2] for item in spec.implementations)
+        synthetic = benchmark * np.where(leverage.iloc[:-1], stage1_max_leverage, 1.0)
+        changes = int(leverage.astype(int).diff().abs().fillna(0).sum())
+        fold_rows = []
+        for train_start, train_end, test_start, test_end in folds:
+            tr = interval_metrics(synthetic, benchmark, train_start, train_end)
+            te = interval_metrics(synthetic, benchmark, test_start, test_end)
+            fold_rows.append((tr, te))
+        train_excess = np.nanmedian([x[0]["excess"] for x in fold_rows])
+        test_excess = np.nanmedian([x[1]["excess"] for x in fold_rows])
+        test_sharpe = np.nanmedian([x[1]["sharpe_excess"] for x in fold_rows])
+        worst_dd = np.nanmin([x[1]["dd_delta"] for x in fold_rows])
+        row = asdict(params[baseline_id])
+        row.update({
+            "baseline_id": baseline_id,
+            "changes": changes,
+            "train_excess_median": train_excess,
+            "test_excess_median": test_excess,
+            "test_sharpe_excess_median": test_sharpe,
+            "worst_test_dd_delta": worst_dd,
+        })
+        rows.append(row)
+    frame = pd.DataFrame(rows)
+    frame["pass"] = (
+        (frame.train_excess_median.round(METRIC_DECIMALS) > 0)
+        & (frame.test_excess_median.round(METRIC_DECIMALS) > 0)
+        & (frame.test_sharpe_excess_median.round(METRIC_DECIMALS) >= -0.05)
+        & (frame.worst_test_dd_delta.round(METRIC_DECIMALS) >= -0.04)
+        & (frame.changes >= spec.min_changes)
+    )
+    rank_columns = (
+        "train_excess_median",
+        "test_excess_median",
+        "test_sharpe_excess_median",
+        "worst_test_dd_delta",
+    )
+    for col in rank_columns:
+        frame[col + "_rank"] = quantised_rank(frame[col])
+    frame["score"] = (
+        0.20 * frame.train_excess_median_rank
+        + 0.40 * frame.test_excess_median_rank
+        + 0.25 * frame.test_sharpe_excess_median_rank
+        + 0.15 * frame.worst_test_dd_delta_rank
+    )
+    frame["score_q"] = frame.score.round(6)
+    frame["test_excess_q"] = frame.test_excess_median.round(METRIC_DECIMALS)
+    frame["train_excess_q"] = frame.train_excess_median.round(METRIC_DECIMALS)
+    frame["exit_ma_sort"] = frame.exit_ma.fillna(-1)
+    return frame.sort_values(
+        [
+            "pass", "score_q", "test_excess_q", "train_excess_q",
+            "trend_ma", "trend_slope", "rsi_entry", "lookback",
+            "reclaim", "rsi_exit", "exit_ma_sort", "baseline_id",
+        ],
+        ascending=[False, False, False, False, True, True, True, True, True, True, True, True],
+        kind="mergesort",
+    )
+
+
+def neighbour_stability(shortlist: pd.DataFrame, all_rows: pd.DataFrame) -> pd.DataFrame:
+    columns = ["trend_ma", "trend_slope", "rsi_entry", "lookback", "reclaim", "rsi_exit", "exit_ma"]
+    encoded = all_rows[columns].fillna(-1).to_numpy()
+    output = []
+    for row in shortlist.itertuples():
+        target = np.array([-1 if pd.isna(getattr(row, c)) else getattr(row, c) for c in columns])
+        dist = (encoded != target).sum(axis=1)
+        neighbours = all_rows[dist <= 1]
+        output.append({
+            "baseline_id": row.baseline_id,
+            "neighbour_count": int(len(neighbours)),
+            "neighbour_positive_share": float(
+                (neighbours.test_excess_median.round(METRIC_DECIMALS) > 0).mean()
+            ),
+            "neighbour_worst_test_excess": float(neighbours.test_excess_median.min()),
+        })
+    return pd.DataFrame(output)
+
+
+def evaluate_asset(spec: AssetSpec, data: dict[str, pd.DataFrame]):
+    native_full = basket(data, spec.native)
+    features_full = risk_features(native_full, data, spec)
+    params, states = baseline_states(spec, native_full, data)
+    implementation_frames = {
+        name: basket(data, legs)
+        for name, legs, _, _, _ in spec.implementations
+    }
+    common = native_full.index
+    for frame in implementation_frames.values():
+        common = common.intersection(frame.index)
+    common = common[common >= pd.Timestamp(spec.start)]
+    native = native_full.loc[common]
+    features = features_full.loc[common]
+    states = {key: value.reindex(common).fillna(False).astype(bool) for key, value in states.items()}
+    implementation_frames = {name: frame.loc[common] for name, frame in implementation_frames.items()}
+    development_end = min(pd.Timestamp(spec.development_end), common.max())
+    folds = development_folds(common, development_end, spec.experimental)
+
+    baseline_grid = rank_baselines(spec, native, states, params, folds)
+    baseline_short = baseline_grid[baseline_grid["pass"]].head(35).copy()
+    if baseline_short.empty:
+        baseline_short = baseline_grid.head(35).copy()
+    baseline_short = baseline_short.merge(neighbour_stability(baseline_short, baseline_grid), on="baseline_id", how="left")
+    baseline_short = baseline_short[
+        (baseline_short.neighbour_count >= 3)
+        & (baseline_short.neighbour_positive_share >= 0.60)
+    ].head(25)

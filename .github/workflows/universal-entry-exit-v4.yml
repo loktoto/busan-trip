@@ -1,0 +1,158 @@
+name: Universal entry exit optimisation v4
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/universal_entry_exit_20260721/**
+      - .github/workflows/universal-entry-exit-v4.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: universal-entry-exit-v4-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  optimise-universe-v4:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Compile and validate configuration
+        run: |
+          cat research/universal_entry_exit_20260721/optimize_universal_entry_exit.py.part?? > /tmp/optimize_universal_entry_exit.py
+          python -m py_compile /tmp/optimize_universal_entry_exit.py
+          python -m py_compile research/universal_entry_exit_20260721/optimize_universal_entry_exit_runner.py
+          cat research/universal_entry_exit_20260721/robustness_patch_v3_2.py.part?? > /tmp/robustness_patch.py
+          python -m py_compile /tmp/robustness_patch.py
+          python -m json.tool research/universal_entry_exit_20260721/universe_v3.json >/dev/null
+          python -m json.tool research/universal_entry_exit_20260721/universe_v4_additions.json >/dev/null
+      - name: Run universal optimiser v4 shard
+        shell: bash
+        env:
+          UNIVERSE_SHARD: ${{ matrix.shard }}
+          UNIVERSE_SHARDS: 6
+        run: |
+          mkdir -p research_outputs/universal_entry_exit_v4_20260722
+          set +e
+          PYTHONWARNINGS=ignore python research/universal_entry_exit_20260721/optimize_universal_entry_exit_runner.py > research_outputs/universal_entry_exit_v4_20260722/optimizer.log 2>&1
+          code=$?
+          tail -n 200 research_outputs/universal_entry_exit_v4_20260722/optimizer.log
+          exit $code
+      - name: Upload shard audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-entry-exit-v4-shard-${{ matrix.shard }}
+          path: research_outputs/universal_entry_exit_v4_20260722
+          if-no-files-found: warn
+          retention-days: 14
+
+  aggregate-v4:
+    needs: optimise-universe-v4
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install aggregation dependency
+        run: python -m pip install --quiet pandas
+      - name: Download shard artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: universal-entry-exit-v4-shard-*
+          path: shard_artifacts
+          merge-multiple: false
+      - name: Aggregate canonical summary
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import json
+          import pandas as pd
+
+          root = Path('shard_artifacts')
+          files = sorted(root.glob('*/summary.csv'))
+          if len(files) != 6:
+              raise RuntimeError(f'Expected 6 shard summaries, found {len(files)}')
+          frames = [pd.read_csv(path) for path in files]
+          frame = pd.concat(frames, ignore_index=True).sort_values('symbol').reset_index(drop=True)
+          if frame.symbol.duplicated().any():
+              raise RuntimeError('Duplicate symbols across deterministic shards')
+          out = Path('combined_v4')
+          out.mkdir(parents=True, exist_ok=True)
+          frame.to_csv(out / 'summary.csv', index=False, float_format='%.6f')
+          canonical = frame.to_csv(index=False, float_format='%.6f')
+          digest = hashlib.sha256(canonical.encode()).hexdigest()
+
+          ok = frame[frame.status == 'OK']
+          lines = [
+              '# Universal daily entry/exit optimisation v4', '',
+              'Completed-close cutoff: 2026-07-21.',
+              'Selection is development-only; holdout, stressed costs and bootstrap can only approve or reject.', '',
+              f'Coverage: {len(ok)} successful, {len(frame)-len(ok)} skipped/error.',
+              f'Canonical summary SHA-256: `{digest}`.', ''
+          ]
+          groups = [
+              ('PROMOTE_ALPHA', 'Production alpha promotions'),
+              ('RISK_CONTROL_ONLY', 'Risk-control-only candidates'),
+              ('EXPERIMENTAL', 'Experimental / short-history'),
+              ('REJECT', 'Rejected'),
+          ]
+          for decision, title in groups:
+              group = ok[ok.decision == decision]
+              lines += [f'## {title}', '']
+              if group.empty:
+                  lines += ['None.', '']
+                  continue
+              lines += [
+                  '| Symbol | Production action | Diagnostic | Mode | Entry | Exit | Overlay / stop | Holdout alpha | Sharpe Δ | Bootstrap |',
+                  '|---|---|---|---|---|---|---|---:|---:|---:|'
+              ]
+              for _, row in group.iterrows():
+                  lines.append(
+                      f"| {row.symbol} | {row.production_action} | {row.diagnostic_action} | {row['mode']} | "
+                      f"{row.entry_family} {row.entry_params} | {row.exit_family} {row.exit_params} | "
+                      f"{row.overlay} / {row.stop} | {row.holdout_excess:.2%} | "
+                      f"{row.holdout_sharpe_delta:.3f} | {row.bootstrap_prob_positive:.1%} |"
+                  )
+              lines.append('')
+          skipped = frame[frame.status != 'OK']
+          if not skipped.empty:
+              lines += ['## Skipped / errors', '']
+              for _, row in skipped.iterrows():
+                  lines.append(f"- {row.symbol}: {row.get('reason', 'unknown')}")
+              lines.append('')
+          (out / 'summary.md').write_text('\n'.join(lines))
+          (out / 'aggregate_manifest.json').write_text(json.dumps({
+              'version': 'v4.1',
+              'shards': 6,
+              'symbols': len(frame),
+              'successful': len(ok),
+              'summary_sha256': digest,
+              'source_summaries': [str(path) for path in files],
+          }, indent=2))
+          print('\n'.join(lines[:40]))
+          PY
+      - name: Upload combined full audit artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: universal-entry-exit-v4-20260722
+          path: |
+            combined_v4
+            shard_artifacts
+          if-no-files-found: error
+          retention-days: 14

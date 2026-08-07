@@ -1,0 +1,4 @@
+Universal V4.1 audit run requested from PR head after external independent optimiser commit.
+Strategy/config source remains unchanged from commits through 9e9ac014cb42e9c6968ebb7250412a40e740e5b1.
+Required output: six deterministic shards plus canonical aggregate summary.
+Completed-close cutoff: 2026-07-21.

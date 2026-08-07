@@ -1,0 +1,101 @@
+    eligible=grid[grid.development_pass]
+    if eligible.empty: eligible=grid
+    winner=eligible.sort_values(["development_score","entry_id","exit_id","mode","overlay","stop"],ascending=[False,True,True,True,True,True]).iloc[0]
+    key=(int(winner["entry_id"]),int(winner["exit_id"]),winner["mode"],winner["overlay"],winner["stop"])
+    state,ret,expo=state_cache[key]
+    hold=interval_metrics(ret,bench,holdout_start,ret.index.max())
+    full=interval_metrics(ret,bench,ret.index.min(),ret.index.max())
+    stress_ret,_=strategy_returns(state,trade,data["BIL"],winner["mode"],max(float(asset["cost_bps"])*2,float(asset["cost_bps"])+20))
+    stress_full=interval_metrics(stress_ret,bench,ret.index.min(),ret.index.max())
+    boot=bootstrap_excess(ret.loc[holdout_start:],bench.loc[holdout_start:])
+    holdout_pass=bool(hold["excess"]>0 and hold["sharpe_delta"]>=-0.02 and hold["dd_delta"]>=-0.03)
+    strict=bool(winner["development_pass"] and holdout_pass and stress_full["excess"]>0 and boot["prob_positive"]>=0.65 and not experimental)
+    risk_control=bool(
+        (not strict) and (not experimental) and bool(winner["development_pass"])
+        and winner["mode"]=="swing" and int(winner["changes"])>=min_changes
+        and hold["sharpe_delta"]>0 and hold["dd_delta"]>0 and hold["cagr"]>0
+        and hold["excess"]>-0.10 and stress_full["excess"]>-0.05 and boot["prob_positive"]>=0.25
+    )
+    decision="PROMOTE_ALPHA" if strict else ("EXPERIMENTAL" if experimental else ("RISK_CONTROL_ONLY" if risk_control else "REJECT"))
+    action="HOLD" if state.iloc[-1] else "WAIT"
+    if state.iloc[-1] and not state.iloc[-2]: action="ENTER" if winner["mode"]=="swing" else "ADD"
+    elif (not state.iloc[-1]) and state.iloc[-2]: action="EXIT" if winner["mode"]=="swing" else "REDUCE"
+    overnight_gap = trade.Open / trade.Close.shift(1) - 1
+    last_gap = float(overnight_gap.iloc[-1]) if pd.notna(overnight_gap.iloc[-1]) else np.nan
+    recent_gap = float(overnight_gap.tail(20).abs().max()) if overnight_gap.tail(20).notna().any() else np.nan
+    event_check = bool(asset["kind"]=="STOCK" and action in ("ENTER","ADD"))
+    production_action = action if strict else "NO_ACTION"
+    if strict and event_check:
+        production_action = f"{action}_EVENT_CHECK"
+    summary={
+        "symbol":asset["symbol"],"kind":asset["kind"],"class":asset["class"],"signal_symbol":resolve_ticker(asset["signal"]),
+        "status":"OK","experimental":experimental,"sessions":len(common),"start":str(common.min().date()),"end":str(common.max().date()),
+        "development_end":str(dev_end.date()),"holdout_start":str(holdout_start.date()),"decision":decision,"production_action":production_action,
+        "diagnostic_action":action,"mode":winner["mode"],"entry_family":winner["entry_family"],"entry_params":winner["entry_params"],
+        "exit_family":winner["exit_family"],"exit_params":winner["exit_params"],"overlay":winner["overlay"],"stop":winner["stop"],
+        "current_state":bool(state.iloc[-1]),"changes":int(winner["changes"]),"development_pass":bool(winner["development_pass"]),"holdout_pass":holdout_pass,
+        "dev_excess":canonical(winner["dev_excess"]),"dev_sharpe_delta":canonical(winner["dev_sharpe_delta"]),"dev_dd_delta":canonical(winner["dev_dd_delta"]),
+        "holdout_excess":canonical(hold["excess"]),"holdout_sharpe_delta":canonical(hold["sharpe_delta"]),"holdout_dd_delta":canonical(hold["dd_delta"]),
+        "full_excess":canonical(full["excess"]),"full_sharpe_delta":canonical(full["sharpe_delta"]),"full_dd_delta":canonical(full["dd_delta"]),
+        "stress_full_excess":canonical(stress_full["excess"]),"bootstrap_prob_positive":canonical(boot["prob_positive"],4),
+        "last_close":float(trade.Close.iloc[-1]),"last_overnight_gap":canonical(last_gap),"recent_max_abs_gap_20":canonical(recent_gap),"event_calendar_required":event_check,
+    }
+    return summary,entry_rank,grid
+
+
+def render_report(summaries: list[dict[str,Any]], manifest: dict[str,Any]) -> str:
+    ok=[s for s in summaries if s.get("status")=="OK"]
+    promoted=[s for s in ok if s["decision"]=="PROMOTE_ALPHA"]
+    risk=[s for s in ok if s["decision"]=="RISK_CONTROL_ONLY"]
+    exp=[s for s in ok if s["decision"]=="EXPERIMENTAL"]
+    lines=["# Universal daily entry/exit optimisation v3","",
+           f"Completed-close cutoff: 2026-07-20. Input aggregate: `{manifest.get('aggregate_sha256','')}`.","",
+           "Winner selection is development-only. Final holdout, stress costs and block bootstrap can only approve or reject the preselected winner.","",
+           f"Coverage: {len(ok)} successful, {len(summaries)-len(ok)} skipped; {len(promoted)} alpha promotions, {len(risk)} risk-control-only, {len(exp)} experimental.",""]
+    for group,title in [(promoted,"Production alpha promotions"),(risk,"Risk-control-only candidates"),(exp,"Experimental / short-history"),([s for s in ok if s['decision']=='REJECT'],"Rejected")]:
+        lines += [f"## {title}",""]
+        if not group: lines += ["None.",""]; continue
+        lines += ["| Symbol | Action | Mode | Entry | Exit | Overlay / stop | Holdout alpha | Holdout Sharpe Δ | Bootstrap |","|---|---|---|---|---|---|---:|---:|---:|"]
+        for s in group:
+            lines.append(f"| {s['symbol']} | {s['production_action'] if s['decision']=='PROMOTE_ALPHA' else s['diagnostic_action']} | {s['mode']} | {s['entry_family']} {s['entry_params']} | {s['exit_family']} {s['exit_params']} | {s['overlay']} / {s['stop']} | {s['holdout_excess']:.2%} | {s['holdout_sharpe_delta']:.3f} | {s['bootstrap_prob_positive']:.1%} |")
+        lines.append("")
+    skipped=[s for s in summaries if s.get("status")!="OK"]
+    if skipped:
+        lines += ["## Skipped","", *[f"- {s['symbol']}: {s.get('reason','unknown')}" for s in skipped],""]
+    lines += ["## Interpretation","",
+              "- `PROMOTE_ALPHA`: passed development, walk-forward blocks, stress costs, final holdout and bootstrap.",
+              "- `RISK_CONTROL_ONLY`: improved holdout Sharpe and drawdown but did not demonstrate reliable alpha over buy-and-hold.",
+              "- `EXPERIMENTAL`: live history is too short or the instrument is explicitly new; no production action.",
+              "- `REJECT`: the tested entry/exit family did not justify replacing buy-and-hold or taking the add-on tranche.",
+              "- `production_action=NO_ACTION` means a diagnostic signal must not be traded."]
+    return "\n".join(lines)
+
+
+def main() -> None:
+    config=load_config(); data,manifest=download_all(config)
+    summaries=[]
+    for i,asset in enumerate(config["assets"],1):
+        print(f"\n=== [{i}/{len(config['assets'])}] {asset['symbol']} ===",flush=True)
+        try:
+            summary,entries,grid=evaluate_asset(asset,data)
+        except Exception as exc:
+            summary={"symbol":asset["symbol"],"status":"ERROR","reason":f"{type(exc).__name__}: {exc}"}
+            entries=pd.DataFrame(); grid=pd.DataFrame()
+        summaries.append(summary)
+        slug=asset["symbol"].replace("^","IDX_").replace(".","_")
+        if not entries.empty: entries.to_csv(OUT/f"{slug}_entry_grid.csv",index=False)
+        if not grid.empty: grid.to_csv(OUT/f"{slug}_stage3_grid.csv",index=False)
+        print(json.dumps(summary,default=str),flush=True)
+    frame=pd.DataFrame(summaries)
+    frame.to_csv(OUT/"summary.csv",index=False)
+    report=render_report(summaries,manifest)
+    (OUT/"summary.md").write_text(report)
+    canonical_csv=frame.sort_values("symbol").to_csv(index=False,float_format="%.6f")
+    manifest["summary_sha256"]=hashlib.sha256(canonical_csv.encode()).hexdigest()
+    manifest["method"]="entry event study -> development-only exit selection -> overlays/stops -> holdout/stress/bootstrap approval"
+    (OUT/"run_manifest.json").write_text(json.dumps(manifest,indent=2))
+    print("\n"+report)
+
+
+if __name__ == "__main__":
+    main()

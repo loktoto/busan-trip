@@ -1,0 +1,54 @@
+name: Daily leverage optimisation v2
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - research/daily_leverage_20260721/optimize_regime_v2.py*
+      - research/daily_leverage_20260721/research_v2.md
+      - research/daily_leverage_20260721/ibkr_market_audit_20260721.json
+      - .github/workflows/daily-leverage-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  optimise-v2:
+    # Repeatability audit: strategy source is unchanged from the prior robust run.
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --quiet --upgrade pip pandas numpy yfinance
+      - name: Assemble and compile optimiser
+        shell: bash
+        run: |
+          cat research/daily_leverage_20260721/optimize_regime_v2.py.part?? > /tmp/optimize_regime_v2_assembled.py
+          python -m py_compile /tmp/optimize_regime_v2_assembled.py
+          python -m py_compile research/daily_leverage_20260721/optimize_regime_v2.py
+      - name: Run regime-aware optimiser
+        shell: bash
+        run: |
+          mkdir -p research_outputs/daily_leverage_v2_20260721
+          set +e
+          python research/daily_leverage_20260721/optimize_regime_v2.py > research_outputs/daily_leverage_v2_20260721/optimizer.log 2>&1
+          code=$?
+          tail -n 180 research_outputs/daily_leverage_v2_20260721/optimizer.log
+          exit $code
+      - name: Show summary
+        if: always()
+        run: |
+          test -f research_outputs/daily_leverage_v2_20260721/summary.md && cat research_outputs/daily_leverage_v2_20260721/summary.md || true
+      - name: Upload outputs and diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-leverage-v2-20260721
+          path: research_outputs/daily_leverage_v2_20260721
+          if-no-files-found: warn
+          retention-days: 14

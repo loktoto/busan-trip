@@ -1,0 +1,104 @@
+def generate_exit_rules(asset: dict[str, Any], signal: pd.DataFrame, cache: dict[str, Any], data: dict[str, pd.DataFrame]) -> list[tuple[ExitRule,pd.Series,int]]:
+    c = signal.Close
+    out: list[tuple[ExitRule,pd.Series,int]] = []
+    if asset["kind"] == "INVERSE_VOL":
+        vix = data["^VIX"].Close.reindex(c.index)
+        vix3m = data["^VIX3M"].Close.reindex(c.index)
+        vix_spike = vix.pct_change() > 0.20
+        for cap, backwardation, ma in itertools.product([25,30,35],[0.0,0.02],[20,50]):
+            exit_signal = (vix > cap) | (vix > vix3m * (1 + backwardation)) | vix_spike | (c < cache[f"sma{ma}"] * (1 - HYST))
+            out.append((ExitRule("inverse_vol_risk_off", (cap,backwardation,ma)), exit_signal, 0))
+        for hold in [10,20,40]:
+            out.append((ExitRule("time_stop", (hold,)), pd.Series(False,index=c.index), hold))
+        return out
+    for rsi_exit, ma in itertools.product([70,80,90],[10,20,50]):
+        x = (cache["rsi2"] > rsi_exit) | (c < cache[f"sma{ma}"] * (1 - HYST))
+        out.append((ExitRule("rsi_or_ma", (rsi_exit,ma)), x, 0))
+    for low in [10,20,50]:
+        out.append((ExitRule("donchian_break", (low,)), c < cache[f"low{low}"] * (1 - HYST), 0))
+    for hold in [10,20,40]:
+        out.append((ExitRule("time_stop", (hold,)), pd.Series(False,index=c.index), hold))
+    return out
+
+
+def build_overlays(asset: dict[str, Any], index: pd.DatetimeIndex, signal: pd.DataFrame, cache, data) -> dict[str,pd.Series]:
+    overlays: dict[str,pd.Series] = {"none": pd.Series(True,index=index)}
+    regime = data.get(resolve_ticker(asset["regime"]))
+    if regime is not None:
+        rc = regime.Close.reindex(index)
+        overlays["regime_trend"] = rc > rc.rolling(200).mean() * (1 + HYST)
+    bn = data.get(resolve_ticker(asset["breadth_num"])); bd = data.get(resolve_ticker(asset["breadth_den"]))
+    if bn is not None and bd is not None:
+        ratio = bn.Close.reindex(index) / bd.Close.reindex(index)
+        overlays["breadth"] = ratio > ratio.rolling(50).mean() * (1 + HYST)
+    hyg = data.get("HYG"); lqd = data.get("LQD")
+    if hyg is not None and lqd is not None:
+        credit = hyg.Close.reindex(index) / lqd.Close.reindex(index)
+        overlays["credit"] = credit > credit.rolling(50).mean() * (1 + HYST)
+    overlays["realised_vol"] = cache["rv20"].reindex(index) < 1.20 * cache["rv100"].reindex(index)
+    if regime is not None:
+        rc = regime.Close.reindex(index)
+        rel = signal.Close.reindex(index).pct_change(126) - rc.pct_change(126)
+        overlays["relative_strength"] = rel > 0.0
+    clean = {}
+    for k,v in overlays.items():
+        clean[k] = v.reindex(index).fillna(False).astype(bool)
+    clean["none"][:] = True
+    return clean
+
+
+def managed_state(entry: pd.Series, exit_: pd.Series, overlay: pd.Series, trade: pd.DataFrame,
+                  atr_series: pd.Series, stop: str, max_hold: int) -> pd.Series:
+    idx = trade.index
+    e = entry.reindex(idx).fillna(False).to_numpy(bool)
+    x = exit_.reindex(idx).fillna(False).to_numpy(bool)
+    o = overlay.reindex(idx).fillna(False).to_numpy(bool)
+    op = trade.Open.to_numpy(float); hi = trade.High.to_numpy(float); cl = trade.Close.to_numpy(float)
+    av = atr_series.reindex(idx).to_numpy(float)
+    state = np.zeros(len(idx), dtype=bool)
+    active = False; pending = False; age = 0; entry_price = np.nan; high_water = np.nan
+    for t in range(len(idx)):
+        exited = False
+        if active:
+            if pending:
+                entry_price = op[t]
+                high_water = max(op[t], hi[t])
+                pending = False
+                age = 1
+            else:
+                high_water = max(high_water, hi[t]) if np.isfinite(high_water) else hi[t]
+                age += 1
+            stop_hit = False
+            if stop == "hard8" and np.isfinite(entry_price): stop_hit = cl[t] < entry_price * 0.92
+            elif stop == "hard12" and np.isfinite(entry_price): stop_hit = cl[t] < entry_price * 0.88
+            elif stop == "atr3" and np.isfinite(high_water) and np.isfinite(av[t]): stop_hit = cl[t] < high_water - 3.0*av[t]
+            elif stop == "atr4" and np.isfinite(high_water) and np.isfinite(av[t]): stop_hit = cl[t] < high_water - 4.0*av[t]
+            if x[t] or stop_hit or (max_hold > 0 and age >= max_hold):
+                active = False; pending = False; age = 0; exited = True
+        if (not active) and (not exited) and e[t] and o[t]:
+            active = True; pending = True; age = 0
+        state[t] = active
+    return pd.Series(state,index=idx)
+
+
+def open_returns(df: pd.DataFrame) -> pd.Series:
+    return df.Open.shift(-1) / df.Open - 1
+
+
+def strategy_returns(state: pd.Series, trade: pd.DataFrame, cash: pd.DataFrame, mode: str, cost_bps: float) -> tuple[pd.Series,pd.Series]:
+    idx = trade.index.intersection(cash.index)
+    asset = open_returns(trade.loc[idx])
+    cash_r = open_returns(cash.loc[idx]).fillna(0)
+    held = state.reindex(idx).shift(1).fillna(False).astype(float)
+    if mode == "swing":
+        exposure = held
+        ret = exposure*asset + (1-exposure)*cash_r
+    elif mode == "add_on":
+        exposure = 1.0 + 0.5*held
+        ret = asset + 0.5*held*(asset-cash_r)
+    else:
+        raise ValueError(mode)
+    turnover = exposure.diff().abs().fillna(0)
+    ret = ret - turnover*cost_bps/10000.0
+    return ret.iloc[:-1], exposure.iloc[:-1]
+

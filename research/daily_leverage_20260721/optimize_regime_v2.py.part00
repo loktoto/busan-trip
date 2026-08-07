@@ -1,0 +1,109 @@
+from __future__ import annotations
+
+import itertools
+import json
+import math
+import time
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Iterable
+
+import numpy as np
+import pandas as pd
+import yfinance as yf
+
+DAYS = 252
+OUT = Path("research_outputs/daily_leverage_v2_20260721")
+OUT.mkdir(parents=True, exist_ok=True)
+END_DATE = "2026-07-21"  # yfinance end is exclusive; last completed session is 2026-07-20
+
+
+@dataclass(frozen=True)
+class AssetSpec:
+    name: str
+    native: tuple[tuple[str, float], ...]
+    implementations: tuple[tuple[str, tuple[tuple[str, float], ...], float, float, float], ...]
+    breadth_num: str
+    breadth_den: str
+    start: str
+    development_end: str
+    min_changes: int
+    trend_mas: tuple[int, ...]
+    trend_slopes: tuple[int, ...]
+    rsi_entries: tuple[int, ...]
+    lookbacks: tuple[int, ...]
+    reclaims: tuple[int, ...]
+    rsi_exits: tuple[int, ...]
+    exit_mas: tuple[int | None, ...]
+    target_vols: tuple[float | None, ...]
+    component_gate: bool = False
+    experimental: bool = False
+
+
+SPECS = (
+    AssetSpec(
+        name="SPY",
+        native=(("SPY", 1.0),),
+        implementations=(
+            ("SSO", (("SSO", 1.0),), 2.0, 2.0, 8.0),
+        ),
+        breadth_num="RSP",
+        breadth_den="SPY",
+        start="2010-01-01",
+        development_end="2024-12-31",
+        min_changes=10,
+        trend_mas=(150, 200, 250),
+        trend_slopes=(10, 20, 40),
+        rsi_entries=(10, 15, 20, 25),
+        lookbacks=(3, 5, 10, 15),
+        reclaims=(5, 10, 15, 20),
+        rsi_exits=(85, 90, 95),
+        exit_mas=(None, 20, 50),
+        target_vols=(None, 0.18, 0.22, 0.26),
+    ),
+    AssetSpec(
+        name="SOXX",
+        native=(("SOXX", 1.0),),
+        implementations=(
+            ("USD", (("USD", 1.0),), 2.0, 2.0, 25.0),
+            ("SOXL_BLEND", (("SOXL", 1.0),), 2.0, 3.0, 18.0),
+        ),
+        breadth_num="XSD",
+        breadth_den="SOXX",
+        start="2010-01-01",
+        development_end="2024-12-31",
+        min_changes=8,
+        trend_mas=(100, 150, 200, 250),
+        trend_slopes=(5, 10, 20, 40),
+        rsi_entries=(5, 10, 15, 20),
+        lookbacks=(2, 3, 5, 10),
+        reclaims=(5, 10, 15, 20, 30),
+        rsi_exits=(85, 90, 95),
+        exit_mas=(None, 20, 50, 100),
+        target_vols=(None, 0.35, 0.45, 0.55),
+    ),
+    AssetSpec(
+        name="MAGS7_TSM",
+        native=(("MAGS", 0.875), ("TSM", 0.125)),
+        implementations=(
+            ("MAGX_TSMX", (("MAGX", 0.875), ("TSMX", 0.125)), 1.5, 2.0, 80.0),
+        ),
+        breadth_num="QQEW",
+        breadth_den="QQQ",
+        start="2024-10-03",
+        development_end="2025-12-31",
+        min_changes=2,
+        trend_mas=(100, 150, 200),
+        trend_slopes=(5, 10, 20),
+        rsi_entries=(5, 10, 15, 20),
+        lookbacks=(3, 5, 10),
+        reclaims=(5, 10, 15, 20),
+        rsi_exits=(85, 90, 95),
+        exit_mas=(None, 20, 50),
+        target_vols=(None, 0.30, 0.40),
+        component_gate=True,
+        experimental=True,
+    ),
+)
+
+OVERLAYS = (
