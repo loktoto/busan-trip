@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-09T16:58:26+08:00",
+  "updated_at": "2026-08-10T17:01:22+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -63,15 +63,15 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-08T07:56:42+08:00",
-        "mark_observed_at_et": "2026-08-07T19:56:42-04:00",
-        "mark_price": 71.86,
-        "mark_price_type": "SSO_BID_AFTER_HOURS_CONTEXT",
-        "gross_return_pct": 1.32543711,
-        "current_spread_pct": 0.11126565,
+        "mark_observed_at_hkt": "2026-08-10T17:01:22+08:00",
+        "mark_observed_at_et": "2026-08-10T05:01:22-04:00",
+        "mark_price": 71.92,
+        "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
+        "gross_return_pct": 1.41003948,
+        "current_spread_pct": 0.02780481,
         "completed_holding_sessions": 4,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
-        "note": "After-hours mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
+        "note": "Premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
