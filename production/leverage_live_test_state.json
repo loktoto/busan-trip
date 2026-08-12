@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-11T17:00:28+08:00",
+  "updated_at": "2026-08-12T16:59:51+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,11 +22,11 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-10",
-          "SPY_close": 773.03,
-          "SPY_prior_close": 773.26,
-          "SMA50": 747.5576,
-          "RV40": 0.13765951,
+          "completed_bar_date": "2026-08-11",
+          "SPY_close": 770.56,
+          "SPY_prior_close": 773.03,
+          "SMA50": 747.8392,
+          "RV40": 0.13765575,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
           "alpaca_completed_close_parity": "PASS"
         }
@@ -63,19 +63,19 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-11T17:00:28+08:00",
-        "mark_observed_at_et": "2026-08-11T05:00:28-04:00",
-        "mark_price": 71.61,
+        "mark_observed_at_hkt": "2026-08-12T16:59:51+08:00",
+        "mark_observed_at_et": "2026-08-12T04:59:51-04:00",
+        "mark_price": 71.4,
         "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
-        "gross_return_pct": 0.97292724,
-        "current_spread_pct": 0.02792516,
-        "completed_holding_sessions": 5,
+        "gross_return_pct": 0.67681895,
+        "current_spread_pct": 0.01400462,
+        "completed_holding_sessions": 6,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
         "note": "Premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca delayed-SIP completed-close parity passed through 2026-08-10 for SPY and SSO",
+        "parity": "Alpaca delayed-SIP completed-close parity passed through 2026-08-11 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
