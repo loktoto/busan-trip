@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-14T17:00:16+08:00",
+  "updated_at": "2026-08-15T17:00:00+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,11 +22,11 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-13",
-          "SPY_close": 777.88,
-          "SPY_prior_close": 772.49,
-          "SMA50": 748.4843999999998,
-          "RV40": 0.13073846910131692,
+          "completed_bar_date": "2026-08-14",
+          "SPY_close": 776.34,
+          "SPY_prior_close": 777.88,
+          "SMA50": 748.9263999999998,
+          "RV40": 0.1263543659281262,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
           "alpaca_completed_close_parity": "PASS"
         }
@@ -63,19 +63,19 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-14T17:00:16+08:00",
-        "mark_observed_at_et": "2026-08-14T05:00:16-04:00",
-        "mark_price": 72.58,
-        "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
-        "gross_return_pct": 2.3406655386350783,
-        "current_spread_pct": 0.013776951160715182,
-        "completed_holding_sessions": 8,
+        "mark_observed_at_hkt": "2026-08-15T17:00:00+08:00",
+        "mark_observed_at_et": "2026-08-15T05:00:00-04:00",
+        "mark_price": 72.14,
+        "mark_price_type": "SSO_BID_LAST_OBSERVED_FRIDAY_AFTER_HOURS_CONTEXT",
+        "gross_return_pct": 1.720248166948668,
+        "current_spread_pct": 0.11083402604599374,
+        "completed_holding_sessions": 9,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
-        "note": "Premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
+        "note": "Weekend market closed. Mark uses the latest observable Friday after-hours IBKR bid and is context only; it is not a live Saturday quote. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca delayed-SIP completed-close parity passed through 2026-08-13 for SPY and SSO",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-14 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
