@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-15T17:00:00+08:00",
+  "updated_at": "2026-08-17T17:04:26+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -63,19 +63,19 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-15T17:00:00+08:00",
-        "mark_observed_at_et": "2026-08-15T05:00:00-04:00",
-        "mark_price": 72.14,
-        "mark_price_type": "SSO_BID_LAST_OBSERVED_FRIDAY_AFTER_HOURS_CONTEXT",
-        "gross_return_pct": 1.720248166948668,
-        "current_spread_pct": 0.11083402604599374,
+        "mark_observed_at_hkt": "2026-08-17T17:04:26+08:00",
+        "mark_observed_at_et": "2026-08-17T05:04:26-04:00",
+        "mark_price": 72.39,
+        "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
+        "gross_return_pct": 2.072758037225042,
+        "current_spread_pct": 0.027624309392259693,
         "completed_holding_sessions": 9,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
-        "note": "Weekend market closed. Mark uses the latest observable Friday after-hours IBKR bid and is context only; it is not a live Saturday quote. Exit remains governed by the documented completed-RTH invalidation policy."
+        "note": "Fresh premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-14 for SPY and SSO",
+        "parity": "Alpaca IEX completed-close parity passed through 2026-08-14 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
