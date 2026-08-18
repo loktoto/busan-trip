@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-18T17:05:40+08:00",
+  "updated_at": "2026-08-18T17:06:48+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -76,6 +76,49 @@
       "data_policy": {
         "market_data_primary": "IBKR",
         "parity": "Alpaca SIP completed-close parity passed through 2026-08-17 for SPY and SSO",
+        "no_raw_licensed_data_committed": true,
+        "no_account_or_order_data_committed": true,
+        "simulated_or_observed_record_not_broker_execution": true
+      }
+    },
+    {
+      "test_id": "QQQ_QLD_20260817_01",
+      "underlying": "QQQ",
+      "vehicle": "QLD",
+      "direction": "LONG",
+      "state": "PENDING_ENTRY",
+      "signal": {
+        "signal_date": "2026-08-17",
+        "decision": "ENTER_LEVERAGE",
+        "authority": "PRODUCTION_LIVE_TEST",
+        "source_layer": "VALIDATED_RESEARCH_SIGNAL",
+        "final_confidence": 6.4,
+        "validation_status": "PASSED",
+        "original_completed_close": 729.87,
+        "original_SMA50": 712.7353999999999,
+        "original_RV40": 0.24184522933416205,
+        "candidate_vehicle": "QLD_2X",
+        "trigger": "QQQ completed close above SMA50 and 700 while RV40 fell below 0.25",
+        "alpaca_completed_close_parity": "PASS"
+      },
+      "activation": {
+        "eligible_session": "2026-08-18_US_RTH",
+        "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, QQQ must remain at or above the then-current SMA50, QLD must not be halted, and QLD bid-ask spread must be at or below 0.15 percent.",
+        "recorded_long_entry_price": "QLD_ask",
+        "exact_open_handling": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
+        "status": "AWAITING_RTH_OBSERVATION"
+      },
+      "invalidation": {
+        "primary": "QQQ completed RTH close below the then-current SMA50 or below 700",
+        "risk": "RV40 at or above 0.30",
+        "exit_pricing": "Record long exit using the first fresh qualifying IBKR bid after a documented exit or invalidation trigger."
+      },
+      "entry": null,
+      "exit": null,
+      "performance": null,
+      "data_policy": {
+        "market_data_primary": "IBKR",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-17 for QQQ and QLD",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
