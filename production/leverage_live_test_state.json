@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-18T17:06:48+08:00",
+  "updated_at": "2026-08-19T17:04:27+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,11 +22,11 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-17",
-          "SPY_close": 772.67,
-          "SPY_prior_close": 776.34,
-          "SMA50": 749.2379999999998,
-          "RV40": 0.1260364040258233,
+          "completed_bar_date": "2026-08-18",
+          "SPY_close": 767.45,
+          "SPY_prior_close": 772.67,
+          "SMA50": 749.8359999999998,
+          "RV40": 0.12710324060707137,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
           "alpaca_completed_close_parity": "PASS"
         }
@@ -63,19 +63,19 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-18T17:05:40+08:00",
-        "mark_observed_at_et": "2026-08-18T05:05:40-04:00",
-        "mark_price": 70.78,
+        "mark_observed_at_hkt": "2026-08-19T17:04:27+08:00",
+        "mark_observed_at_et": "2026-08-19T05:04:27-04:00",
+        "mark_price": 70.62,
         "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
-        "gross_return_pct": -0.1974055273547659,
-        "current_spread_pct": 0.028252578047741242,
-        "completed_holding_sessions": 10,
+        "gross_return_pct": -0.4230118443316333,
+        "current_spread_pct": 0.014159292035385351,
+        "completed_holding_sessions": 11,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
         "note": "Fresh premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-17 for SPY and SSO",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-18 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
@@ -99,14 +99,24 @@
         "original_RV40": 0.24184522933416205,
         "candidate_vehicle": "QLD_2X",
         "trigger": "QQQ completed close above SMA50 and 700 while RV40 fell below 0.25",
-        "alpaca_completed_close_parity": "PASS"
+        "alpaca_completed_close_parity": "PASS",
+        "latest_revalidation": {
+          "completed_bar_date": "2026-08-18",
+          "QQQ_close": 717.51,
+          "QQQ_prior_close": 729.87,
+          "SMA50": 712.9844000000002,
+          "RV40": 0.24532825193084648,
+          "result": "PASSED_SIGNAL_REMAINS_VALID",
+          "alpaca_completed_close_parity": "PASS"
+        }
       },
       "activation": {
-        "eligible_session": "2026-08-18_US_RTH",
+        "eligible_session": "2026-08-19_US_RTH",
         "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, QQQ must remain at or above the then-current SMA50, QLD must not be halted, and QLD bid-ask spread must be at or below 0.15 percent.",
         "recorded_long_entry_price": "QLD_ask",
         "exact_open_handling": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
-        "status": "AWAITING_RTH_OBSERVATION"
+        "status": "REVALIDATED_AWAITING_RTH_OBSERVATION",
+        "missed_session_note": "No qualifying fresh IBKR RTH observation was captured on 2026-08-18; no retrospective entry was recorded."
       },
       "invalidation": {
         "primary": "QQQ completed RTH close below the then-current SMA50 or below 700",
@@ -118,7 +128,7 @@
       "performance": null,
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-17 for QQQ and QLD",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-18 for QQQ and QLD",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
