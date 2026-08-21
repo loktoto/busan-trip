@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-20T17:05:00+08:00",
+  "updated_at": "2026-08-21T17:00:00+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,11 +22,11 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-19",
-          "SPY_close": 769.06,
-          "SPY_prior_close": 767.45,
-          "SMA50": 750.4327999999997,
-          "RV40": 0.1208545377990302,
+          "completed_bar_date": "2026-08-20",
+          "SPY_close": 762.6,
+          "SPY_prior_close": 769.06,
+          "SMA50": 750.9437999999998,
+          "RV40": 0.12318375122977307,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
           "alpaca_completed_close_parity": "PASS"
         }
@@ -63,30 +63,32 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-20T17:05:00+08:00",
-        "mark_observed_at_et": "2026-08-20T05:05:00-04:00",
-        "mark_price": 70.68,
+        "mark_observed_at_hkt": "2026-08-21T17:00:00+08:00",
+        "mark_observed_at_et": "2026-08-21T05:00:00-04:00",
+        "mark_price": 70.06,
         "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
-        "gross_return_pct": -0.33840947546530664,
-        "current_spread_pct": 0.01414727311309458,
-        "completed_holding_sessions": 12,
+        "gross_return_pct": -1.212633953750708,
+        "current_spread_pct": 0.014272461285935782,
+        "completed_holding_sessions": 13,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
         "note": "Fresh premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-19 for SPY and SSO",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-20 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
       }
-    },
+    }
+  ],
+  "closed_tests": [
     {
       "test_id": "QQQ_QLD_20260817_01",
       "underlying": "QQQ",
       "vehicle": "QLD",
       "direction": "LONG",
-      "state": "PENDING_ENTRY",
+      "state": "CANCELLED",
       "signal": {
         "signal_date": "2026-08-17",
         "decision": "ENTER_LEVERAGE",
@@ -101,12 +103,12 @@
         "trigger": "QQQ completed close above SMA50 and 700 while RV40 fell below 0.25",
         "alpaca_completed_close_parity": "PASS",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-19",
-          "QQQ_close": 716.08,
-          "QQQ_prior_close": 717.51,
-          "SMA50": 712.9846000000002,
-          "RV40": 0.23083507697881905,
-          "result": "PASSED_SIGNAL_REMAINS_VALID",
+          "completed_bar_date": "2026-08-20",
+          "QQQ_close": 710.93,
+          "QQQ_prior_close": 716.08,
+          "SMA50": 713.0466000000001,
+          "RV40": 0.2313186292969612,
+          "result": "FAILED_SIGNAL_INVALIDATED_BELOW_SMA50",
           "alpaca_completed_close_parity": "PASS"
         }
       },
@@ -115,8 +117,8 @@
         "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, QQQ must remain at or above the then-current SMA50, QLD must not be halted, and QLD bid-ask spread must be at or below 0.15 percent.",
         "recorded_long_entry_price": "QLD_ask",
         "exact_open_handling": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
-        "status": "REVALIDATED_AWAITING_RTH_OBSERVATION",
-        "missed_session_note": "No qualifying fresh IBKR RTH observation was captured on 2026-08-19; no retrospective entry was recorded. At the 2026-08-20 revalidation run the market remained premarket, so activation still awaits a fresh qualifying 2026-08-20 RTH observation."
+        "status": "CANCELLED_BEFORE_ENTRY",
+        "missed_session_note": "No qualifying fresh IBKR RTH entry observation was ever recorded. The pending signal was cancelled prospectively after the 2026-08-20 completed RTH close fell below the then-current SMA50."
       },
       "invalidation": {
         "primary": "QQQ completed RTH close below the then-current SMA50 or below 700",
@@ -128,12 +130,22 @@
       "performance": null,
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-19 for QQQ and QLD",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-20 for QQQ and QLD",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
+      },
+      "cancellation": {
+        "trigger_completed_bar_date": "2026-08-20",
+        "observed_at_hkt": "2026-08-21T17:00:00+08:00",
+        "observed_at_et": "2026-08-21T05:00:00-04:00",
+        "QQQ_close": 710.93,
+        "SMA50": 713.0466000000001,
+        "RV40": 0.2313186292969612,
+        "reason": "QQQ_COMPLETED_RTH_CLOSE_BELOW_THEN_CURRENT_SMA50",
+        "entry_was_recorded": false,
+        "broker_execution": false
       }
     }
-  ],
-  "closed_tests": []
+  ]
 }
