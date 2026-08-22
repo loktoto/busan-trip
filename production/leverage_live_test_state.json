@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-21T17:00:00+08:00",
+  "updated_at": "2026-08-22T17:00:27+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,11 +22,11 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-20",
-          "SPY_close": 762.6,
-          "SPY_prior_close": 769.06,
-          "SMA50": 750.9437999999998,
-          "RV40": 0.12318375122977307,
+          "completed_bar_date": "2026-08-21",
+          "SPY_close": 765.72,
+          "SPY_prior_close": 762.6,
+          "SMA50": 751.7495999999999,
+          "RV40": 0.12342278204336808,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
           "alpaca_completed_close_parity": "PASS"
         }
@@ -63,19 +63,19 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-21T17:00:00+08:00",
-        "mark_observed_at_et": "2026-08-21T05:00:00-04:00",
-        "mark_price": 70.06,
-        "mark_price_type": "SSO_BID_PREMARKET_CONTEXT",
-        "gross_return_pct": -1.212633953750708,
-        "current_spread_pct": 0.014272461285935782,
-        "completed_holding_sessions": 13,
+        "mark_observed_at_hkt": "2026-08-22T07:59:40+08:00",
+        "mark_observed_at_et": "2026-08-21T19:59:40-04:00",
+        "mark_price": 70.2,
+        "mark_price_type": "SSO_BID_LAST_OBSERVED_AFTER_HOURS_NOT_LIVE",
+        "gross_return_pct": -1.0152284263959421,
+        "current_spread_pct": 0.2134471718249612,
+        "completed_holding_sessions": 14,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
-        "note": "Fresh premarket mark is context only. Exit remains governed by the documented completed-RTH invalidation policy."
+        "note": "Weekend market closed. This is the last observed Friday after-hours bid, not a live or currently executable quote. Exit remains governed by completed-RTH invalidation and a future fresh qualifying IBKR bid after any trigger."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca SIP completed-close parity passed through 2026-08-20 for SPY and SSO",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-21 for SPY and SSO",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
