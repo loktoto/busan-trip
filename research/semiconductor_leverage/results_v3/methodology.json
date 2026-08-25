@@ -1,0 +1,13 @@
+{
+  "generated_utc": "2026-07-23T03:49:18.218845+00:00",
+  "data_end": "2026-07-22",
+  "method": "actual adjusted ETF OHLC; completed close signal; next-open execution; 10bps changes",
+  "families": [
+    "pullback reclaim",
+    "trailing stop",
+    "trend",
+    "vol targeting",
+    "MHT",
+    "trend-pullback hybrid"
+  ]
+}

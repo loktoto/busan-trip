@@ -1,0 +1,67 @@
+name: Semiconductor Leverage Audit
+
+on:
+  push:
+    branches:
+      - research/semiconductor-leverage-audit-20260722-v2
+    paths:
+      - research/semiconductor_leverage/semiconductor_leverage_audit.py
+      - research/semiconductor_leverage/run_audit_fixed.py
+      - .github/workflows/semiconductor-leverage-audit.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - research/semiconductor_leverage/semiconductor_leverage_audit.py
+      - research/semiconductor_leverage/run_audit_fixed.py
+      - .github/workflows/semiconductor-leverage-audit.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: research/semiconductor-leverage-audit-20260722-v2
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip pandas numpy yfinance
+
+      - name: Run daily strategy audit
+        shell: bash
+        run: |
+          mkdir -p research/semiconductor_leverage/results
+          set -o pipefail
+          python research/semiconductor_leverage/run_audit_fixed.py 2>&1 | tee research/semiconductor_leverage/results/run.log
+
+      - name: Commit reproducible results
+        if: success() && github.event_name != 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add research/semiconductor_leverage/results
+          if git diff --cached --quiet; then
+            echo "No result changes"
+          else
+            git commit -m "Update semiconductor leverage audit results"
+            git push origin HEAD:research/semiconductor-leverage-audit-20260722-v2
+          fi
+
+      - name: Upload audit artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: semiconductor-leverage-audit
+          path: research/semiconductor_leverage/results
