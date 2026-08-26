@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-25T17:02:19+08:00",
+  "updated_at": "2026-08-26T17:03:03+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -22,13 +22,13 @@
         "original_RV40": 0.1536,
         "candidate_vehicle": "SSO_2X",
         "latest_revalidation": {
-          "completed_bar_date": "2026-08-24",
-          "SPY_close": 763.47,
-          "SPY_prior_close": 765.72,
-          "SMA50": 752.2638,
-          "RV40": 0.12201774988493815,
+          "completed_bar_date": "2026-08-25",
+          "SPY_close": 765.91,
+          "SPY_prior_close": 763.47,
+          "SMA50": 752.747,
+          "RV40": 0.115651880580923,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
-          "alpaca_completed_close_parity": "PASS_IEX_FALLBACK"
+          "alpaca_completed_close_parity": "PASS_SIP"
         }
       },
       "activation": {
@@ -36,7 +36,10 @@
         "entry_rule": "At the first fresh observed qualifying IBKR RTH quote, SPY must be at or above the then-current SMA50, SSO must not be halted, and SSO bid-ask spread must be at or below 0.15 percent.",
         "recorded_long_entry_price": "SSO_ask",
         "exact_open_handling": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN",
-        "status": "ACTIVATED"
+        "status": "ACTIVATED",
+        "entry_observation_latency_minutes": 146.88333333333333,
+        "execution_fidelity": "LOW",
+        "execution_fidelity_label": "DELAYED_ENTRY_OBSERVATION"
       },
       "invalidation": {
         "primary": "SPY completed RTH close below the then-current SMA50",
@@ -63,19 +66,26 @@
       },
       "exit": null,
       "performance": {
-        "mark_observed_at_hkt": "2026-08-25T17:02:19+08:00",
-        "mark_observed_at_et": "2026-08-25T05:02:19-04:00",
-        "mark_price": 70.21,
+        "mark_observed_at_hkt": "2026-08-26T17:03:03+08:00",
+        "mark_observed_at_et": "2026-08-26T05:03:03-04:00",
+        "mark_price": 70.09,
         "mark_price_type": "SSO_BID_FRESH_PREMARKET_CONTEXT_ONLY",
-        "gross_return_pct": -1.001128031584897,
-        "current_spread_pct": 0.014241971088805976,
+        "gross_return_pct": -1.1703327693175392,
+        "estimated_round_trip_half_spread_drag_pct": 0.014183871403445968,
+        "current_spread_pct": 0.014266352806891938,
+        "configured_transaction_cost_pct": null,
+        "net_return_pct": null,
+        "net_return_note": "Ask-to-current-bid gross return already embeds observed entry/mark spread. Net return after commission is N/A because no transaction-cost assumption is configured.",
+        "maximum_adverse_excursion_pct_completed_daily_from_first_full_session": -2.0445572476029406,
+        "maximum_favourable_excursion_pct_completed_daily_from_first_full_session": 2.6508742244782724,
+        "max_drawdown_pct_completed_daily_closes_from_entry": -4.0126861555432995,
         "completed_holding_sessions": 15,
         "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
         "note": "Fresh IBKR premarket bid used only for mark-to-exit-side P&L. Exit remains governed by completed-RTH invalidation and a future fresh qualifying IBKR bid after any trigger."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
-        "parity": "Alpaca IEX fallback completed-close parity passed through 2026-08-24 for SPY and SSO; SIP and delayed-SIP were unavailable.",
+        "parity": "Alpaca SIP completed-close parity passed through 2026-08-25 for SPY and SSO.",
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
