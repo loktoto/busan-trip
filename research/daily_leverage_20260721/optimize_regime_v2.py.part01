@@ -1,0 +1,109 @@
+    "none",
+    "credit_level",
+    "credit_slope",
+    "breadth_level",
+    "breadth_slope",
+    "rv_ratio",
+    "vix_below_30",
+    "vix_contango",
+    "credit_breadth",
+    "credit_rv",
+    "breadth_rv",
+    "triple_risk_on",
+)
+
+
+@dataclass(frozen=True)
+class BaselineParams:
+    trend_ma: int
+    trend_slope: int
+    rsi_entry: int
+    lookback: int
+    reclaim: int
+    rsi_exit: int
+    exit_ma: int | None
+
+
+@dataclass(frozen=True)
+class Candidate:
+    baseline_id: int
+    implementation: str
+    overlay: str
+    target_vol: float | None
+
+
+def rsi(close: pd.Series, n: int = 2) -> pd.Series:
+    delta = close.diff()
+    gain = delta.clip(lower=0)
+    loss = -delta.clip(upper=0)
+    avg_gain = gain.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+    avg_loss = loss.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+    rs = avg_gain / avg_loss.replace(0, np.nan)
+    out = 100 - 100 / (1 + rs)
+    out[(avg_loss == 0) & (avg_gain > 0)] = 100
+    out[(avg_gain == 0) & (avg_loss > 0)] = 0
+    return out
+
+
+def annualised_realised_vol(close: pd.Series, window: int) -> pd.Series:
+    return close.pct_change().rolling(window).std(ddof=1) * math.sqrt(DAYS)
+
+
+def download_with_retry(tickers: Iterable[str], start: str = "2008-01-01") -> dict[str, pd.DataFrame]:
+    tickers = sorted(set(tickers))
+    last_error: Exception | None = None
+    for attempt in range(3):
+        try:
+            raw = yf.download(
+                tickers,
+                start=start,
+                end=END_DATE,
+                auto_adjust=True,
+                actions=False,
+                repair=True,
+                progress=False,
+                group_by="ticker",
+                threads=True,
+            )
+            result: dict[str, pd.DataFrame] = {}
+            for ticker in tickers:
+                if isinstance(raw.columns, pd.MultiIndex):
+                    if ticker not in raw.columns.get_level_values(0):
+                        raise RuntimeError(f"Missing ticker {ticker}")
+                    df = raw[ticker].copy()
+                else:
+                    df = raw.copy()
+                df.columns = [str(c).title() for c in df.columns]
+                needed = ["Open", "High", "Low", "Close", "Volume"]
+                df = df[needed].dropna(subset=["Open", "Close"])
+                df.index = pd.to_datetime(df.index).tz_localize(None)
+                if df.empty:
+                    raise RuntimeError(f"No data for {ticker}")
+                result[ticker] = df
+            return result
+        except Exception as exc:  # pragma: no cover - network retry path
+            last_error = exc
+            time.sleep(3 * (attempt + 1))
+    raise RuntimeError(f"Download failed after retries: {last_error}")
+
+
+def basket(data: dict[str, pd.DataFrame], legs: tuple[tuple[str, float], ...]) -> pd.DataFrame:
+    idx: pd.DatetimeIndex | None = None
+    for ticker, _ in legs:
+        idx = data[ticker].index if idx is None else idx.intersection(data[ticker].index)
+    if idx is None or idx.empty:
+        raise RuntimeError(f"No common dates for {legs}")
+    out = pd.DataFrame(index=idx)
+    for field in ("Open", "High", "Low", "Close"):
+        parts = []
+        for ticker, weight in legs:
+            series = data[ticker].loc[idx, field]
+            parts.append(weight * series / series.iloc[0])
+        out[field] = pd.concat(parts, axis=1).sum(axis=1)
+    out["Volume"] = 0.0
+    return out
+
+
+def open_to_open_return(frame: pd.DataFrame) -> pd.Series:
+    return frame["Open"].shift(-1) / frame["Open"] - 1
+

@@ -1,0 +1,99 @@
+    df.columns = [str(c).title() for c in df.columns]
+    needed = ["Open", "High", "Low", "Close", "Volume"]
+    if any(c not in df.columns for c in needed):
+        return None
+    df = df[needed].apply(pd.to_numeric, errors="coerce").dropna(subset=["Open", "Close"])
+    idx = pd.to_datetime(df.index)
+    if getattr(idx, "tz", None) is not None:
+        idx = idx.tz_convert(None)
+    df.index = idx.normalize()
+    df = df[~df.index.duplicated(keep="last")].sort_index()
+    return None if len(df) < 80 else df
+
+
+def frame_hash(df: pd.DataFrame) -> str:
+    canonical = df.copy().round({"Open": 8, "High": 8, "Low": 8, "Close": 8, "Volume": 2})
+    return hashlib.sha256(canonical.to_csv(date_format="%Y-%m-%d").encode()).hexdigest()
+
+
+def download_ticker(ticker: str) -> tuple[pd.DataFrame | None, list[str]]:
+    errors: list[str] = []
+    for attempt in range(4):
+        try:
+            raw = yf.download(
+                ticker, start=START_DATE, end=END_DATE, auto_adjust=True,
+                actions=False, progress=False, threads=False,
+            )
+            frame = clean_frame(raw, ticker)
+            if frame is not None:
+                return frame, errors
+            errors.append(f"attempt {attempt + 1}: empty/invalid")
+        except Exception as exc:
+            errors.append(f"attempt {attempt + 1}: {type(exc).__name__}: {exc}")
+        time.sleep(2 * (attempt + 1))
+    return None, errors
+
+
+def load_config() -> dict[str, Any]:
+    if not CONFIG_PATH.exists():
+        raise FileNotFoundError(CONFIG_PATH)
+    return json.loads(CONFIG_PATH.read_text())
+
+
+def resolve_ticker(ticker: str) -> str:
+    return TICKER_ALIASES.get(ticker, ticker)
+
+
+def download_all(config: dict[str, Any]) -> tuple[dict[str, pd.DataFrame], dict[str, Any]]:
+    required = {"BIL", "HYG", "LQD"}
+    for a in config["assets"]:
+        required.update(resolve_ticker(x) for x in [a["symbol"], a["signal"], a["regime"], a["breadth_num"], a["breadth_den"]])
+    data: dict[str, pd.DataFrame] = {}
+    manifest: dict[str, Any] = {"tickers": {}, "missing": {}}
+    for i, ticker in enumerate(sorted(required), 1):
+        frame, errors = download_ticker(ticker)
+        if frame is None:
+            manifest["missing"][ticker] = errors
+            print(f"[{i}/{len(required)}] missing {ticker}: {' | '.join(errors)}", flush=True)
+            continue
+        data[ticker] = frame
+        digest = frame_hash(frame)
+        frame.to_csv(INPUT_DIR / f"{ticker.replace('^','IDX_').replace('/','_')}.csv.gz", compression="gzip")
+        manifest["tickers"][ticker] = {
+            "rows": len(frame), "start": str(frame.index.min().date()), "end": str(frame.index.max().date()),
+            "sha256": digest, "last_close": float(frame.Close.iloc[-1]),
+        }
+        print(f"[{i}/{len(required)}] {ticker}: {len(frame)} rows", flush=True)
+    aggregate = "".join(f"{k}:{manifest['tickers'][k]['sha256']}\n" for k in sorted(manifest["tickers"]))
+    manifest["aggregate_sha256"] = hashlib.sha256(aggregate.encode()).hexdigest()
+    (OUT / "input_manifest.json").write_text(json.dumps(manifest, indent=2))
+    return data, manifest
+
+
+def align_asset(asset: dict[str, Any], data: dict[str, pd.DataFrame]):
+    trade = data.get(resolve_ticker(asset["symbol"]))
+    signal = data.get(resolve_ticker(asset["signal"]))
+    if trade is None or signal is None:
+        return None
+    idx = trade.index.intersection(signal.index)
+    if len(idx) < 160:
+        return None
+    return trade.loc[idx].copy(), signal.loc[idx].copy()
+
+
+def split_dates(index: pd.DatetimeIndex, experimental: bool) -> tuple[pd.Timestamp, pd.Timestamp, list[tuple[pd.Timestamp,pd.Timestamp]]]:
+    if len(index) >= 1000 and index.min() < pd.Timestamp("2021-01-01"):
+        holdout_start = max(pd.Timestamp("2024-01-01"), index[int(len(index) * 0.72)])
+    elif len(index) >= 600:
+        holdout_start = index[int(len(index) * 0.68)]
+    else:
+        holdout_start = index[int(len(index) * 0.60)]
+    dev_end = index[index < holdout_start].max()
+    dev_idx = index[index <= dev_end]
+    if len(dev_idx) < 120:
+        raise RuntimeError("insufficient development sample")
+    cuts = [dev_idx[int(len(dev_idx)*0.40)], dev_idx[int(len(dev_idx)*0.70)]]
+    blocks = [
+        (dev_idx.min(), cuts[0] - pd.Timedelta(days=1)),
+        (cuts[0], cuts[1] - pd.Timedelta(days=1)),
+        (cuts[1], dev_end),

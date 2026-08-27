@@ -1,0 +1,96 @@
+from __future__ import annotations
+
+import hashlib
+import itertools
+import json
+import math
+import time
+from dataclasses import dataclass, asdict
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+import yfinance as yf
+
+DAYS = 252
+END_DATE = "2026-07-21"  # exclusive: last completed US session 2026-07-20
+START_DATE = "2005-01-01"
+HYST = 0.0001  # 1bp dead-band against adjusted-price float noise
+OUT = Path("research_outputs/universal_entry_exit_v3_20260721")
+OUT.mkdir(parents=True, exist_ok=True)
+INPUT_DIR = OUT / "inputs"
+INPUT_DIR.mkdir(parents=True, exist_ok=True)
+CONFIG_PATH = Path("research/universal_entry_exit_20260721/universe_v3.json")
+TICKER_ALIASES = {"WRD": "WRD.PA"}  # HSBC MSCI World Paris listing; avoid the unrelated U.S. ADR
+
+
+@dataclass(frozen=True)
+class EntryRule:
+    family: str
+    params: tuple[Any, ...]
+
+
+@dataclass(frozen=True)
+class ExitRule:
+    family: str
+    params: tuple[Any, ...]
+
+
+def rsi(close: pd.Series, n: int = 2) -> pd.Series:
+    d = close.diff()
+    gain = d.clip(lower=0)
+    loss = -d.clip(upper=0)
+    ag = gain.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+    al = loss.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+    rs = ag / al.replace(0, np.nan)
+    out = 100 - 100 / (1 + rs)
+    out[(al == 0) & (ag > 0)] = 100
+    out[(ag == 0) & (al > 0)] = 0
+    return out
+
+
+def atr(df: pd.DataFrame, n: int = 14) -> pd.Series:
+    pc = df["Close"].shift(1)
+    tr = pd.concat([
+        df["High"] - df["Low"],
+        (df["High"] - pc).abs(),
+        (df["Low"] - pc).abs(),
+    ], axis=1).max(axis=1)
+    return tr.ewm(alpha=1 / n, adjust=False, min_periods=n).mean()
+
+
+def metrics(ret: pd.Series) -> dict[str, float]:
+    x = ret.replace([np.inf, -np.inf], np.nan).dropna()
+    if len(x) < 40:
+        return {"cagr": np.nan, "sharpe": np.nan, "maxdd": np.nan, "vol": np.nan}
+    eq = (1 + x).cumprod()
+    years = max((x.index[-1] - x.index[0]).days / 365.25, len(x) / DAYS)
+    cagr = float(eq.iloc[-1] ** (1 / years) - 1)
+    vol = float(x.std(ddof=1) * math.sqrt(DAYS))
+    sharpe = float(x.mean() * DAYS / vol) if vol > 0 else np.nan
+    dd = eq / eq.cummax() - 1
+    return {"cagr": cagr, "sharpe": sharpe, "maxdd": float(dd.min()), "vol": vol}
+
+
+def interval_metrics(strategy: pd.Series, benchmark: pd.Series, start, end) -> dict[str, float]:
+    s = metrics(strategy.loc[start:end])
+    b = metrics(benchmark.loc[start:end])
+    return {
+        "cagr": s["cagr"], "sharpe": s["sharpe"], "maxdd": s["maxdd"],
+        "benchmark_cagr": b["cagr"], "benchmark_sharpe": b["sharpe"], "benchmark_maxdd": b["maxdd"],
+        "excess": s["cagr"] - b["cagr"],
+        "sharpe_delta": s["sharpe"] - b["sharpe"],
+        "dd_delta": s["maxdd"] - b["maxdd"],
+    }
+
+
+def clean_frame(raw: pd.DataFrame, ticker: str) -> pd.DataFrame | None:
+    if raw is None or raw.empty:
+        return None
+    df = raw.copy()
+    if isinstance(df.columns, pd.MultiIndex):
+        if ticker in df.columns.get_level_values(0):
+            df = df[ticker].copy()
+        elif ticker in df.columns.get_level_values(1):
+            df = df.xs(ticker, axis=1, level=1).copy()

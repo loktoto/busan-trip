@@ -1,0 +1,5 @@
+Universal V4.1 repeatability audit run 2.
+Strategy/config source is frozen at PR #7 head lineage; no entry, exit, overlay, cost or promotion threshold changed.
+Required output: six deterministic shards plus canonical aggregate summary.
+Expected prior canonical summary SHA-256: 393821bc4a26c3b1c2e973bd5af76ae43fe8b82bb23e9534f7130f05037f8af7.
+Completed-close cutoff: 2026-07-21.
