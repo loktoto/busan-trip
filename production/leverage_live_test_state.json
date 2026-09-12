@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-08-31T21:34:03+08:00",
+  "updated_at": "2026-09-12T17:01:49+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
   "active_tests": [
@@ -9,7 +9,7 @@
       "underlying": "SPY",
       "vehicle": "SSO",
       "direction": "LONG",
-      "state": "OPEN",
+      "state": "PENDING_EXIT",
       "signal": {
         "signal_date": "2026-07-31",
         "decision": "ENTER_LEVERAGE",
@@ -24,7 +24,7 @@
         "latest_revalidation": {
           "completed_bar_date": "2026-08-28",
           "SPY_close": 769.35,
-          "SPY_prior_close": 771.10,
+          "SPY_prior_close": 771.1,
           "SMA50": 753.9552,
           "RV40": 0.1152317766,
           "result": "PASSED_SIGNAL_REMAINS_VALID",
@@ -79,9 +79,9 @@
         "maximum_adverse_excursion_pct_completed_daily_from_first_full_session": -2.0445572476029406,
         "maximum_favourable_excursion_pct_completed_daily_from_first_full_session": 2.6508742244782724,
         "max_drawdown_pct_completed_daily_closes_from_entry": -4.0126861555432995,
-        "completed_holding_sessions": 18,
-        "status": "OPEN_SIGNAL_VALID_NO_EXIT_TRIGGER",
-        "note": "Fresh IBKR RTH bid used only for mark-to-exit-side P&L. Exit remains governed by completed-RTH invalidation and a future fresh qualifying IBKR bid after any trigger."
+        "completed_holding_sessions": 27,
+        "status": "PENDING_EXIT_AWAITING_FRESH_IBKR_RTH_BID",
+        "note": "Exit trigger occurred on 2026-09-10 completed close. No retrospective exit price was created; await next fresh qualifying IBKR RTH bid. Live-test only, not broker execution."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
@@ -89,6 +89,20 @@
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
+      },
+      "exit_trigger": {
+        "trigger_completed_bar_date": "2026-09-10",
+        "observed_at_hkt": "2026-09-12T17:01:49+08:00",
+        "observed_at_et": "2026-09-12T05:01:49-04:00",
+        "underlying_close": 757.83,
+        "then_current_SMA50": 758.2124,
+        "RV40": 0.1156061928,
+        "reason": "SPY_COMPLETED_RTH_CLOSE_BELOW_THEN_CURRENT_SMA50",
+        "validation": "IBKR_prior_close_and_Longbridge_close_confirmed; Alpaca_IEX_fallback_indicator_recompute",
+        "missed_primary_exit_observation": "2026-09-11_US_RTH_NO_FRESH_IBKR_EXIT_BID_RECORDED",
+        "next_eligible_exit_observation": "2026-09-14_US_RTH",
+        "recovery_note": "SPY recovered above SMA50 on 2026-09-11, but frozen exit policy contains no next-day recovery cancellation.",
+        "broker_execution": false
       }
     },
     {
@@ -96,7 +110,7 @@
       "underlying": "QQQ",
       "vehicle": "QLD",
       "direction": "LONG",
-      "state": "OPEN",
+      "state": "PENDING_EXIT",
       "signal": {
         "signal_date": "2026-08-28",
         "decision": "ENTER_LEVERAGE",
@@ -159,9 +173,9 @@
         "maximum_adverse_excursion_pct_completed_daily_from_first_full_session": null,
         "maximum_favourable_excursion_pct_completed_daily_from_first_full_session": null,
         "max_drawdown_pct_completed_daily_closes_from_entry": null,
-        "completed_holding_sessions": 0,
-        "status": "OPEN_NEW_LIVE_TEST_ENTRY",
-        "note": "Prospective live-test observation only. Not a broker execution or order."
+        "completed_holding_sessions": 8,
+        "status": "PENDING_EXIT_AWAITING_FRESH_IBKR_RTH_BID",
+        "note": "Exit trigger occurred on 2026-09-10 completed close. No retrospective exit price was created; await next fresh qualifying IBKR RTH bid. Live-test only, not broker execution."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
@@ -169,6 +183,20 @@
         "no_raw_licensed_data_committed": true,
         "no_account_or_order_data_committed": true,
         "simulated_or_observed_record_not_broker_execution": true
+      },
+      "exit_trigger": {
+        "trigger_completed_bar_date": "2026-09-10",
+        "observed_at_hkt": "2026-09-12T17:01:49+08:00",
+        "observed_at_et": "2026-09-12T05:01:49-04:00",
+        "underlying_close": 708.69,
+        "then_current_SMA50": 710.5976,
+        "RV40": 0.1976381527,
+        "reason": "QQQ_COMPLETED_RTH_CLOSE_BELOW_THEN_CURRENT_SMA50",
+        "validation": "Longbridge_close_confirmed; Alpaca_IEX_fallback_indicator_recompute",
+        "missed_primary_exit_observation": "2026-09-11_US_RTH_NO_FRESH_IBKR_EXIT_BID_RECORDED",
+        "next_eligible_exit_observation": "2026-09-14_US_RTH",
+        "recovery_note": "QQQ recovered above SMA50 on 2026-09-11, but frozen exit policy contains no next-day recovery cancellation.",
+        "broker_execution": false
       }
     }
   ],
