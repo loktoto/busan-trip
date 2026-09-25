@@ -1,15 +1,16 @@
 {
-  "schema_version": 1,
-  "updated_at": "2026-09-12T17:01:49+08:00",
+  "schema_version": 2,
+  "updated_at": "2026-09-25T23:41:00+08:00",
   "mode": "PRODUCTION_LIVE_TEST_SIGNAL_TRACKING_ONLY",
   "order_authority": "NONE",
-  "active_tests": [
+  "active_tests": [],
+  "closed_tests": [
     {
       "test_id": "SPY_SSO_20260731_01",
       "underlying": "SPY",
       "vehicle": "SSO",
       "direction": "LONG",
-      "state": "PENDING_EXIT",
+      "state": "EXIT",
       "signal": {
         "signal_date": "2026-07-31",
         "decision": "ENTER_LEVERAGE",
@@ -80,8 +81,8 @@
         "maximum_favourable_excursion_pct_completed_daily_from_first_full_session": 2.6508742244782724,
         "max_drawdown_pct_completed_daily_closes_from_entry": -4.0126861555432995,
         "completed_holding_sessions": 27,
-        "status": "PENDING_EXIT_AWAITING_FRESH_IBKR_RTH_BID",
-        "note": "Exit trigger occurred on 2026-09-10 completed close. No retrospective exit price was created; await next fresh qualifying IBKR RTH bid. Live-test only, not broker execution."
+        "status": "EXIT_SIGNAL_RECORDED_NO_QUALIFYING_RTH_EXIT_PRICE",
+        "note": "Exit/invalidation trigger is authoritative and the live-test is no longer OPEN. No qualifying fresh IBKR RTH exit bid was observed, so exit price and realized return remain N/A. Never retrospectively backfill. A later re-entry must be a new live-test."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
@@ -100,9 +101,11 @@
         "reason": "SPY_COMPLETED_RTH_CLOSE_BELOW_THEN_CURRENT_SMA50",
         "validation": "IBKR_prior_close_and_Longbridge_close_confirmed; Alpaca_IEX_fallback_indicator_recompute",
         "missed_primary_exit_observation": "2026-09-11_US_RTH_NO_FRESH_IBKR_EXIT_BID_RECORDED",
-        "next_eligible_exit_observation": "2026-09-14_US_RTH",
         "recovery_note": "SPY recovered above SMA50 on 2026-09-11, but frozen exit policy contains no next-day recovery cancellation.",
-        "broker_execution": false
+        "broker_execution": false,
+        "exit_price_status": "N/A_NO_QUALIFYING_FRESH_IBKR_RTH_BID_OBSERVED",
+        "lifecycle_closed_on_trigger": true,
+        "reentry_blocked": false
       }
     },
     {
@@ -110,7 +113,7 @@
       "underlying": "QQQ",
       "vehicle": "QLD",
       "direction": "LONG",
-      "state": "PENDING_EXIT",
+      "state": "EXIT",
       "signal": {
         "signal_date": "2026-08-28",
         "decision": "ENTER_LEVERAGE",
@@ -174,8 +177,8 @@
         "maximum_favourable_excursion_pct_completed_daily_from_first_full_session": null,
         "max_drawdown_pct_completed_daily_closes_from_entry": null,
         "completed_holding_sessions": 8,
-        "status": "PENDING_EXIT_AWAITING_FRESH_IBKR_RTH_BID",
-        "note": "Exit trigger occurred on 2026-09-10 completed close. No retrospective exit price was created; await next fresh qualifying IBKR RTH bid. Live-test only, not broker execution."
+        "status": "EXIT_SIGNAL_RECORDED_NO_QUALIFYING_RTH_EXIT_PRICE",
+        "note": "Exit/invalidation trigger is authoritative and the live-test is no longer OPEN. No qualifying fresh IBKR RTH exit bid was observed, so exit price and realized return remain N/A. Never retrospectively backfill. A later re-entry must be a new live-test."
       },
       "data_policy": {
         "market_data_primary": "IBKR",
@@ -194,13 +197,13 @@
         "reason": "QQQ_COMPLETED_RTH_CLOSE_BELOW_THEN_CURRENT_SMA50",
         "validation": "Longbridge_close_confirmed; Alpaca_IEX_fallback_indicator_recompute",
         "missed_primary_exit_observation": "2026-09-11_US_RTH_NO_FRESH_IBKR_EXIT_BID_RECORDED",
-        "next_eligible_exit_observation": "2026-09-14_US_RTH",
         "recovery_note": "QQQ recovered above SMA50 on 2026-09-11, but frozen exit policy contains no next-day recovery cancellation.",
-        "broker_execution": false
+        "broker_execution": false,
+        "exit_price_status": "N/A_NO_QUALIFYING_FRESH_IBKR_RTH_BID_OBSERVED",
+        "lifecycle_closed_on_trigger": true,
+        "reentry_blocked": false
       }
-    }
-  ],
-  "closed_tests": [
+    },
     {
       "test_id": "QQQ_QLD_20260817_01",
       "underlying": "QQQ",
@@ -265,5 +268,15 @@
         "broker_execution": false
       }
     }
-  ]
+  ],
+  "state_semantics": {
+    "user_facing_states": [
+      "OPEN",
+      "EXIT"
+    ],
+    "pending_states_removed": true,
+    "exit_price_may_be_null": true,
+    "no_retroactive_exit_price_backfill": true,
+    "reentry_after_exit_is_new_test": true
+  }
 }
