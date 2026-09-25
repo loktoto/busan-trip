@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "status": "PRODUCTION_REPORTING_POLICY",
   "effective_at": "2026-08-03T11:22:00+08:00",
   "scope": "hourly_leverage_signal_board",
@@ -19,10 +19,12 @@
     "broker_execution_prohibited": true,
     "mandatory_per_run_actions": [
       "fetch_live_test_policy_state_and_ledger_when_GitHub_is_available",
-      "evaluate_each_PENDING_ENTRY_against_fresh_IBKR_RTH_data",
-      "record_OPEN_only_after_a_fresh_observed_qualifying_quote",
+      "evaluate_new_completed_RTH_entry_signals_for_possible_activation",
+      "record_OPEN_only_after_a_fresh_observed_qualifying_IBKR_RTH_entry_quote",
       "evaluate_each_OPEN_position_for_exit_or_invalidation",
-      "update_state_and_ledger_only_from_reliable_observed_data",
+      "on_exit_trigger_set_state_EXIT_immediately_even_if_exit_price_is_NA",
+      "allow_future_reentry_as_a_new_test_after_a_new_valid_signal_and_fresh_RTH_entry_quote",
+      "update_state_and_ledger_only_from_reliable_observed_data_or_validated_signal_state_changes",
       "show_live_test_state_separately_from_formal_trade_authority",
       "never_claim_a_GitHub_live_test_record_is_a_broker_execution"
     ],
@@ -32,7 +34,13 @@
       "short_entry": "bid",
       "short_exit": "ask",
       "first_observed_quote_rule": "FIRST_OBSERVED_NOT_OFFICIAL_OPEN when the exact RTH open quote was not captured"
-    }
+    },
+    "user_facing_states": [
+      "OPEN",
+      "EXIT"
+    ],
+    "no_pending_states": true,
+    "exit_without_quote_rule": "EXIT remains the state; exit price is N/A when no qualifying fresh IBKR RTH exit bid was observed. Never backfill."
   },
   "mandatory_decision_summary": {
     "position": "FIRST_SECTION_IN_EVERY_REPORT",
@@ -90,11 +98,8 @@
     ],
     "allowed_live_test_states": [
       "NONE",
-      "NO_SIGNAL",
-      "PENDING_ENTRY",
       "OPEN",
-      "PENDING_EXIT",
-      "CLOSED",
+      "EXIT",
       "CANCELLED",
       "DATA_CONFLICT"
     ],
@@ -146,7 +151,7 @@
         "do_not_promote_research_only_assets_to_formal_authority_automatically",
         "validated_research_signals_may_be_activated_for_production_live_test_under_the_live_test_policy",
         "do_not_commit_licensed_raw_IBKR_or_account_data",
-        "never_record_pending_as_open",
+        "never_record_OPEN_without_a_fresh_qualifying_RTH_entry_observation",
         "never_claim_live_test_observation_is_broker_execution"
       ]
     },
@@ -197,5 +202,6 @@
     "one_failed_source_must_not_break_other_assets": true,
     "no_fabrication": true,
     "do_not_open_live_test_when_required_data_is_unavailable": true
-  }
+  },
+  "lifecycle_override_effective_date": "2026-09-25"
 }
