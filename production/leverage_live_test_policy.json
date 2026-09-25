@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "PRODUCTION_LIVE_TEST",
   "effective_at": "2026-08-03T11:22:00+08:00",
   "scope": "prospective_live_test_of_validated_research_leverage_signals",
@@ -23,10 +23,29 @@
       "no_unresolved_date_close_or_corporate_action_conflict"
     ],
     "initial_universe": {
-      "SPY": ["SSO", "UPRO", "SPXL"],
-      "QQQ": ["QLD", "TQQQ"],
-      "SOXX": ["USD", "SOXL"],
-      "single_stocks": ["AAPU", "MSFU", "NVDL", "AMZU", "GGLL", "METU", "TSLL", "TSMX"]
+      "SPY": [
+        "SSO",
+        "UPRO",
+        "SPXL"
+      ],
+      "QQQ": [
+        "QLD",
+        "TQQQ"
+      ],
+      "SOXX": [
+        "USD",
+        "SOXL"
+      ],
+      "single_stocks": [
+        "AAPU",
+        "MSFU",
+        "NVDL",
+        "AMZU",
+        "GGLL",
+        "METU",
+        "TSLL",
+        "TSMX"
+      ]
     },
     "default_vehicle_preference": "Use the lowest leverage product that satisfies the validated research signal unless the signal explicitly validates a higher leverage product."
   },
@@ -47,13 +66,8 @@
     "halt_guardrail": "entry_blocked_when_halted_or_quote_integrity_is_uncertain"
   },
   "position_state_machine": [
-    "NO_SIGNAL",
-    "PENDING_ENTRY",
     "OPEN",
-    "PENDING_EXIT",
-    "CLOSED",
-    "CANCELLED",
-    "DATA_CONFLICT"
+    "EXIT"
   ],
   "exit_policy": {
     "exit_when": [
@@ -63,7 +77,10 @@
       "strategy_specific_stop_or_take_profit_is_triggered_when_explicitly_defined"
     ],
     "no_implicit_fixed_take_profit": true,
-    "daily_invalidation_uses_completed_RTH_close_unless_the_recorded_strategy_explicitly_defines_an_intraday_rule": true
+    "daily_invalidation_uses_completed_RTH_close_unless_the_recorded_strategy_explicitly_defines_an_intraday_rule": true,
+    "state_on_exit_trigger": "EXIT_IMMEDIATELY",
+    "if_no_qualifying_fresh_rth_exit_quote": "Keep exit price null/N/A, preserve the trigger and audit trail, do not backfill, and do not block future re-entry.",
+    "reentry_after_exit": "New live-test instance only after a new completed-RTH entry signal plus required validation and fresh qualifying IBKR RTH ask."
   },
   "performance_accounting": {
     "currency": "USD",
@@ -86,7 +103,6 @@
     "ledger_file": "production/leverage_live_test_ledger.csv",
     "append_or_update_only_from_fresh_observed_data": true,
     "never_fabricate_execution": true,
-    "never_record_a_pending_signal_as_an_open_trade": true,
     "never_commit_licensed_raw_IBKR_data": true,
     "never_commit_account_positions_orders_executions_credentials_or_session_material": true,
     "allowed_derived_fields": [
@@ -101,13 +117,24 @@
       "return_metrics",
       "validation_result",
       "data_source_labels"
-    ]
+    ],
+    "never_record_candidate_as_open_without_fresh_rth_entry_quote": true
   },
   "fail_safe": {
     "retry_failed_IBKR_endpoint_once": true,
     "do_not_open_a_live_test_position_without_reliable_fresh_IBKR_data": true,
     "degraded_field_text": "N/A — IBKR未取得可靠資料",
-    "if_Alpaca_parity_required_and_unavailable": "cap_confidence_at_6.0_and_keep_or_revert_to_PENDING_ENTRY",
+    "if_Alpaca_parity_required_and_unavailable": "cap_confidence_at_6.0_and_do_not_open_a_new_live_test",
     "one_failed_asset_must_not_block_other_live_tests": true
+  },
+  "lifecycle_override_effective_date": "2026-09-25",
+  "non_position_audit_outcomes": [
+    "CANCELLED",
+    "DATA_CONFLICT"
+  ],
+  "lifecycle_state_semantics": {
+    "OPEN": "Activated live-test with a recorded qualifying fresh IBKR RTH entry observation.",
+    "EXIT": "Exit/invalidation signal has triggered; the strategy is no longer considered open immediately. If no qualifying fresh IBKR RTH exit quote was observed, exit price remains null/N/A and must never be retrospectively backfilled.",
+    "reentry": "A later re-entry is a new live-test instance and requires a new completed-RTH entry signal, required same-run validation, and a fresh qualifying IBKR RTH ask. There is no pending lifecycle state."
   }
 }
